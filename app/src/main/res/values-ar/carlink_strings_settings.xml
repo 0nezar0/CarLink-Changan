@@ -28,7 +28,7 @@
     <string name="carlink_settings_close">إغلاق</string>
     <string name="carlink_settings_group_start">البدء</string>
     <string name="carlink_settings_auto_bluetooth">الاتصال تلقائياً</string>
-    <string name="carlink_settings_auto_bluetooth_detail">تشغيل CarPlay أو Android Auto عندما يتصل Bluetooth لجوال مقترن</string>
+    <string name="carlink_settings_auto_bluetooth_detail">عند اتصال جوال مقترن عبر Bluetooth، يُشغَّل CarPlay أو Android Auto</string>
     <string name="carlink_settings_auto_usb">الاتصال عند التوصيل بالكابل</string>
     <string name="carlink_settings_auto_usb_detail">البدء فور توصيل جوال بكابل USB</string>
     <string name="carlink_settings_start_boot">التشغيل مع السيارة</string>

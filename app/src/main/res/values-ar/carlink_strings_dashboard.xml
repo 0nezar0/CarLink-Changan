@@ -14,7 +14,7 @@
     <string name="carlink_home_bt_off_body">شغّله للاتصال لاسلكياً، أو صِل جوالك بكابل.</string>
     <string name="carlink_home_bt_off_action">تشغيل Bluetooth</string>
     <string name="carlink_home_ready_title">صِل الكابل أو قرّب جوالك</string>
-    <string name="carlink_home_ready_body">iPhone يشغّل CarPlay. جوال Android يشغّل Android Auto.</string>
+    <string name="carlink_home_ready_body">يشغّل الـ iPhone خدمة CarPlay، ويشغّل جوال Android خدمة Android Auto.</string>
     <string name="carlink_home_pair_action">إقران جوال</string>
     <string name="carlink_home_ready_phone_title">الاتصال بـ %1$s؟</string>
     <string name="carlink_home_ready_phone_body">%1$s عبر %2$s. التوصيل بكابل يعمل أيضاً.</string>
@@ -37,7 +37,7 @@
     <string name="carlink_home_diagnostics">التشخيص</string>
     <string name="carlink_home_open_settings">فتح الإعدادات</string>
     <string name="carlink_home_error_auth_title">تعذّر تسجيل دخول CarPlay</string>
-    <string name="carlink_home_error_auth_body">هذه النسخة لا تتضمن ملفات توثيق CarPlay. Android Auto يعمل كالمعتاد.</string>
+    <string name="carlink_home_error_auth_body">هذه النسخة لا تتضمن ملفات توثيق CarPlay، بينما Android Auto يعمل كالمعتاد.</string>
     <string name="carlink_home_error_iphone_title">أقرن الـ iPhone أولاً</string>
     <string name="carlink_home_error_iphone_body">أقرنه من إعدادات Bluetooth في السيارة، ثم حاول مرة أخرى. الكابل يعمل دون إقران.</string>
     <string name="carlink_home_error_hotspot_details_title">أضف نقطة اتصال السيارة</string>
