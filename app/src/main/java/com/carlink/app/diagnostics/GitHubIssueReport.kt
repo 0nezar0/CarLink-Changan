@@ -340,7 +340,7 @@ object GitHubIssueReport {
             WirelessPath.WIFI_DIRECT -> CONNECTION_WIFI_DIRECT
             WirelessPath.CAR_HOTSPOT -> CONNECTION_CAR_HOTSPOT
             WirelessPath.SAME_WIFI -> CONNECTION_SAME_WIFI
-            null -> CONNECTION_NOT_SURE
+            WirelessPath.HEADUNIT_SERVER, null -> CONNECTION_NOT_SURE
         }
     }
 

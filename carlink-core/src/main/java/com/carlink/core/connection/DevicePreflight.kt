@@ -49,7 +49,8 @@ object DevicePreflight {
             // USB router), and without the permission only the floating switcher degrades to its
             // in-app prompt. Blocking here stopped phones whose OEM hides the setting (issue #2).
             if (request.transport != Transport.WIRELESS) return@buildList
-            if (bluetoothViaModule) Unit
+            // The head unit server path is TCP over Wi-Fi only (#70): no Bluetooth link to start it.
+            if (bluetoothViaModule || path == WirelessPath.HEADUNIT_SERVER) Unit
             else if (!facts.bluetoothOn) add(Problem.BLUETOOTH_OFF)
             else if (request.phoneAddress != null && facts.phoneBonded == false) add(Problem.PHONE_NOT_PAIRED)
             else if (request.phoneAddress != null && facts.pairingLost) add(Problem.PAIRING_LOST)
@@ -65,7 +66,7 @@ object DevicePreflight {
                     wifi.carHotspotOn == false -> add(Problem.CAR_HOTSPOT_OFF)
                     !WirelessPolicy.hotspotUsable(settings, wifi) -> add(Problem.CAR_HOTSPOT_DETAILS)
                 }
-                WirelessPath.WIFI_DIRECT, null -> Unit
+                WirelessPath.WIFI_DIRECT, WirelessPath.HEADUNIT_SERVER, null -> Unit
             }
         }
 

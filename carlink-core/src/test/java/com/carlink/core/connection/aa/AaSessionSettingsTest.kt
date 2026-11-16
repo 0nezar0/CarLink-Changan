@@ -90,6 +90,19 @@ class AaSessionSettingsTest {
         assertFalse(r.values.containsKey("native-ap-transport"))
     }
 
+    @Test fun headUnitServerUsesTheEnginesDiscoveryMode() {
+        val v = values(settings = base.copy(headunitServerAddress = " 192.168.43.1 "), path = WirelessPath.HEADUNIT_SERVER).values
+        assertEquals(1, v["wifi-connection-mode"])
+        assertEquals(0, v["native-ap-transport"])
+        assertEquals("0", v["static-bssid"])
+        assertEquals(setOf("192.168.43.1"), v[AaSessionSettings.HEADUNIT_SERVER_ADDRESSES_KEY])
+        // Discovery only without a typed address, and no other route inherits it.
+        assertEquals(emptySet<String>(), values(path = WirelessPath.HEADUNIT_SERVER).values[AaSessionSettings.HEADUNIT_SERVER_ADDRESSES_KEY])
+        assertEquals(emptySet<String>(), values(settings = base.copy(headunitServerAddress = "192.168.43.1"))
+            .values[AaSessionSettings.HEADUNIT_SERVER_ADDRESSES_KEY])
+        assertEquals(3, values(transport = Transport.USB, path = WirelessPath.HEADUNIT_SERVER).values["wifi-connection-mode"])
+    }
+
     @Test fun usbWritesTheWifiDirectRouteForTheBackgroundEngine() {
         val v = values(transport = Transport.USB, path = WirelessPath.SAME_WIFI, wifi = joined).values
         assertEquals(0, v["native-ap-transport"])

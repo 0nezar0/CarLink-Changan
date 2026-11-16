@@ -160,7 +160,27 @@ object AaSessionSettings {
                         put("auto-enable-hotspot", false)
                     }
                 }
+                WirelessPath.HEADUNIT_SERVER -> {
+                    // DiAuto's mode 1 (DiscoveryModePolicy): the engine probes the default gateway
+                    // (the phone, on its hotspot), then the subnet, for Android Auto's head unit
+                    // server on 5277 and connects with the probe's own socket; the server binds to
+                    // the first connection it accepts, so CarLink must not probe it separately.
+                    // No Wi-Fi Direct group, no access point, no Bluetooth poke (#70).
+                    put("wifi-connection-mode", 1)
+                    put("native-ap-transport", 0)
+                    put("hotspot-interface", "")
+                    put("hotspot-ssid", "")
+                    put("hotspot-password", "")
+                    put("static-bssid", "0")
+                    put("auto-enable-hotspot", false)
+                }
             }
+            // The driver's typed address for the head unit server, tried first by the engine's
+            // discovery (a CarLink hook in NetworkDiscovery). Written every session so no other
+            // route inherits it.
+            val address = settings.headunitServerAddress.trim()
+            put(HEADUNIT_SERVER_ADDRESSES_KEY,
+                if (route == WirelessPath.HEADUNIT_SERVER && address.isNotEmpty()) setOf(address) else emptySet<String>())
         }
         return AaSessionValues(values, problem)
     }
@@ -238,6 +258,12 @@ object AaSessionSettings {
 
     /** DiAuto preference with [sizePercent], read by the Automatic density hook in ":aa". */
     const val SIZE_PERCENT_KEY = "carlink-interface-percent"
+
+    /**
+     * DiAuto's own list of head unit server addresses (`Settings.networkAddresses`), which CarLink's
+     * hook in NetworkDiscovery tries before the gateway: the Head unit server method's typed address.
+     */
+    const val HEADUNIT_SERVER_ADDRESSES_KEY = "network-addresses"
 
     private const val MIN_WIDTH_DP = 748
     private const val MIN_HEIGHT_DP = 450

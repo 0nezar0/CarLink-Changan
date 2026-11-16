@@ -164,7 +164,7 @@ internal val SettingsCategory.selectedIcon: Int
 internal enum class EssentialSheet {
     CONNECTION_METHOD, CAR_HOTSPOT, SAME_WIFI, PICTURE, INTERFACE_SIZE, DAY_NIGHT, NIGHT_START, NIGHT_END,
     DRIVING_SIDE, SOUND, AUDIO_DELAY, APPEARANCE, LAYOUT, CARLINK_SIZE, RENDERING, CAR_BRAND, WHEEL_KEYS,
-    MEDIA_LEVEL, NAVIGATION_LEVEL, CALL_LEVEL, CALL_STREAM, MIC_GAIN,
+    MEDIA_LEVEL, NAVIGATION_LEVEL, CALL_LEVEL, CALL_STREAM, MIC_GAIN, HEADUNIT_SERVER_ADDRESS,
 }
 
 internal object SheetKey {
@@ -198,6 +198,7 @@ internal fun connectionMethodLabel(method: ConnectionMethod): String = stringRes
         ConnectionMethod.SAME_WIFI -> R.string.carlink_settings_method_same_wifi
         ConnectionMethod.CAR_HOTSPOT -> R.string.carlink_settings_method_hotspot
         ConnectionMethod.WIFI_DIRECT -> R.string.carlink_settings_method_direct
+        ConnectionMethod.HEADUNIT_SERVER -> R.string.carlink_settings_method_headunit_server
     },
 )
 
@@ -318,4 +319,13 @@ internal fun percentText(scale: Float): String = "${Math.round(scale * 100)}%"
 internal fun clockText(minute: Int): String {
     val m = ((minute % (24 * 60)) + 24 * 60) % (24 * 60)
     return String.format(Locale.ROOT, "%02d:%02d", m / 60, m % 60)
+}
+
+/** The detail line of each connection method, shared by every list of methods. */
+internal fun connectionMethodDetail(method: ConnectionMethod): Int = when (method) {
+    ConnectionMethod.AUTOMATIC -> R.string.carlink_settings_method_auto_detail
+    ConnectionMethod.SAME_WIFI -> R.string.carlink_settings_method_same_wifi_detail
+    ConnectionMethod.CAR_HOTSPOT -> R.string.carlink_settings_method_hotspot_detail
+    ConnectionMethod.WIFI_DIRECT -> R.string.carlink_settings_method_direct_detail
+    ConnectionMethod.HEADUNIT_SERVER -> R.string.carlink_settings_method_headunit_server_detail
 }

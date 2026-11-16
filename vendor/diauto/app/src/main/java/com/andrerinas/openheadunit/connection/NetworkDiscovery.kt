@@ -174,6 +174,8 @@ class NetworkDiscovery(private val context: Context, private val listener: Liste
         var foundAny = false
         try {
             val suspects = mutableSetOf<String>()
+            // CarLink: addresses typed by the driver (Head unit server method, #70) go first.
+            try { com.andrerinas.openheadunit.App.provide(context).settings.networkAddresses.filter { it.isNotBlank() }.forEach { suspects.add(it.trim()) } } catch (e: Exception) {}
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

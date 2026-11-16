@@ -148,7 +148,7 @@ object CarPlayPreflight {
                     add(CarPlayProblem.CarHotspotDetailsMissing)
                 input.carHotspotOn == false && !input.carHotspotCanStart -> add(CarPlayProblem.CarHotspotOff)
             }
-            WirelessPath.WIFI_DIRECT -> Unit
+            WirelessPath.WIFI_DIRECT, WirelessPath.HEADUNIT_SERVER -> Unit
         }
     }
 

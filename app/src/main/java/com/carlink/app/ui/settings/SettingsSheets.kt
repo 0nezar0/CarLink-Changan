@@ -113,15 +113,12 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
         EssentialSheet.CONNECTION_METHOD -> ChoiceSheet(
             stringResource(R.string.carlink_settings_method), stringResource(R.string.carlink_settings_method_sheet_body), true,
             ConnectionMethod.entries.map { m ->
-                Preset(m, connectionMethodLabel(m), stringResource(when (m) {
-                    ConnectionMethod.AUTOMATIC -> R.string.carlink_settings_method_auto_detail
-                    ConnectionMethod.SAME_WIFI -> R.string.carlink_settings_method_same_wifi_detail
-                    ConnectionMethod.CAR_HOTSPOT -> R.string.carlink_settings_method_hotspot_detail
-                    ConnectionMethod.WIFI_DIRECT -> R.string.carlink_settings_method_direct_detail
-                }), methodIcon(m))
+                Preset(m, connectionMethodLabel(m), stringResource(connectionMethodDetail(m)), methodIcon(m))
             },
             u.connectionMethod, onSelect = { m -> select { it.copy(connectionMethod = m) } }, onDismiss = onDismiss,
         )
+        EssentialSheet.HEADUNIT_SERVER_ADDRESS -> HeadunitServerAddressSheet(u.headunitServerAddress,
+            onSave = { a -> select { it.copy(headunitServerAddress = a) } }, onDismiss = onDismiss)
         EssentialSheet.CAR_HOTSPOT -> WifiSheet(
             stringResource(R.string.carlink_settings_hotspot), stringResource(R.string.carlink_settings_hotspot_sheet_body),
             u.carHotspot, suggestion = null, onSave = { w -> actions.saveCarHotspot(w); onDismiss() }, onDismiss = onDismiss,
@@ -563,9 +560,45 @@ private fun WifiSheet(title: String, body: String, initial: WifiDetails, suggest
     }
 }
 
+/**
+ * The phone's address for the Head unit server method (#70): optional, since the engine finds the
+ * phone by itself (its hotspot gateway, then the subnet). Empty saves "find automatically".
+ */
+@Composable
+private fun HeadunitServerAddressSheet(initial: String, onSave: (String) -> Unit, onDismiss: () -> Unit) {
+    var address by rememberSaveable { mutableStateOf(initial) }
+    val trimmed = address.trim()
+    val valid = trimmed.isEmpty() || isIpv4(trimmed)
+    val gap = CarLinkTokens.dimens.targetGap
+    SettingsSheet(onDismiss) {
+        SheetTitle(stringResource(R.string.carlink_settings_headunit_server_address),
+            stringResource(R.string.carlink_settings_headunit_server_sheet_body), nextConnection = true)
+        WifiField(address, { address = it }, stringResource(R.string.carlink_settings_headunit_server_address_field),
+            R.drawable.carlink_ic_android,
+            error = if (valid) null else stringResource(R.string.carlink_settings_headunit_server_address_error),
+            keyboardType = KeyboardType.Uri)
+        Spacer(Modifier.height(CarLinkTokens.dimens.gutter * 1.5f))
+        Row(horizontalArrangement = Arrangement.spacedBy(gap), verticalAlignment = Alignment.CenterVertically) {
+            IonButton(stringResource(R.string.carlink_settings_wifi_save), { if (valid) onSave(trimmed) },
+                Modifier.alpha(if (valid) 1f else 0.4f), icon = R.drawable.carlink_ic_check)
+            if (initial.isNotEmpty()) {
+                GlassButton(stringResource(R.string.carlink_settings_headunit_server_address_auto), { onSave("") },
+                    icon = R.drawable.carlink_ic_delete)
+            }
+        }
+    }
+}
+
+/** A dotted IPv4 address (four numbers 0-255). */
+internal fun isIpv4(text: String): Boolean {
+    val parts = text.split('.')
+    return parts.size == 4 && parts.all { p -> p.isNotEmpty() && p.length <= 3 && p.all(Char::isDigit) && p.toInt() in 0..255 }
+}
+
 @Composable
 private fun WifiField(value: String, onChange: (String) -> Unit, label: String, @DrawableRes icon: Int, error: String?,
-                      password: Boolean = false, reveal: Boolean = false, onReveal: () -> Unit = {}) {
+                      password: Boolean = false, reveal: Boolean = false, onReveal: () -> Unit = {},
+                      keyboardType: KeyboardType = KeyboardType.Text) {
     val scheme = MaterialTheme.colorScheme
     val colors = CarLinkTokens.colors
     OutlinedTextField(
@@ -580,7 +613,7 @@ private fun WifiField(value: String, onChange: (String) -> Unit, label: String, 
                     .clickable(role = Role.Button, onClick = onReveal).padding(12.dp))
         }) else null,
         visualTransformation = if (password && !reveal) PasswordVisualTransformation() else VisualTransformation.None,
-        keyboardOptions = KeyboardOptions(keyboardType = if (password) KeyboardType.Password else KeyboardType.Text),
+        keyboardOptions = KeyboardOptions(keyboardType = if (password) KeyboardType.Password else keyboardType),
         isError = error != null,
         supportingText = error?.let { { Text(it) } },
         shape = MaterialTheme.shapes.medium,

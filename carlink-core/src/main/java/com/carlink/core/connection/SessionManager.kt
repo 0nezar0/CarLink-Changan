@@ -929,6 +929,9 @@ class SessionManager(
         // SelfLaunchTimeoutPolicy: a link dropped before the version exchange leaves Android Auto's
         // head unit server deaf until restarted by hand). The whole-attempt backstop still gives up.
         if (request.selfMode && stage != null) return note("stall: Android Auto on this screen, ${StallPlaybook.phaseName(stage).lowercase()} has taken $waited ms; still waiting")
+        // The phone's head unit server (#70) is the same server Self Mode dials, with the same
+        // weakness: a link torn down mid-handshake leaves it deaf until the driver restarts it.
+        if (plan.path == WirelessPath.HEADUNIT_SERVER && stage != null) return note("stall: head unit server, ${StallPlaybook.phaseName(stage).lowercase()} has taken $waited ms; still waiting")
         val key = a.index to stage
         val (action, used) = StallPlaybook.next(StallPlaybook.actions(plan.engine, plan.transport, stage),
             recoveries[key] ?: 0, a.index + 1 < a.paths.size)

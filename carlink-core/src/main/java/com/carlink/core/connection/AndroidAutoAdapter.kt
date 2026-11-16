@@ -19,6 +19,7 @@ import com.carlink.core.connection.aa.AaSessionTracker
 import com.carlink.core.core.Engine
 import com.carlink.core.core.Transport
 import com.carlink.core.settings.VehicleProfile
+import com.carlink.core.settings.WirelessPath
 import java.util.concurrent.atomic.AtomicLong
 
 /**
@@ -115,7 +116,7 @@ class AndroidAutoAdapter internal constructor(
             val now = clock()
             deliver(s, s.tracker.onTick(now))
             if (s.tracker.terminal) return
-            if (s.tracker.shouldRepoke(now)) s.plan.phoneAddress?.let { send(AaProtocol.COMMAND_POKE) { putExtra(AaProtocol.EXTRA_ADDRESS, it) } }
+            if (s.tracker.shouldRepoke(now)) s.plan.pokeAddress?.let { send(AaProtocol.COMMAND_POKE) { putExtra(AaProtocol.EXTRA_ADDRESS, it) } }
             // The receiver starts ":aa" a moment after start(); after that, two misses in a row mean it died.
             if (now - s.startedAt >= PROCESS_GRACE_MILLIS && !processAlive()) {
                 if (++deadPolls >= DEAD_POLLS) {
@@ -187,7 +188,7 @@ class AndroidAutoAdapter internal constructor(
         return when (action) {
             // DiAuto's manual poke is one 20 s hold; a silent phone gets another (DA§2.7).
             RecoveryAction.NUDGE -> {
-                val address = s.plan.phoneAddress
+                val address = s.plan.pokeAddress
                 if (s.plan.transport != Transport.WIRELESS || address == null) return false
                 Log.i(TAG, "watchdog: waking the phone again")
                 send(AaProtocol.COMMAND_POKE) { putExtra(AaProtocol.EXTRA_ADDRESS, address) }
@@ -220,7 +221,7 @@ class AndroidAutoAdapter internal constructor(
         if (plan.selfMode) send(AaProtocol.COMMAND_START_SELF) { putExtra(AaProtocol.EXTRA_VEHICLE_PROFILE, profile) }
         else when (plan.transport) {
             Transport.WIRELESS -> send(AaProtocol.COMMAND_START_WIRELESS) {
-                putExtra(AaProtocol.EXTRA_ADDRESS, plan.phoneAddress)
+                putExtra(AaProtocol.EXTRA_ADDRESS, plan.pokeAddress)
                 putExtra(AaProtocol.EXTRA_VEHICLE_PROFILE, profile)
             }
             Transport.USB -> send(AaProtocol.COMMAND_START_USB) {
@@ -329,3 +330,11 @@ class AndroidAutoAdapter internal constructor(
         private val nextToken = AtomicLong(System.nanoTime())
     }
 }
+
+/**
+ * The phone to wake over Bluetooth, or null. The head unit server path (#70) pokes nothing: the
+ * engine's poke re-arms its wireless mode, which would restart the discovery that is dialling the
+ * phone's head unit server, and that server needs no Bluetooth wake-up.
+ */
+private val SessionPlan.pokeAddress: String?
+    get() = phoneAddress?.takeIf { path != WirelessPath.HEADUNIT_SERVER }

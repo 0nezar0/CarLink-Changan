@@ -147,7 +147,8 @@ object CarPlaySettingsPolicy {
             wirelessMode = when (path) {
                 WirelessPath.SAME_WIFI -> WirelessHotspotMode.EXISTING_WIFI
                 WirelessPath.CAR_HOTSPOT -> WirelessHotspotMode.MANUAL
-                WirelessPath.WIFI_DIRECT -> WirelessHotspotMode.WIFI_P2P
+                // HEADUNIT_SERVER is Android Auto only (WirelessPolicy never gives it to CarPlay).
+                WirelessPath.WIFI_DIRECT, WirelessPath.HEADUNIT_SERVER -> WirelessHotspotMode.WIFI_P2P
                 null -> null
             },
             displayScalePercent = scale,

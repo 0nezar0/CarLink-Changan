@@ -41,6 +41,10 @@ object WirelessPolicy {
             ConnectionMethod.CAR_HOTSPOT -> listOf(WirelessPath.CAR_HOTSPOT)
             ConnectionMethod.WIFI_DIRECT -> listOf(WirelessPath.WIFI_DIRECT)
             ConnectionMethod.AUTOMATIC -> automatic(inputs)
+            // Android Auto only: the phone's own head unit server (#70). CarPlay has no such
+            // server, so it keeps choosing its paths as Automatic does.
+            ConnectionMethod.HEADUNIT_SERVER ->
+                if (inputs.engine == Engine.ANDROID_AUTO) listOf(WirelessPath.HEADUNIT_SERVER) else automatic(inputs)
         }
     }
 

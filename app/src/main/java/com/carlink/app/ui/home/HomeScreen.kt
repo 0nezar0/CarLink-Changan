@@ -943,6 +943,7 @@ private fun pathName(path: WirelessPath?, transport: Transport?): String = strin
     transport == Transport.USB -> R.string.carlink_home_path_usb
     path == WirelessPath.SAME_WIFI -> R.string.carlink_home_path_same_wifi
     path == WirelessPath.CAR_HOTSPOT -> R.string.carlink_home_path_hotspot
+    path == WirelessPath.HEADUNIT_SERVER -> R.string.carlink_home_path_headunit_server
     else -> R.string.carlink_home_path_direct
 })
 

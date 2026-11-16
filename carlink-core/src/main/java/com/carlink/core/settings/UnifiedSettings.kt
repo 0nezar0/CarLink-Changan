@@ -40,11 +40,21 @@ data class UnifiedSettings(
     val resumeMusic: Boolean = false,
     /** Software gain on the microphone sent to the phone ([AudioLevels.MIC_DB]). */
     val micGainDb: Int = 0,
+    /**
+     * [ConnectionMethod.HEADUNIT_SERVER] only: the phone's address typed by the driver, tried before
+     * the gateway and the subnet scan. Empty: discovery only.
+     */
+    val headunitServerAddress: String = "",
 )
 
 data class WifiDetails(val ssid: String = "", val password: String = "")
 
-enum class ConnectionMethod { AUTOMATIC, SAME_WIFI, CAR_HOTSPOT, WIFI_DIRECT }
+/**
+ * [HEADUNIT_SERVER] (Android Auto only, GitHub #70): CarLink dials the phone's own Android Auto head
+ * unit server (developer settings, "Start head unit server", TCP 5277) over the Wi-Fi both are on,
+ * the phone's hotspot or a shared router. CarPlay treats it as [AUTOMATIC].
+ */
+enum class ConnectionMethod { AUTOMATIC, SAME_WIFI, CAR_HOTSPOT, WIFI_DIRECT, HEADUNIT_SERVER }
 
 /** Quality versus load; [CUSTOM] when Advanced picked exact per-engine values. */
 enum class Picture { AUTOMATIC, BEST, BALANCED, LIGHT, CUSTOM }
@@ -86,6 +96,7 @@ class UnifiedSettingsStore(context: Context) {
         callAudioAsMedia = prefs.getBoolean("call_audio_as_media", false),
         resumeMusic = prefs.getBoolean("resume_music", false),
         micGainDb = prefs.getInt("mic_gain_db", 0),
+        headunitServerAddress = prefs.getString("headunit_server_address", "")!!,
     )
 
     fun save(settings: UnifiedSettings) {
@@ -114,6 +125,7 @@ class UnifiedSettingsStore(context: Context) {
             .putBoolean("call_audio_as_media", settings.callAudioAsMedia)
             .putBoolean("resume_music", settings.resumeMusic)
             .putInt("mic_gain_db", settings.micGainDb)
+            .putString("headunit_server_address", settings.headunitServerAddress)
             .apply()
     }
 

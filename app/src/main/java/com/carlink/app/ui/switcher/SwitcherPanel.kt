@@ -463,12 +463,7 @@ private fun ConnectionTypePage(ui: SwitcherUi, actions: SwitcherActions) {
     }
 }
 
-private fun methodDetail(method: ConnectionMethod): Int = when (method) {
-    ConnectionMethod.AUTOMATIC -> R.string.carlink_settings_method_auto_detail
-    ConnectionMethod.SAME_WIFI -> R.string.carlink_settings_method_same_wifi_detail
-    ConnectionMethod.CAR_HOTSPOT -> R.string.carlink_settings_method_hotspot_detail
-    ConnectionMethod.WIFI_DIRECT -> R.string.carlink_settings_method_direct_detail
-}
+private fun methodDetail(method: ConnectionMethod): Int = com.carlink.app.ui.settings.connectionMethodDetail(method)
 
 /** The phones the panel offers: paired, of a known kind, and not the one projecting. */
 fun switchCandidates(phones: List<PairedPhone>, currentAddress: String?, currentName: String?): List<PairedPhone> =

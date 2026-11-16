@@ -25,6 +25,13 @@ class WirelessPolicyTest {
         Engine.entries.forEach { assertEquals(listOf(WIFI_DIRECT), paths(it, UnifiedSettings(homeWifi = home))) }
     }
 
+    @Test fun headUnitServerIsAndroidAutoOnly() {
+        val s = UnifiedSettings(connectionMethod = ConnectionMethod.HEADUNIT_SERVER)
+        assertEquals(listOf(com.carlink.core.settings.WirelessPath.HEADUNIT_SERVER), paths(Engine.ANDROID_AUTO, s))
+        // CarPlay has no head unit server: it chooses as Automatic does.
+        assertEquals(listOf(WIFI_DIRECT), paths(Engine.CARPLAY, s))
+    }
+
     @Test fun headUnitHotspotComesFirstForCarPlayOnly() {
         val s = UnifiedSettings(carHotspot = hotspot)
         assertEquals(listOf(CAR_HOTSPOT, WIFI_DIRECT), paths(Engine.CARPLAY, s, headUnit = true))
