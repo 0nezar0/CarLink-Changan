@@ -136,6 +136,18 @@
     <string name="carlink_settings_night_end">Night ends</string>
     <string name="carlink_settings_time_earlier">15 min earlier</string>
     <string name="carlink_settings_time_later">15 min later</string>
+    <string name="carlink_settings_group_margins">Screen margins</string>
+    <string name="carlink_settings_margins_detail">Move CarPlay and Android Auto away from the car’s status or navigation bar, so the buttons stay easy to press. Applies from the next connection.</string>
+    <string name="carlink_settings_margin_top">Top</string>
+    <string name="carlink_settings_margin_top_detail">Leave space below the car’s notification bar</string>
+    <string name="carlink_settings_margin_bottom">Bottom</string>
+    <string name="carlink_settings_margin_bottom_detail">Leave space above the car’s navigation or home bar</string>
+    <string name="carlink_settings_margin_left">Left</string>
+    <string name="carlink_settings_margin_left_detail">Leave space at the left edge</string>
+    <string name="carlink_settings_margin_right">Right</string>
+    <string name="carlink_settings_margin_right_detail">Leave space at the right edge</string>
+    <string name="carlink_settings_margin_none">None</string>
+    <string name="carlink_settings_margin_px">%d px</string>
 
     <!-- Sound -->
     <string name="carlink_settings_group_sound">Sound</string>

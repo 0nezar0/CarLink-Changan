@@ -39,6 +39,10 @@ class AaSessionSettingsTest {
             assertEquals(setOf("usb", "wifi"), v["connection-modes"])
             assertEquals(false, v["cluster-map-enabled"])
             assertEquals("the picture follows the screen (#31)", 0, v["screen-orientation"])
+            assertEquals(0, v["inset-left"])
+            assertEquals(0, v["inset-top"])
+            assertEquals(0, v["inset-right"])
+            assertEquals(0, v["inset-bottom"])
         }
         assertEquals(false, values(transport = Transport.USB, path = null).values["auto-connect-last-session"])
     }
@@ -184,4 +188,14 @@ class AaSessionSettingsTest {
         }
         assertEquals(false, normal[AaSessionSettings.RESUME_MUSIC_KEY])
     }
+
+    @Test fun screenMarginsAreWrittenAsDiAutoInsets() {
+        val v = values(settings = base.copy(marginLeftPx = 8, marginTopPx = 48,
+            marginRightPx = 16, marginBottomPx = 24)).values
+        assertEquals(8, v["inset-left"])
+        assertEquals(48, v["inset-top"])
+        assertEquals(16, v["inset-right"])
+        assertEquals(24, v["inset-bottom"])
+    }
 }
+

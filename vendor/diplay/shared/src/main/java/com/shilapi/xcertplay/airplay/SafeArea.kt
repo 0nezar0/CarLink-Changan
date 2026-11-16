@@ -120,6 +120,60 @@ object AirPlaySafeArea {
         )
     }
 
+    /**
+     * Raises each inset to at least the given activity-pixel margins, scaled into the display's
+     * coordinate space. The resulting safe area stays at least two pixels in each direction.
+     */
+    fun ensureActivityMargins(
+        existing: AirPlayInsets,
+        leftPx: Int,
+        topPx: Int,
+        rightPx: Int,
+        bottomPx: Int,
+        activityWidthPixels: Int,
+        activityHeightPixels: Int,
+        displayWidthPixels: Int,
+        displayHeightPixels: Int,
+    ): AirPlayInsets {
+        require(activityWidthPixels > 0 && activityHeightPixels > 0) {
+            "Activity dimensions must be positive"
+        }
+        require(displayWidthPixels > 0 && displayHeightPixels > 0) {
+            "Display dimensions must be positive"
+        }
+        if (leftPx <= 0 && topPx <= 0 && rightPx <= 0 && bottomPx <= 0) return existing
+        return fitInsets(
+            left = maxOf(existing.left, scaleCoordinate(leftPx.coerceAtLeast(0), activityWidthPixels, displayWidthPixels)),
+            top = maxOf(existing.top, scaleCoordinate(topPx.coerceAtLeast(0), activityHeightPixels, displayHeightPixels)),
+            right = maxOf(existing.right, scaleCoordinate(rightPx.coerceAtLeast(0), activityWidthPixels, displayWidthPixels)),
+            bottom = maxOf(existing.bottom, scaleCoordinate(bottomPx.coerceAtLeast(0), activityHeightPixels, displayHeightPixels)),
+            widthPixels = displayWidthPixels,
+            heightPixels = displayHeightPixels,
+        )
+    }
+
+    private fun fitInsets(
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+        widthPixels: Int,
+        heightPixels: Int,
+    ): AirPlayInsets {
+        val maxX = (widthPixels - 2).coerceAtLeast(0)
+        val maxY = (heightPixels - 2).coerceAtLeast(0)
+        val (fittedLeft, fittedRight) = fitPair(left.coerceAtLeast(0), right.coerceAtLeast(0), maxX)
+        val (fittedTop, fittedBottom) = fitPair(top.coerceAtLeast(0), bottom.coerceAtLeast(0), maxY)
+        return AirPlayInsets(top = fittedTop, bottom = fittedBottom, left = fittedLeft, right = fittedRight)
+    }
+
+    private fun fitPair(first: Int, second: Int, maxTotal: Int): Pair<Int, Int> {
+        if (first + second <= maxTotal) return first to second
+        if (maxTotal == 0) return 0 to 0
+        val fittedFirst = ((first.toLong() * maxTotal) / (first + second)).toInt()
+        return fittedFirst to (maxTotal - fittedFirst)
+    }
+
     private fun alignDimensionsToEven(
         rect: SafeAreaRect,
         widthPixels: Int,

@@ -131,4 +131,75 @@ class SafeAreaTest {
         assertNull(SafeAreaCodec.decode("1,2,3"))
         assertNull(SafeAreaCodec.decode("1,2,1,4"))
     }
+
+    @Test
+    fun activityMarginsRaiseAFullDisplaySafeArea() {
+        val insets = AirPlaySafeArea.ensureActivityMargins(
+            existing = AirPlayInsets(),
+            leftPx = 0, topPx = 48, rightPx = 0, bottomPx = 24,
+            activityWidthPixels = 1280,
+            activityHeightPixels = 720,
+            displayWidthPixels = 1280,
+            displayHeightPixels = 720,
+        )
+        assertEquals(AirPlayInsets(top = 48, bottom = 24), insets)
+    }
+
+    @Test
+    fun activityMarginsAreScaledIntoASmallerDisplay() {
+        val insets = AirPlaySafeArea.ensureActivityMargins(
+            existing = AirPlayInsets(),
+            leftPx = 0, topPx = 40, rightPx = 0, bottomPx = 0,
+            activityWidthPixels = 1920,
+            activityHeightPixels = 1080,
+            displayWidthPixels = 960,
+            displayHeightPixels = 540,
+        )
+        assertEquals(AirPlayInsets(top = 20), insets)
+    }
+
+    @Test
+    fun activityMarginsDoNotShrinkAnAlreadyLargerSafeArea() {
+        val insets = AirPlaySafeArea.ensureActivityMargins(
+            existing = AirPlayInsets(top = 80, left = 10),
+            leftPx = 0, topPx = 48, rightPx = 0, bottomPx = 0,
+            activityWidthPixels = 1280,
+            activityHeightPixels = 720,
+            displayWidthPixels = 1280,
+            displayHeightPixels = 720,
+        )
+        assertEquals(AirPlayInsets(top = 80, left = 10), insets)
+    }
+
+    @Test
+    fun zeroActivityMarginsLeaveTheExistingInsetsUnchanged() {
+        val existing = AirPlayInsets(top = 12, right = 8)
+        assertEquals(
+            existing,
+            AirPlaySafeArea.ensureActivityMargins(
+                existing = existing,
+                leftPx = 0, topPx = 0, rightPx = 0, bottomPx = 0,
+                activityWidthPixels = 1280,
+                activityHeightPixels = 720,
+                displayWidthPixels = 1280,
+                displayHeightPixels = 720,
+            ),
+        )
+    }
+
+    @Test
+    fun oversizedActivityMarginsLeaveANonEmptySafeArea() {
+        val insets = AirPlaySafeArea.ensureActivityMargins(
+            existing = AirPlayInsets(),
+            leftPx = 1000, topPx = 1000, rightPx = 1000, bottomPx = 1000,
+            activityWidthPixels = 800,
+            activityHeightPixels = 480,
+            displayWidthPixels = 800,
+            displayHeightPixels = 480,
+        )
+        assertEquals(AirPlayInsets(top = 239, bottom = 239, left = 399, right = 399), insets)
+        assertEquals(2, 800 - insets.left - insets.right)
+        assertEquals(2, 480 - insets.top - insets.bottom)
+    }
 }
+

@@ -69,6 +69,11 @@ data class CarPlayEngineSettings(
     /** Calls play as media (`HostAudio.callsAsMedia`, GitHub #32). */
     val callAudioAsMedia: Boolean = false,
     val resumeMusic: Boolean = false,
+    /** Activity-pixel margins advertised to the iPhone as extra CarPlay safe-area insets. */
+    val marginLeftPx: Int = 0,
+    val marginTopPx: Int = 0,
+    val marginRightPx: Int = 0,
+    val marginBottomPx: Int = 0,
 )
 
 /** The vehicle-profile part of [CarPlayEngineSettings] (DIPLAY.md §12, F5). */
@@ -206,6 +211,10 @@ object CarPlaySettingsPolicy {
             micGainDb = settings.micGainDb,
             callAudioAsMedia = settings.callAudioAsMedia,
             resumeMusic = settings.resumeMusic,
+            marginLeftPx = settings.marginLeftPx,
+            marginTopPx = settings.marginTopPx,
+            marginRightPx = settings.marginRightPx,
+            marginBottomPx = settings.marginBottomPx,
         )
     }
 
@@ -240,6 +249,12 @@ object CarPlaySettingsPolicy {
         AirPlayPersistence.saveExistingWifiCredentials(context, values.homeWifi.ssid, values.homeWifi.password)
 
         CarPlayHostIntegration.keyRemap = values.wheelKeyRemap
+        CarPlayHostIntegration.displayMargins = CarPlayHostIntegration.DisplayMargins(
+            left = values.marginLeftPx.coerceAtLeast(0),
+            top = values.marginTopPx.coerceAtLeast(0),
+            right = values.marginRightPx.coerceAtLeast(0),
+            bottom = values.marginBottomPx.coerceAtLeast(0),
+        )
         // Read by each new audio stream and microphone; null hooks leave DiPlay's audio untouched.
         HostAudio.playbackPcm = AudioLevels.carPlayPlayback(values.mediaLevelDb, values.navigationLevelDb, values.callLevelDb)
         HostAudio.microphonePcm = AudioLevels.pcmGain(values.micGainDb)

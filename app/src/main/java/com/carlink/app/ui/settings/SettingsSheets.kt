@@ -173,6 +173,31 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
         EssentialSheet.NIGHT_END -> TimeSheet(stringResource(R.string.carlink_settings_night_end), u.nightEndMinute,
             presets = listOf(5, 6, 7, 8).map { it * 60 }, onChange = { m -> actions.update { it.copy(nightEndMinute = m) } },
             onDismiss = onDismiss)
+        EssentialSheet.MARGIN_TOP, EssentialSheet.MARGIN_BOTTOM, EssentialSheet.MARGIN_LEFT, EssentialSheet.MARGIN_RIGHT -> {
+            val sheet = SheetKey.essential(key)!!
+            val (title, body, current) = when (sheet) {
+                EssentialSheet.MARGIN_TOP -> Triple(R.string.carlink_settings_margin_top,
+                    R.string.carlink_settings_margin_top_detail, u.marginTopPx)
+                EssentialSheet.MARGIN_BOTTOM -> Triple(R.string.carlink_settings_margin_bottom,
+                    R.string.carlink_settings_margin_bottom_detail, u.marginBottomPx)
+                EssentialSheet.MARGIN_LEFT -> Triple(R.string.carlink_settings_margin_left,
+                    R.string.carlink_settings_margin_left_detail, u.marginLeftPx)
+                else -> Triple(R.string.carlink_settings_margin_right,
+                    R.string.carlink_settings_margin_right_detail, u.marginRightPx)
+            }
+            ChoiceSheet(stringResource(title), stringResource(body), true,
+                SCREEN_MARGIN_PX.map { Preset(it, marginLabel(it)) }, current,
+                onSelect = { px ->
+                    select {
+                        when (sheet) {
+                            EssentialSheet.MARGIN_TOP -> it.copy(marginTopPx = px)
+                            EssentialSheet.MARGIN_BOTTOM -> it.copy(marginBottomPx = px)
+                            EssentialSheet.MARGIN_LEFT -> it.copy(marginLeftPx = px)
+                            else -> it.copy(marginRightPx = px)
+                        }
+                    }
+                }, onDismiss = onDismiss)
+        }
         EssentialSheet.DRIVING_SIDE -> ChoiceSheet(
             stringResource(R.string.carlink_settings_driving_side), stringResource(R.string.carlink_settings_driving_side_detail), true,
             listOf(

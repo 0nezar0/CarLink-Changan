@@ -43,6 +43,10 @@ class SettingsStoresTest {
             callAudioAsMedia = true,
             resumeMusic = true,
             micGainDb = 9,
+            marginLeftPx = 8,
+            marginTopPx = 48,
+            marginRightPx = 16,
+            marginBottomPx = 24,
         )
         UnifiedSettingsStore(app).save(settings)
         // A new instance reads what the old one wrote.

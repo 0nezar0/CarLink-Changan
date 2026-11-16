@@ -165,6 +165,7 @@ internal enum class EssentialSheet {
     CONNECTION_METHOD, CAR_HOTSPOT, SAME_WIFI, PICTURE, INTERFACE_SIZE, DAY_NIGHT, NIGHT_START, NIGHT_END,
     DRIVING_SIDE, SOUND, AUDIO_DELAY, APPEARANCE, LAYOUT, CARLINK_SIZE, RENDERING, CAR_BRAND, WHEEL_KEYS,
     MEDIA_LEVEL, NAVIGATION_LEVEL, CALL_LEVEL, CALL_STREAM, MIC_GAIN, HEADUNIT_SERVER_ADDRESS,
+    MARGIN_TOP, MARGIN_BOTTOM, MARGIN_LEFT, MARGIN_RIGHT,
 }
 
 internal object SheetKey {
@@ -188,6 +189,15 @@ internal fun advancedValueLabel(setting: AdvancedSetting, value: String?): Strin
     val control = setting.control as? Control.Choice ?: return null
     return value?.let { v -> control.options.firstOrNull { it.value == v }?.label ?: v }
 }
+
+/** Pixel choices for Settings › Display › Screen margins, in activity pixels. */
+internal val SCREEN_MARGIN_PX = listOf(0, 24, 32, 40, 48, 56, 64, 72, 80, 96, 120)
+
+/** "None" for 0, else a pixel count. */
+@Composable
+internal fun marginLabel(px: Int): String =
+    if (px <= 0) stringResource(R.string.carlink_settings_margin_none)
+    else stringResource(R.string.carlink_settings_margin_px, px)
 
 // ---- Labels -------------------------------------------------------------------------------
 

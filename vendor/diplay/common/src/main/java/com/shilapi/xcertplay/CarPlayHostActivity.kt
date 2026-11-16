@@ -5082,13 +5082,28 @@ open class CarPlayHostActivity : ComponentActivity() {
         val nativeMasks = blackCornerRadiusDp == CarPlayBlackCornerOverlay.IPHONE_MASK
         val disableSafeArea = mainDisplayDisableSafeArea || nativeMasks
         val display = scaledDisplay.copy(
-            safeArea = if (disableSafeArea) null else AirPlaySafeArea.toInsets(
-                mapping = AirPlayPersistence.loadSafeAreaRect(this, size.width, size.height),
-                activityWidthPixels = size.width,
-                activityHeightPixels = size.height,
-                displayWidthPixels = scaledDisplay.widthPixels,
-                displayHeightPixels = scaledDisplay.heightPixels,
-            ),
+            safeArea = if (disableSafeArea) null else {
+                val base = AirPlaySafeArea.toInsets(
+                    mapping = AirPlayPersistence.loadSafeAreaRect(this, size.width, size.height),
+                    activityWidthPixels = size.width,
+                    activityHeightPixels = size.height,
+                    displayWidthPixels = scaledDisplay.widthPixels,
+                    displayHeightPixels = scaledDisplay.heightPixels,
+                )
+                // CarLink: Settings › Display › Screen margins, activity pixels scaled into the stream.
+                val margins = CarPlayHostIntegration.displayMargins
+                if (margins.isEmpty) base else AirPlaySafeArea.ensureActivityMargins(
+                    existing = base,
+                    leftPx = margins.left,
+                    topPx = margins.top,
+                    rightPx = margins.right,
+                    bottomPx = margins.bottom,
+                    activityWidthPixels = size.width,
+                    activityHeightPixels = size.height,
+                    displayWidthPixels = scaledDisplay.widthPixels,
+                    displayHeightPixels = scaledDisplay.heightPixels,
+                )
+            },
             safeAreaDrawOutside = if (nativeMasks) false else safeAreaDrawOutside,
             mainDisplayCornerMasks = if (disableSafeArea) true else null,
             mainDisplayDisableSafeArea = disableSafeArea,

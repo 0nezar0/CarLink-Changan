@@ -36,6 +36,7 @@ class CarPlaySettingsTest {
 
     @After fun restoreHooks() {
         CarPlayHostIntegration.vehicleIntegrations = true
+        CarPlayHostIntegration.displayMargins = CarPlayHostIntegration.DisplayMargins()
         CarPlaySettingsPolicy.appearance = { CarLinkAppearance.DARK }
     }
 
@@ -130,7 +131,17 @@ class CarPlaySettingsTest {
         assertFalse(BydOutputSettings.batteryToIphone(app))
         assertFalse(AirPlayPersistence.loadClusterMapEnabled(app))
         assertFalse(CarPlayHostIntegration.vehicleIntegrations)
+        assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
         assertEquals("CarLink", AirPlayPersistence.loadOemLabel(app))
+    }
+
+    @Test fun screenMarginsReachTheHostSafeAreaHook() {
+        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(marginLeftPx = 8, marginTopPx = 48,
+            marginRightPx = 16, marginBottomPx = 24)))
+        assertEquals(CarPlayHostIntegration.DisplayMargins(left = 8, top = 48, right = 16, bottom = 24),
+            CarPlayHostIntegration.displayMargins)
+        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings()))
+        assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
     }
 
     @Test fun clearedSameWifiDetailsAreClearedInDiPlay() {

@@ -218,6 +218,20 @@ object CarPlayHostIntegration {
      * anyway (a turning screen's square, a fixed dock, split screen, side panel) also declares a smaller
      * whole-screen area for each width below its own, scaled up to fill the window. Empty: none.
      */
+    /**
+     * CarLink: extra safe-area insets in activity pixels (Settings › Display › Screen margins).
+     * Added when the projection advertises its display so the iPhone keeps tappable UI clear of a
+     * factory status bar the app cannot hide. The video stays full-screen and touches stay on that
+     * video; only the declared safe area changes. All zeros for standalone DiPlay.
+     */
+    data class DisplayMargins(val left: Int = 0, val top: Int = 0, val right: Int = 0, val bottom: Int = 0) {
+        val isEmpty: Boolean get() = left == 0 && top == 0 && right == 0 && bottom == 0
+    }
+
+    @Volatile
+    @JvmStatic
+    var displayMargins: DisplayMargins = DisplayMargins()
+
     @Volatile
     @JvmStatic
     var liveSizeWidthsMm: List<Int> = emptyList()

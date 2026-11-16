@@ -45,6 +45,14 @@ data class UnifiedSettings(
      * the gateway and the subnet scan. Empty: discovery only.
      */
     val headunitServerAddress: String = "",
+    /**
+     * Extra pixels kept clear of the car's bars on each edge of CarPlay and Android Auto
+     * (Settings › Display › Screen margins). Applied from the next connection.
+     */
+    val marginLeftPx: Int = 0,
+    val marginTopPx: Int = 0,
+    val marginRightPx: Int = 0,
+    val marginBottomPx: Int = 0,
 )
 
 data class WifiDetails(val ssid: String = "", val password: String = "")
@@ -97,6 +105,10 @@ class UnifiedSettingsStore(context: Context) {
         resumeMusic = prefs.getBoolean("resume_music", false),
         micGainDb = prefs.getInt("mic_gain_db", 0),
         headunitServerAddress = prefs.getString("headunit_server_address", "")!!,
+        marginLeftPx = prefs.getInt("margin_left_px", 0).coerceAtLeast(0),
+        marginTopPx = prefs.getInt("margin_top_px", 0).coerceAtLeast(0),
+        marginRightPx = prefs.getInt("margin_right_px", 0).coerceAtLeast(0),
+        marginBottomPx = prefs.getInt("margin_bottom_px", 0).coerceAtLeast(0),
     )
 
     fun save(settings: UnifiedSettings) {
@@ -126,6 +138,10 @@ class UnifiedSettingsStore(context: Context) {
             .putBoolean("resume_music", settings.resumeMusic)
             .putInt("mic_gain_db", settings.micGainDb)
             .putString("headunit_server_address", settings.headunitServerAddress)
+            .putInt("margin_left_px", settings.marginLeftPx.coerceAtLeast(0))
+            .putInt("margin_top_px", settings.marginTopPx.coerceAtLeast(0))
+            .putInt("margin_right_px", settings.marginRightPx.coerceAtLeast(0))
+            .putInt("margin_bottom_px", settings.marginBottomPx.coerceAtLeast(0))
             .apply()
     }
 

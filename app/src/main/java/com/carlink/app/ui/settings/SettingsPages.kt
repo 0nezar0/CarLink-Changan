@@ -198,6 +198,27 @@ private fun DisplayEssentials(ui: SettingsUi, openSheet: (String) -> Unit) {
                 { openSheet(SheetKey.of(EssentialSheet.NIGHT_END)) }, icon = R.drawable.carlink_ic_light_mode)
         }
     }
+    GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_margins)) }) {
+        ChoiceRow(stringResource(R.string.carlink_settings_margin_top), marginLabel(u.marginTopPx),
+            { openSheet(SheetKey.of(EssentialSheet.MARGIN_TOP)) },
+            description = stringResource(R.string.carlink_settings_margin_top_detail),
+            icon = R.drawable.carlink_ic_aspect_ratio, tags = { NextConnectionTag() })
+        GroupDivider()
+        ChoiceRow(stringResource(R.string.carlink_settings_margin_bottom), marginLabel(u.marginBottomPx),
+            { openSheet(SheetKey.of(EssentialSheet.MARGIN_BOTTOM)) },
+            description = stringResource(R.string.carlink_settings_margin_bottom_detail),
+            tags = { NextConnectionTag() })
+        GroupDivider()
+        ChoiceRow(stringResource(R.string.carlink_settings_margin_left), marginLabel(u.marginLeftPx),
+            { openSheet(SheetKey.of(EssentialSheet.MARGIN_LEFT)) },
+            description = stringResource(R.string.carlink_settings_margin_left_detail),
+            tags = { NextConnectionTag() })
+        GroupDivider()
+        ChoiceRow(stringResource(R.string.carlink_settings_margin_right), marginLabel(u.marginRightPx),
+            { openSheet(SheetKey.of(EssentialSheet.MARGIN_RIGHT)) },
+            description = stringResource(R.string.carlink_settings_margin_right_detail),
+            tags = { NextConnectionTag() })
+    }
 }
 
 @Composable
