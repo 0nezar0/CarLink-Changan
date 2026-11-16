@@ -16,13 +16,11 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -84,6 +82,7 @@ import com.carlink.app.ui.components.isolate
 import com.carlink.app.ui.components.phoneIcon
 import com.carlink.app.ui.components.rememberElapsedMillis
 import com.carlink.app.ui.premium.Atmosphere
+import com.carlink.app.ui.premium.appChromeInsets
 import com.carlink.app.ui.premium.DialReading
 import com.carlink.app.ui.premium.GlassButton
 import com.carlink.app.ui.premium.IonButton
@@ -455,7 +454,7 @@ private fun HomeStageScreen(ui: HomeUi, actions: HomeActions, onPhones: () -> Un
         lightCenter = (spot?.center ?: fallbackCenter).let { Offset(it.x, it.y - 0.35f) },
         floor = true,
     ) {
-        Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+        Column(Modifier.fillMaxSize().windowInsetsPadding(appChromeInsets())) {
             TopBar(onSettings = { actions.navigate(Route.SETTINGS) })
             BoxWithConstraints(Modifier.fillMaxWidth().weight(1f)) {
                 val landscape = maxWidth > maxHeight && layout.width >= WidthClass.MEDIUM

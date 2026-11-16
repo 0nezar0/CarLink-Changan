@@ -12,11 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,6 +32,22 @@ import com.carlink.app.ui.settings.RoundGlassButton
 import com.carlink.app.ui.theme.CarLinkTokens
 import com.carlink.app.ui.theme.UiProfile
 import com.carlink.app.ui.theme.WidthClass
+
+/**
+ * Settings › Display › Screen margins › Top, in pixels. Factory notification bars on some head
+ * units sit outside [WindowInsets.safeDrawing]; chrome uses the larger of that inset and this value.
+ * Changing the setting recomposes every screen that reads it.
+ */
+val LocalScreenMarginTopPx = compositionLocalOf { 0 }
+
+/**
+ * System safe-drawing insets, with [LocalScreenMarginTopPx] as a minimum top inset so one Top
+ * setting clears both the projection surface and CarLink's own screens (Settings, Home, and
+ * everything that uses [PremiumScreen]).
+ */
+@Composable
+fun appChromeInsets(): WindowInsets =
+    WindowInsets.safeDrawing.union(WindowInsets(top = LocalScreenMarginTopPx.current.coerceAtLeast(0)))
 
 /**
  * A secondary screen on the atmosphere: the canvas runs behind the system bars, the content is
@@ -47,7 +65,7 @@ fun PremiumScreen(
     val margin = if (CarLinkTokens.layout.width == WidthClass.COMPACT) dimens.compactMargin else dimens.screenMargin
     val car = CarLinkTokens.profile == UiProfile.CAR
     Atmosphere(Modifier.fillMaxSize()) {
-        Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+        Column(Modifier.fillMaxSize().windowInsetsPadding(appChromeInsets())) {
             Row(
                 Modifier.fillMaxWidth().heightIn(min = dimens.topBar + if (car) 16.dp else 8.dp).padding(horizontal = margin),
                 verticalAlignment = Alignment.CenterVertically,

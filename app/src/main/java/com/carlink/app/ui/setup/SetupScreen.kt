@@ -26,14 +26,12 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -93,6 +91,7 @@ import com.carlink.app.ui.home.oneTapFix
 import com.carlink.app.ui.home.noticeIcon
 import com.carlink.app.ui.home.noticeText
 import com.carlink.app.ui.premium.Atmosphere
+import com.carlink.app.ui.premium.appChromeInsets
 import com.carlink.app.ui.premium.Eyebrow
 import com.carlink.app.ui.premium.GlassButton
 import com.carlink.app.ui.premium.GlassCard
@@ -380,7 +379,7 @@ internal fun SetupContent(ui: SetupUi, actions: SetupActions) {
     val light = stepColor(ui)
     Atmosphere(Modifier.fillMaxSize(), glow = light.copy(alpha = 0.55f), glowCenter = Offset(0.74f, 0.5f),
         lightCenter = Offset(0.7f, -0.2f)) {
-        Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+        Column(Modifier.fillMaxSize().windowInsetsPadding(appChromeInsets())) {
             SetupTopBar(ui.step, ui.pairOnly, actions, margin)
             BoxWithConstraints(Modifier.fillMaxWidth().weight(1f)) {
                 val landscape = maxWidth > maxHeight && maxWidth >= 720.dp

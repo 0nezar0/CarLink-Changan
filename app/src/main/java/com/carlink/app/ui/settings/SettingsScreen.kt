@@ -18,14 +18,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -66,6 +64,7 @@ import com.carlink.core.settings.UnifiedSettings
 import com.carlink.app.ui.CarLinkViewModel
 import com.carlink.app.ui.Route
 import com.carlink.app.ui.premium.Atmosphere
+import com.carlink.app.ui.premium.appChromeInsets
 import com.carlink.app.ui.theme.CarLinkTokens
 import com.carlink.app.ui.theme.CarMotion
 import com.carlink.app.ui.theme.LocalReduceMotion
@@ -297,7 +296,7 @@ fun SettingsContent(
     val setAdvanced: (Boolean) -> Unit = { on -> actions.update { it.copy(showAdvanced = on) } }
 
     Atmosphere(Modifier.fillMaxSize()) {
-        BoxWithConstraints(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+        BoxWithConstraints(Modifier.fillMaxSize().windowInsetsPadding(appChromeInsets())) {
             val wide = maxWidth >= 720.dp
             BackHandler(enabled = !wide && selected != null) { selected = null }
             if (wide) {

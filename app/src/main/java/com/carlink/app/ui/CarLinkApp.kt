@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.carlink.app.ui.about.AboutScreen
 import com.carlink.app.ui.diagnostics.DiagnosticsScreen
 import com.carlink.app.ui.home.HomeScreen
+import com.carlink.app.ui.premium.LocalScreenMarginTopPx
 import com.carlink.app.ui.settings.SettingsScreen
 import com.carlink.app.ui.theme.CarMotion
 import com.carlink.app.ui.theme.LocalReduceMotion
@@ -76,6 +78,7 @@ fun CarLinkApp(vm: CarLinkViewModel, onExitToCarHome: () -> Unit) {
 
     val reduceMotion = LocalReduceMotion.current
     val travel = with(LocalDensity.current) { 48.dp.roundToPx() }
+    val unified by vm.unified.collectAsStateWithLifecycle()
     // A Surface (not a plain background) so every screen's text defaults to onBackground.
     androidx.compose.material3.Surface(
         Modifier.fillMaxSize(),
@@ -83,30 +86,33 @@ fun CarLinkApp(vm: CarLinkViewModel, onExitToCarHome: () -> Unit) {
         contentColor = MaterialTheme.colorScheme.onBackground,
     ) {
         // Every screen draws its atmosphere behind the system bars and pads its own content.
-        Box(Modifier.fillMaxSize()) {
-            AnimatedContent(
-                targetState = route,
-                transitionSpec = {
-                    val duration = if (reduceMotion) 0 else CarMotion.LONG
-                    // Shared-axis X: deeper screens enter from the end, going back returns from the start.
-                    val forward = targetState.ordinal > initialState.ordinal || initialState == Route.HOME
-                    val direction = if (forward) 1 else -1
-                    (slideInHorizontally(tween(duration, easing = CarMotion.EmphasizedDecelerate)) { direction * travel } +
-                        fadeIn(tween(duration))) togetherWith
-                        (slideOutHorizontally(tween(duration, easing = CarMotion.EmphasizedAccelerate)) { -direction * travel } +
-                            fadeOut(tween(duration / 2)))
-                },
-                label = "route",
-            ) { current ->
-                when (current) {
-                    Route.HOME -> HomeScreen(vm, navigate = navigate)
-                    Route.SETTINGS -> SettingsScreen(vm, onBack = back, navigate = navigate, startCategory = settingsStart)
-                    Route.DIAGNOSTICS -> DiagnosticsScreen(vm, onBack = back, openSettings = openSettings)
-                    Route.ABOUT -> AboutScreen(onBack = back)
-                    Route.SETUP, Route.SETUP_PAIR -> com.carlink.app.ui.setup.SetupScreen(vm,
-                        start = if (current == Route.SETUP_PAIR) com.carlink.app.ui.setup.SetupStep.PAIR
-                            else com.carlink.app.ui.setup.SetupStep.WELCOME,
-                        onExit = { stack = listOf(Route.HOME) })
+        // Top uses the larger of the system status-bar inset and Screen margins › Top.
+        CompositionLocalProvider(LocalScreenMarginTopPx provides unified.marginTopPx) {
+            Box(Modifier.fillMaxSize()) {
+                AnimatedContent(
+                    targetState = route,
+                    transitionSpec = {
+                        val duration = if (reduceMotion) 0 else CarMotion.LONG
+                        // Shared-axis X: deeper screens enter from the end, going back returns from the start.
+                        val forward = targetState.ordinal > initialState.ordinal || initialState == Route.HOME
+                        val direction = if (forward) 1 else -1
+                        (slideInHorizontally(tween(duration, easing = CarMotion.EmphasizedDecelerate)) { direction * travel } +
+                            fadeIn(tween(duration))) togetherWith
+                            (slideOutHorizontally(tween(duration, easing = CarMotion.EmphasizedAccelerate)) { -direction * travel } +
+                                fadeOut(tween(duration / 2)))
+                    },
+                    label = "route",
+                ) { current ->
+                    when (current) {
+                        Route.HOME -> HomeScreen(vm, navigate = navigate)
+                        Route.SETTINGS -> SettingsScreen(vm, onBack = back, navigate = navigate, startCategory = settingsStart)
+                        Route.DIAGNOSTICS -> DiagnosticsScreen(vm, onBack = back, openSettings = openSettings)
+                        Route.ABOUT -> AboutScreen(onBack = back)
+                        Route.SETUP, Route.SETUP_PAIR -> com.carlink.app.ui.setup.SetupScreen(vm,
+                            start = if (current == Route.SETUP_PAIR) com.carlink.app.ui.setup.SetupStep.PAIR
+                                else com.carlink.app.ui.setup.SetupStep.WELCOME,
+                            onExit = { stack = listOf(Route.HOME) })
+                    }
                 }
             }
         }

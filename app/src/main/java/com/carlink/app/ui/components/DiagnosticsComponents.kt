@@ -19,14 +19,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -64,6 +62,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.carlink.app.R
+import com.carlink.app.ui.premium.appChromeInsets
 import com.carlink.app.ui.theme.CarLinkTokens
 import com.carlink.app.ui.theme.CarMotion
 import com.carlink.app.ui.theme.LocalReduceMotion
@@ -217,7 +216,7 @@ fun CarSheet(
                         // so contentColorFor() would pick the dimmer onSurfaceVariant.
                         contentColor = MaterialTheme.colorScheme.onSurface,
                     ) {
-                        Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+                        Column(Modifier.fillMaxSize().windowInsetsPadding(appChromeInsets())) {
                             Row(Modifier.fillMaxWidth().heightIn(min = dimens.topBar + 16.dp).padding(horizontal = dimens.gutter),
                                 verticalAlignment = Alignment.CenterVertically) {
                                 if (showBackArrow) {

@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -44,6 +42,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.carlink.app.R
+import com.carlink.app.ui.premium.appChromeInsets
 import com.carlink.app.ui.premium.Eyebrow
 import com.carlink.app.ui.premium.GlassButton
 import com.carlink.app.ui.premium.GlyphDisc
@@ -89,7 +88,7 @@ fun UpdateDialog(state: UpdateState, installedVersion: String, actions: UpdateDi
             .fillMaxSize()
             .background(Color.Black.copy(alpha = 0.55f))
             .pointerInput(Unit) { detectTapGestures {} }
-            .windowInsetsPadding(WindowInsets.safeDrawing)
+            .windowInsetsPadding(appChromeInsets())
             .padding(dimens.gutter),
         contentAlignment = Alignment.Center,
     ) {
