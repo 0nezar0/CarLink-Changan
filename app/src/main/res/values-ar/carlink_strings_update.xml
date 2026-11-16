@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Arabic (ar) translation of carlink_strings_update.xml. CarLink follows the device language. -->
+<resources>
+    <string name="carlink_update_available_title">يتوفر تحديث</string>
+    <string name="carlink_update_version">CarLink %1$s</string>
+    <string name="carlink_update_installed">لديك %1$s</string>
+    <string name="carlink_update_whats_new">ما الجديد</string>
+    <string name="carlink_update_no_notes">لا توجد ملاحظات إصدار لهذه النسخة.</string>
+    <string name="carlink_update_ignore">تجاهل هذه النسخة</string>
+    <string name="carlink_update_later">لاحقاً</string>
+    <string name="carlink_update_download">تنزيل وتثبيت</string>
+    <string name="carlink_update_downloading_title">جارٍ تنزيل CarLink %1$s</string>
+    <string name="carlink_update_progress">%1$s من %2$s</string>
+    <string name="carlink_update_progress_unknown">تم تنزيل %1$s</string>
+    <string name="carlink_update_download_body">يمكنك متابعة استخدام CarLink. لا يُثبَّت شيء حتى يُفحص التنزيل.</string>
+    <string name="carlink_update_cancel">إلغاء</string>
+    <string name="carlink_update_verifying_title">جارٍ فحص التنزيل</string>
+    <string name="carlink_update_verifying_body">للتأكد أن الملف مكتمل وموقَّع من CarLink.</string>
+    <string name="carlink_update_permission_title">اسمح لـ CarLink بتثبيت التحديث</string>
+    <string name="carlink_update_permission_body">يحتاج Android إلى إذنك مرة واحدة. في الشاشة التالية، شغّل «السماح من هذا المصدر»، ثم عد إلى CarLink. يكمل التحديث من تلقاء نفسه.</string>
+    <string name="carlink_update_open_settings">فتح الإعدادات</string>
+    <string name="carlink_update_installing_title">جارٍ تثبيت CarLink %1$s</string>
+    <string name="carlink_update_installing_body">أكد في شاشة التثبيت في Android. يُغلق CarLink أثناء التحديث؛ افتحه مرة أخرى عند انتهائه.</string>
+    <string name="carlink_update_failed_title">لم يُثبَّت التحديث</string>
+    <string name="carlink_update_error_download">لم يكتمل التنزيل. تحقق من اتصال الإنترنت وحاول مرة أخرى.</string>
+    <string name="carlink_update_error_checksum_missing">لا يوجد ملف تحقق لهذه النسخة، لذلك لا يمكن فحص التنزيل. حاول لاحقاً.</string>
+    <string name="carlink_update_error_checksum">الملف المنزَّل لا يطابق بصمته، وقد يكون تالفاً. حُذف.</string>
+    <string name="carlink_update_error_unreadable">الملف المنزَّل ليس تطبيقاً صالحاً. حُذف.</string>
+    <string name="carlink_update_error_package">الملف المنزَّل ليس CarLink. حُذف.</string>
+    <string name="carlink_update_error_not_newer">الملف المنزَّل ليس أحدث من النسخة لديك. حُذف.</string>
+    <string name="carlink_update_error_signer">الملف المنزَّل غير موقَّع بمفتاح إصدار CarLink، لذلك لم يُثبَّت. حُذف.</string>
+    <string name="carlink_update_error_install">لم يثبّت Android التحديث. حاول مرة أخرى.</string>
+    <string name="carlink_update_error_install_detail">لم يثبّت Android التحديث (%1$s). حاول مرة أخرى.</string>
+    <string name="carlink_update_error_install_cancelled">أُلغي التثبيت.</string>
+    <string name="carlink_update_try_again">إعادة المحاولة</string>
+    <string name="carlink_update_close">إغلاق</string>
+    <string name="carlink_about_updates">التحديثات</string>
+    <string name="carlink_about_check_updates">التحقق من التحديثات</string>
+    <string name="carlink_about_updates_last_checked">الإصدار %1$s · آخر تحقق %2$s</string>
+    <string name="carlink_about_updates_never">الإصدار %1$s · لم يُتحقق بعد</string>
+    <string name="carlink_about_updates_checking">جارٍ التحقق…</string>
+    <string name="carlink_about_updates_just_now">الآن</string>
+    <string name="carlink_about_updates_up_to_date">أنت على أحدث إصدار</string>
+    <string name="carlink_about_updates_available">يتوفر CarLink %1$s</string>
+    <string name="carlink_about_updates_failed">تعذّر الوصول إلى GitHub. تحقق من اتصال الإنترنت وحاول مرة أخرى.</string>
+    <string name="carlink_about_updates_rate_limited">GitHub مشغول الآن. حاول بعد قليل.</string>
+    <string name="carlink_about_updates_unsupported">هذه النسخة لا تحدّث نفسها. ثبّت الإصدار من GitHub للحصول على التحديثات.</string>
+    <string name="carlink_about_auto_updates">التحقق تلقائياً من التحديثات</string>
+    <string name="carlink_about_auto_updates_body">كل 6 ساعات أثناء فتح CarLink وعدم اتصال أي جوال. لا يُنزَّل شيء دون سؤالك.</string>
+    <string name="carlink_about_test_versions">الحصول على نسخ تجريبية</string>
+    <string name="carlink_about_test_versions_body">عرض النسخ التجريبية المنشورة قبل الإصدار أيضاً. قد تواجه مشكلات جديدة؛ يُرجى الإبلاغ عنها. تُفحص كل منها وتُوقَّع مثل الإصدار.</string>
+</resources>

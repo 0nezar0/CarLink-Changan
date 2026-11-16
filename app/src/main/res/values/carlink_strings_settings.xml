@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- CarLink Settings (design/RESEARCH_PREMIUM_UX.md §8). English only. -->
+<!-- CarLink Settings (design/RESEARCH_PREMIUM_UX.md §8). Default English; Arabic in values-ar. -->
 <resources>
     <!-- Screen -->
     <string name="carlink_settings_title">Settings</string>

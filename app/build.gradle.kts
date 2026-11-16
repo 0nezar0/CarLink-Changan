@@ -127,10 +127,11 @@ android {
         buildConfig = true
     }
 
-    // CarLink ships in English only, including the engines' own screens (they carry 20
-    // translations). Remove this filter and extend xml/locales_config.xml to bring them back.
+    // English and Arabic only. The engines ship more translations; this filter keeps those
+    // out so an unlisted device language falls back to English everywhere, including engine
+    // screens. Extend xml/locales_config.xml when adding a language.
     androidResources {
-        localeFilters += listOf("en")
+        localeFilters += listOf("en", "ar")
     }
 
     packaging {
@@ -143,7 +144,7 @@ android {
                 // Bouncy Castle's Picnic (post-quantum signature) tables, 1.2 MB: neither engine
                 // uses Picnic, and only Picnic's own classes read them.
                 "org/bouncycastle/pqc/crypto/picnic/*.properties",
-                // Its German certificate-path messages (CarLink ships English only).
+                // Its German certificate-path messages (CarLink ships English and Arabic only).
                 "org/bouncycastle/x509/CertPathReviewerMessages_de.properties",
                 // kotlinx-coroutines' debug-agent probes; only read by an attached debug agent.
                 "DebugProbesKt.bin",

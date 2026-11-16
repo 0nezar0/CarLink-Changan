@@ -11,8 +11,8 @@ How to build, test and submit a change to CarLink. Bug reports and ideas are wel
   Android Auto in its own `:aa` process, no BYD behaviour outside the BYD profile) are in
   [.claude/skills/carlink-dev/SKILL.md](.claude/skills/carlink-dev/SKILL.md).
 - For a larger change, open an issue first so the approach can be agreed.
-- CarLink ships in English only. UI text goes into string resources prefixed `carlink_`, never
-  hard-coded.
+- CarLink follows the device language for English (default) and Arabic. UI text goes into string
+  resources prefixed `carlink_` (with a `values-ar/` translation), never hard-coded.
 
 ## Build and test
 

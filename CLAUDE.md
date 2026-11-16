@@ -16,8 +16,9 @@ standalone DiPlay app. In CarLink they are reference only. Where they differ, Ca
 - Do not add settings to `DiPlayActivity` or any engine settings screen; the driver never sees
   them. Settings live in CarLink's UI (`app/.../ui/settings`) and reach the engines through
   `UnifiedSettings` and `CarPlaySettings`.
-- CarLink ships English only. New CarLink strings go in `values/` with the `carlink_` prefix; do
-  not add translations.
+- CarLink follows the device language for English (default) and Arabic (`values-ar`, RTL). New
+  CarLink strings go in `values/` with the `carlink_` prefix, and an Arabic translation in
+  `values-ar/`. Other languages fall back to English.
 - Change engine code only through small `// CarLink` hooks, each with a row in
   `docs/VENDOR_CHANGES.md`. Update an engine with the upstream-diff procedure in that file, never
   with `git subtree pull`.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Home dashboard (design/RESEARCH_PREMIUM_UX.md §7.3). English only. -->
+<!-- Home dashboard (design/RESEARCH_PREMIUM_UX.md §7.3). Default English; Arabic in values-ar. -->
 <resources>
     <string name="carlink_home_settings">Settings</string>
 

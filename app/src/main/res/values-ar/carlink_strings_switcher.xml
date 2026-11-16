@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Arabic (ar) translation of carlink_strings_switcher.xml. CarLink follows the device language. -->
+<resources>
+    <string name="carlink_switcher_bubble">مبدّل CarLink</string>
+    <string name="carlink_switcher_bubble_action">فتح مبدّل الجوال</string>
+    <string name="carlink_switcher_panel_window">لوحة مبدّل CarLink</string>
+    <string name="carlink_switcher_dimmer_window">تعتيم CarLink</string>
+    <string name="carlink_switcher_connected_for">متصل · %1$s</string>
+    <string name="carlink_switcher_switch_title">تبديل الجوال</string>
+    <string name="carlink_switcher_no_phones">لا توجد جوالات مقترنة أخرى</string>
+    <string name="carlink_switcher_no_phones_hint">أقرن جوالاً آخر من إعدادات Bluetooth للتبديل إليه هنا.</string>
+    <string name="carlink_switcher_switching">جارٍ التبديل…</string>
+    <string name="carlink_switcher_home">رئيسية CarLink</string>
+    <string name="carlink_switcher_size_reconnects">تغييره يعيد الاتصال لعدة ثوانٍ</string>
+    <string name="carlink_switcher_next_connection">تبقى الجلسة الحالية متصلة.</string>
+    <string name="carlink_switcher_close">إغلاق</string>
+    <string name="carlink_switcher_back">رجوع</string>
+    <string name="carlink_switcher_not_now">ليس الآن</string>
+    <string name="carlink_switcher_phone_fallback">الجوال الجديد</string>
+    <string name="carlink_switcher_night">الوضع الليلي</string>
+    <string name="carlink_switcher_dimmer">التعتيم</string>
+    <string name="carlink_switcher_dimmer_off">إيقاف</string>
+    <string name="carlink_switcher_dimmer_level">المستوى %1$d</string>
+    <string name="carlink_switcher_stereo_home">جهاز الصوت</string>
+    <string name="carlink_switcher_stereo_home_value">المشغّل</string>
+    <string name="carlink_switcher_night_next">يُطبَّق الوضع الليلي من الاتصال التالي؛ والتعتيم فوراً.</string>
+</resources>

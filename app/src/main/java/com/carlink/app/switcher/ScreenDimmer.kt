@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import com.carlink.app.R
 import com.carlink.core.connection.Connection
 import com.carlink.core.connection.SessionState
 import kotlinx.coroutines.CoroutineScope
@@ -49,7 +50,7 @@ object ScreenDimmer {
             PixelFormat.TRANSLUCENT,
         ).apply {
             alpha = ALPHAS[level]
-            title = "CarLink dimmer"
+            title = app.getString(R.string.carlink_switcher_dimmer_window)
             if (Build.VERSION.SDK_INT >= 28) {
                 layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             }

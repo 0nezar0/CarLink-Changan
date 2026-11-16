@@ -25,6 +25,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.carlink.app.R
 import kotlin.math.abs
 
 /**
@@ -93,7 +94,7 @@ internal class BubbleWindow(
         gravity = Gravity.TOP or Gravity.START
         x = placement.x
         y = placement.y
-        title = "CarLink switcher"
+        title = context.getString(R.string.carlink_switcher_bubble)
         if (Build.VERSION.SDK_INT >= 28) {
             layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
@@ -183,7 +184,7 @@ internal class PanelWindow(
         PixelFormat.TRANSLUCENT,
     ).apply {
         gravity = Gravity.TOP or Gravity.START
-        title = "CarLink switcher panel"
+        title = context.getString(R.string.carlink_switcher_panel_window)
         if (Build.VERSION.SDK_INT >= 28) {
             layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }

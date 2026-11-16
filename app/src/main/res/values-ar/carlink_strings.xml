@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Arabic (ar) translation of carlink_strings.xml. CarLink follows the device language. -->
+<resources>
+    <string name="app_name">CarLink</string>
+    <string name="notification_channel_launch">فتح CarLink</string>
+    <string name="notification_phone_ready">%1$s قريب. اضغط للاتصال.</string>
+    <string name="notification_open">اضغط لفتح CarLink.</string>
+    <string name="carlink_notification_channel_android_auto">اتصال Android Auto</string>
+    <string name="carlink_back">رجوع</string>
+    <string name="carlink_engine_carplay">CarPlay</string>
+    <string name="carlink_engine_android_auto">Android Auto</string>
+    <string name="carlink_transport_usb">USB</string>
+    <string name="carlink_transport_wireless">لاسلكي</string>
+    <string name="carlink_transport_cable">كابل</string>
+    <string name="carlink_transport_usb_cable">كابل USB</string>
+    <string name="carlink_transport_plugged_in">موصول (USB)</string>
+    <string name="carlink_transport_with_path">%1$s · %2$s</string>
+    <string name="carlink_transport_connected_cable">متصل بالكابل</string>
+    <string name="carlink_transport_connected_wireless">متصل لاسلكياً</string>
+    <string name="carlink_transport_connecting_cable">جارٍ الاتصال بالكابل</string>
+    <string name="carlink_transport_connecting_wireless">جارٍ الاتصال لاسلكياً</string>
+    <string name="carlink_state_on">تشغيل</string>
+    <string name="carlink_state_off">إيقاف</string>
+    <string name="carlink_state_selected">محدّد</string>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Arabic (ar) translation of carlink_core_strings.xml. CarLink follows the device language. -->
+<resources>
+    <string name="carlink_core_ipad_no_carplay">لا يمكن لأجهزة iPad وiPod تشغيل CarPlay. صِل iPhone.</string>
+</resources>

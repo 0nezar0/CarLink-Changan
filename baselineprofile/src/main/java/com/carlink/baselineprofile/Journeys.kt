@@ -13,7 +13,7 @@ private const val WAIT_MS = 5_000L
 
 /**
  * The driver's journeys through CarLink without a phone (none can be attached to an emulator).
- * Labels are matched by text or content description, in English (CarLink ships English only).
+ * Labels are matched by text or content description, in English (journeys run in the default locale).
  */
 private fun MacrobenchmarkScope.find(label: String, timeout: Long = WAIT_MS): UiObject2? {
     val selectors: List<BySelector> = listOf(By.text(label), By.desc(label))

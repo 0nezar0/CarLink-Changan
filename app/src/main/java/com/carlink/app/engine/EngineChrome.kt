@@ -102,7 +102,7 @@ object EngineChrome {
      *   label, physical size, transport), engine detail rather than something to act on.
      * - DOCK, HEVC, SYSTEM_BARS, DEBUG_LOGS, GESTURE_FINGERS: CarLink Settings › Advanced has them.
      * - AUTO_START: DiPlay's boot receiver is not used; CarLink's own auto-start applies.
-     * - LANGUAGE: CarLink ships in English only.
+     * - LANGUAGE: CarLink follows the device language (English or Arabic); this menu would fight that.
      * - EXIT_APPLICATION: kills the whole CarLink process (Home and the SessionManager with it);
      *   CarLink's Disconnect ends a session.
      * Kept: the side panel, audio channel mapping, the car's name (CarPlaySettingsPolicy keeps a
