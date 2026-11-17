@@ -119,6 +119,49 @@ internal suspend fun shareConnectionLog(context: Context) {
 }
 
 /**
+ * Writes the combined log (with the system log of CarLink's own processes) into Downloads/CarLink,
+ * offline, and says where. Android 10+: MediaStore, no permission. Android 9 and older: the public
+ * Download folder when storage access is granted, else CarLink's own folder on the storage
+ * (Android/data/<package>/files/Download), which every file manager can open.
+ * @return the place the file was saved, or null when it failed.
+ */
+internal suspend fun saveConnectionLog(context: Context): String? {
+    val saved = withContext(Dispatchers.IO) {
+        runCatching {
+            val file = ConnectionLog.export(context, logHeader(context))
+            if (android.os.Build.VERSION.SDK_INT >= 29) {
+                val values = android.content.ContentValues().apply {
+                    put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, file.name)
+                    put(android.provider.MediaStore.MediaColumns.MIME_TYPE, "text/plain")
+                    put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DOWNLOADS + "/CarLink")
+                }
+                val resolver = context.contentResolver
+                val uri = resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)!!
+                resolver.openOutputStream(uri)!!.use { out -> file.inputStream().use { it.copyTo(out) } }
+                "${android.os.Environment.DIRECTORY_DOWNLOADS}/CarLink/${file.name}"
+            } else {
+                val publicDir = runCatching {
+                    @Suppress("DEPRECATION")
+                    java.io.File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS), "CarLink")
+                }.getOrNull()
+                val granted = androidx.core.content.ContextCompat.checkSelfPermission(context,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                val target = (if (granted) publicDir?.takeIf { it.mkdirs() || it.isDirectory } else null)
+                    ?: java.io.File(context.getExternalFilesDir(android.os.Environment.DIRECTORY_DOWNLOADS) ?: context.filesDir, "")
+                target.mkdirs()
+                val dest = java.io.File(target, file.name)
+                file.copyTo(dest, overwrite = true)
+                dest.absolutePath
+            }
+        }.getOrNull()
+    }
+    android.widget.Toast.makeText(context,
+        if (saved != null) context.getString(R.string.carlink_diag_log_saved, saved) else context.getString(R.string.carlink_diag_log_save_failed),
+        android.widget.Toast.LENGTH_LONG).show()
+    return saved
+}
+
+/**
  * Puts the combined log on the clipboard (Copy full log) for pasting into the issue. A clip travels
  * through one Binder transaction (1 MB), so a log over [CLIP_MAX_CHARS] keeps its head (versions,
  * stereo probe) and newest lines.

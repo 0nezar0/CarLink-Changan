@@ -117,4 +117,19 @@ class ConnectionLogTest {
         org.junit.Assert.assertEquals("start CARPLAY WIRELESS known=true #s1", e.message)
         org.junit.Assert.assertNull(ConnectionLog.parseSaved("  signals=none"))
     }
+
+    @Test fun theSystemLogHidesPasswordsAndAddresses() {
+        val line = ConnectionLog.maskLogcat("11-17 10:00:00.000  123  456 I Hotspot: ssid=Car psk=secret123 password: hunter22 peer AA:BB:CC:DD:EE:FF")
+        assertTrue(line, "secret123" !in line && "hunter22" !in line)
+        assertTrue(line, "psk=[hidden]" in line && "password=[hidden]" in line)
+        assertTrue(line, "AA:BB:CC:DD:EE:FF" !in line)
+        assertTrue(line, "ssid=Car" in line)
+    }
+
+    @Test fun anExportCarriesTheSystemLogSection() {
+        val app = RuntimeEnvironment.getApplication()
+        val text = ConnectionLog.export(app, "header").readText()
+        assertTrue(text.startsWith("header"))
+        assertTrue("==== System log (CarLink processes) ====" in text)
+    }
 }

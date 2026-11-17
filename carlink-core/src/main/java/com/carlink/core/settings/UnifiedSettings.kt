@@ -46,14 +46,20 @@ data class UnifiedSettings(
      */
     val headunitServerAddress: String = "",
     /**
-     * Extra pixels kept clear of the car's bars on each edge of CarPlay and Android Auto
-     * (Settings › Display › Screen margins). Applied from the next connection.
+     * Extra pixels kept clear of the car's notification bar at the top of CarLink's own screens
+     * (Home, Settings, setup), applied at once (Settings › Display › Screen margins).
      */
-    val marginLeftPx: Int = 0,
     val marginTopPx: Int = 0,
-    val marginRightPx: Int = 0,
-    val marginBottomPx: Int = 0,
+    /** Extra pixels kept clear of the car's bars on each edge of CarPlay; from the next connection. */
+    val carPlayMargins: ScreenMargins = ScreenMargins(),
+    /** The same for Android Auto, set on its own: the two lay out their bars differently. */
+    val androidAutoMargins: ScreenMargins = ScreenMargins(),
 )
+
+/** Pixels kept clear on each edge of a projection (activity pixels, never negative). */
+data class ScreenMargins(val left: Int = 0, val top: Int = 0, val right: Int = 0, val bottom: Int = 0) {
+    fun sanitized() = ScreenMargins(left.coerceAtLeast(0), top.coerceAtLeast(0), right.coerceAtLeast(0), bottom.coerceAtLeast(0))
+}
 
 data class WifiDetails(val ssid: String = "", val password: String = "")
 
@@ -105,11 +111,20 @@ class UnifiedSettingsStore(context: Context) {
         resumeMusic = prefs.getBoolean("resume_music", false),
         micGainDb = prefs.getInt("mic_gain_db", 0),
         headunitServerAddress = prefs.getString("headunit_server_address", "")!!,
-        marginLeftPx = prefs.getInt("margin_left_px", 0).coerceAtLeast(0),
         marginTopPx = prefs.getInt("margin_top_px", 0).coerceAtLeast(0),
-        marginRightPx = prefs.getInt("margin_right_px", 0).coerceAtLeast(0),
-        marginBottomPx = prefs.getInt("margin_bottom_px", 0).coerceAtLeast(0),
+        carPlayMargins = margins("cp_"),
+        androidAutoMargins = margins("aa_"),
     )
+
+    /**
+     * One engine's margins. Before 1.0.3 one set (margin_*_px) served both engines; until the
+     * engine's own set is saved, it starts from that shared set, so an update keeps what worked.
+     */
+    private fun margins(prefix: String): ScreenMargins {
+        val own = prefs.contains("${prefix}margin_top_px")
+        fun read(edge: String) = prefs.getInt(if (own) "${prefix}margin_${edge}_px" else "margin_${edge}_px", 0)
+        return ScreenMargins(read("left"), read("top"), read("right"), read("bottom")).sanitized()
+    }
 
     fun save(settings: UnifiedSettings) {
         prefs.edit()
@@ -138,11 +153,15 @@ class UnifiedSettingsStore(context: Context) {
             .putBoolean("resume_music", settings.resumeMusic)
             .putInt("mic_gain_db", settings.micGainDb)
             .putString("headunit_server_address", settings.headunitServerAddress)
-            .putInt("margin_left_px", settings.marginLeftPx.coerceAtLeast(0))
             .putInt("margin_top_px", settings.marginTopPx.coerceAtLeast(0))
-            .putInt("margin_right_px", settings.marginRightPx.coerceAtLeast(0))
-            .putInt("margin_bottom_px", settings.marginBottomPx.coerceAtLeast(0))
+            .putMargins("cp_", settings.carPlayMargins)
+            .putMargins("aa_", settings.androidAutoMargins)
             .apply()
+    }
+
+    private fun android.content.SharedPreferences.Editor.putMargins(prefix: String, m: ScreenMargins) = m.sanitized().let {
+        putInt("${prefix}margin_left_px", it.left).putInt("${prefix}margin_top_px", it.top)
+            .putInt("${prefix}margin_right_px", it.right).putInt("${prefix}margin_bottom_px", it.bottom)
     }
 
     private inline fun <reified T : Enum<T>> enumOr(name: String?, default: T): T =

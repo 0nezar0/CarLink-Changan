@@ -189,10 +189,11 @@ object AaSessionSettings {
             // Head-unit screen margins (DiAuto's inset-*), written every session so a previous
             // value cannot stick. The engine sizes the video to the usable area, pads the
             // surface, and tells the phone the same insets, so touches stay aligned.
-            put("inset-left", settings.marginLeftPx.coerceAtLeast(0))
-            put("inset-top", settings.marginTopPx.coerceAtLeast(0))
-            put("inset-right", settings.marginRightPx.coerceAtLeast(0))
-            put("inset-bottom", settings.marginBottomPx.coerceAtLeast(0))
+            val margins = settings.androidAutoMargins.sanitized()
+            put("inset-left", margins.left)
+            put("inset-top", margins.top)
+            put("inset-right", margins.right)
+            put("inset-bottom", margins.bottom)
         }
         return AaSessionValues(values, problem)
     }

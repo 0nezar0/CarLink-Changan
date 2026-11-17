@@ -567,12 +567,15 @@ internal class CarPlayMediaCallback(
         @Suppress("DEPRECATION")
         val event = mediaButtonIntent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT) ?: return false
         val press = event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0
-        val index = CarPlayMediaButton.forKeyCode(event.keyCode, experimentalDiLink3Keys())
+        // CarLink: a learned steering-wheel key (CarPlayHostIntegration.keyRemap) counts here too, so
+        // it works while the CarPlay screen is in the background, not only when it has focus.
+        val keyCode = CarPlayHostIntegration.keyRemap[event.keyCode] ?: event.keyCode
+        val index = CarPlayMediaButton.forKeyCode(keyCode, experimentalDiLink3Keys())
         if (index == null) {
             if (press) notUsed(KeyEvent.keyCodeToString(event.keyCode))
             return super.onMediaButtonEvent(mediaButtonIntent)
         }
-        if (press) send(index, KeyEvent.keyCodeToString(event.keyCode))
+        if (press) send(index, KeyEvent.keyCodeToString(keyCode))
         return true
     }
 

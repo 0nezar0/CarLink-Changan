@@ -37,6 +37,19 @@ class CarPlayMediaCallbackTest {
     }
 
     @Test
+    fun learnedSteeringWheelKeysWorkInTheBackgroundToo() {
+        // CarLink's learned buttons: physical 290 → next, 291 → previous, 292 → play/pause.
+        CarPlayHostIntegration.keyRemap = mapOf(290 to KeyEvent.KEYCODE_MEDIA_NEXT, 291 to KeyEvent.KEYCODE_MEDIA_PREVIOUS,
+            292 to KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
+        try {
+            press(290); press(291); press(292)
+            assertEquals(listOf(CarPlayMediaButton.NEXT, CarPlayMediaButton.PREVIOUS, CarPlayMediaButton.PLAY_PAUSE), sent)
+        } finally {
+            CarPlayHostIntegration.keyRemap = emptyMap()
+        }
+    }
+
+    @Test
     fun hardwarePlayAndPauseKeysToggle() {
         press(KeyEvent.KEYCODE_MEDIA_PLAY)
         press(KeyEvent.KEYCODE_MEDIA_PAUSE)

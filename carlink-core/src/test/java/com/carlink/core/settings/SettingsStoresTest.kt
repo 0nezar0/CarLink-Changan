@@ -43,14 +43,30 @@ class SettingsStoresTest {
             callAudioAsMedia = true,
             resumeMusic = true,
             micGainDb = 9,
-            marginLeftPx = 8,
             marginTopPx = 48,
-            marginRightPx = 16,
-            marginBottomPx = 24,
+            carPlayMargins = ScreenMargins(left = 8, top = 40, right = 16, bottom = 24),
+            androidAutoMargins = ScreenMargins(left = 0, top = 64, right = 32, bottom = 0),
         )
         UnifiedSettingsStore(app).save(settings)
         // A new instance reads what the old one wrote.
         assertEquals(settings, UnifiedSettingsStore(app).load())
+    }
+
+    @Test fun theSharedMarginsOfEarlierVersionsSeedBothEnginesUntilSaved() {
+        app.getSharedPreferences("carlink_unified", Context.MODE_PRIVATE).edit()
+            .putInt("margin_left_px", 8).putInt("margin_top_px", 64).putInt("margin_right_px", 16).putInt("margin_bottom_px", 24)
+            .commit()
+        val migrated = UnifiedSettingsStore(app).load()
+        val legacy = ScreenMargins(left = 8, top = 64, right = 16, bottom = 24)
+        assertEquals(64, migrated.marginTopPx)
+        assertEquals(legacy, migrated.carPlayMargins)
+        assertEquals(legacy, migrated.androidAutoMargins)
+        // From the first save on, each engine keeps its own set.
+        UnifiedSettingsStore(app).save(migrated.copy(androidAutoMargins = ScreenMargins(top = 32)))
+        val after = UnifiedSettingsStore(app).load()
+        assertEquals(legacy, after.carPlayMargins)
+        assertEquals(ScreenMargins(top = 32), after.androidAutoMargins)
+        assertEquals(64, after.marginTopPx)
     }
 
     @Test fun everyEnumValueRoundTrips() {
@@ -94,7 +110,7 @@ class SettingsStoresTest {
         val prefs = CarLinkPreferences(app)
         assertTrue(prefs.autoConnectUsb)
         assertTrue(prefs.autoConnectBluetooth)
-        assertFalse(prefs.startOnBoot)
+        assertTrue("start with the car is on out of the box", prefs.startOnBoot)
         assertFalse(prefs.autoConnectPaused)
     }
 
@@ -102,13 +118,13 @@ class SettingsStoresTest {
         CarLinkPreferences(app).apply {
             autoConnectUsb = false
             autoConnectBluetooth = false
-            startOnBoot = true
+            startOnBoot = false
             autoConnectPaused = true
         }
         CarLinkPreferences(app).apply {
             assertFalse(autoConnectUsb)
             assertFalse(autoConnectBluetooth)
-            assertTrue(startOnBoot)
+            assertFalse(startOnBoot)
             assertTrue(autoConnectPaused)
         }
     }

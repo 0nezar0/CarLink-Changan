@@ -136,8 +136,9 @@ class CarPlaySettingsTest {
     }
 
     @Test fun screenMarginsReachTheHostSafeAreaHook() {
-        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(marginLeftPx = 8, marginTopPx = 48,
-            marginRightPx = 16, marginBottomPx = 24)))
+        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(marginTopPx = 96,
+            carPlayMargins = com.carlink.core.settings.ScreenMargins(left = 8, top = 48, right = 16, bottom = 24),
+            androidAutoMargins = com.carlink.core.settings.ScreenMargins(1, 2, 3, 4))))
         assertEquals(CarPlayHostIntegration.DisplayMargins(left = 8, top = 48, right = 16, bottom = 24),
             CarPlayHostIntegration.displayMargins)
         CarPlaySettingsPolicy.apply(app, map(UnifiedSettings()))

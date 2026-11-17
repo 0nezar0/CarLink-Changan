@@ -191,8 +191,8 @@ class AaSessionSettingsTest {
     }
 
     @Test fun screenMarginsAreWrittenAsDiAutoInsets() {
-        val v = values(settings = base.copy(marginLeftPx = 8, marginTopPx = 48,
-            marginRightPx = 16, marginBottomPx = 24)).values
+        val v = values(settings = base.copy(marginTopPx = 96, carPlayMargins = com.carlink.core.settings.ScreenMargins(1, 2, 3, 4),
+            androidAutoMargins = com.carlink.core.settings.ScreenMargins(left = 8, top = 48, right = 16, bottom = 24))).values
         assertEquals(8, v["inset-left"])
         assertEquals(48, v["inset-top"])
         assertEquals(16, v["inset-right"])

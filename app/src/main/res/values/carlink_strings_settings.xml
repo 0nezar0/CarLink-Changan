@@ -39,7 +39,7 @@
     <string name="carlink_settings_auto_usb">Connect when plugged in</string>
     <string name="carlink_settings_auto_usb_detail">Start as soon as a phone is connected with a USB cable</string>
     <string name="carlink_settings_start_boot">Start with the car</string>
-    <string name="carlink_settings_start_boot_detail">Open CarLink when the head unit turns on</string>
+    <string name="carlink_settings_start_boot_detail">Open CarLink when the head unit turns on and connect the last phone</string>
     <string name="carlink_settings_paused_title">Automatic connection is paused</string>
     <string name="carlink_settings_paused_body">You disconnected, so CarLink won’t reconnect on its own until you connect again.</string>
     <string name="carlink_settings_resume">Resume</string>
@@ -139,7 +139,11 @@
     <string name="carlink_settings_group_margins">Screen margins</string>
     <string name="carlink_settings_margins_detail">Move CarPlay and Android Auto away from the car’s status or navigation bar, so the buttons stay easy to press. The top value also pads Settings and Home straight away. CarPlay and Android Auto pick it up from the next connection.</string>
     <string name="carlink_settings_margin_top">Top</string>
-    <string name="carlink_settings_margin_top_detail">Leave space below the car’s notification bar, including on Settings and Home</string>
+    <string name="carlink_settings_margin_top_detail">Leave space below the car’s notification bar</string>
+    <string name="carlink_settings_margin_app">CarLink screens (top)</string>
+    <string name="carlink_settings_margin_app_detail">Leave space below the car’s notification bar on Home and Settings. Applies at once.</string>
+    <string name="carlink_settings_group_margins_carplay">CarPlay margins</string>
+    <string name="carlink_settings_group_margins_aa">Android Auto margins</string>
     <string name="carlink_settings_margin_bottom">Bottom</string>
     <string name="carlink_settings_margin_bottom_detail">Leave space above the car’s navigation or home bar</string>
     <string name="carlink_settings_margin_left">Left</string>
@@ -148,6 +152,10 @@
     <string name="carlink_settings_margin_right_detail">Leave space at the right edge</string>
     <string name="carlink_settings_margin_none">None</string>
     <string name="carlink_settings_margin_px">%d px</string>
+    <string name="carlink_settings_save_log">Save error log</string>
+    <string name="carlink_settings_save_log_detail">Saves the latest connection attempts to Downloads/CarLink as a text file. Works offline.</string>
+    <string name="carlink_settings_share_log">Share error log</string>
+    <string name="carlink_settings_share_log_detail">Sends the same file through another app on this screen</string>
 
     <!-- Sound -->
     <string name="carlink_settings_group_sound">Sound</string>

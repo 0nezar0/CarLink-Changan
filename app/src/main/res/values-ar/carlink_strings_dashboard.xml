@@ -8,13 +8,13 @@
     <string name="carlink_home_eyebrow_connected">متصل</string>
     <string name="carlink_home_eyebrow_problem">يحتاج انتباهاً</string>
     <string name="carlink_home_permission_title">إذن سريع</string>
-    <string name="carlink_home_permission_body">يحتاج CarLink إلى الأجهزة القريبة والموقع والميكروفون للعثور على جوالك وتشغيل CarPlay أو Android Auto.</string>
+    <string name="carlink_home_permission_body">يحتاج CarLink إلى الأجهزة القريبة والموقع والميكروفون للعثور على جوالك وتشغيل CarPlay أو Android Auto.</string>
     <string name="carlink_home_permission_action">السماح</string>
     <string name="carlink_home_bt_off_title">Bluetooth متوقف</string>
     <string name="carlink_home_bt_off_body">شغّله للاتصال لاسلكياً، أو صِل جوالك بكابل.</string>
     <string name="carlink_home_bt_off_action">تشغيل Bluetooth</string>
     <string name="carlink_home_ready_title">صِل الكابل أو قرّب جوالك</string>
-    <string name="carlink_home_ready_body">يشغّل الـ iPhone خدمة CarPlay‏، ويشغّل جوال Android خدمة Android Auto‏</string>
+    <string name="carlink_home_ready_body">يشغّل الـ iPhone خدمة CarPlay‏، ويشغّل جوال Android خدمة Android Auto‏</string>
     <string name="carlink_home_pair_action">إقران جوال</string>
     <string name="carlink_home_ready_phone_title">الاتصال بـ %1$s؟</string>
     <string name="carlink_home_ready_phone_body">%1$s عبر %2$s. التوصيل بكابل يعمل أيضاً.</string>
@@ -37,7 +37,7 @@
     <string name="carlink_home_diagnostics">التشخيص</string>
     <string name="carlink_home_open_settings">فتح الإعدادات</string>
     <string name="carlink_home_error_auth_title">تعذّر تسجيل دخول CarPlay</string>
-    <string name="carlink_home_error_auth_body">هذه النسخة لا تتضمن ملفات توثيق CarPlay، بينما Android Auto يعمل كالمعتاد.</string>
+    <string name="carlink_home_error_auth_body">هذه النسخة لا تتضمن ملفات توثيق CarPlay، بينما Android Auto يعمل كالمعتاد.</string>
     <string name="carlink_home_error_iphone_title">أقرن الـ iPhone أولاً</string>
     <string name="carlink_home_error_iphone_body">أقرنه من إعدادات Bluetooth في السيارة، ثم حاول مرة أخرى. الكابل يعمل دون إقران.</string>
     <string name="carlink_home_error_hotspot_details_title">أضف نقطة اتصال السيارة</string>
@@ -113,15 +113,15 @@
     <string name="carlink_home_same_wifi_save">حفظ</string>
     <string name="carlink_home_same_wifi_enter">إضافة كلمة السر</string>
     <string name="carlink_home_same_wifi_invalid">كلمة سر Wi-Fi من 8 إلى 63 حرفاً.</string>
-    <string name="carlink_home_connecting_android_wireless">بانتظار أن يشغّل %1$s خدمة Android Auto. إذا لم يحدث شيء خلال ثوانٍ، أوقف Bluetooth في الجوال ثم شغّله.</string>
-    <string name="carlink_home_connecting_connect_bluetooth">صِل %1$s عبر Bluetooth. يبدأ Android Auto تلقائياً بعد الاتصال.</string>
+    <string name="carlink_home_connecting_android_wireless">بانتظار أن يشغّل %1$s خدمة Android Auto. إذا لم يحدث شيء خلال ثوانٍ، أوقف Bluetooth في الجوال ثم شغّله.</string>
+    <string name="carlink_home_connecting_connect_bluetooth">صِل %1$s عبر Bluetooth. يبدأ Android Auto تلقائياً بعد الاتصال.</string>
     <string name="carlink_home_bluetooth_settings">إعدادات Bluetooth</string>
     <string name="carlink_home_eyebrow_not_answering">لا يوجد رد</string>
     <string name="carlink_home_not_answering_title">جوالك لا يرد</string>
     <string name="carlink_home_not_answering_title_iphone">تعذّر الوصول إلى الـ iPhone عبر Bluetooth</string>
     <string name="carlink_home_not_answering_body_iphone">افتح %1$s وتأكد أن Bluetooth شغّال، أو صِله بكابل. إذا استمر الرفض: في الـ iPhone، الإعدادات ثم عام ثم CarPlay يجب ألا تكون هذه السيارة منسيّة، ووقت الشاشة ثم المحتوى والخصوصية ثم التطبيقات المسموح بها يجب أن يسمح لـ CarPlay، ويجب تشغيل «السماح لـ CarPlay أثناء القفل».</string>
     <string name="carlink_home_not_answering_body_usb">افتح %1$s واقبل الطلب على شاشته. إذا لم يحدث شيء، افصله ثم صِله مرة أخرى.</string>
-    <string name="carlink_home_not_answering_body_android">تأكد أن Bluetooth في %1$s شغّال وأن الجوال مفتوح، ثم أبقه قريباً من هذه الشاشة. يبدأ Android Auto تلقائياً بعد الاتصال.</string>
+    <string name="carlink_home_not_answering_body_android">تأكد أن Bluetooth في %1$s شغّال وأن الجوال مفتوح، ثم أبقه قريباً من هذه الشاشة. يبدأ Android Auto تلقائياً بعد الاتصال.</string>
     <string name="carlink_home_error_bt_off_title">Bluetooth متوقف</string>
     <string name="carlink_home_error_bt_off_body">الاتصالات اللاسلكية تبدأ عبر Bluetooth. شغّله، أو صِل جوالك بكابل.</string>
     <string name="carlink_home_error_not_paired_title">هذا الجوال غير مقترن</string>
@@ -130,7 +130,7 @@
     <string name="carlink_home_error_pairing_lost_body">على الجوال، احذف هذه الشاشة من إعدادات Bluetooth، ثم أقرنها مرة أخرى.</string>
     <string name="carlink_home_error_pairing_lost_phone">جوالك</string>
     <string name="carlink_home_open_bluetooth_settings">فتح إعدادات Bluetooth</string>
-    <string name="carlink_notice_call_microphone">قد يستحوذ ربط الجوال الخاص بالشاشة على الميكروفون. أجب من شاشة CarPlay أو Android Auto، أو افصل الجوال من إعدادات الاتصال في الشاشة.</string>
+    <string name="carlink_notice_call_microphone">قد يستحوذ ربط الجوال الخاص بالشاشة على الميكروفون. أجب من شاشة CarPlay أو Android Auto، أو افصل الجوال من إعدادات الاتصال في الشاشة.</string>
     <string name="carlink_home_error_wifi_off_title">Wi-Fi متوقف</string>
     <string name="carlink_home_error_wifi_off_body">الصورة تنتقل عبر Wi-Fi. شغّل Wi-Fi هنا؛ لا يلزم الاتصال بشبكة.</string>
     <string name="carlink_home_error_location_off_title">الموقع متوقف</string>
@@ -138,7 +138,7 @@
     <string name="carlink_home_error_permissions_title">يلزم منح الأذونات</string>
     <string name="carlink_home_error_permissions_body">يحتاج CarLink إلى الأجهزة القريبة والموقع والميكروفون لتوصيل جوالك.</string>
     <string name="carlink_home_error_overlay_title">اسمح لـ CarLink بالظهور فوق التطبيقات الأخرى</string>
-    <string name="carlink_home_error_overlay_body">حتى يظهر CarPlay أو Android Auto فور اتصال جوالك.</string>
+    <string name="carlink_home_error_overlay_body">حتى يظهر CarPlay أو Android Auto فور اتصال جوالك.</string>
     <string name="carlink_home_error_vpn_title">السماح باتصال CarPlay</string>
     <string name="carlink_home_error_vpn_body">CarPlay السلكي يعمل عبر رابط خاص. يطلب Android السماح به مرة واحدة.</string>
     <string name="carlink_home_error_refused_title">تعذّر على جوالك الانضمام إلى Wi-Fi</string>
@@ -156,13 +156,13 @@
     <string name="carlink_home_error_external_bt_title">الاتصال اللاسلكي غير متاح على هذه الشاشة بعد</string>
     <string name="carlink_home_error_external_module_title">تعذّر الوصول إلى وحدة Bluetooth في الشاشة</string>
     <string name="carlink_home_error_external_module_body">الاتصال اللاسلكي عبر وحدة Bluetooth في الشاشة تجريبي، ولم يعمل هنا. على شاشة FYT، عطّل تطبيق «Car Link» الخاص بالشاشة أولاً. وإلا صِل جوالك بكابل USB — يعمل بالطريقة نفسها. شارك السجل من التشخيص لإصلاح ذلك.</string>
-    <string name="carlink_home_error_external_bt_body">وحدة Bluetooth في هذه الشاشة منفصلة ولا تستطيع التطبيقات استخدامها، لذلك لا يمكن تشغيل CarPlay وAndroid Auto لاسلكياً. صِل جوالك بكابل USB — يعمل بالطريقة نفسها.</string>
+    <string name="carlink_home_error_external_bt_body">وحدة Bluetooth في هذه الشاشة منفصلة ولا تستطيع التطبيقات استخدامها، لذلك لا يمكن تشغيل CarPlay وAndroid Auto لاسلكياً. صِل جوالك بكابل USB — يعمل بالطريقة نفسها.</string>
     <string name="carlink_home_how_to_connect">طريقة التوصيل بكابل</string>
     <string name="carlink_home_cable_only_title">صِل جوالك</string>
-    <string name="carlink_home_cable_only_body">يحتاج الاتصال اللاسلكي أن يتصل جوالك بـ Bluetooth الخاص بهذه الشاشة. وفي هذه الشاشة وحدة منفصلة لا تستطيع التطبيقات استخدامها، لذلك صِل بكابل USB — يبدأ CarPlay أو Android Auto تلقائياً.</string>
+    <string name="carlink_home_cable_only_body">يحتاج الاتصال اللاسلكي أن يتصل جوالك بـ Bluetooth الخاص بهذه الشاشة. وفي هذه الشاشة وحدة منفصلة لا تستطيع التطبيقات استخدامها، لذلك صِل بكابل USB — يبدأ CarPlay أو Android Auto تلقائياً.</string>
     <string name="carlink_home_cable_title">التوصيل بكابل USB</string>
     <string name="carlink_home_cable_body">1. صِل جوالك بمنفذ USB في الشاشة بكابل ينقل البيانات (وليس كابل شحن فقط).
-2. iPhone: يبدأ CarPlay تلقائياً. جوال Android: افتحه واسمح لـ Android Auto إذا طُلب منك.
+2. iPhone: يبدأ CarPlay تلقائياً. جوال Android: افتحه واسمح لـ Android Auto إذا طُلب منك.
 
 يحتاج الاتصال اللاسلكي أن يتصل جوالك بـ Bluetooth الخاص بهذه الشاشة. وفي هذه الشاشة وحدة منفصلة لا تستطيع التطبيقات استخدامها.</string>
     <string name="carlink_home_cable_ok">حسناً</string>
@@ -209,11 +209,11 @@
     <string name="carlink_home_usual_by_cable">عبر الكابل</string>
     <string name="carlink_home_usual_by_path">عبر %1$s</string>
     <string name="carlink_seconds_short">%1$s ث</string>
-    <string name="carlink_home_aa_on_screen">تشغيل Android Auto على هذه الشاشة</string>
-    <string name="carlink_home_open_aa_settings">فتح إعدادات Android Auto</string>
-    <string name="carlink_home_error_hu_server_title">تشغيل خادم الوحدة الرئيسية في Android Auto</string>
-    <string name="carlink_home_error_hu_server_body">يحتاج Android Auto على هذه الشاشة إلى خادم الوحدة الرئيسية في Android Auto، وهو متوقف.
-1. اضغط «فتح إعدادات Android Auto».
+    <string name="carlink_home_aa_on_screen">تشغيل Android Auto على هذه الشاشة</string>
+    <string name="carlink_home_open_aa_settings">فتح إعدادات Android Auto</string>
+    <string name="carlink_home_error_hu_server_title">تشغيل خادم الوحدة الرئيسية في Android Auto</string>
+    <string name="carlink_home_error_hu_server_body">يحتاج Android Auto على هذه الشاشة إلى خادم الوحدة الرئيسية في Android Auto، وهو متوقف.
+1. اضغط «فتح إعدادات Android Auto».
 2. مرّر إلى Version واضغطه 10 مرات، ثم اسمح بإعدادات المطوّر.
 3. افتح قائمة ⋮ في أعلى الشاشة واضغط Start head unit server.
 4. عد إلى هنا: يحاول CarLink مرة أخرى تلقائياً.</string>

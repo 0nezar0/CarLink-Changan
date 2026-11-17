@@ -13,7 +13,7 @@
     <string name="carlink_setup_step_done">تم</string>
     <string name="carlink_setup_welcome_eyebrow">مرحباً</string>
     <string name="carlink_setup_welcome_title">لنوصّل جوالك</string>
-    <string name="carlink_setup_welcome_body">يشغّل CarLink خدمة Apple CarPlay للـ iPhone وAndroid Auto لجوالات Android، بالكابل أو لاسلكياً. يستغرق الإعداد نحو دقيقتين.</string>
+    <string name="carlink_setup_welcome_body">يشغّل CarLink خدمة Apple CarPlay للـ iPhone وAndroid Auto لجوالات Android، بالكابل أو لاسلكياً. يستغرق الإعداد نحو دقيقتين.</string>
     <string name="carlink_setup_welcome_start">ابدأ</string>
     <string name="carlink_setup_plan_access">السماح بالوصول</string>
     <string name="carlink_setup_plan_access_detail">Bluetooth وWi-Fi وبضعة مفاتيح، دفعة واحدة</string>
@@ -54,7 +54,7 @@
     <string name="carlink_setup_car_body">اختر ماركتها. يمكنك تغييرها لاحقاً من الإعدادات ثم السيارة.</string>
     <string name="carlink_setup_size_eyebrow">حجم الشاشة</string>
     <string name="carlink_setup_size_title">ما حجم العناصر المناسب؟</string>
-    <string name="carlink_setup_size_body">حجم الأيقونات والنص في CarPlay وAndroid Auto. يناسب «متوسط» معظم الشاشات، ويمكنك تخطي هذه الخطوة. غيّره في أي وقت من الإعدادات ثم الشاشة.</string>
+    <string name="carlink_setup_size_body">حجم الأيقونات والنص في CarPlay وAndroid Auto. يناسب «متوسط» معظم الشاشات، ويمكنك تخطي هذه الخطوة. غيّره في أي وقت من الإعدادات ثم الشاشة.</string>
     <string name="carlink_setup_pair_eyebrow">أقرن جوالك</string>
     <string name="carlink_setup_pair_waiting_title">على جوالك، افتح Bluetooth واضغط %1$s</string>
     <string name="carlink_setup_pair_waiting_title_unnamed">على جوالك، افتح Bluetooth واضغط اسم هذه الشاشة</string>
@@ -63,12 +63,12 @@
     <string name="carlink_setup_pair_pairing_title_unnamed">جارٍ الإقران مع جوالك…</string>
     <string name="carlink_setup_pair_pairing_body">أكد الرمز على الجوال وعلى هذه الشاشة.</string>
     <string name="carlink_setup_pair_found_iphone">عُثر على iPhone ← CarPlay</string>
-    <string name="carlink_setup_pair_found_android">عُثر على جوال Android ← Android Auto</string>
+    <string name="carlink_setup_pair_found_android">عُثر على جوال Android ← Android Auto</string>
     <string name="carlink_setup_pair_found">عُثر على جوال</string>
     <string name="carlink_setup_pair_accept_iphone">اقبل «استخدام CarPlay» على الـ iPhone</string>
     <string name="carlink_setup_pair_accept_iphone_body">اترك %1$s مفتوحاً. قد يستغرق أول اتصال حتى نصف دقيقة.</string>
-    <string name="carlink_setup_pair_accept_android">اقبل Android Auto على جوالك</string>
-    <string name="carlink_setup_pair_accept_android_body">اتبع شاشات Android Auto على %1$s واتركه مفتوحاً.</string>
+    <string name="carlink_setup_pair_accept_android">اقبل Android Auto على جوالك</string>
+    <string name="carlink_setup_pair_accept_android_body">اتبع شاشات Android Auto على %1$s واتركه مفتوحاً.</string>
     <string name="carlink_setup_pair_kind_title">أُقرن %1$s</string>
     <string name="carlink_setup_pair_kind_body">هل هو iPhone أم جوال Android؟</string>
     <string name="carlink_setup_pair_connected_title">%1$s متصل</string>

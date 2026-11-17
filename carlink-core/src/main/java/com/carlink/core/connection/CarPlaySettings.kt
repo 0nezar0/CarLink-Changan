@@ -211,10 +211,10 @@ object CarPlaySettingsPolicy {
             micGainDb = settings.micGainDb,
             callAudioAsMedia = settings.callAudioAsMedia,
             resumeMusic = settings.resumeMusic,
-            marginLeftPx = settings.marginLeftPx,
-            marginTopPx = settings.marginTopPx,
-            marginRightPx = settings.marginRightPx,
-            marginBottomPx = settings.marginBottomPx,
+            marginLeftPx = settings.carPlayMargins.left,
+            marginTopPx = settings.carPlayMargins.top,
+            marginRightPx = settings.carPlayMargins.right,
+            marginBottomPx = settings.carPlayMargins.bottom,
         )
     }
 

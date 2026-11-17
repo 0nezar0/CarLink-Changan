@@ -19,9 +19,12 @@ class CarLinkPreferences(context: Context) {
         get() = prefs.getBoolean(KEY_AUTO_BLUETOOTH, true)
         set(value) = prefs.edit().putBoolean(KEY_AUTO_BLUETOOTH, value).apply()
 
-    /** Open the host's main screen when the car starts. */
+    /**
+     * Open the host's main screen when the car starts; Home then connects the last phone by itself.
+     * On by default since 1.0.3 (a head unit is the car's screen; the driver can turn it off).
+     */
     var startOnBoot: Boolean
-        get() = prefs.getBoolean(KEY_START_ON_BOOT, false)
+        get() = prefs.getBoolean(KEY_START_ON_BOOT, true)
         set(value) = prefs.edit().putBoolean(KEY_START_ON_BOOT, value).apply()
 
     /**

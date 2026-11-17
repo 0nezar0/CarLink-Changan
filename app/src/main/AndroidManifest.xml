@@ -20,6 +20,8 @@
     <!-- The in-app updater (update/): asks GitHub for the latest release and installs a verified
          APK with PackageInstaller. Both are also declared by the engines; listed here for CarLink. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Settings › Save error log: the public Download folder on Android 9 and older (Android 10+ uses MediaStore). -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <!-- "Report a problem on GitHub" asks whether any browser opens web links (Android 11+ package visibility). -->

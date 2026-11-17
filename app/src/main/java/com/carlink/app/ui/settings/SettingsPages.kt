@@ -1,5 +1,6 @@
 package com.carlink.app.ui.settings
 
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -199,25 +200,27 @@ private fun DisplayEssentials(ui: SettingsUi, openSheet: (String) -> Unit) {
         }
     }
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_margins)) }) {
-        ChoiceRow(stringResource(R.string.carlink_settings_margin_top), marginLabel(u.marginTopPx),
+        ChoiceRow(stringResource(R.string.carlink_settings_margin_app), marginLabel(u.marginTopPx),
             { openSheet(SheetKey.of(EssentialSheet.MARGIN_TOP)) },
-            description = stringResource(R.string.carlink_settings_margin_top_detail),
-            icon = R.drawable.carlink_ic_aspect_ratio, tags = { NextConnectionTag() })
-        GroupDivider()
-        ChoiceRow(stringResource(R.string.carlink_settings_margin_bottom), marginLabel(u.marginBottomPx),
-            { openSheet(SheetKey.of(EssentialSheet.MARGIN_BOTTOM)) },
-            description = stringResource(R.string.carlink_settings_margin_bottom_detail),
-            tags = { NextConnectionTag() })
-        GroupDivider()
-        ChoiceRow(stringResource(R.string.carlink_settings_margin_left), marginLabel(u.marginLeftPx),
-            { openSheet(SheetKey.of(EssentialSheet.MARGIN_LEFT)) },
-            description = stringResource(R.string.carlink_settings_margin_left_detail),
-            tags = { NextConnectionTag() })
-        GroupDivider()
-        ChoiceRow(stringResource(R.string.carlink_settings_margin_right), marginLabel(u.marginRightPx),
-            { openSheet(SheetKey.of(EssentialSheet.MARGIN_RIGHT)) },
-            description = stringResource(R.string.carlink_settings_margin_right_detail),
-            tags = { NextConnectionTag() })
+            description = stringResource(R.string.carlink_settings_margin_app_detail),
+            icon = R.drawable.carlink_ic_aspect_ratio)
+    }
+    // Each projection keeps its own set: CarPlay and Android Auto draw their bars differently.
+    ProjectionMargins(R.string.carlink_settings_group_margins_carplay, carPlay = true, u.carPlayMargins, openSheet)
+    ProjectionMargins(R.string.carlink_settings_group_margins_aa, carPlay = false, u.androidAutoMargins, openSheet)
+}
+
+@Composable
+private fun ProjectionMargins(header: Int, carPlay: Boolean, margins: com.carlink.core.settings.ScreenMargins, openSheet: (String) -> Unit) {
+    GlassGroup(header = { GroupHeader(stringResource(header)) }) {
+        MarginEdge.entries.forEachIndexed { index, edge ->
+            if (index > 0) GroupDivider()
+            val (title, detail) = edge.texts()
+            ChoiceRow(stringResource(title), marginLabel(margins.get(edge)),
+                { openSheet(SheetKey.of(marginSheet(carPlay, edge))) },
+                description = stringResource(detail),
+                icon = if (index == 0) R.drawable.carlink_ic_aspect_ratio else null, tags = { NextConnectionTag() })
+        }
     }
 }
 
@@ -347,6 +350,8 @@ private fun GeneralEssentials(ui: SettingsUi, actions: SettingsActions, openShee
         LinkRow(stringResource(R.string.carlink_settings_diagnostics), { actions.navigate(Route.DIAGNOSTICS) },
             stringResource(R.string.carlink_settings_diagnostics_detail), R.drawable.carlink_ic_monitor_heart)
         GroupDivider()
+        ErrorLogRows()
+        GroupDivider()
         LinkRow(stringResource(R.string.carlink_settings_setup_again), { actions.navigate(Route.SETUP) },
             stringResource(R.string.carlink_settings_setup_again_detail), R.drawable.carlink_ic_restart_alt)
         GroupDivider()
@@ -444,4 +449,28 @@ internal fun layoutIcon(mode: com.carlink.app.ui.theme.UiProfileMode): Int = whe
     com.carlink.app.ui.theme.UiProfileMode.AUTO -> R.drawable.carlink_ic_devices
     com.carlink.app.ui.theme.UiProfileMode.CAR -> R.drawable.carlink_ic_directions_car
     com.carlink.app.ui.theme.UiProfileMode.HANDHELD -> R.drawable.carlink_ic_tablet_android
+}
+
+/**
+ * Settings › General › Help: the last connection attempts' log (CarLink's own log, both engines'
+ * logs and the system log of CarLink's processes) saved to Downloads or shared, all offline.
+ */
+@Composable
+private fun ErrorLogRows() {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    val save = { scope.launch { com.carlink.app.ui.diagnostics.saveConnectionLog(context) }; Unit }
+    // Android 9 and older write the public Download folder only with storage access; denied still saves (CarLink's own folder).
+    val askStorage = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { save() }
+    LinkRow(stringResource(R.string.carlink_settings_save_log), {
+        val needsPermission = android.os.Build.VERSION.SDK_INT < 29 && androidx.core.content.ContextCompat.checkSelfPermission(context,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_GRANTED
+        if (needsPermission) runCatching { askStorage.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) }.onFailure { save() }
+        else save()
+    }, stringResource(R.string.carlink_settings_save_log_detail), R.drawable.carlink_ic_download)
+    GroupDivider()
+    LinkRow(stringResource(R.string.carlink_settings_share_log), {
+        scope.launch { com.carlink.app.ui.diagnostics.shareConnectionLog(context) }
+    }, stringResource(R.string.carlink_settings_share_log_detail), R.drawable.carlink_ic_ios_share)
 }

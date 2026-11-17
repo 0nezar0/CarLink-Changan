@@ -183,8 +183,38 @@ object ConnectionLog {
         dir.listFiles()?.forEach { it.delete() }
         val stamp = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date())
         val stereo = runCatching { ExternalBluetoothProbe.await(context).format() }.getOrElse { "External Bluetooth probe: failed (${it.message})" }
-        return File(dir, "carlink-connection-log-$stamp.txt").apply { writeText(format(read(context), withProbe(header, stereo))) }
+        return File(dir, "carlink-connection-log-$stamp.txt").apply {
+            writeText(format(read(context), withProbe(header, stereo)))
+            // The system log of CarLink's own processes (main, ":aa", CarPlay): Android shows an
+            // app only its own lines, so this needs no permission and no network.
+            appendText("\n\n==== System log (CarLink processes) ====\n")
+            appendText(appLogcat())
+        }
     }
+
+    /** The newest [LOGCAT_LINES] lines of this app's own system log, masked like the engine logs; never throws. */
+    fun appLogcat(): String = runCatching {
+        val process = ProcessBuilder("logcat", "-d", "-v", "threadtime", "-t", LOGCAT_LINES.toString())
+            .redirectErrorStream(true).start()
+        val reader = process.inputStream.bufferedReader()
+        val out = StringBuilder()
+        val started = System.currentTimeMillis()
+        reader.useLines { lines ->
+            for (line in lines) {
+                out.append(maskLogcat(line)).append('\n')
+                if (System.currentTimeMillis() - started > LOGCAT_TIMEOUT_MILLIS) { out.append("[cut: logcat took too long]\n"); break }
+            }
+        }
+        process.destroy()
+        out.toString().ifBlank { "(empty)\n" }
+    }.getOrElse { "(logcat unavailable: ${it.javaClass.simpleName})\n" }
+
+    /** Bluetooth/Wi-Fi addresses (LogMasking) and anything that looks like a password or key value. */
+    fun maskLogcat(line: String): String = LogMasking.mask(line).replace(SECRET) { "${it.groupValues[1]}=[hidden]" }
+
+    private const val LOGCAT_LINES = 5000
+    private const val LOGCAT_TIMEOUT_MILLIS = 8_000L
+    private val SECRET = Regex("(?i)\\b(password|passwd|passphrase|psk|pwd|secret|token)\\b\\s*[=:]\\s*\\S+")
 
     private fun headerFormat() = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US)
 
