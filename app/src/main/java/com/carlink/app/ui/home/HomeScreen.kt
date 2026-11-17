@@ -584,13 +584,18 @@ private fun HomeDial(mode: HomeMode, ui: HomeUi, modifier: Modifier) {
                     if (state == HomeMode.CONNECTED && link.transport != null && !small) {
                         // The instrument also says how the phone is linked: a plug or a wireless glyph.
                         val usb = link.transport == Transport.USB
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        // Baseline-aligned, not centred: centring the line box drops Arabic ("لاسلكي"), whose
+                        // fallback font is taller than Inter, below the glyph. The glyph sits centred on the
+                        // cap height above the baseline, where Latin capitals and Arabic letters both stand.
+                        val label = MaterialTheme.typography.labelSmall
+                        val capHalf = with(androidx.compose.ui.platform.LocalDensity.current) { label.fontSize.toPx() * CAP_HEIGHT_EM / 2f }
+                        Row {
                             Icon(painterResource(com.carlink.app.ui.premium.transportIcon(link.transport, ui.network?.path)), null,
-                                Modifier.size(side * 0.08f), tint = colors.success)
+                                Modifier.size(side * 0.08f).alignBy { (it.measuredHeight / 2f + capHalf).toInt() }, tint = colors.success)
                             Spacer(Modifier.width(6.dp))
                             Text(stringResource(if (usb) R.string.carlink_transport_cable else R.string.carlink_transport_wireless)
-                                .uppercase(java.util.Locale.ROOT), style = MaterialTheme.typography.labelSmall, color = colors.success,
-                                maxLines = 1)
+                                .uppercase(java.util.Locale.ROOT), style = label, color = colors.success,
+                                maxLines = 1, modifier = Modifier.alignByBaseline())
                         }
                     }
                     if (state == HomeMode.CONNECTING || state == HomeMode.NOT_ANSWERING) {
@@ -1094,3 +1099,6 @@ private fun androidWaiting(ui: HomeUi): Boolean {
 /** Whether the phone of the current attempt has a Bluetooth link to this head unit right now. */
 private fun sessionPhoneConnected(ui: HomeUi): Boolean =
     ui.home.phones.firstOrNull { it.name == ui.home.link.phoneName }?.connected ?: false
+
+/** Inter's capital height as a share of its font size; Arabic letters stand about as tall above the baseline. */
+private const val CAP_HEIGHT_EM = 0.727f
