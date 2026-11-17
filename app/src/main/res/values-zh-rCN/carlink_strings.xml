@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="notification_channel_launch">打开CarLink</string>
+    <string name="carlink_notification_channel_android_auto">Android Auto 连接</string>
+    <string name="carlink_back">回来</string>
+    <string name="carlink_transport_wireless">无线</string>
+    <string name="carlink_transport_cable">电缆</string>
+    <string name="carlink_transport_usb_cable">USB 电缆</string>
+    <string name="carlink_transport_plugged_in">插进( USB)</string>
+    <string name="carlink_transport_connected_cable">由电缆连接</string>
+    <string name="carlink_transport_connected_wireless">无线连接</string>
+    <string name="carlink_transport_connecting_cable">通过电缆连接</string>
+    <string name="carlink_transport_connecting_wireless">无线连接</string>
+    <string name="carlink_state_on">打开</string>
+    <string name="carlink_state_off">关</string>
+    <string name="carlink_state_selected">选中</string>
+</resources>

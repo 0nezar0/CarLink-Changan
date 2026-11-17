@@ -11,6 +11,14 @@ import com.andrerinas.openheadunit.main.MainActivity
  * and media session carry, and what happens to its toasts. Standalone DiAuto keeps its defaults.
  */
 object HostIntegration {
+    /**
+     * CarLink: the host owns the app language. Before Android 13 [utils.LocaleHelper] uses this
+     * locale instead of DiAuto's own choice; null keeps DiAuto's.
+     */
+    @Volatile
+    @JvmStatic
+    var appLocale: ((Context) -> java.util.Locale)? = null
+
     @Volatile
     @JvmStatic
     var homeActivity: Class<out Activity> = MainActivity::class.java

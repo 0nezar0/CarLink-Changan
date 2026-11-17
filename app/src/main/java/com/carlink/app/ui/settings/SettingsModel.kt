@@ -168,6 +168,7 @@ internal enum class EssentialSheet {
     MARGIN_TOP,
     CP_MARGIN_TOP, CP_MARGIN_BOTTOM, CP_MARGIN_LEFT, CP_MARGIN_RIGHT,
     AA_MARGIN_TOP, AA_MARGIN_BOTTOM, AA_MARGIN_LEFT, AA_MARGIN_RIGHT,
+    LANGUAGE,
 }
 
 /** One edge of a projection's screen margins. */

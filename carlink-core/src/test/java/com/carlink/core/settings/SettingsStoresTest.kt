@@ -46,10 +46,22 @@ class SettingsStoresTest {
             marginTopPx = 48,
             carPlayMargins = ScreenMargins(left = 8, top = 40, right = 16, bottom = 24),
             androidAutoMargins = ScreenMargins(left = 0, top = 64, right = 32, bottom = 0),
+            appLanguage = "ur",
         )
         UnifiedSettingsStore(app).save(settings)
         // A new instance reads what the old one wrote.
         assertEquals(settings, UnifiedSettingsStore(app).load())
+        // Every process reads the language from the copy (the :aa process cannot share these prefs).
+        assertEquals("ur", AppLanguage.current(app))
+    }
+
+    @Test fun theLanguageCopyFollowsEverySaveAndUnknownTagsFallBackToTheDevice() {
+        val store = UnifiedSettingsStore(app)
+        store.save(UnifiedSettings(appLanguage = "fr"))
+        assertEquals("fr", AppLanguage.current(app))
+        store.save(UnifiedSettings(appLanguage = "xx"))
+        assertEquals(AppLanguage.SYSTEM, store.load().appLanguage)
+        assertEquals(AppLanguage.SYSTEM, AppLanguage.current(app))
     }
 
     @Test fun theSharedMarginsOfEarlierVersionsSeedBothEnginesUntilSaved() {

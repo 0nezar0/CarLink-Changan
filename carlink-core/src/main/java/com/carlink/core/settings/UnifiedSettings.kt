@@ -54,6 +54,8 @@ data class UnifiedSettings(
     val carPlayMargins: ScreenMargins = ScreenMargins(),
     /** The same for Android Auto, set on its own: the two lay out their bars differently. */
     val androidAutoMargins: ScreenMargins = ScreenMargins(),
+    /** CarLink's language ([AppLanguage.SUPPORTED]); [AppLanguage.SYSTEM] follows the device. */
+    val appLanguage: String = AppLanguage.SYSTEM,
 )
 
 /** Pixels kept clear on each edge of a projection (activity pixels, never negative). */
@@ -114,7 +116,11 @@ class UnifiedSettingsStore(context: Context) {
         marginTopPx = prefs.getInt("margin_top_px", 0).coerceAtLeast(0),
         carPlayMargins = margins("cp_"),
         androidAutoMargins = margins("aa_"),
+        appLanguage = appLanguage(),
     )
+
+    /** The stored language alone (cheap; read at startup to refresh [AppLanguage]'s copy). */
+    fun appLanguage(): String = AppLanguage.sanitize(prefs.getString("app_language", AppLanguage.SYSTEM))
 
     /**
      * One engine's margins. Before 1.0.3 one set (margin_*_px) served both engines; until the
@@ -156,7 +162,9 @@ class UnifiedSettingsStore(context: Context) {
             .putInt("margin_top_px", settings.marginTopPx.coerceAtLeast(0))
             .putMargins("cp_", settings.carPlayMargins)
             .putMargins("aa_", settings.androidAutoMargins)
+            .putString("app_language", AppLanguage.sanitize(settings.appLanguage))
             .apply()
+        AppLanguage.mirror(appContext, settings.appLanguage)
     }
 
     private fun android.content.SharedPreferences.Editor.putMargins(prefix: String, m: ScreenMargins) = m.sanitized().let {

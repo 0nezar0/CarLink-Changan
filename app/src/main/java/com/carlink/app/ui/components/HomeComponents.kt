@@ -19,6 +19,9 @@ fun isolate(text: String): String = "⁨$text⁩"
 /** Forces a technical value (timer, duration) to left-to-right inside any locale (§7.3). */
 fun ltr(text: String): String = "⁦$text⁩"
 
+/** [text] isolated in its own direction (first strong letter), so a name in another script sits cleanly in a line. */
+fun ltrIfLatin(text: String): String = "⁨$text⁩"
+
 /** "m:ss", or "h:mm:ss" after an hour, Western digits, isolated LTR. */
 fun formatElapsed(millis: Long): String {
     val total = (millis / 1000).coerceAtLeast(0)

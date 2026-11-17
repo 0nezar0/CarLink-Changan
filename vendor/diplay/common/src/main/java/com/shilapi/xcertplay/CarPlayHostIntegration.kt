@@ -13,6 +13,19 @@ import com.shilapi.xcertplay.orchestration.CarPlayStatus
  * load; standalone DiPlay keeps DiPlayActivity.
  */
 object CarPlayHostIntegration {
+    /**
+     * CarLink: the host owns the app language. Before Android 13 [AppLocale] uses this locale
+     * instead of DiPlay's own choice; null keeps DiPlay's.
+     */
+    @Volatile
+    @JvmStatic
+    var appLocale: ((Context) -> java.util.Locale)? = null
+
+    /** CarLink: opens the host's language setting instead of DiPlay's language picker. */
+    @Volatile
+    @JvmStatic
+    var openLanguageSettings: ((Activity) -> Unit)? = null
+
     @Volatile
     @JvmStatic
     var homeActivity: Class<out Activity> = DiPlayActivity::class.java

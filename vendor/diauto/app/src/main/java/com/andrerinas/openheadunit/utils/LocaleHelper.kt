@@ -130,11 +130,12 @@ object LocaleHelper {
     }
 
     fun applyLocale(context: Context, settings: Settings): Context {
-        val selected = settings.appLanguage
         if (Build.VERSION.SDK_INT >= 33) return context
+        val host = com.andrerinas.openheadunit.HostIntegration.appLocale
         // Do not mutate Locale.getDefault(): returning to System default must restore the system locale.
         @Suppress("DEPRECATION")
-        val locale = stringToLocale(selected) ?: android.content.res.Resources.getSystem().configuration.locale
+        val locale = host?.invoke(context) ?: stringToLocale(settings.appLanguage)
+            ?: android.content.res.Resources.getSystem().configuration.locale
         val config = Configuration(context.resources.configuration)
         if (Build.VERSION.SDK_INT >= 17) {
             config.setLocale(locale)

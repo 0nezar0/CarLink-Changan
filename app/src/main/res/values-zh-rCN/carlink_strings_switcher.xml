@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="carlink_switcher_bubble">CarLink 切换器</string>
+    <string name="carlink_switcher_bubble_action">打开电话交换器</string>
+    <string name="carlink_switcher_panel_window">CarLink 切换面板</string>
+    <string name="carlink_switcher_connected_for">已连接·%1$s</string>
+    <string name="carlink_switcher_switch_title">切换电话</string>
+    <string name="carlink_switcher_no_phones">没有其他配对手机</string>
+    <string name="carlink_switcher_no_phones_hint">在Bluetooth 设置中为另一个电话对齐, 以便在此切换 。</string>
+    <string name="carlink_switcher_switching">切换…</string>
+    <string name="carlink_switcher_size_reconnects">更改它再连接几秒钟</string>
+    <string name="carlink_switcher_next_connection">本届会议保持其联系。</string>
+    <string name="carlink_switcher_close">关闭</string>
+    <string name="carlink_switcher_back">回来</string>
+    <string name="carlink_switcher_not_now">现在不行</string>
+    <string name="carlink_switcher_phone_fallback">新电话</string>
+    <string name="carlink_switcher_night">夜间模式</string>
+    <string name="carlink_switcher_dimmer">迪默尔</string>
+    <string name="carlink_switcher_dimmer_off">关</string>
+    <string name="carlink_switcher_dimmer_level">级别%1$d</string>
+    <string name="carlink_switcher_stereo_home">立体声</string>
+    <string name="carlink_switcher_stereo_home_value">发射器</string>
+    <string name="carlink_switcher_night_next">夜间模式从下一个连接开始适用;同时淡化.</string>
+</resources>

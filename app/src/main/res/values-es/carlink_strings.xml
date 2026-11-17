@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="notification_channel_launch">Open CarLink</string>
+    <string name="notification_open">Pulsa para abrir CarLink.</string>
+    <string name="carlink_notification_channel_android_auto">Android Auto conexión</string>
+    <string name="carlink_back">Atrás</string>
+    <string name="carlink_transport_wireless">Wireless</string>
+    <string name="carlink_transport_cable">Cable</string>
+    <string name="carlink_transport_usb_cable">Cable USB</string>
+    <string name="carlink_transport_plugged_in">Enchufado en (USB)</string>
+    <string name="carlink_transport_connected_cable">Conectado por cable</string>
+    <string name="carlink_transport_connected_wireless">Conexión inalámbrica</string>
+    <string name="carlink_transport_connecting_cable">Conexión por cable</string>
+    <string name="carlink_transport_connecting_wireless">Conexión inalámbrica</string>
+    <string name="carlink_state_on">On</string>
+    <string name="carlink_state_off">Fuera.</string>
+    <string name="carlink_state_selected">Seleccionado</string>
+</resources>

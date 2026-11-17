@@ -127,11 +127,12 @@ android {
         buildConfig = true
     }
 
-    // English and Arabic only. The engines ship more translations; this filter keeps those
-    // out so an unlisted device language falls back to English everywhere, including engine
-    // screens. Extend xml/locales_config.xml when adding a language.
+    // The languages Settings › General › Language offers (core/settings/AppLanguage.kt). The
+    // engines ship more translations; this filter keeps the others out so an unlisted device
+    // language falls back to English everywhere, including engine screens. Extend
+    // xml/locales_config.xml and AppLanguage.SUPPORTED when adding a language.
     androidResources {
-        localeFilters += listOf("en", "ar")
+        localeFilters += listOf("en", "ar", "ur", "hi", "fr", "tr", "es", "de", "ru", "zh-rCN", "in", "pt-rBR")
     }
 
     packaging {

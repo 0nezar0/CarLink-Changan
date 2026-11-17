@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="carlink_update_available_title">Обновление доступно</string>
+    <string name="carlink_update_whats_new">Что нового</string>
+    <string name="carlink_update_no_notes">Никаких заметок для этой версии.</string>
+    <string name="carlink_update_ignore">Игнорировать эту версию</string>
+    <string name="carlink_update_later">Позже</string>
+    <string name="carlink_update_download">Скачать и установить</string>
+    <string name="carlink_update_downloading_title">Скачать CarLink %1$s</string>
+    <string name="carlink_update_progress">%1$s из %2$s</string>
+    <string name="carlink_update_download_body">Вы можете использовать CarLink. Ничего не устанавливается до тех пор, пока загрузка не будет проверена.</string>
+    <string name="carlink_update_cancel">Отменить</string>
+    <string name="carlink_update_verifying_title">Проверить скачать</string>
+    <string name="carlink_update_verifying_body">Убедитесь, что файл заполнен и подписан CarLink.</string>
+    <string name="carlink_update_permission_title">Позвольте CarLink установить обновление</string>
+    <string name="carlink_update_open_settings">Открытые настройки</string>
+    <string name="carlink_update_installing_title">Установка CarLink %1$s</string>
+    <string name="carlink_update_installing_body">Подтвердите на экране установки Android. CarLink закрывается во время обновления, а затем открывается снова.</string>
+    <string name="carlink_update_failed_title">Обновление не установлено</string>
+    <string name="carlink_update_error_download">Загрузка не закончилась. Проверьте интернет-соединение и попробуйте еще раз.</string>
+    <string name="carlink_update_error_checksum_missing">В этом выпуске нет файла контрольной суммы, поэтому загрузка не может быть проверена. Попробуй позже.</string>
+    <string name="carlink_update_error_checksum">Загруженный файл не соответствует контрольной сумме, поэтому он может быть поврежден. Она была удалена.</string>
+    <string name="carlink_update_error_unreadable">Загруженный файл не является действительным приложением. Она была удалена.</string>
+    <string name="carlink_update_error_package">Загруженный файл не является CarLink. Она была удалена.</string>
+    <string name="carlink_update_error_not_newer">Загруженный файл не новее версии, которую вы имеете. Она была удалена.</string>
+    <string name="carlink_update_error_signer">Загруженный файл не подписан ключом релиза CarLink, поэтому он не был установлен. Она была удалена.</string>
+    <string name="carlink_update_error_install">Android не установил обновление. Попробуй еще раз.</string>
+    <string name="carlink_update_error_install_detail">Android не устанавливал обновление (%1$s). Попробуй еще раз.</string>
+    <string name="carlink_update_error_install_cancelled">Установка была отменена.</string>
+    <string name="carlink_update_try_again">Попробуйте еще раз</string>
+    <string name="carlink_update_close">Закрыть</string>
+    <string name="carlink_about_updates">Обновления</string>
+    <string name="carlink_about_check_updates">Проверьте обновления</string>
+    <string name="carlink_about_updates_last_checked">Версия %1$s · Последняя проверка %2$s</string>
+    <string name="carlink_about_updates_never">Версия %1$s · еще не проверена</string>
+    <string name="carlink_about_updates_just_now">Только сейчас</string>
+    <string name="carlink_about_updates_up_to_date">Вы в курсе событий</string>
+    <string name="carlink_about_updates_available">CarLink %1$s доступен</string>
+    <string name="carlink_about_updates_failed">Я не смог добраться до GitHub. Проверьте подключение к интернету и попробуйте еще раз.</string>
+    <string name="carlink_about_updates_rate_limited">GitHub сейчас очень занят. Попробуй еще раз через некоторое время.</string>
+    <string name="carlink_about_updates_unsupported">Эта сборка не обновляет себя. Установить релиз с GitHub для получения обновлений.</string>
+    <string name="carlink_about_auto_updates">Автоматическая проверка обновлений</string>
+    <string name="carlink_about_test_versions">Получить тестовые версии</string>
+    <string name="carlink_about_test_versions_body">Также предлагаются тестовые версии, опубликованные до выпуска. Могут возникнуть новые проблемы, сообщите о них. Каждый из них проверяется и подписывается как релиз.</string>
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="carlink_update_available_title">Mutakhirkan tersedia</string>
+    <string name="carlink_update_installed">Anda memiliki %1$s</string>
+    <string name="carlink_update_whats_new">Apa yang baru</string>
+    <string name="carlink_update_no_notes">Tidak ada catatan rilis untuk versi ini.</string>
+    <string name="carlink_update_ignore">Abaikan versi ini</string>
+    <string name="carlink_update_later">Nanti</string>
+    <string name="carlink_update_download">Unduh &amp; instal</string>
+    <string name="carlink_update_downloading_title">Mengunduh CarLink %1$s</string>
+    <string name="carlink_update_progress">%1$s dari %2$s</string>
+    <string name="carlink_update_progress_unknown">%1$s diunduh</string>
+    <string name="carlink_update_download_body">Kau bisa terus menggunakan CarLink. Tidak ada yang terpasang sampai download telah diperiksa.</string>
+    <string name="carlink_update_cancel">Batal</string>
+    <string name="carlink_update_verifying_title">Memeriksa pengunduhan</string>
+    <string name="carlink_update_verifying_body">Memastikan berkas lengkap dan ditandatangani oleh CarLink.</string>
+    <string name="carlink_update_permission_title">Ijinkan CarLink untuk memasang pemutakhiran</string>
+    <string name="carlink_update_permission_body">Android membutuhkan izinmu sekali. Pada layar berikutnya, nyalakan “ Ijinkan dari sumber ini ”, kemudian kembali ke CarLink. Pemutakhiran terus dengan sendirinya.</string>
+    <string name="carlink_update_open_settings">Buka pengaturan</string>
+    <string name="carlink_update_installing_title">Memasang CarLink %1$s</string>
+    <string name="carlink_update_installing_body">Konfirmasi pada layar instalasi Android. CarLink menutup ketika pembaruan; membukanya lagi ketika selesai.</string>
+    <string name="carlink_update_failed_title">Pemutakhiran tidak terpasang</string>
+    <string name="carlink_update_error_download">Pengunduhan belum selesai. Periksa koneksi internet dan coba lagi.</string>
+    <string name="carlink_update_error_checksum_missing">Rilis ini tidak memiliki berkas checksum, sehingga unduhan tidak dapat diperiksa. Coba lagi nanti.</string>
+    <string name="carlink_update_error_checksum">Berkas yang diunduh tidak cocok dengan checksum-nya, sehingga mungkin rusak. Itu dihapus.</string>
+    <string name="carlink_update_error_unreadable">Berkas yang diunduh bukan aplikasi yang valid. Itu dihapus.</string>
+    <string name="carlink_update_error_package">File yang diunduh bukan CarLink. Itu dihapus.</string>
+    <string name="carlink_update_error_not_newer">Berkas yang diunduh tidak lebih baru dari versi yang Anda miliki. Itu dihapus.</string>
+    <string name="carlink_update_error_signer">Berkas yang diunduh tidak ditandatangani dengan kunci rilis CarLink, sehingga tidak diinstal. Itu dihapus.</string>
+    <string name="carlink_update_error_install">Android tidak memasang pembaruan. Coba lagi.</string>
+    <string name="carlink_update_error_install_detail">Android tidak memasang pemutakhiran (%1$s). Coba lagi.</string>
+    <string name="carlink_update_error_install_cancelled">Pemasangan dibatalkan.</string>
+    <string name="carlink_update_try_again">Coba lagi</string>
+    <string name="carlink_update_close">Tutup</string>
+    <string name="carlink_about_updates">Pemutakhiran</string>
+    <string name="carlink_about_check_updates">Periksa pemutakhiran</string>
+    <string name="carlink_about_updates_last_checked">Versi %1$s · terakhir diperiksa %2$s</string>
+    <string name="carlink_about_updates_never">Versi %1$s · belum diperiksa</string>
+    <string name="carlink_about_updates_checking">Memeriksa …</string>
+    <string name="carlink_about_updates_just_now">hanya sekarang</string>
+    <string name="carlink_about_updates_up_to_date">Anda up to date</string>
+    <string name="carlink_about_updates_available">CarLink %1$s tersedia</string>
+    <string name="carlink_about_updates_failed">Tidak bisa mencapai GitHub. Periksa koneksi internet dan coba lagi.</string>
+    <string name="carlink_about_updates_rate_limited">GitHub sedang sibuk sekarang. Coba lagi sebentar lagi.</string>
+    <string name="carlink_about_updates_unsupported">Bangunan ini tidak memperbarui dirinya sendiri. Pasang rilis dari GitHub untuk mendapatkan update.</string>
+    <string name="carlink_about_auto_updates">Otomatis memeriksa pemutakhiran</string>
+    <string name="carlink_about_auto_updates_body">Setiap 6 jam sementara CarLink terbuka dan tidak ada telepon yang tersambung. Tidak ada download tanpa bertanya.</string>
+    <string name="carlink_about_test_versions">Dapatkan versi tes</string>
+    <string name="carlink_about_test_versions_body">Juga menawarkan versi tes diterbitkan sebelum rilis. Mereka mungkin memiliki masalah baru; harap laporkan mereka. Masing-masing diperiksa dan ditandatangani seperti rilis.</string>
+</resources>

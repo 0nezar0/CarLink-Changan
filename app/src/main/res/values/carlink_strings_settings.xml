@@ -340,4 +340,10 @@
     <string name="carlink_restore_error_title">This file can\'t be restored</string>
     <string name="carlink_restore_error_body">It is not a CarLink settings backup, or it was changed (%1$s). Nothing was changed.</string>
     <string name="carlink_restore_error_ok">OK</string>
+    <!-- Settings › General › Language (1.0.5) -->
+    <string name="carlink_settings_language">Language</string>
+    <string name="carlink_settings_language_detail">The language of CarLink and its CarPlay and Android Auto screens</string>
+    <string name="carlink_settings_language_system">System default</string>
+    <string name="carlink_settings_language_system_detail">Follows the head unit\'s language, or English if CarLink has no translation for it</string>
+    <string name="carlink_settings_language_note">English and Arabic are written by hand; the other languages are machine-translated.</string>
 </resources>

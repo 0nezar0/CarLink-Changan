@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="diplay">CarLink</string>
+    <string name="back_to_diplay">Kembali ke CarLink</string>
+    <string name="could_not_start_carplay_return_to_diplay_and_check_app_per">Tidak dapat memulai CarPlay. Kembali ke CarLink dan periksa izin aplikasi.</string>
+    <string name="allow_nearby_devices_for_diplay_in_the_head_unit_s_app_per">Ijinkan perangkat Nearby untuk CarLink dalam izin aplikasi unit utama.</string>
+    <string name="allow_precise_location_for_diplay_in_the_head_unit_s_app_p">Izinkan lokasi yang tepat untuk CarLink dalam hak aplikasi unit utama.</string>
+    <string name="existing_wifi_instructions">Hubungkan mobil dan iPhone ke eksternal yang sama Wi-Fi dalam pengaturan sistem. Masukkan nama yang tepat dan sandi WPA 2 di bawah ini; biarkan sandi kosong hanya untuk jaringan terbuka. Gunakan WPA 2 atau WPA 2 / WPA 3 mode campuran dan menonaktifkan isolasi klien pada router. CarLink menyimpan koneksi Wi-Fi ini dan tidak membuat hotspot.</string>
+    <string name="open_diplay_settings_hint">Selama CarPlay, swipe down dengan %1$d jari untuk membuka menu CarPlay.</string>
+    <string name="carplay_settings">Menu CarPlay</string>
+    <string name="side_panel_full_screen">Layar penuh</string>
+    <string name="setup_error_auth">Berkas otentikasi CarPlay hilang dari bangunan ini. Pengaturan › Diagnostik menjelaskan apa yang dibutuhkan.</string>
+    <string name="cluster_waiting_for_map">CarLink · menunggu peta CarPlay</string>
+    <string name="wheel_key_service_label">Kunci roda CarLink</string>
+    <string name="wheel_key_service_description">Memungkinkan CarLink menggunakan steering-roda yang dipilih kunci untuk memperbesar peta CarPlay pada dasbor dan bergerak di sekitar layar CarPlay. Hanya menerima tombol ditekan dan tidak membaca layar.</string>
+    <string name="exit_dialog_title">Android Auto</string>
+    <string name="exit_dialog_stop">Putuskan</string>
+    <string name="exit_dialog_background">Pindah ke latar belakang</string>
+    <string name="gesture_hint">Tip: swipe in dari tepi kiri dengan dua jari untuk membuka menu Android Auto.</string>
+    <string name="notification_service_running">Android Auto is ready</string>
+    <string name="boot_loop_paused_generic">Perangkat ini dijalankan ulang tiga kali berturut-turut tak lama setelah CarLink memulai nirkabel Android Auto, jadi nirkabel ditinggalkan kali ini. USB masih berfungsi. Buka CarLink untuk menyalakannya kembali.</string>
+    <string name="boot_loop_paused_native_wifi_direct">Perangkat ini dijalankan ulang tiga kali berturut-turut tak lama setelah CarLink memulai nirkabel Android Auto, jadi nirkabel tidak aktif kali ini. Pada beberapa unit kepala chipset Wi-Fi mengambil seluruh sistem turun ketika telepon bergabung dengan jaringan Wi-Fi Direct. Coba hotspot mobil sebagai metode nirkabel. USB masih bekerja.</string>
+</resources>

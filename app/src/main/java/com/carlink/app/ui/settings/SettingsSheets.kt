@@ -256,6 +256,25 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
             ),
             u.callAudioAsMedia, onSelect = { b -> select { it.copy(callAudioAsMedia = b) } }, onDismiss = onDismiss,
         )
+        EssentialSheet.LANGUAGE -> {
+            val context = androidx.compose.ui.platform.LocalContext.current
+            ChoiceSheet(
+                stringResource(R.string.carlink_settings_language), stringResource(R.string.carlink_settings_language_note), false,
+                com.carlink.core.settings.AppLanguage.SUPPORTED.map { tag ->
+                    Preset(tag, languageLabel(tag),
+                        if (tag == com.carlink.core.settings.AppLanguage.SYSTEM) stringResource(R.string.carlink_settings_language_system_detail) else null,
+                        if (tag == com.carlink.core.settings.AppLanguage.SYSTEM) R.drawable.carlink_ic_translate else null)
+                },
+                u.appLanguage,
+                onSelect = { tag ->
+                    val changed = tag != u.appLanguage
+                    select { it.copy(appLanguage = tag) }
+                    // Android 13+ restarts the screens itself (per-app language); older Android needs a new screen.
+                    if (changed && android.os.Build.VERSION.SDK_INT < 33) context.findActivity()?.recreate()
+                },
+                onDismiss = onDismiss,
+            )
+        }
         EssentialSheet.APPEARANCE -> ChoiceSheet(
             stringResource(R.string.carlink_settings_appearance), stringResource(R.string.carlink_settings_appearance_detail), false,
             ThemeMode.entries.map { m ->
@@ -799,4 +818,10 @@ private fun AppearancePreview(mode: ThemeMode) {
         }
         drawRoundRect(Color(0x33FFFFFF), cornerRadius = r, style = Stroke(1.dp.toPx()))
     }
+}
+
+private tailrec fun android.content.Context.findActivity(): android.app.Activity? = when (this) {
+    is android.app.Activity -> this
+    is android.content.ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

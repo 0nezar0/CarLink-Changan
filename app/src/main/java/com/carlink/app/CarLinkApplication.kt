@@ -8,6 +8,7 @@ import com.carlink.app.ui.HomeActivity
 import com.carlink.app.ui.home.CarPlayWaitingContent
 import com.carlink.core.connection.CarLinkConfig
 import com.carlink.core.connection.CarLinkCore
+import com.carlink.core.settings.AppLanguage
 import com.shilapi.xcertplay.CarPlayHostIntegration
 
 /**
@@ -22,6 +23,8 @@ class CarLinkApplication : App() {
     override fun initializesAndroidAutoEngine(): Boolean = isAndroidAutoProcess
 
     override fun onCreate() {
+        // Settings › General › Language, in this process's resources before any text is read.
+        installLanguage()
         // Before App.onCreate: it creates the engine's notification channels from these names.
         brandEngines()
         super.onCreate()
@@ -74,9 +77,36 @@ class CarLinkApplication : App() {
             Unit
         }
         HostIntegration.openCarScreen = openCarSettings
+        // CarPlay's language button opens CarLink's Settings, where the one language choice lives.
+        CarPlayHostIntegration.openLanguageSettings = { openCarSettings() }
         com.shilapi.xcertplay.orchestration.CarPlayController.openCarScreen = openCarSettings
         // The projections' own chrome (waiting screens, session menus, panels) in CarLink's look.
         com.carlink.app.engine.EngineChrome.install(this)
+    }
+
+    /**
+     * CarLink's language for every screen of this process: CarLink's own (HomeActivity), CarPlay's
+     * (DiPlay's activities ask [CarPlayHostIntegration.appLocale]) and Android Auto's in ":aa"
+     * ([HostIntegration.appLocale]). The main process refreshes the copy all processes read.
+     */
+    private fun installLanguage() {
+        if (!isAndroidAutoProcess) {
+            runCatching {
+                AppLanguage.mirror(this, com.carlink.core.settings.UnifiedSettingsStore(this).appLanguage(), platform = false)
+            }
+        }
+        val chosen: (android.content.Context) -> java.util.Locale = { context ->
+            AppLanguage.effectiveLocale(context).also { AppLanguage.applyToApplication(context, it) }
+        }
+        CarPlayHostIntegration.appLocale = chosen
+        HostIntegration.appLocale = chosen
+        AppLanguage.applyToApplication(this)
+    }
+
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // A system change (night mode, the car's language) resets the application's locale.
+        AppLanguage.applyToApplication(this)
     }
 
     private companion object {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="notification_channel_launch">Открыть CarLink</string>
+    <string name="notification_phone_ready">%1$s находится рядом. Нажмите, чтобы соединиться.</string>
+    <string name="notification_open">Откройте CarLink.</string>
+    <string name="carlink_notification_channel_android_auto">Интеграция Android Auto</string>
+    <string name="carlink_back">Назад</string>
+    <string name="carlink_transport_wireless">беспроводной</string>
+    <string name="carlink_transport_cable">кабель</string>
+    <string name="carlink_transport_usb_cable">USB кабель</string>
+    <string name="carlink_transport_plugged_in">Включено в (USB)</string>
+    <string name="carlink_transport_connected_cable">Связь с кабелем</string>
+    <string name="carlink_transport_connected_wireless">Беспроводное соединение</string>
+    <string name="carlink_transport_connecting_cable">Подключение по кабелю</string>
+    <string name="carlink_transport_connecting_wireless">Беспроводное соединение</string>
+    <string name="carlink_state_on">Начать</string>
+    <string name="carlink_state_off">Уходить</string>
+    <string name="carlink_state_selected">выбранный</string>
+</resources>

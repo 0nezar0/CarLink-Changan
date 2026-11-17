@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Urdu (CarLink 1.0.5). -->
+<resources>
+    <string name="carlink_switcher_bubble">CarLink سوئچر</string>
+    <string name="carlink_switcher_bubble_action">فون سوئچر کھولیں</string>
+    <string name="carlink_switcher_panel_window">CarLink سوئچر پینل</string>
+    <string name="carlink_switcher_dimmer_window">CarLink مدھم کرنے والا</string>
+    <string name="carlink_switcher_connected_for">جڑا ہوا · %1$s</string>
+    <string name="carlink_switcher_switch_title">فون بدلیں</string>
+    <string name="carlink_switcher_no_phones">کوئی اور جوڑا ہوا فون نہیں</string>
+    <string name="carlink_switcher_no_phones_hint">یہاں بدلنے کے لیے Bluetooth ترتیبات میں دوسرا فون جوڑیں۔</string>
+    <string name="carlink_switcher_switching">بدلا جا رہا ہے…</string>
+    <string name="carlink_switcher_home">CarLink ہوم</string>
+    <string name="carlink_switcher_size_reconnects">اسے بدلنے سے چند سیکنڈ کے لیے دوبارہ جڑتا ہے</string>
+    <string name="carlink_switcher_next_connection">موجودہ سیشن اپنا کنکشن برقرار رکھتا ہے۔</string>
+    <string name="carlink_switcher_close">بند کریں</string>
+    <string name="carlink_switcher_back">واپس</string>
+    <string name="carlink_switcher_not_now">ابھی نہیں</string>
+    <string name="carlink_switcher_phone_fallback">نیا فون</string>
+    <string name="carlink_switcher_night">نائٹ موڈ</string>
+    <string name="carlink_switcher_dimmer">مدھم کرنے والا</string>
+    <string name="carlink_switcher_dimmer_off">بند</string>
+    <string name="carlink_switcher_dimmer_level">سطح %1$d</string>
+    <string name="carlink_switcher_stereo_home">اسٹیریو</string>
+    <string name="carlink_switcher_stereo_home_value">لانچر</string>
+    <string name="carlink_switcher_night_next">نائٹ موڈ اگلے کنکشن سے لاگو ہوتا ہے؛ مدھم کرنا فوراً۔</string>
+</resources>

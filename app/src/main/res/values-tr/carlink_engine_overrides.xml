@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="diplay">CarLink</string>
+    <string name="back_to_diplay">Back to CarLink</string>
+    <string name="could_not_start_carplay_return_to_diplay_and_check_app_per">CarPlay\'e başlamayabilir. CarLink\'e dön ve uygulama izinlerini kontrol edin.</string>
+    <string name="allow_nearby_devices_for_diplay_in_the_head_unit_s_app_per">Baş ünitenin uygulama izninde CarLink için yakın cihazlara izin verin.</string>
+    <string name="allow_precise_location_for_diplay_in_the_head_unit_s_app_p">Kafa biriminin uygulama izninde CarLink için kesin bir yer izin verin.</string>
+    <string name="existing_wifi_instructions">Araba ve iPhone\'u sistem ayarlarında aynı dış Wi-Fi\'ye bağlayın. Aşağıdaki tam adını ve WPA2 şifresini girin; sadece açık bir ağ için şifreyi boş bırakın. WPA2 veya WPA2/WPA3 karışık mod kullanın ve istemciyi yönlendiricide devre dışı bırakır. CarLink bu Wi-Fi bağlantısını tutar ve hiçbir yer yaratmaz.</string>
+    <string name="open_diplay_settings_hint">CarPlay sırasında, %1$d parmakları CarPlay menüsünü açmak için.</string>
+    <string name="carplay_settings">CarPlay menü</string>
+    <string name="side_panel_full_screen">Full ekran</string>
+    <string name="setup_error_auth">CarPlay doğrulama dosyaları bu inşadan eksik. Ayarlar › Tanıklar neyin gerekli olduğunu açıklıyor.</string>
+    <string name="cluster_waiting_for_map">CarLink · CarPlay haritası için bekliyor</string>
+    <string name="wheel_key_service_label">CarLink tekerlek anahtarları</string>
+    <string name="wheel_key_service_description">Lets CarLink, seçilen direksiyon anahtarlarını panodaki CarPlay haritasını koordine etmek ve CarPlay ekranını taşımak için kullanın. Sadece anahtar basınları alır ve ekranı okumaz.</string>
+    <string name="exit_dialog_title">Android Auto</string>
+    <string name="exit_dialog_stop">Disconnect</string>
+    <string name="exit_dialog_background">Arka plan için hareket edin</string>
+    <string name="gesture_hint">İpucu: Sol kenardan, Android Auto menüsünü açmak için iki parmakla kaydırın.</string>
+    <string name="notification_service_running">Android Auto hazır</string>
+    <string name="boot_loop_paused_generic">Bu cihaz kısa bir süre sonra CarLink kablosuz Android Auto\'ya başladıktan üç kez yeniden başladı, bu yüzden kablosuz bu sefer ayrıldı. USB hala çalışır. Open CarLink geri dönmek için.</string>
+    <string name="boot_loop_paused_native_wifi_direct">Bu cihaz kısa bir süre sonra üç kez yeniden başladı CarLink kablosuz Android Auto, bu yüzden kablosuz bu sefer ayrıldı. Bazı kafa birimlerinde Wi-Fi çipet bir telefon Wi-Fi Direct ağına katıldığında tüm sistemi alır. Araba noktalarını kablosuz yöntem olarak deneyin. USB hala çalışır.</string>
+</resources>

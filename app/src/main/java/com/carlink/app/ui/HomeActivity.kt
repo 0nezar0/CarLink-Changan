@@ -26,6 +26,12 @@ import com.carlink.app.update.showsDialog
 class HomeActivity : ComponentActivity() {
     private val vm: CarLinkViewModel by viewModels()
 
+    /** Settings › General › Language before Android 13 (only the locale; night mode and sizes still follow the car). */
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(newBase)
+        com.carlink.core.settings.AppLanguage.overrideConfiguration(newBase)?.let { applyOverrideConfiguration(it) }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)

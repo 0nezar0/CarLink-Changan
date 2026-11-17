@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="carlink_switcher_bubble">Comutador CarLink</string>
+    <string name="carlink_switcher_bubble_action">Interruptor de telefone aberto</string>
+    <string name="carlink_switcher_panel_window">Painel comutador CarLink analogy engrenagens</string>
+    <string name="carlink_switcher_dimmer_window">Dimmer CarLink</string>
+    <string name="carlink_switcher_switch_title">Mudar de telefone</string>
+    <string name="carlink_switcher_no_phones">Nenhum outro telefone emparelhado</string>
+    <string name="carlink_switcher_no_phones_hint">Emparelhe outro telefone em configurações Bluetooth para mudar para ele aqui.</string>
+    <string name="carlink_switcher_switching">Alternando …</string>
+    <string name="carlink_switcher_size_reconnects">Mudando a conexão por alguns segundos</string>
+    <string name="carlink_switcher_next_connection">A sessão actual mantém a cristais.</string>
+    <string name="carlink_switcher_close">Fechar</string>
+    <string name="carlink_switcher_back">Voltar</string>
+    <string name="carlink_switcher_not_now">Agora não.</string>
+    <string name="carlink_switcher_phone_fallback">o novo telefone</string>
+    <string name="carlink_switcher_night">Modo noturno</string>
+    <string name="carlink_switcher_dimmer">Dimmer</string>
+    <string name="carlink_switcher_dimmer_off">Desligado</string>
+    <string name="carlink_switcher_stereo_home">Estéreo</string>
+    <string name="carlink_switcher_stereo_home_value">Lançador</string>
+    <string name="carlink_switcher_night_next">O modo noturno aplica- se a partir da próxima ligação; o escurecimento imediatamente.</string>
+</resources>

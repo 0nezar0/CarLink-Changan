@@ -328,4 +328,10 @@
     <string name="carlink_restore_error_title">لا يمكن استعادة هذا الملف</string>
     <string name="carlink_restore_error_body">ليس نسخة احتياطية لإعدادات CarLink، أو تم تغييره (%1$s). لم يُغيَّر شيء.</string>
     <string name="carlink_restore_error_ok">حسناً</string>
+    <!-- Settings › General › Language (1.0.5) -->
+    <string name="carlink_settings_language">اللغة</string>
+    <string name="carlink_settings_language_detail">لغة CarLink وشاشات CarPlay وAndroid Auto</string>
+    <string name="carlink_settings_language_system">لغة الجهاز</string>
+    <string name="carlink_settings_language_system_detail">يتبع لغة شاشة السيارة، أو الإنجليزية إذا ما فيه ترجمة لها</string>
+    <string name="carlink_settings_language_note">الإنجليزية والعربية مكتوبة يدوياً، وبقية اللغات مترجمة آلياً.</string>
 </resources>

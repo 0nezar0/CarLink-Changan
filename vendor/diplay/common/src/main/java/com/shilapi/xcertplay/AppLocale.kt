@@ -70,6 +70,15 @@ object AppLocale {
 
     /** On Android 13+, the OS is the single source of truth for the app language. */
     fun wrap(context: Context): Context {
+        CarPlayHostIntegration.appLocale?.let { host ->
+            if (Build.VERSION.SDK_INT >= 33) return context
+            val chosen = host(context)
+            if (context.resources.configuration.locales[0] == chosen) return context
+            return context.createConfigurationContext(Configuration(context.resources.configuration).apply {
+                setLocale(chosen)
+                setLayoutDirection(chosen)
+            })
+        }
         if (Build.VERSION.SDK_INT >= 33) {
             val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             if (!prefs.getBoolean(KEY_MIGRATED, false)) {
@@ -100,7 +109,8 @@ object AppLocale {
     @Suppress("DEPRECATION")
     fun enforce(context: Context): Boolean {
         if (Build.VERSION.SDK_INT >= 33) return false
-        val locale = locale(preference(context)) ?: Resources.getSystem().configuration.locales[0]
+        val locale = CarPlayHostIntegration.appLocale?.invoke(context)
+            ?: locale(preference(context)) ?: Resources.getSystem().configuration.locales[0]
         val resources = context.resources
         if (resources.configuration.locales[0] == locale) return false
         val configuration = Configuration(resources.configuration).apply {
@@ -112,6 +122,7 @@ object AppLocale {
     }
 
     fun showPicker(activity: Activity) {
+        CarPlayHostIntegration.openLanguageSettings?.let { it(activity); return }
         var selected = ALL.indexOf(preference(activity)).coerceAtLeast(0)
         activity.appDialogBuilder()
             .setTitle(R.string.language_app_language)

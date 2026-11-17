@@ -319,6 +319,10 @@ private fun GeneralEssentials(ui: SettingsUi, actions: SettingsActions, openShee
                               onVersionTap: () -> Unit) {
     val d = ui.display
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_carlink)) }) {
+        ChoiceRow(stringResource(R.string.carlink_settings_language), languageLabel(ui.unified.appLanguage),
+            { openSheet(SheetKey.of(EssentialSheet.LANGUAGE)) },
+            description = stringResource(R.string.carlink_settings_language_detail), icon = R.drawable.carlink_ic_translate)
+        GroupDivider()
         ChoiceRow(stringResource(R.string.carlink_settings_appearance), themeLabel(d.themeMode),
             { openSheet(SheetKey.of(EssentialSheet.APPEARANCE)) },
             description = stringResource(R.string.carlink_settings_appearance_detail), icon = themeIcon(d.themeMode))
@@ -474,3 +478,9 @@ private fun ErrorLogRows() {
         scope.launch { com.carlink.app.ui.diagnostics.shareConnectionLog(context) }
     }, stringResource(R.string.carlink_settings_share_log_detail), R.drawable.carlink_ic_ios_share)
 }
+
+/** A language's name in its own script; "System default" in the current language. */
+@Composable
+internal fun languageLabel(tag: String): String =
+    if (tag == com.carlink.core.settings.AppLanguage.SYSTEM) stringResource(R.string.carlink_settings_language_system)
+    else com.carlink.app.ui.components.ltrIfLatin(com.carlink.core.settings.AppLanguage.nativeName(tag))

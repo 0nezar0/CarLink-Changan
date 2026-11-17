@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
+<resources>
+    <string name="diplay">CarLink</string>
+    <string name="back_to_diplay">Back to CarLink</string>
+    <string name="could_not_start_carplay_return_to_diplay_and_check_app_per">Could not start CarPlay. Return to CarLink and check app permissions.</string>
+    <string name="allow_nearby_devices_for_diplay_in_the_head_unit_s_app_per">Разрешить близлежащие устройства для CarLink в разрешениях приложения головного устройства.</string>
+    <string name="allow_precise_location_for_diplay_in_the_head_unit_s_app_p">Разрешить точное местоположение е желаемое местоположение CarLink в разрешениях приложения головного устройства.</string>
+    <string name="existing_wifi_instructions">Connect the car and iPhone to the same external Wi-Fi in system settings. Enter its exact name and WPA2 password below; leave the password empty only for an open network. Use WPA2 or WPA2/WPA3 mixed mode and disable client isolation on the router. CarLink keeps this Wi-Fi connection and creates no hotspot.</string>
+    <string name="open_diplay_settings_hint">During CarPlay, swipe down with %1$d fingers to open the CarPlay menu.</string>
+    <string name="carplay_settings">CarPlay menu</string>
+    <string name="side_panel_full_screen">Полный экран</string>
+    <string name="setup_error_auth">Файлы аутентификации CarPlay отсутствуют в этой сборке. Настройки › Диагностика объясняет, что необходимо.</string>
+    <string name="cluster_waiting_for_map">CarLink · В ожидании карты CarPlay</string>
+    <string name="wheel_key_service_label">Колесные ключи CarLink</string>
+    <string name="wheel_key_service_description">Позволяет CarLink использовать выбранные клавиши рулевого колеса, чтобы увеличить карту CarPlay на приборной панели и перемещаться по экрану CarPlay. Он получает только нажатия клавиш и не читает экран.</string>
+    <string name="exit_dialog_title">Android Auto</string>
+    <string name="exit_dialog_stop">отключить</string>
+    <string name="exit_dialog_background">Перейти к фону</string>
+    <string name="gesture_hint">Совет: проведите пальцем по левому краю, чтобы открыть меню Android Auto.</string>
+    <string name="notification_service_running">впереди Android Auto</string>
+    <string name="boot_loop_paused_generic">Это устройство перезагружалось три достаточных раз подряд вскоре после того, как CarLink запустила беспроводную версию Android Auto, поэтому беспроводной телефон был отключен. USB продолжает работать. Откройте CarLink, чтобы включить его.</string>
+    <string name="boot_loop_paused_native_wifi_direct">Это устройство перезапускалось три раза подряд вскоре после того, как CarLink запустила беспроводную Android Auto, поэтому беспроводная связь была отключена на этот раз. На некоторых главных устройствах чипсет воспользоваться Wi-Fi отключает свете вся система, когда телефон вступает в сеть Wi-Fi Direct. Попробуйте автомобильную горячую точку как беспроводной метод. USB все еще работает</string>
+</resources>
