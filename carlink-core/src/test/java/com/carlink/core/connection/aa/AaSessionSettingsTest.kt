@@ -41,7 +41,7 @@ class AaSessionSettingsTest {
             assertEquals(false, v["cluster-map-enabled"])
             assertEquals("the picture follows the screen (#31)", 0, v["screen-orientation"])
             assertEquals(0, v["inset-left"])
-            assertEquals(0, v["inset-top"])
+            assertEquals("Changan default", 48, v["inset-top"])
             assertEquals(0, v["inset-right"])
             assertEquals(0, v["inset-bottom"])
         }

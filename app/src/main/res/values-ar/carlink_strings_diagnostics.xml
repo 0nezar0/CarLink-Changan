@@ -307,5 +307,6 @@
     <string name="carlink_about_thanks_body">شكر خاص لمطوّر CarLink الأصلي %1$s على هذا العمل الرائع.</string>
     <string name="carlink_about_thanks_builds_on">والشكر موصول لمشروعَي DiPlay وDiAuto / Open Headunit اللذين بُني عليهما CarLink.</string>
     <string name="carlink_about_thanks_qr">CarLink الأصلي</string>
+    <string name="carlink_about_changan_notice">تنويه: شعار شانجان واسمها علامات تجارية مملوكة لشركة Changan Automobile، واستخدامها هنا للتعريف فقط في نسخة خاصة غير مخصصة للتوزيع، ولا توجد أي علاقة رسمية مع الشركة.</string>
     <string name="carlink_about_credit_carlink">تطبيق CarLink الأصلي، من %1$s. %2$s</string>
 </resources>

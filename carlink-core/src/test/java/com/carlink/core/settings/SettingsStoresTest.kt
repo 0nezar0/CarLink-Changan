@@ -140,4 +140,28 @@ class SettingsStoresTest {
             assertTrue(autoConnectPaused)
         }
     }
+
+    @Test fun freshInstallsStartWithTheChanganMargins() {
+        val loaded = UnifiedSettingsStore(app).load()
+        assertEquals(48, loaded.marginTopPx)
+        assertEquals(ScreenMargins(top = 48), loaded.carPlayMargins)
+        assertEquals(ScreenMargins(top = 48), loaded.androidAutoMargins)
+    }
+
+    @Test fun anUpgradeAdoptsTheChanganMarginsOnlyWhenTheOldOnesWereStillZero() {
+        val prefs = app.getSharedPreferences("carlink_unified", android.content.Context.MODE_PRIVATE)
+        prefs.edit().clear().putInt("margin_top_px", 0).putInt("cp_margin_top_px", 0).putInt("cp_margin_left_px", 0)
+            .putInt("aa_margin_top_px", 0).commit()
+        assertEquals(ScreenMargins(top = 48), UnifiedSettingsStore(app).load().carPlayMargins)
+
+        prefs.edit().clear().putInt("margin_top_px", 0).putInt("cp_margin_top_px", 64).putInt("cp_margin_left_px", 0)
+            .putInt("cp_margin_right_px", 0).putInt("cp_margin_bottom_px", 0).commit()
+        val kept = UnifiedSettingsStore(app).load()
+        assertEquals(ScreenMargins(top = 64), kept.carPlayMargins)
+        assertEquals(0, kept.marginTopPx)
+
+        // Once adopted, a later zero is the driver's choice and stays.
+        prefs.edit().clear().putBoolean("changan_margins_adopted", true).putInt("margin_top_px", 0).commit()
+        assertEquals(0, UnifiedSettingsStore(app).load().marginTopPx)
+    }
 }

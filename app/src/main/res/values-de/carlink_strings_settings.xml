@@ -128,6 +128,9 @@
     <string name="carlink_settings_margin_top_detail">Platz unter der Benachrichtigungsleiste des Fahrzeugs lassen</string>
     <string name="carlink_settings_margin_app">CarLink-Bildschirme (oben)</string>
     <string name="carlink_settings_margin_app_detail">Lassen Sie Platz unter der Benachrichtigungsleiste des Autos auf Home und Einstellungen. Gilt sofort.</string>
+    <string name="carlink_settings_margin_reset_changan">Auf Changan-Ränder zurücksetzen</string>
+    <string name="carlink_settings_margin_reset_changan_detail">48 px an der Spitze von CarLink, CarPlay und Android Auto, nichts an den anderen Rändern: der Changan CS75 Zuzügliche Ausfälle</string>
+    <string name="carlink_settings_margin_reset_changan_done">Aktiv</string>
     <string name="carlink_settings_group_margins_carplay">CarPlay-Ränder</string>
     <string name="carlink_settings_group_margins_aa">Android Auto-Ränder</string>
     <string name="carlink_settings_margin_bottom">Boden</string>

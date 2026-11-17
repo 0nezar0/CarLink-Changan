@@ -130,6 +130,9 @@
     <string name="carlink_settings_margin_top_detail">اترك مسافة تحت شريط الإشعارات في السيارة</string>
     <string name="carlink_settings_margin_app">أعلى شاشات CarLink</string>
     <string name="carlink_settings_margin_app_detail">اترك مسافة تحت شريط الإشعارات في الرئيسية والإعدادات. يتطبّق على طول.</string>
+    <string name="carlink_settings_margin_reset_changan">الرجوع لهوامش شانجان</string>
+    <string name="carlink_settings_margin_reset_changan_detail">48 px أعلى شاشات CarLink و CarPlay و Android Auto، وبدون هوامش على باقي الحواف: الإعدادات الأساسية لشانجان CS75 Plus</string>
+    <string name="carlink_settings_margin_reset_changan_done">مستخدمة</string>
     <string name="carlink_settings_group_margins_carplay">هوامش CarPlay</string>
     <string name="carlink_settings_group_margins_aa">هوامش Android Auto</string>
     <string name="carlink_settings_margin_bottom">الأسفل</string>

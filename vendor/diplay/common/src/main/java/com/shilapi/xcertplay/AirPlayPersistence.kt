@@ -198,9 +198,16 @@ object AirPlayPersistence {
             .apply()
     }
 
+    /**
+     * Efficient video before the driver ever sets it. A host may turn it on (CarLink's Changan
+     * build does); a session still asks for H.264 when no hardware HEVC decoder exists ([HevcSupport]).
+     */
+    @Volatile
+    var hevcDefault: Boolean = false
+
     fun loadHevcEnabled(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getBoolean(KEY_HEVC_ENABLED, false)
+            .getBoolean(KEY_HEVC_ENABLED, hevcDefault)
 
     fun loadUiScalePercent(context: Context): Int = CarPlayUiScale.sanitize(
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)

@@ -20,9 +20,13 @@ import android.content.SharedPreferences
  * carmakers in India in 2025 ranked by sales", 7 January 2026; Skoda Auto India's own 2025 figure
  * of 72,665 units splits the combined Skoda-Volkswagen entry, leaving Volkswagen about 35,600,
  * just behind Renault's 36,420), then the smaller makes, then the luxury makes, then [OTHER].
+ *
+ * This build is made for a Changan CS75 Plus head unit, so [CHANGAN] comes first and is the brand a
+ * fresh install starts with ([DEFAULT]); it only labels the car and sets nothing in the engines.
  */
 enum class CarBrand(val displayName: String, val profile: VehicleProfile = VehicleProfile.GENERIC, val luxury: Boolean = false,
                     val motorcycle: Boolean = false) {
+    CHANGAN("Changan"),
     MARUTI_SUZUKI("Maruti Suzuki"),
     MAHINDRA("Mahindra"),
     TATA("Tata Motors"),
@@ -61,6 +65,9 @@ enum class CarBrand(val displayName: String, val profile: VehicleProfile = Vehic
     ;
 
     companion object {
+        /** The brand a fresh install starts with on a screen that is not a BYD DiLink unit. */
+        val DEFAULT: CarBrand = CHANGAN
+
         /** The brand this screen identifies as when the driver never chose: BYD on a BYD DiLink unit, else none. */
         fun detect(context: Context): CarBrand? = detected(VehicleProfile.detect(context))
 
@@ -78,18 +85,30 @@ enum class CarBrand(val displayName: String, val profile: VehicleProfile = Vehic
  * `BYD_DILINK` becomes [CarBrand.BYD], `GENERIC` becomes [CarBrand.OTHER]. With nothing stored,
  * [chosen] is null and [profile] is what [detect] finds, as before brands existed.
  */
-class CarBrandStore(private val prefs: SharedPreferences, private val detect: () -> VehicleProfile) {
+class CarBrandStore(
+    private val prefs: SharedPreferences,
+    /** The brand in effect before the driver chooses, on a screen not detected as BYD ([CarBrand.DEFAULT] in the app). */
+    private val fallback: CarBrand?,
+    private val detect: () -> VehicleProfile,
+) {
+
+    constructor(prefs: SharedPreferences, detect: () -> VehicleProfile) : this(prefs, null, detect)
 
     constructor(context: Context) : this(
         context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE),
+        CarBrand.DEFAULT,
         { VehicleProfile.detect(context.applicationContext) },
     )
 
-    /** The driver's choice, or null when they never chose. */
+    /**
+     * The driver's choice; with none stored, [fallback] (Changan in this build) unless this screen
+     * is a detected BYD DiLink unit; null when there is neither.
+     */
     fun chosen(): CarBrand? {
         prefs.getString(KEY_BRAND, null)?.let { name -> runCatching { CarBrand.valueOf(name) }.getOrNull()?.let { return it } }
         val legacy = prefs.getString(KEY_LEGACY_PROFILE, null)
-            ?.let { runCatching { VehicleProfile.valueOf(it) }.getOrNull() } ?: return null
+            ?.let { runCatching { VehicleProfile.valueOf(it) }.getOrNull() }
+            ?: return fallback?.takeIf { detect() == VehicleProfile.GENERIC }
         val brand = CarBrand.fromProfile(legacy)
         prefs.edit().putString(KEY_BRAND, brand.name).remove(KEY_LEGACY_PROFILE).apply()
         return brand

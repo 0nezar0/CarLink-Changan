@@ -120,6 +120,9 @@
     <string name="carlink_settings_margin_top">Topo</string>
     <string name="carlink_settings_margin_app">Ecrãs CarLink (top)</string>
     <string name="carlink_settings_margin_app_detail">Deixe espaço abaixo da barra de notificação do carro em Casa e Configurações. Aplica-se imediatamente.</string>
+    <string name="carlink_settings_margin_reset_changan">Restaurar as margens da Changan</string>
+    <string name="carlink_settings_margin_reset_changan_detail">48 px no topo do CarLink, CarPlay e Android Auto, nada nas outras bordas: o Changan CS75 Mais predefinições</string>
+    <string name="carlink_settings_margin_reset_changan_done">Em uso</string>
     <string name="carlink_settings_group_margins_carplay">Margens do CarPlay</string>
     <string name="carlink_settings_group_margins_aa">Margens do Android Auto</string>
     <string name="carlink_settings_margin_bottom">Fundo</string>

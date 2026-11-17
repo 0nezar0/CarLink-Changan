@@ -123,6 +123,8 @@
     <string name="carlink_settings_margin_top_detail">कार के नोटिफिकेशन बार के नीचे स्पेस छोड़ें</string>
     <string name="carlink_settings_margin_app">CarLink स्क्रीन (top)</string>
     <string name="carlink_settings_margin_app_detail">घर और सेटिंग्स पर कार की अधिसूचना बार के नीचे अंतरिक्ष छोड़ दें। एक बार में लागू होता है।</string>
+    <string name="carlink_settings_margin_reset_changan">Changan मार्जिन को रीसेट करें</string>
+    <string name="carlink_settings_margin_reset_changan_done">उपयोग में</string>
     <string name="carlink_settings_group_margins_carplay">CarPlay मार्जिन</string>
     <string name="carlink_settings_group_margins_aa">Android Auto मार्जिन</string>
     <string name="carlink_settings_margin_bottom">नीचे</string>

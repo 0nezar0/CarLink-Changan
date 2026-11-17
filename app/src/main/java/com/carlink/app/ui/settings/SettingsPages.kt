@@ -59,7 +59,7 @@ internal fun CategoryPage(
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(CarLinkTokens.dimens.gutter)) {
         when (category) {
             SettingsCategory.CONNECTION -> ConnectionEssentials(ui, actions, openSheet)
-            SettingsCategory.DISPLAY -> DisplayEssentials(ui, openSheet)
+            SettingsCategory.DISPLAY -> DisplayEssentials(ui, actions, openSheet)
             SettingsCategory.SOUND -> SoundEssentials(ui, actions, openSheet)
             SettingsCategory.NAVIGATION -> NavigationEssentials(ui, actions)
             SettingsCategory.CAR -> CarEssentials(ui, openSheet)
@@ -178,7 +178,7 @@ private fun PausedCard(onResume: () -> Unit) {
 }
 
 @Composable
-private fun DisplayEssentials(ui: SettingsUi, openSheet: (String) -> Unit) {
+private fun DisplayEssentials(ui: SettingsUi, actions: SettingsActions, openSheet: (String) -> Unit) {
     val u = ui.unified
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_projection)) }) {
         ChoiceRow(stringResource(R.string.carlink_settings_picture), pictureLabel(u.picture), { openSheet(SheetKey.of(EssentialSheet.PICTURE)) },
@@ -208,6 +208,16 @@ private fun DisplayEssentials(ui: SettingsUi, openSheet: (String) -> Unit) {
     // Each projection keeps its own set: CarPlay and Android Auto draw their bars differently.
     ProjectionMargins(R.string.carlink_settings_group_margins_carplay, carPlay = true, u.carPlayMargins, openSheet)
     ProjectionMargins(R.string.carlink_settings_group_margins_aa, carPlay = false, u.androidAutoMargins, openSheet)
+    // Back to the Changan CS75 Plus defaults (48 px at the top) for all three; lit only when something differs.
+    val changan = com.carlink.core.settings.ScreenMargins.CHANGAN
+    val atChangan = u.marginTopPx == changan.top && u.carPlayMargins == changan && u.androidAutoMargins == changan
+    GlassGroup {
+        SettingsRow(stringResource(R.string.carlink_settings_margin_reset_changan),
+            description = stringResource(R.string.carlink_settings_margin_reset_changan_detail),
+            icon = R.drawable.carlink_ic_restart_alt, enabled = !atChangan, role = androidx.compose.ui.semantics.Role.Button,
+            onClick = { actions.update { it.copy(marginTopPx = changan.top, carPlayMargins = changan, androidAutoMargins = changan) } },
+            value = if (atChangan) stringResource(R.string.carlink_settings_margin_reset_changan_done) else null)
+    }
 }
 
 @Composable
@@ -302,7 +312,7 @@ private fun CarEssentials(ui: SettingsUi, openSheet: (String) -> Unit) {
         ChoiceRow(stringResource(R.string.carlink_settings_car_brand), carBrandLabel(ui.carBrand ?: ui.detectedBrand),
             { openSheet(SheetKey.of(EssentialSheet.CAR_BRAND)) },
             description = stringResource(R.string.carlink_settings_car_brand_detail) + "\n" + detectedCarLabel(ui.detectedBrand),
-            icon = R.drawable.carlink_ic_directions_car_filled, tags = { NextConnectionTag() })
+            icon = brandLogo(ui.carBrand ?: ui.detectedBrand) ?: R.drawable.carlink_ic_directions_car_filled, tags = { NextConnectionTag() })
         GroupDivider()
         val learned = ui.unified.wheelKeys.size
         ChoiceRow(stringResource(R.string.carlink_wheel_keys),

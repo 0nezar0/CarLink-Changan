@@ -316,4 +316,7 @@
     <string name="carlink_settings_language_system">سسٹم کی زبان</string>
     <string name="carlink_settings_language_system_detail">ہیڈ یونٹ کی زبان اپناتا ہے، یا ترجمہ نہ ہو تو انگریزی</string>
     <string name="carlink_settings_language_note">انگریزی اور عربی ہاتھ سے لکھی گئی ہیں؛ باقی زبانیں مشینی ترجمہ ہیں۔</string>
+    <string name="carlink_settings_margin_reset_changan">شانگان کے مارجن پر واپس جائیں</string>
+    <string name="carlink_settings_margin_reset_changan_detail">CarLink، CarPlay اور Android Auto کے اوپر 48 px، باقی کناروں پر کچھ نہیں: Changan CS75 Plus کی بنیادی ترتیبات</string>
+    <string name="carlink_settings_margin_reset_changan_done">استعمال میں</string>
 </resources>

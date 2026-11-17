@@ -25,6 +25,10 @@ class CarLinkApplication : App() {
     override fun onCreate() {
         // Settings › General › Language, in this process's resources before any text is read.
         installLanguage()
+        // Changan CS75 Plus build: CarPlay's Efficient video (HEVC) starts on. A stored choice wins,
+        // and without a hardware HEVC decoder the session asks for H.264 (DiPlay HevcSupport; under
+        // Automatic picture PicturePolicy also stores it off).
+        com.shilapi.xcertplay.AirPlayPersistence.hevcDefault = true
         // Before App.onCreate: it creates the engine's notification channels from these names.
         brandEngines()
         super.onCreate()

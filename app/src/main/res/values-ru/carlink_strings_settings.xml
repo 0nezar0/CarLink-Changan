@@ -125,6 +125,9 @@
     <string name="carlink_settings_margin_top_detail">Оставьте место под панелью уведомлений автомобиля</string>
     <string name="carlink_settings_margin_app">Экраны CarLink (вверху)</string>
     <string name="carlink_settings_margin_app_detail">Оставьте место под панелью уведомлений автомобиля в разделе «Домой и настройки». Применяется сразу.</string>
+    <string name="carlink_settings_margin_reset_changan">Сбросить к отступам Changan</string>
+    <string name="carlink_settings_margin_reset_changan_detail">48 px в верхней части CarLink, CarPlay и Android Auto, ничего на других краях: Changan CS75 Плюс дефолты</string>
+    <string name="carlink_settings_margin_reset_changan_done">Используются</string>
     <string name="carlink_settings_group_margins_carplay">Отступы CarPlay</string>
     <string name="carlink_settings_group_margins_aa">Отступы Android Auto</string>
     <string name="carlink_settings_margin_bottom">нижняя часть</string>

@@ -46,6 +46,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.background
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -329,8 +331,9 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
 }
 
 /**
- * The car brand as a grid of large text tiles (no logos: they are trademarks): the makes popular
- * in India by sales, then luxury makes, then "Other / not listed". Below it, what the choice does
+ * The car brand as a grid of large text tiles: Changan first (this build's car, the only tile
+ * with its logo; see [brandLogo]), the makes popular in India by sales, then luxury makes, then
+ * "Other / not listed". Below it, what the choice does
  * (only BYD changes anything) and what this screen was detected as. Settings › Car › Car brand and
  * the setup's car step. Both hosts scroll, so the grid is a plain column of rows, not a lazy grid.
  */
@@ -434,6 +437,17 @@ private fun BrandTile(brand: CarBrand, selected: Boolean, narrow: Boolean, onCli
         shape = RoundedCornerShape(if (car) 24.dp else 18.dp), role = Role.RadioButton) {
         Row(Modifier.fillMaxSize().padding(horizontal = if (car) 18.dp else 14.dp, vertical = if (car) 12.dp else 8.dp),
             verticalAlignment = Alignment.CenterVertically) {
+            brandLogo(brand)?.let { logo ->
+                // On a white chip so the dark blue mark reads on the graphite glass too.
+                // Same footprint as the settings rows' icon tiles (RowGlyph: 56dp in a car, 40dp
+                // elsewhere), in dp so it scales with the panel's density; the mark keeps its aspect.
+                val chip = if (car) 56.dp else 40.dp
+                Box(Modifier.size(chip).clip(CircleShape).background(Color.White), contentAlignment = Alignment.Center) {
+                    androidx.compose.foundation.Image(painterResource(logo), null, Modifier.size(chip * 0.64f),
+                        contentScale = androidx.compose.ui.layout.ContentScale.Fit)
+                }
+                Spacer(Modifier.width(if (car) 14.dp else 10.dp))
+            }
             Column(Modifier.weight(1f)) {
                 // "Mercedes-Benz" may wrap after its hyphen, never inside a word.
                 Text(carBrandLabel(brand).replace("-", "-\u200B"),
@@ -823,5 +837,15 @@ private fun AppearancePreview(mode: ThemeMode) {
 private tailrec fun android.content.Context.findActivity(): android.app.Activity? = when (this) {
     is android.app.Activity -> this
     is android.content.ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
+/**
+ * A make's logo, where this build ships one: Changan only (Wikimedia Commons, CC BY-SA 4.0; a
+ * trademark of Changan Automobile, used to identify the car in a private build).
+ */
+@androidx.annotation.DrawableRes
+internal fun brandLogo(brand: CarBrand?): Int? = when (brand) {
+    CarBrand.CHANGAN -> R.drawable.carlink_logo_changan
     else -> null
 }

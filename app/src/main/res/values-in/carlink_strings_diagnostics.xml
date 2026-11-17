@@ -266,5 +266,6 @@
     <string name="carlink_about_thanks_body">Terima kasih khusus untuk %1$s, pengembang asli CarLink, atas karya yang luar biasa ini.</string>
     <string name="carlink_about_thanks_builds_on">Terima kasih juga untuk DiPlay dan DiAuto / Open Headunit, proyek yang menjadi dasar CarLink.</string>
     <string name="carlink_about_thanks_qr">CarLink Asli</string>
+    <string name="carlink_about_changan_notice">Perhatikan: nama dan logo Changan adalah merek dagang Changan Automobile, digunakan di sini hanya untuk mengidentifikasi mobil dalam sebuah bangunan pribadi yang bukan untuk distribusi. Tidak ada hubungan resmi dengan perusahaan.</string>
     <string name="carlink_about_credit_carlink">Aplikasi CarLink asli, oleh %1$s. %2$s</string>
 </resources>

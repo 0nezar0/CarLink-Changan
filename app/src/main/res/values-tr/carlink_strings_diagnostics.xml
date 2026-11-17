@@ -260,4 +260,5 @@
     <string name="carlink_about_thanks_body">CarLink\'in asıl geliştiricisi %1$s\'e bu harika çalışma için özel teşekkürler.</string>
     <string name="carlink_about_thanks_builds_on">CarLink\'in üzerine kurulduğu DiPlay ve DiAuto / Open Headunit projelerine de teşekkürler.</string>
     <string name="carlink_about_thanks_qr">Orijinal CarLink</string>
+    <string name="carlink_about_changan_notice">Duyuru: Changan adı ve logo Changan Automobile markalarıdır, sadece dağıtım için olmayan özel bir binada araba tanımlamak için kullanılır. Şirketle resmi bir bağlantı yoktur.</string>
 </resources>

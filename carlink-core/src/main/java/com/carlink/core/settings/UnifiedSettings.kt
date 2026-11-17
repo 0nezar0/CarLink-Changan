@@ -49,11 +49,11 @@ data class UnifiedSettings(
      * Extra pixels kept clear of the car's notification bar at the top of CarLink's own screens
      * (Home, Settings, setup), applied at once (Settings › Display › Screen margins).
      */
-    val marginTopPx: Int = 0,
+    val marginTopPx: Int = ScreenMargins.CHANGAN.top,
     /** Extra pixels kept clear of the car's bars on each edge of CarPlay; from the next connection. */
-    val carPlayMargins: ScreenMargins = ScreenMargins(),
+    val carPlayMargins: ScreenMargins = ScreenMargins.CHANGAN,
     /** The same for Android Auto, set on its own: the two lay out their bars differently. */
-    val androidAutoMargins: ScreenMargins = ScreenMargins(),
+    val androidAutoMargins: ScreenMargins = ScreenMargins.CHANGAN,
     /** CarLink's language ([AppLanguage.SUPPORTED]); [AppLanguage.SYSTEM] follows the device. */
     val appLanguage: String = AppLanguage.SYSTEM,
 )
@@ -61,6 +61,15 @@ data class UnifiedSettings(
 /** Pixels kept clear on each edge of a projection (activity pixels, never negative). */
 data class ScreenMargins(val left: Int = 0, val top: Int = 0, val right: Int = 0, val bottom: Int = 0) {
     fun sanitized() = ScreenMargins(left.coerceAtLeast(0), top.coerceAtLeast(0), right.coerceAtLeast(0), bottom.coerceAtLeast(0))
+
+    companion object {
+        /**
+         * The Changan CS75 Plus head unit's defaults (this build's car): 48 px clear of its notification
+         * bar at the top, nothing on the other edges. Used for CarPlay, Android Auto and CarLink's own
+         * screens ([UnifiedSettings.marginTopPx]) until the driver changes them in Settings › Display.
+         */
+        val CHANGAN = ScreenMargins(top = 48)
+    }
 }
 
 data class WifiDetails(val ssid: String = "", val password: String = "")
@@ -87,7 +96,24 @@ class UnifiedSettingsStore(context: Context) {
     private val appContext = context.applicationContext
     private val prefs = appContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
-    fun load() = UnifiedSettings(
+    fun load(): UnifiedSettings {
+        adoptChanganMargins()
+        return read()
+    }
+
+    /**
+     * Once (1.0.6): margins still at the old all-zero default are dropped so the Changan defaults
+     * ([ScreenMargins.CHANGAN]) apply; any margin the driver set to something else is kept.
+     */
+    private fun adoptChanganMargins() {
+        if (prefs.getBoolean(KEY_CHANGAN_MARGINS, false)) return
+        val keys = prefs.all.keys.filter { MARGIN_KEY.matches(it) }
+        val edit = prefs.edit().putBoolean(KEY_CHANGAN_MARGINS, true)
+        if (keys.all { prefs.getInt(it, 0) == 0 }) keys.forEach { edit.remove(it) }
+        edit.apply()
+    }
+
+    private fun read() = UnifiedSettings(
         connectionMethod = enumOr(prefs.getString("connection_method", null), ConnectionMethod.AUTOMATIC),
         carHotspot = WifiDetails(prefs.getString("car_hotspot_ssid", "")!!, prefs.getString("car_hotspot_password", "")!!),
         homeWifi = WifiDetails(prefs.getString("home_wifi_ssid", "")!!, prefs.getString("home_wifi_password", "")!!),
@@ -113,7 +139,7 @@ class UnifiedSettingsStore(context: Context) {
         resumeMusic = prefs.getBoolean("resume_music", false),
         micGainDb = prefs.getInt("mic_gain_db", 0),
         headunitServerAddress = prefs.getString("headunit_server_address", "")!!,
-        marginTopPx = prefs.getInt("margin_top_px", 0).coerceAtLeast(0),
+        marginTopPx = prefs.getInt("margin_top_px", ScreenMargins.CHANGAN.top).coerceAtLeast(0),
         carPlayMargins = margins("cp_"),
         androidAutoMargins = margins("aa_"),
         appLanguage = appLanguage(),
@@ -128,6 +154,9 @@ class UnifiedSettingsStore(context: Context) {
      */
     private fun margins(prefix: String): ScreenMargins {
         val own = prefs.contains("${prefix}margin_top_px")
+        val shared = prefs.contains("margin_top_px") || prefs.contains("margin_left_px")
+        // Nothing saved for this engine, nor the shared set before 1.0.3: the Changan defaults.
+        if (!own && !shared) return ScreenMargins.CHANGAN
         fun read(edge: String) = prefs.getInt(if (own) "${prefix}margin_${edge}_px" else "margin_${edge}_px", 0)
         return ScreenMargins(read("left"), read("top"), read("right"), read("bottom")).sanitized()
     }
@@ -177,5 +206,7 @@ class UnifiedSettingsStore(context: Context) {
 
     private companion object {
         const val PREFS = "carlink_unified"
+        const val KEY_CHANGAN_MARGINS = "changan_margins_adopted"
+        val MARGIN_KEY = Regex("(cp_|aa_)?margin_(left|top|right|bottom)_px")
     }
 }

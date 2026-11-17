@@ -127,6 +127,9 @@
     <string name="carlink_settings_margin_top_detail">Tinggalkan ruang di bawah batang pemberitahuan mobil</string>
     <string name="carlink_settings_margin_app">Layar CarLink (atas)</string>
     <string name="carlink_settings_margin_app_detail">Tinggalkan ruang di bawah batang pemberitahuan mobil pada Rumah dan Pengaturan. Terapan sekaligus.</string>
+    <string name="carlink_settings_margin_reset_changan">Reset ke margin Changan</string>
+    <string name="carlink_settings_margin_reset_changan_detail">48 px di atas CarLink, CarPlay dan Android Auto, tidak ada pada sisi lain: yang Changan CS 75 Plus baku</string>
+    <string name="carlink_settings_margin_reset_changan_done">Sedang dipakai</string>
     <string name="carlink_settings_group_margins_carplay">Margin CarPlay</string>
     <string name="carlink_settings_group_margins_aa">Margin Android Auto</string>
     <string name="carlink_settings_margin_bottom">Dasar</string>

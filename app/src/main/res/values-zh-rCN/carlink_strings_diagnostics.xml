@@ -255,5 +255,6 @@
     <string name="carlink_about_thanks_body">特别感谢 CarLink 的原作者 %1$s 带来这项出色的工作。</string>
     <string name="carlink_about_thanks_builds_on">同样感谢 CarLink 所基于的 DiPlay 和 DiAuto / Open Headunit 项目。</string>
     <string name="carlink_about_thanks_qr">原始 CarLink</string>
+    <string name="carlink_about_changan_notice">通知:Changan名称和标志是Changan Automobile的商标,此处仅用于在不供发行的私人建筑中识别汽车. 与公司没有正式联系.</string>
     <string name="carlink_about_credit_carlink">原始的CarLink应用, by%1$s.%2$s</string>
 </resources>

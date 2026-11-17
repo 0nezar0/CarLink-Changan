@@ -279,6 +279,9 @@ private fun ThanksCard() {
             QrPanel(stringResource(R.string.carlink_about_thanks_qr), AppInfo.ORIGINAL_CARLINK_SOURCE, qrSize,
                 Modifier.semantics(mergeDescendants = true) {}.then(
                     Modifier.clickable { openLink(context, AppInfo.ORIGINAL_CARLINK_SOURCE) }))
+            Spacer(Modifier.height(if (isCar) 16.dp else 12.dp))
+            Text(stringResource(R.string.carlink_about_changan_notice), style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.fillMaxWidth())
         }
     }
 }

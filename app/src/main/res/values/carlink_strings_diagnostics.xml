@@ -349,6 +349,7 @@
     <string name="carlink_about_thanks_body">Special thanks to %1$s, the original developer of CarLink, for this wonderful work.</string>
     <string name="carlink_about_thanks_builds_on">Thanks also to DiPlay and DiAuto / Open Headunit, the projects CarLink builds on.</string>
     <string name="carlink_about_thanks_qr">Original CarLink</string>
+    <string name="carlink_about_changan_notice">Notice: the Changan name and logo are trademarks of Changan Automobile, used here only to identify the car in a private build that is not for distribution. There is no official connection with the company.</string>
     <string name="carlink_about_credit_carlink_name" translatable="false">CarLink</string>
     <string name="carlink_about_credit_carlink">The original CarLink app, by %1$s. %2$s</string>
 </resources>

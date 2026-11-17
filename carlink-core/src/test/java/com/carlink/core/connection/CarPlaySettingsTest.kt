@@ -131,7 +131,8 @@ class CarPlaySettingsTest {
         assertFalse(BydOutputSettings.batteryToIphone(app))
         assertFalse(AirPlayPersistence.loadClusterMapEnabled(app))
         assertFalse(CarPlayHostIntegration.vehicleIntegrations)
-        assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
+        // The Changan default: 48 px clear of the notification bar.
+        assertEquals(CarPlayHostIntegration.DisplayMargins(top = 48), CarPlayHostIntegration.displayMargins)
         assertEquals("CarLink", AirPlayPersistence.loadOemLabel(app))
     }
 
@@ -141,8 +142,10 @@ class CarPlaySettingsTest {
             androidAutoMargins = com.carlink.core.settings.ScreenMargins(1, 2, 3, 4))))
         assertEquals(CarPlayHostIntegration.DisplayMargins(left = 8, top = 48, right = 16, bottom = 24),
             CarPlayHostIntegration.displayMargins)
-        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings()))
+        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(carPlayMargins = com.carlink.core.settings.ScreenMargins())))
         assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
+        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings()))
+        assertEquals(CarPlayHostIntegration.DisplayMargins(top = 48), CarPlayHostIntegration.displayMargins)
     }
 
     @Test fun clearedSameWifiDetailsAreClearedInDiPlay() {

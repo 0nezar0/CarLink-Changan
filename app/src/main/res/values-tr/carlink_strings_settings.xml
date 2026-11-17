@@ -108,10 +108,12 @@
     <string name="carlink_settings_time_earlier">15 daha önce</string>
     <string name="carlink_settings_time_later">15 daha sonra</string>
     <string name="carlink_settings_group_margins">Ekran marjları</string>
-    <string name="carlink_settings_margins_detail">CarPlay ve Android Auto araba durumu veya navigasyon barından uzak, bu yüzden düğmeler basına kolay kalıyor. Üst değer aynı zamanda peds Settings and Home doğrudan uzakta. CarPlay ve Android Auto bir sonraki bağlantıdan alır.</string>
     <string name="carlink_settings_margin_top_detail">Arabanın bildirim çubuğunun altında yer bırak</string>
     <string name="carlink_settings_margin_app">CarLink ekranları (top)</string>
     <string name="carlink_settings_margin_app_detail">Arabanın Home ve Ayarlar üzerindeki bildirim çubuğunun altında yer bırakın. Bir seferde uygun.</string>
+    <string name="carlink_settings_margin_reset_changan">Changan kenar boşluklarına sıfırla</string>
+    <string name="carlink_settings_margin_reset_changan_detail">48 px at the top of CarLink, CarPlay and Android Auto, diğer kenarlarda hiçbir şey: Changan CS75 Artı varsayılanlar</string>
+    <string name="carlink_settings_margin_reset_changan_done">Kullanımda</string>
     <string name="carlink_settings_group_margins_carplay">CarPlay kenar boşlukları</string>
     <string name="carlink_settings_group_margins_aa">Android Auto kenar boşlukları</string>
     <string name="carlink_settings_margin_bottom">Alt</string>
