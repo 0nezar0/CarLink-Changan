@@ -2,4 +2,5 @@
 <!-- Arabic (ar) translation of carlink_core_strings.xml. CarLink follows the device language. -->
 <resources>
     <string name="carlink_core_ipad_no_carplay">لا يمكن لأجهزة iPad وiPod تشغيل CarPlay. صِل iPhone.</string>
+    <string name="carlink_core_lite_mode_engaged">الصورة كانت تتعب المعالج، فالوضع الخفيف يشتغل من الاتصال الجاي: 30 إطار في الثانية بنفس الدقة.</string>
 </resources>

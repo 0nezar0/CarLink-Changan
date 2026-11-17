@@ -758,8 +758,11 @@ class AndroidMediaSink(
         }
     }
 
-    private companion object {
-        const val TELEPHONY_AUDIO_TYPE = "telephony"
+    companion object {
+        private const val TELEPHONY_AUDIO_TYPE = "telephony"
+
+        /** CarLink: the video decoder had no input buffer in time (Lite mode's Auto counts these). */
+        @Volatile var onVideoInputStalled: (() -> Unit)? = null
     }
 }
 
@@ -1553,6 +1556,7 @@ private class VideoDecoder(
             dropMtkTuning("video decoder input stalled")
             dropMtkCodec2LowLatency("video decoder input stalled")
             recover("video decoder input stalled")
+            AndroidMediaSink.onVideoInputStalled?.invoke()
             return
         }
         val input = checkNotNull(codec.getInputBuffer(index)) { "Decoder input buffer unavailable" }

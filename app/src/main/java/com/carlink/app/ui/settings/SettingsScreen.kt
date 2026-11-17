@@ -145,6 +145,7 @@ fun SettingsScreen(vm: CarLinkViewModel, onBack: () -> Unit, navigate: (Route) -
         object : SettingsActions {
             override fun update(change: (UnifiedSettings) -> UnifiedSettings) = vm.updateSettings(change)
             override fun setAutoConnectBluetooth(on: Boolean) = vm.setAutoConnectBluetooth(on)
+            override fun reportInputs() = vm.reportInputs()
             override fun setAutoConnectUsb(on: Boolean) = vm.setAutoConnectUsb(on)
             override fun setStartOnBoot(on: Boolean) = vm.setStartOnBoot(on)
             override fun setFloatingSwitcher(on: Boolean) = vm.setFloatingSwitcher(on)

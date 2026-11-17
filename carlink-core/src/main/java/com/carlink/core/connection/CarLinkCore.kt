@@ -108,6 +108,9 @@ object CarLinkCore {
             // The car's name, the vehicle profile's BYD gate, the waiting view (DIPLAY.md §12, F2).
             CarPlayAdapter.install(app, Connection.vehicleProfile(app))
             CarPlayWaitingView.register(config.waitingView)
+            // Lite mode's Auto (settings/LiteMode) counts CarPlay's decoder stalls.
+            com.shilapi.xcertplay.media.AndroidMediaSink.onVideoInputStalled =
+                { LiteModeMonitor.onDecoderStrain(app, com.carlink.core.core.Engine.CARPLAY, null) }
             UsbWatcher.get(app).start()
             app.registerComponentCallbacks(MemoryTrimmer)
             deferStartupWork(app)

@@ -76,6 +76,8 @@ import com.carlink.core.settings.ConnectionMethod
 import com.carlink.core.settings.Control
 import com.carlink.core.settings.DayNight
 import com.carlink.core.settings.InterfaceSize
+import com.carlink.core.settings.LiteMode
+import com.carlink.core.settings.LiteModeMemory
 import com.carlink.core.settings.Picture
 import com.carlink.core.settings.WifiDetails
 import com.carlink.core.settings.isValid
@@ -225,6 +227,21 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
             },
             u.audioDelay, onSelect = { a -> select { it.copy(audioDelay = a) } }, onDismiss = onDismiss,
         )
+        EssentialSheet.LITE_MODE -> {
+            val context = androidx.compose.ui.platform.LocalContext.current
+            ChoiceSheet(
+                stringResource(R.string.carlink_settings_lite_mode), stringResource(R.string.carlink_settings_lite_mode_sheet_body), true,
+                LiteMode.entries.map { m ->
+                    Preset(m, liteModeLabel(m), stringResource(when (m) {
+                        LiteMode.OFF -> R.string.carlink_settings_lite_mode_off_detail
+                        LiteMode.AUTO -> R.string.carlink_settings_lite_mode_auto_detail
+                        LiteMode.ALWAYS -> R.string.carlink_settings_lite_mode_always_detail
+                    }))
+                },
+                // Choosing again clears what Auto learned, so the driver can always undo it.
+                u.liteMode, onSelect = { m -> LiteModeMemory(context).reset(); select { it.copy(liteMode = m) } }, onDismiss = onDismiss,
+            )
+        }
         EssentialSheet.MEDIA_LEVEL, EssentialSheet.NAVIGATION_LEVEL, EssentialSheet.CALL_LEVEL, EssentialSheet.MIC_GAIN -> {
             val sheet = SheetKey.essential(key)!!
             val (title, body, current) = when (sheet) {
@@ -261,7 +278,7 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
         EssentialSheet.LANGUAGE -> {
             val context = androidx.compose.ui.platform.LocalContext.current
             ChoiceSheet(
-                stringResource(R.string.carlink_settings_language), stringResource(R.string.carlink_settings_language_note), false,
+                stringResource(R.string.carlink_settings_language), null, false,
                 com.carlink.core.settings.AppLanguage.SUPPORTED.map { tag ->
                     Preset(tag, languageLabel(tag),
                         if (tag == com.carlink.core.settings.AppLanguage.SYSTEM) stringResource(R.string.carlink_settings_language_system_detail) else null,

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
-<resources>
-    <string name="carlink_core_ipad_no_carplay">iPads et iPods ne peuvent pas fonctionner CarPlay. Branchez un iPhone.</string>
-</resources>

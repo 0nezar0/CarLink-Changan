@@ -12,6 +12,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
+import com.andrerinas.openheadunit.HostIntegration
 import androidx.core.content.ContextCompat
 import com.carlink.core.connection.aa.AaCommandReceiver
 import com.carlink.core.connection.aa.AaProtocol
@@ -94,6 +95,7 @@ class AndroidAutoAdapter internal constructor(
         val kind = intent.getStringExtra(AaProtocol.EXTRA_KIND) ?: return@receiver
         val detail = intent.getStringExtra(AaProtocol.EXTRA_DETAIL)
         Log.i(TAG, "engine event $kind${detail?.let { " ($it)" } ?: ""}")
+        if (kind == HostIntegration.EngineEvent.DECODER_BOTTLENECK.name) LiteModeMonitor.onDecoderStrain(app, Engine.ANDROID_AUTO, detail)
         val s = session ?: return@receiver
         deliver(s, s.tracker.onEvent(kind, detail, clock()))
     }

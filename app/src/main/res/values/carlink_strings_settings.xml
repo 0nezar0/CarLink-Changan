@@ -155,8 +155,8 @@
     <string name="carlink_settings_margin_right_detail">Leave space at the right edge</string>
     <string name="carlink_settings_margin_none">None</string>
     <string name="carlink_settings_margin_px">%d px</string>
-    <string name="carlink_settings_save_log">Save error log</string>
-    <string name="carlink_settings_save_log_detail">Saves the latest connection attempts to Downloads/CarLink as a text file. Works offline.</string>
+    <string name="carlink_settings_save_log">Save full report</string>
+    <string name="carlink_settings_save_log_detail">Saves the app version, device, settings, phone sessions and the full log in one text file: on a USB flash drive if one is in, else Downloads/CarLink. Saved passwords are left out. Works offline.</string>
     <string name="carlink_settings_share_log">Share error log</string>
     <string name="carlink_settings_share_log_detail">Sends the same file through another app on this screen</string>
 
@@ -168,6 +168,13 @@
     <string name="carlink_settings_sound_bluetooth">Through the car’s Bluetooth</string>
     <string name="carlink_settings_sound_carlink_detail">The head unit plays all sound. Recommended.</string>
     <string name="carlink_settings_sound_bluetooth_detail">Music goes through the car’s own Bluetooth audio instead.</string>
+    <string name="carlink_settings_lite_mode">Lite mode</string>
+    <string name="carlink_settings_lite_mode_detail">Smoother picture on a slow screen, with the same sharpness</string>
+    <string name="carlink_settings_lite_mode_sheet_body">30 frames per second instead of 60, and the picture drawn straight to the screen. The resolution and quality stay the same, so nothing turns pixelated or blurry. Applies only when Picture is Automatic.</string>
+    <string name="carlink_settings_lite_mode_always">Always</string>
+    <string name="carlink_settings_lite_mode_off_detail">Default. The picture stays as Picture sets it.</string>
+    <string name="carlink_settings_lite_mode_auto_detail">Turns on by itself from the next connection when the picture struggles, and says so. Choose again to reset it.</string>
+    <string name="carlink_settings_lite_mode_always_detail">Lite from every connection.</string>
     <string name="carlink_settings_audio_delay">CarPlay audio delay</string>
     <string name="carlink_settings_audio_delay_detail">How far music and video sound is buffered behind the picture</string>
     <string name="carlink_settings_audio_delay_low">Low</string>
@@ -348,5 +355,4 @@
     <string name="carlink_settings_language_detail">The language of CarLink and its CarPlay and Android Auto screens</string>
     <string name="carlink_settings_language_system">System default</string>
     <string name="carlink_settings_language_system_detail">Follows the head unit\'s language, or English if CarLink has no translation for it</string>
-    <string name="carlink_settings_language_note">English and Arabic are written by hand; the other languages are machine-translated.</string>
 </resources>

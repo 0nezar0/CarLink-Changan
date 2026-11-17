@@ -15,6 +15,7 @@ import com.carlink.core.core.Engine
 import com.carlink.core.settings.AdvancedSetting
 import com.carlink.core.settings.AdvancedSettings
 import com.carlink.core.settings.AudioDelay
+import com.carlink.core.settings.LiteMode
 import com.carlink.core.settings.ConnectionMethod
 import com.carlink.core.settings.Control
 import com.carlink.core.settings.DayNight
@@ -69,6 +70,8 @@ interface SettingsActions {
     /** Changes the unified settings; both engines receive them. */
     fun update(change: (UnifiedSettings) -> UnifiedSettings) {}
     fun setAutoConnectBluetooth(on: Boolean) {}
+    /** What Save full report reads from the app's state (Settings › Help). */
+    fun reportInputs() = com.carlink.app.diagnostics.IssueReporter.Inputs(emptyMap(), emptyList(), null, emptyList())
     fun setAutoConnectUsb(on: Boolean) {}
     fun setStartOnBoot(on: Boolean) {}
     fun setFloatingSwitcher(on: Boolean) {}
@@ -163,7 +166,7 @@ internal val SettingsCategory.selectedIcon: Int
 /** The bottom sheets Settings opens; saved by [key] so a rotation keeps the sheet open. */
 internal enum class EssentialSheet {
     CONNECTION_METHOD, CAR_HOTSPOT, SAME_WIFI, PICTURE, INTERFACE_SIZE, DAY_NIGHT, NIGHT_START, NIGHT_END,
-    DRIVING_SIDE, SOUND, AUDIO_DELAY, APPEARANCE, LAYOUT, CARLINK_SIZE, RENDERING, CAR_BRAND, WHEEL_KEYS,
+    DRIVING_SIDE, SOUND, AUDIO_DELAY, LITE_MODE, APPEARANCE, LAYOUT, CARLINK_SIZE, RENDERING, CAR_BRAND, WHEEL_KEYS,
     MEDIA_LEVEL, NAVIGATION_LEVEL, CALL_LEVEL, CALL_STREAM, MIC_GAIN, HEADUNIT_SERVER_ADDRESS,
     MARGIN_TOP,
     CP_MARGIN_TOP, CP_MARGIN_BOTTOM, CP_MARGIN_LEFT, CP_MARGIN_RIGHT,
@@ -295,6 +298,15 @@ internal fun interfaceSizeLabel(size: InterfaceSize): String = stringResource(
         InterfaceSize.MEDIUM -> R.string.carlink_settings_size_medium
         InterfaceSize.LARGE -> R.string.carlink_settings_size_large
         InterfaceSize.CUSTOM -> R.string.carlink_settings_custom
+    },
+)
+
+@Composable
+internal fun liteModeLabel(mode: LiteMode): String = stringResource(
+    when (mode) {
+        LiteMode.OFF -> R.string.carlink_state_off
+        LiteMode.AUTO -> R.string.carlink_settings_picture_auto
+        LiteMode.ALWAYS -> R.string.carlink_settings_lite_mode_always
     },
 )
 

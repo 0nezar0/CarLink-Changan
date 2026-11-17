@@ -236,6 +236,9 @@ object Connection {
                     com.carlink.core.diagnostics.EventLog.add("CarLink", "CarPlay Bluetooth through the stereo's module: $kind (experimental)" +
                         (route.refusal?.let { "; refused: $it" } ?: ""))
                 }
+                // The car button in CarPlay shows the Changan logo in a Changan.
+                com.shilapi.xcertplay.CarPlayHostIntegration.carButtonIcon =
+                    if (carBrand(app) == CarBrand.CHANGAN) com.carlink.core.R.raw.carlink_changan_home else null
                 val fineLocation = app.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 CarPlaySettingsPolicy.apply(app, CarPlaySettingsPolicy.map(settings, plan.path, profile, fineLocation,
                     brandName = CarLinkCore.config.accessoryName, picture = picture))
@@ -265,6 +268,15 @@ object Connection {
             choice = quirk.apply(choice)
             com.carlink.core.diagnostics.EventLog.add("CarLink", "Stereo quirk profile ${quirk.id}: ${quirk.describe()} (${quirk.evidence})")
         }
+        // Lite mode (settings/LiteMode): fewer frames and no extra GPU pass, never a lower resolution.
+        val memory = com.carlink.core.settings.LiteModeMemory(app)
+        if (com.carlink.core.settings.LitePicture.active(settings.liteMode, memory.engaged)) {
+            choice = com.carlink.core.settings.LitePicture.apply(choice)
+            com.carlink.core.diagnostics.EventLog.add("CarLink", "Lite mode ${settings.liteMode}" +
+                (if (settings.liteMode == com.carlink.core.settings.LiteMode.AUTO) " (engaged: ${memory.reason})" else "") +
+                ": Android Auto ${choice.aaFps} fps, CarPlay ${choice.carPlayFps} fps, same resolution")
+        }
+        LiteModeMonitor.lastAutomatic = choice
         return choice
     }
 

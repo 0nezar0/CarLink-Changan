@@ -133,7 +133,7 @@
     <string name="carlink_diag_log_share">مشاركة السجل</string>
     <string name="carlink_diag_log_copy">نسخ السجل كاملاً</string>
     <string name="carlink_diag_log_copied">نُسخ السجل كاملاً. الصقه في المسألة على GitHub.</string>
-    <string name="carlink_diag_log_saved">انحفظ سجل الأخطاء: %1$s</string>
+    <string name="carlink_diag_log_saved">انحفظ التقرير الكامل: %1$s</string>
     <string name="carlink_diag_log_save_failed">ما قدرنا نحفظ سجل الأخطاء</string>
     <string name="carlink_diag_log_share_subject">سجل اتصال CarLink</string>
     <string name="carlink_diag_log_share_chooser">مشاركة سجل الاتصال</string>

@@ -32,6 +32,8 @@ import com.carlink.core.settings.Applies
 import com.carlink.core.settings.ConnectionMethod
 import com.carlink.core.settings.Control
 import com.carlink.core.settings.DayNight
+import com.carlink.core.settings.LiteMode
+import com.carlink.core.settings.LiteModeMemory
 import com.carlink.core.settings.SettingsCategory
 import com.carlink.core.settings.Tier
 import com.carlink.app.ui.Route
@@ -183,6 +185,12 @@ private fun DisplayEssentials(ui: SettingsUi, actions: SettingsActions, openShee
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_projection)) }) {
         ChoiceRow(stringResource(R.string.carlink_settings_picture), pictureLabel(u.picture), { openSheet(SheetKey.of(EssentialSheet.PICTURE)) },
             description = stringResource(R.string.carlink_settings_picture_detail), icon = R.drawable.carlink_ic_aspect_ratio)
+        GroupDivider()
+        val liteEngaged = u.liteMode == LiteMode.AUTO && LiteModeMemory(androidx.compose.ui.platform.LocalContext.current).engaged
+        ChoiceRow(stringResource(R.string.carlink_settings_lite_mode),
+            liteModeLabel(u.liteMode) + if (liteEngaged) " · " + stringResource(R.string.carlink_state_on) else "",
+            { openSheet(SheetKey.of(EssentialSheet.LITE_MODE)) },
+            description = stringResource(R.string.carlink_settings_lite_mode_detail), icon = R.drawable.carlink_ic_tune)
         GroupDivider()
         ChoiceRow(stringResource(R.string.carlink_settings_interface_size), interfaceSizeLabel(u.interfaceSize),
             { openSheet(SheetKey.of(EssentialSheet.INTERFACE_SIZE)) },
@@ -364,7 +372,7 @@ private fun GeneralEssentials(ui: SettingsUi, actions: SettingsActions, openShee
         LinkRow(stringResource(R.string.carlink_settings_diagnostics), { actions.navigate(Route.DIAGNOSTICS) },
             stringResource(R.string.carlink_settings_diagnostics_detail), R.drawable.carlink_ic_monitor_heart)
         GroupDivider()
-        ErrorLogRows()
+        ErrorLogRows(actions)
         GroupDivider()
         LinkRow(stringResource(R.string.carlink_settings_setup_again), { actions.navigate(Route.SETUP) },
             stringResource(R.string.carlink_settings_setup_again_detail), R.drawable.carlink_ic_restart_alt)
@@ -467,13 +475,14 @@ internal fun layoutIcon(mode: com.carlink.app.ui.theme.UiProfileMode): Int = whe
 
 /**
  * Settings › General › Help: the last connection attempts' log (CarLink's own log, both engines'
- * logs and the system log of CarLink's processes) saved to Downloads or shared, all offline.
+ * logs and the system log of CarLink's processes) saved as a full report to a USB flash drive or
+ * Downloads, or shared, all offline.
  */
 @Composable
-private fun ErrorLogRows() {
+private fun ErrorLogRows(actions: SettingsActions) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val scope = androidx.compose.runtime.rememberCoroutineScope()
-    val save = { scope.launch { com.carlink.app.ui.diagnostics.saveConnectionLog(context) }; Unit }
+    val save = { scope.launch { com.carlink.app.ui.diagnostics.saveConnectionLog(context, actions.reportInputs()) }; Unit }
     // Android 9 and older write the public Download folder only with storage access; denied still saves (CarLink's own folder).
     val askStorage = androidx.activity.compose.rememberLauncherForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { save() }

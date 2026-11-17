@@ -187,6 +187,8 @@ object HostIntegration {
          * channel (`QuickReconnectPolicy`). Detail: `result=started|fallback` (fallback: the full re-arm runs).
          */
         QUICK_RECONNECT,
+        /** CarLink: the video decoder is the bottleneck (once per session, VideoBackpressurePolicy). Detail: `video=WxH@fps`. */
+        DECODER_BOTTLENECK,
     }
 
     /**

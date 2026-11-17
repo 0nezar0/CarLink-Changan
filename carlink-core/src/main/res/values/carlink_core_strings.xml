@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="carlink_core_ipad_no_carplay">iPads and iPods can\'t run CarPlay. Plug in an iPhone.</string>
+    <string name="carlink_core_lite_mode_engaged">The picture was struggling, so Lite mode turns on from the next connection: 30 frames per second, same resolution.</string>
 </resources>

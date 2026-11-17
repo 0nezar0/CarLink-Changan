@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
-<resources>
-    <string name="carlink_core_ipad_no_carplay">आईपैड और आईपॉड CarPlay नहीं चला सकते हैं। एक iPhone में प्लग करें।</string>
-</resources>

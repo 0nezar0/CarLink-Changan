@@ -56,6 +56,8 @@ data class UnifiedSettings(
     val androidAutoMargins: ScreenMargins = ScreenMargins.CHANGAN,
     /** CarLink's language ([AppLanguage.SUPPORTED]); [AppLanguage.SYSTEM] follows the device. */
     val appLanguage: String = AppLanguage.SYSTEM,
+    /** Lite mode for a weak CPU ([LiteMode]), off unless the driver turns it on: fewer frames, never a lower resolution; from the next connection. */
+    val liteMode: LiteMode = LiteMode.OFF,
 )
 
 /** Pixels kept clear on each edge of a projection (activity pixels, never negative). */
@@ -143,6 +145,7 @@ class UnifiedSettingsStore(context: Context) {
         carPlayMargins = margins("cp_"),
         androidAutoMargins = margins("aa_"),
         appLanguage = appLanguage(),
+        liteMode = enumOr(prefs.getString("lite_mode", null), LiteMode.OFF),
     )
 
     /** The stored language alone (cheap; read at startup to refresh [AppLanguage]'s copy). */
@@ -192,6 +195,7 @@ class UnifiedSettingsStore(context: Context) {
             .putMargins("cp_", settings.carPlayMargins)
             .putMargins("aa_", settings.androidAutoMargins)
             .putString("app_language", AppLanguage.sanitize(settings.appLanguage))
+            .putString("lite_mode", settings.liteMode.name)
             .apply()
         AppLanguage.mirror(appContext, settings.appLanguage)
     }

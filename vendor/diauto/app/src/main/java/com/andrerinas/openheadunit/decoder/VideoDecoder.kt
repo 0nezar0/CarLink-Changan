@@ -1798,6 +1798,8 @@ class VideoDecoder(
                 "buffer (${mWidth}x$mHeight@${settings.fpsLimit} on $currentCodecName). The negotiated " +
                 "size and rate are more than this decoder is keeping up with.$claim"
         )
+        com.andrerinas.openheadunit.HostIntegration.engineEvent(null,
+            com.andrerinas.openheadunit.HostIntegration.EngineEvent.DECODER_BOTTLENECK, "video=${mWidth}x$mHeight@${settings.fpsLimit}")
     }
 
     /**

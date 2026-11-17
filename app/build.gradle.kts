@@ -132,7 +132,7 @@ android {
     // language falls back to English everywhere, including engine screens. Extend
     // xml/locales_config.xml and AppLanguage.SUPPORTED when adding a language.
     androidResources {
-        localeFilters += listOf("en", "ar", "ur", "hi", "fr", "tr", "es", "de", "ru", "zh-rCN", "in", "pt-rBR")
+        localeFilters += listOf("en", "ar")
     }
 
     packaging {

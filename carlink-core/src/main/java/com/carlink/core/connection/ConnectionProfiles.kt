@@ -172,10 +172,14 @@ class ConnectionProfiles(
      * [candidates] (already in the policy's order) re-ordered by this phone's record: a path that
      * keeps connecting moves up, a path whose last two attempts failed for path reasons moves down.
      * Paths with fewer than two outcomes keep a neutral score, and ties keep the policy's order.
+     * Fast reconnect: the path this phone connected on last time, when that was its latest attempt,
+     * stays first whatever the scores say.
      */
     fun rankPaths(request: SessionRequest, candidates: List<WirelessPath>): List<WirelessPath> {
         if (candidates.size < 2) return candidates
         val p = profiles[keyOf(request)] ?: return candidates
+        val last = candidates.mapNotNull { path -> p.outcomes[path.name]?.lastOrNull()?.let { path to it } }
+            .maxByOrNull { it.second.atMillis }?.takeIf { it.second.ok }?.first
         fun score(path: WirelessPath): Double {
             val relevant = p.outcomes[path.name]?.filter { it.ok || it.pathFault }.orEmpty()
             if (relevant.size < 2) return NEUTRAL
@@ -185,7 +189,8 @@ class ConnectionProfiles(
             return s
         }
         return candidates.withIndex()
-            .sortedWith(compareByDescending<IndexedValue<WirelessPath>> { score(it.value) }.thenBy { it.index })
+            .sortedWith(compareByDescending<IndexedValue<WirelessPath>> { it.value == last }.thenByDescending { score(it.value) }
+                .thenBy { it.index })
             .map { it.value }
     }
 

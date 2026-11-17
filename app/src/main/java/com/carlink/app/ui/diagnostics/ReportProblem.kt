@@ -94,8 +94,7 @@ fun rememberReportProblem(vm: CarLinkViewModel): () -> Unit {
         {
             if (stage == ReportStage.Closed) {
                 stage = ReportStage.Confirm(null)
-                val inputs = IssueReporter.Inputs(vm.lastSessions(), vm.health.value, vm.carBrandName(), vm.savedSecrets(),
-                    vm.reportSettings())
+                val inputs = vm.reportInputs()
                 scope.launch {
                     val report = withContext(Dispatchers.IO) { runCatching { IssueReporter.build(context, inputs) }.getOrNull() }
                     if (stage is ReportStage.Confirm) stage = if (report != null) ReportStage.Confirm(report) else ReportStage.Closed
@@ -119,17 +118,27 @@ internal suspend fun shareConnectionLog(context: Context) {
 }
 
 /**
- * Writes the combined log (with the system log of CarLink's own processes) into Downloads/CarLink,
- * offline, and says where. Android 10+: MediaStore, no permission. Android 9 and older: the public
- * Download folder when storage access is granted, else CarLink's own folder on the storage
- * (Android/data/<package>/files/Download), which every file manager can open.
+ * Settings › Help › Save full report: the problem report's summary (app version, device, sessions,
+ * settings; saved passwords removed by [IssueReporter]) above the combined log (with the system log
+ * of CarLink's own processes), in one file, offline, and says where. A USB flash drive first
+ * (CarLink's folder on it, Android/data/<package>/files, no permission). Else Downloads/CarLink:
+ * Android 10+ through MediaStore, no permission; Android 9 and older the public Download folder
+ * when storage access is granted, else CarLink's own folder on the storage, which every file
+ * manager can open.
  * @return the place the file was saved, or null when it failed.
  */
-internal suspend fun saveConnectionLog(context: Context): String? {
+internal suspend fun saveConnectionLog(context: Context, inputs: IssueReporter.Inputs): String? {
     val saved = withContext(Dispatchers.IO) {
         runCatching {
-            val file = ConnectionLog.export(context, logHeader(context))
-            if (android.os.Build.VERSION.SDK_INT >= 29) {
+            val summary = runCatching { IssueReporter.build(context, inputs).fields.filterKeys { it != "log" }.entries.joinToString("\n\n") { "## ${it.key}\n${it.value}" } }
+                .getOrElse { "Report summary failed: $it" }
+            val file = ConnectionLog.export(context, logHeader(context) + "\n\n" + summary)
+            val usb = context.getExternalFilesDirs(null).drop(1).firstOrNull { it != null &&
+                android.os.Environment.isExternalStorageRemovable(it) &&
+                android.os.Environment.getExternalStorageState(it) == android.os.Environment.MEDIA_MOUNTED }
+            if (usb != null) {
+                java.io.File(usb, "CarLink").let { dir -> dir.mkdirs(); file.copyTo(java.io.File(dir, file.name), overwrite = true).absolutePath }
+            } else if (android.os.Build.VERSION.SDK_INT >= 29) {
                 val values = android.content.ContentValues().apply {
                     put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, file.name)
                     put(android.provider.MediaStore.MediaColumns.MIME_TYPE, "text/plain")

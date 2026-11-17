@@ -22,7 +22,8 @@ import android.content.SharedPreferences
  * just behind Renault's 36,420), then the smaller makes, then the luxury makes, then [OTHER].
  *
  * This build is made for a Changan CS75 Plus head unit, so [CHANGAN] comes first and is the brand a
- * fresh install starts with ([DEFAULT]); it only labels the car and sets nothing in the engines.
+ * fresh install starts with ([DEFAULT]); it labels the car and gives CarPlay's car button the Changan
+ * logo, and sets nothing else in the engines.
  */
 enum class CarBrand(val displayName: String, val profile: VehicleProfile = VehicleProfile.GENERIC, val luxury: Boolean = false,
                     val motorcycle: Boolean = false) {

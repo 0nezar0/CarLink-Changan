@@ -143,8 +143,8 @@
     <string name="carlink_settings_margin_right_detail">اترك مسافة عند الحافة اليمنى</string>
     <string name="carlink_settings_margin_none">بدون</string>
     <string name="carlink_settings_margin_px">%d px</string>
-    <string name="carlink_settings_save_log">حفظ سجل الأخطاء</string>
-    <string name="carlink_settings_save_log_detail">يحفظ آخر محاولات الاتصال في ملف نصي داخل Downloads/CarLink. يشتغل بدون إنترنت.</string>
+    <string name="carlink_settings_save_log">حفظ تقرير كامل</string>
+    <string name="carlink_settings_save_log_detail">يحفظ إصدار التطبيق ومعلومات الجهاز والإعدادات وجلسات الجوال والسجل الكامل في ملف نصي واحد: على الفلاش إذا كان موصول، وإلا في Downloads/CarLink. كلمات المرور المحفوظة ما تنحفظ فيه. يشتغل بدون إنترنت.</string>
     <string name="carlink_settings_share_log">مشاركة سجل الأخطاء</string>
     <string name="carlink_settings_share_log_detail">يرسل نفس الملف عن طريق تطبيق ثاني في هذي الشاشة</string>
     <string name="carlink_settings_group_sound">الصوت</string>
@@ -154,6 +154,13 @@
     <string name="carlink_settings_sound_bluetooth">عبر Bluetooth في السيارة</string>
     <string name="carlink_settings_sound_carlink_detail">تشغّل شاشة السيارة كل الصوت. مُستحسن.</string>
     <string name="carlink_settings_sound_bluetooth_detail">تمر الموسيقى عبر صوت Bluetooth الخاص بالسيارة بدلاً من ذلك.</string>
+    <string name="carlink_settings_lite_mode">الوضع الخفيف</string>
+    <string name="carlink_settings_lite_mode_detail">صورة أنعم على الشاشة البطيئة بنفس الوضوح</string>
+    <string name="carlink_settings_lite_mode_sheet_body">30 إطار في الثانية بدل 60، والصورة ترسم مباشرة على الشاشة. الدقة والجودة تبقى نفسها، فما فيه بكسلة ولا تشويش. يشتغل بس إذا كانت الصورة على تلقائي.</string>
+    <string name="carlink_settings_lite_mode_always">دائماً</string>
+    <string name="carlink_settings_lite_mode_off_detail">الافتراضي. الصورة تبقى زي ما يحددها إعداد الصورة.</string>
+    <string name="carlink_settings_lite_mode_auto_detail">يشتغل لحاله من الاتصال الجاي إذا تعبت الصورة، ويعلمك. اختره مرة ثانية عشان تصفّره.</string>
+    <string name="carlink_settings_lite_mode_always_detail">خفيف في كل اتصال.</string>
     <string name="carlink_settings_audio_delay">تأخير صوت CarPlay</string>
     <string name="carlink_settings_audio_delay_detail">مقدار تخزين صوت الموسيقى والفيديو خلف الصورة</string>
     <string name="carlink_settings_audio_delay_low">منخفض</string>
@@ -336,5 +343,4 @@
     <string name="carlink_settings_language_detail">لغة CarLink وشاشات CarPlay وAndroid Auto</string>
     <string name="carlink_settings_language_system">لغة الجهاز</string>
     <string name="carlink_settings_language_system_detail">يتبع لغة شاشة السيارة، أو الإنجليزية إذا ما فيه ترجمة لها</string>
-    <string name="carlink_settings_language_note">الإنجليزية والعربية مكتوبة يدوياً، وبقية اللغات مترجمة آلياً.</string>
 </resources>

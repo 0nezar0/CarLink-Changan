@@ -190,6 +190,11 @@ object CarPlayHostIntegration {
         get() = com.shilapi.xcertplay.hud.VehicleIntegrations.enabled
         set(value) { com.shilapi.xcertplay.hud.VehicleIntegrations.enabled = value }
 
+    /** CarLink: a square PNG (raw resource) for the car button instead of the packaged icon; null keeps it. */
+    @Volatile
+    @JvmStatic
+    var carButtonIcon: Int? = null
+
     /** The car's name in iAP2 identification (name and label) and in the AirPlay/Bonjour service. */
     @Volatile
     @JvmStatic

@@ -5275,7 +5275,8 @@ open class CarPlayHostActivity : ComponentActivity() {
     private fun defaultAirPlayIconBytes(): ByteArray =
         // Shown in CarPlay's app list as the "back to the car" button.
         // CarLink: the BYD logo only on a BYD (vehicleIntegrations); every other car gets CarLink's icon.
-        resources.openRawResource(AirPlayIconSizing.packagedIcon(CarPlayHostIntegration.vehicleIntegrations)).use { it.readBytes() }
+        resources.openRawResource(CarPlayHostIntegration.carButtonIcon
+            ?: AirPlayIconSizing.packagedIcon(CarPlayHostIntegration.vehicleIntegrations)).use { it.readBytes() }
 
     private fun updateAirPlayIconPreview() {
         val preview = iconPreviewView ?: return

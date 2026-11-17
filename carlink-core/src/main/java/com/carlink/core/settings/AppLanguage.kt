@@ -24,36 +24,19 @@ object AppLanguage {
     const val SYSTEM = ""
 
     /** The languages offered, as stored (BCP 47). Keep in step with localeFilters and xml/locales_config. */
-    val SUPPORTED = listOf(SYSTEM, "en", "ar", "ur", "hi", "fr", "tr", "es", "de", "ru", "zh-CN", "in", "pt-BR")
+    val SUPPORTED = listOf(SYSTEM, "en", "ar")
 
     /** Each language's name in its own script; [SYSTEM] has a translated label in the app. */
     fun nativeName(tag: String): String = when (tag) {
         "en" -> "English"
         "ar" -> "العربية"
-        "ur" -> "اردو"
-        "hi" -> "हिन्दी"
-        "fr" -> "Français"
-        "tr" -> "Türkçe"
-        "es" -> "Español"
-        "de" -> "Deutsch"
-        "ru" -> "Русский"
-        "zh-CN" -> "中文（简体）"
-        "in" -> "Bahasa Indonesia"
-        "pt-BR" -> "Português (Brasil)"
         else -> tag
     }
 
     fun sanitize(tag: String?): String = tag?.takeIf { it in SUPPORTED } ?: SYSTEM
 
     /** The locale for [tag]; null for [SYSTEM]. */
-    fun locale(tag: String): Locale? = when (tag) {
-        SYSTEM -> null
-        "zh-CN" -> Locale.SIMPLIFIED_CHINESE
-        "pt-BR" -> Locale("pt", "BR")
-        // Android's resources use the legacy code for Indonesian (values-in).
-        "in" -> Locale("in")
-        else -> Locale(tag)
-    }
+    fun locale(tag: String): Locale? = if (tag == SYSTEM) null else Locale(tag)
 
     /** The device's own language, whatever an earlier choice did to this process. */
     fun systemLocale(): Locale = Resources.getSystem().configuration.locales[0]
@@ -68,23 +51,11 @@ object AppLanguage {
     fun effectiveLocale(context: Context): Locale = resolve(locale(current(context)), systemLocale())
 
     /**
-     * [chosen], or the device's own [system] locale when it is the same language (and region, when
-     * the choice names one): "ar" on an ar-SA-u-nu-latn device keeps its region and number style.
+     * [chosen], or the device's own [system] locale when it is the same language: "ar" on an
+     * ar-SA-u-nu-latn device keeps its region and number style.
      */
-    fun resolve(chosen: Locale?, system: Locale): Locale {
-        if (chosen == null) return system
-        val sameLanguage = baseLanguage(chosen.language) == baseLanguage(system.language)
-        val sameRegion = chosen.country.isEmpty() || chosen.country.equals(system.country, ignoreCase = true)
-        return if (sameLanguage && sameRegion) system else chosen
-    }
-
-    /** Indonesian is "in" in Android's resources and "id" in newer locales; Hebrew and Yiddish alike. */
-    private fun baseLanguage(language: String): String = when (language.lowercase(Locale.ROOT)) {
-        "in" -> "id"
-        "iw" -> "he"
-        "ji" -> "yi"
-        else -> language.lowercase(Locale.ROOT)
-    }
+    fun resolve(chosen: Locale?, system: Locale): Locale =
+        if (chosen == null || chosen.language == system.language) system else chosen
 
     /** Before Android 13 the app supplies the language; from 13 the platform does. */
     val appSupplied: Boolean get() = Build.VERSION.SDK_INT < 33
@@ -110,7 +81,7 @@ object AppLanguage {
 
     /**
      * For an activity's attachBaseContext: [base] with the chosen locale and its layout direction
-     * (right to left for Arabic and Urdu). Unchanged on Android 13+.
+     * (right to left for Arabic). Unchanged on Android 13+.
      */
     fun wrap(base: Context): Context {
         if (!appSupplied) return base

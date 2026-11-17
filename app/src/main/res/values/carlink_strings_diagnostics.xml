@@ -151,7 +151,7 @@
     <string name="carlink_diag_log_share">Share log</string>
     <string name="carlink_diag_log_copy">Copy full log</string>
     <string name="carlink_diag_log_copied">Full log copied. Paste it into the issue on GitHub.</string>
-    <string name="carlink_diag_log_saved">Error log saved: %1$s</string>
+    <string name="carlink_diag_log_saved">Full report saved: %1$s</string>
     <string name="carlink_diag_log_save_failed">The error log could not be saved</string>
     <string name="carlink_diag_log_share_subject">CarLink connection log</string>
     <string name="carlink_diag_log_share_chooser">Share the connection log</string>

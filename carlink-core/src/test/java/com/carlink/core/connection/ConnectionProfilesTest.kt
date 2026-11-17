@@ -126,6 +126,17 @@ class ConnectionProfilesTest {
         assertEquals("a single path is never re-ordered", listOf(wd), p.rankPaths(iphone, listOf(wd)))
     }
 
+    @Test fun thePathThatConnectedLastTimeIsTriedFirst() {
+        val p = store()
+        val candidates = listOf(wd, WirelessPath.CAR_HOTSPOT)
+        repeat(3) { p.recordSuccess(iphone, wd, 9_000); wall += 1_000 }
+        p.recordSuccess(iphone, WirelessPath.CAR_HOTSPOT, 9_000)
+        assertEquals("one success, but the latest", listOf(WirelessPath.CAR_HOTSPOT, wd), p.rankPaths(iphone, candidates))
+        wall += 1_000
+        p.recordFailure(iphone, WirelessPath.CAR_HOTSPOT, AttemptOutcome.STALL_LINKING, ProgressStage.JOINING_WIFI, null)
+        assertEquals("a failed latest attempt is not a fast reconnect", candidates, p.rankPaths(iphone, candidates))
+    }
+
     @Test fun historySurvivesARestart() {
         val first = store()
         repeat(3) { first.recordStage(iphone, wd, ProgressStage.HANDSHAKE, 2_000) }

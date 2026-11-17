@@ -180,6 +180,7 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
         return listOf(
             "connection ${u.connectionMethod}",
             "picture ${u.picture}",
+            "lite mode ${u.liteMode}${if (com.carlink.core.settings.LiteModeMemory(app).engaged) " (engaged)" else ""}",
             "Direct video output ${on(AirPlayPersistence.loadDirectVideoOutput(app))}",
             "root mode ${on(c.rootMode)}",
             "Android Auto on this screen ${on(c.androidAutoOnScreen)}",
@@ -194,6 +195,10 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
     /** Saved Wi-Fi and hotspot passwords, which the issue report removes wherever they appear. */
     fun savedSecrets(): List<String> = _unified.value.let { listOf(it.carHotspot.password, it.homeWifi.password) } +
         listOfNotNull(runCatching { WifiEnvironmentReader.read(app, _unified.value).systemHotspot?.password }.getOrNull())
+
+    /** What a problem report or the saved full report reads from this screen's state. */
+    fun reportInputs() = com.carlink.app.diagnostics.IssueReporter.Inputs(lastSessions(), health.value, carBrandName(), savedSecrets(),
+        reportSettings())
 
     private val _connectedSince = MutableStateFlow<Long?>(null)
     /** When the current attempt started (for the Connecting timer), or null. */
