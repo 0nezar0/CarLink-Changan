@@ -80,7 +80,7 @@
     <string name="carlink_setup_pair_bt_on">تشغيل Bluetooth</string>
     <string name="carlink_setup_pair_cable">التوصيل بكابل بدلاً من ذلك</string>
     <string name="carlink_setup_pair_other">استخدام جوال آخر</string>
-    <string name="carlink_setup_pair_external_bt">الاتصال اللاسلكي غير متاح على هذا الجهاز بعد. صِل جوالك بكابل USB — يعمل بالطريقة نفسها.</string>
+    <string name="carlink_setup_pair_external_bt">الاتصال اللاسلكي غير متاح على هذه الشاشة بعد. صِل جوالك بكابل USB — يعمل بالطريقة نفسها.</string>
     <string name="carlink_setup_pair_wireless">الإقران عبر Bluetooth بدلاً من ذلك</string>
     <string name="carlink_setup_pair_skip">تخطي</string>
     <string name="carlink_setup_pair_cable_title">صِل جوالك بهذه الشاشة</string>

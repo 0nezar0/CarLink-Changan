@@ -56,22 +56,22 @@
     <string name="carlink_home_chip_phone">الجوال</string>
     <string name="carlink_home_bt_chip_on">تشغيل</string>
     <string name="carlink_home_forget_title">نسيان %1$s؟</string>
-    <string name="carlink_home_forget_body">يلغي CarLink إقرانه من Bluetooth هذه الشاشة وينسى طريقة اتصاله. إذا لم يسمح Android بذلك، تُفتح إعدادات Bluetooth لإلغاء الإقران هناك. وعلى جهاز صوت بوحدة Bluetooth منفصلة، احذفه أيضاً من إعدادات Bluetooth الخاصة بجهاز الصوت.</string>
+    <string name="carlink_home_forget_body">يلغي CarLink إقرانه من Bluetooth هذه الشاشة وينسى طريقة اتصاله. إذا لم يسمح Android بذلك، تُفتح إعدادات Bluetooth لإلغاء الإقران هناك. وعلى شاشة بوحدة Bluetooth منفصلة، احذفه أيضاً من إعدادات Bluetooth الخاصة بالشاشة.</string>
     <string name="carlink_home_forget_action">نسيان</string>
     <string name="carlink_home_add_phone">إضافة جوال جديد</string>
-    <string name="carlink_home_new_iphone">توصيل iPhone جديد (عبر Bluetooth جهاز الصوت)</string>
-    <string name="carlink_home_new_android">توصيل جوال Android جديد (عبر Bluetooth جهاز الصوت)</string>
+    <string name="carlink_home_new_iphone">توصيل iPhone جديد (عبر Bluetooth الشاشة)</string>
+    <string name="carlink_home_new_android">توصيل جوال Android جديد (عبر Bluetooth الشاشة)</string>
     <string name="carlink_choose_phone_title">جوالان يحاولان الاتصال</string>
-    <string name="carlink_choose_phone_body">iPhone وجوال Android يتصلان معاً بهذا الجهاز. اختر الذي تريد استخدامه.</string>
+    <string name="carlink_choose_phone_body">iPhone وجوال Android يتصلان معاً بهذه الشاشة. اختر الذي تريد استخدامه.</string>
     <string name="carlink_choose_phone_later">ليس الآن</string>
     <string name="carlink_choose_bt_title">Bluetooth</string>
-    <string name="carlink_choose_bt_body">لهذا الجهاز وحدتان: وحدته الخاصة ووحدة Android. استخدم التي أُقرن جوالك بها.</string>
-    <string name="carlink_choose_bt_module">وحدة Bluetooth في جهاز الصوت</string>
-    <string name="carlink_choose_bt_module_body">أقرن الجوالات من تطبيق Bluetooth الخاص بجهاز الصوت</string>
+    <string name="carlink_choose_bt_body">لهذه الشاشة وحدتان: وحدتها الخاصة ووحدة Android. استخدم التي أُقرن جوالك بها.</string>
+    <string name="carlink_choose_bt_module">وحدة Bluetooth في الشاشة</string>
+    <string name="carlink_choose_bt_module_body">أقرن الجوالات من تطبيق Bluetooth الخاص بالشاشة</string>
     <string name="carlink_choose_bt_android">Bluetooth هذه الشاشة</string>
     <string name="carlink_choose_bt_android_body">Bluetooth الخاص بـ Android؛ أقرن الجوالات من إعدادات Android</string>
-    <string name="carlink_home_bt_chip_module">وحدة جهاز الصوت</string>
-    <string name="carlink_home_ready_module_body">Bluetooth هذا الجهاز وحدة منفصلة. أقرن جوالك من إعدادات Bluetooth أو تطبيق الجوال الخاص بجهاز الصوت؛ بعد أول اتصال يظهره CarLink هنا.</string>
+    <string name="carlink_home_bt_chip_module">وحدة الشاشة</string>
+    <string name="carlink_home_ready_module_body">وحدة Bluetooth في هذه الشاشة منفصلة. أقرن جوالك من إعدادات Bluetooth أو تطبيق الجوال الخاص بالشاشة؛ بعد أول اتصال يظهره CarLink هنا.</string>
     <string name="carlink_home_bt_chip_off">إيقاف</string>
     <string name="carlink_home_bt_no_permission">يحتاج إذناً</string>
     <string name="carlink_home_bt_chip_unsupported">غير متاح</string>
@@ -127,10 +127,10 @@
     <string name="carlink_home_error_not_paired_title">هذا الجوال غير مقترن</string>
     <string name="carlink_home_error_not_paired_body">على جوالك، افتح Bluetooth وأقرنه بهذه الشاشة، ثم حاول مرة أخرى.</string>
     <string name="carlink_home_error_pairing_lost_title">يحتاج %1$s إلى الإقران مرة أخرى</string>
-    <string name="carlink_home_error_pairing_lost_body">على الجوال، انسَ هذه الشاشة من إعدادات Bluetooth، ثم أقرنها مرة أخرى.</string>
+    <string name="carlink_home_error_pairing_lost_body">على الجوال، احذف هذه الشاشة من إعدادات Bluetooth، ثم أقرنها مرة أخرى.</string>
     <string name="carlink_home_error_pairing_lost_phone">جوالك</string>
     <string name="carlink_home_open_bluetooth_settings">فتح إعدادات Bluetooth</string>
-    <string name="carlink_notice_call_microphone">قد يستحوذ ربط الجوال الخاص بجهاز الصوت على الميكروفون. أجب من شاشة CarPlay أو Android Auto، أو افصل الجوال من إعدادات الاتصال في جهاز الصوت.</string>
+    <string name="carlink_notice_call_microphone">قد يستحوذ ربط الجوال الخاص بالشاشة على الميكروفون. أجب من شاشة CarPlay أو Android Auto، أو افصل الجوال من إعدادات الاتصال في الشاشة.</string>
     <string name="carlink_home_error_wifi_off_title">Wi-Fi متوقف</string>
     <string name="carlink_home_error_wifi_off_body">الصورة تنتقل عبر Wi-Fi. شغّل Wi-Fi هنا؛ لا يلزم الاتصال بشبكة.</string>
     <string name="carlink_home_error_location_off_title">الموقع متوقف</string>
@@ -152,19 +152,19 @@
     <string name="carlink_home_error_no_answer_title">جوالك لم يرد</string>
     <string name="carlink_home_error_no_answer_body">افتح جوالك، وتأكد أن Bluetooth شغّال ومتصل بهذه الشاشة، ثم حاول مرة أخرى.</string>
     <string name="carlink_home_error_bluetooth_title">فشل اتصال Bluetooth</string>
-    <string name="carlink_home_error_bluetooth_body">على جوالك، أوقف Bluetooth ثم شغّله، ثم حاول مرة أخرى. إذا استمر الفشل، انسَ هذه الشاشة وأقرنها مرة أخرى.</string>
-    <string name="carlink_home_error_external_bt_title">الاتصال اللاسلكي غير متاح على هذا الجهاز بعد</string>
-    <string name="carlink_home_error_external_module_title">تعذّر الوصول إلى وحدة Bluetooth في جهاز الصوت</string>
-    <string name="carlink_home_error_external_module_body">الاتصال اللاسلكي عبر وحدة Bluetooth في جهاز الصوت تجريبي، ولم يعمل هنا. على جهاز FYT، عطّل تطبيق «Car Link» الخاص بجهاز الصوت أولاً. وإلا صِل جوالك بكابل USB — يعمل بالطريقة نفسها. شارك السجل من التشخيص لإصلاح ذلك.</string>
-    <string name="carlink_home_error_external_bt_body">Bluetooth هذا الجهاز وحدة منفصلة لا تستطيع التطبيقات استخدامها، لذلك لا يمكن تشغيل CarPlay وAndroid Auto لاسلكياً. صِل جوالك بكابل USB — يعمل بالطريقة نفسها.</string>
+    <string name="carlink_home_error_bluetooth_body">على جوالك، أوقف Bluetooth ثم شغّله، ثم حاول مرة أخرى. إذا استمر الفشل، احذف هذه الشاشة وأقرنها مرة أخرى.</string>
+    <string name="carlink_home_error_external_bt_title">الاتصال اللاسلكي غير متاح على هذه الشاشة بعد</string>
+    <string name="carlink_home_error_external_module_title">تعذّر الوصول إلى وحدة Bluetooth في الشاشة</string>
+    <string name="carlink_home_error_external_module_body">الاتصال اللاسلكي عبر وحدة Bluetooth في الشاشة تجريبي، ولم يعمل هنا. على شاشة FYT، عطّل تطبيق «Car Link» الخاص بالشاشة أولاً. وإلا صِل جوالك بكابل USB — يعمل بالطريقة نفسها. شارك السجل من التشخيص لإصلاح ذلك.</string>
+    <string name="carlink_home_error_external_bt_body">وحدة Bluetooth في هذه الشاشة منفصلة ولا تستطيع التطبيقات استخدامها، لذلك لا يمكن تشغيل CarPlay وAndroid Auto لاسلكياً. صِل جوالك بكابل USB — يعمل بالطريقة نفسها.</string>
     <string name="carlink_home_how_to_connect">طريقة التوصيل بكابل</string>
     <string name="carlink_home_cable_only_title">صِل جوالك</string>
-    <string name="carlink_home_cable_only_body">يحتاج الاتصال اللاسلكي أن يتخاطب جوالك مع Bluetooth الخاص بهذه الشاشة. على هذا الجهاز تلك وحدة منفصلة لا تستطيع التطبيقات استخدامها، لذلك صِل بكابل USB — يبدأ CarPlay أو Android Auto تلقائياً.</string>
+    <string name="carlink_home_cable_only_body">يحتاج الاتصال اللاسلكي أن يتصل جوالك بـ Bluetooth الخاص بهذه الشاشة. وفي هذه الشاشة وحدة منفصلة لا تستطيع التطبيقات استخدامها، لذلك صِل بكابل USB — يبدأ CarPlay أو Android Auto تلقائياً.</string>
     <string name="carlink_home_cable_title">التوصيل بكابل USB</string>
-    <string name="carlink_home_cable_body">1. صِل جوالك بمنفذ USB في جهاز الصوت بكابل ينقل البيانات (وليس كابل شحن فقط).
+    <string name="carlink_home_cable_body">1. صِل جوالك بمنفذ USB في الشاشة بكابل ينقل البيانات (وليس كابل شحن فقط).
 2. iPhone: يبدأ CarPlay تلقائياً. جوال Android: افتحه واسمح لـ Android Auto إذا طُلب منك.
 
-يحتاج الاتصال اللاسلكي أن يتخاطب جوالك مع Bluetooth الخاص بهذه الشاشة. على هذا الجهاز تلك وحدة منفصلة لا تستطيع التطبيقات استخدامها.</string>
+يحتاج الاتصال اللاسلكي أن يتصل جوالك بـ Bluetooth الخاص بهذه الشاشة. وفي هذه الشاشة وحدة منفصلة لا تستطيع التطبيقات استخدامها.</string>
     <string name="carlink_home_cable_ok">حسناً</string>
     <string name="carlink_home_error_usb_title">فشل اتصال USB</string>
     <string name="carlink_home_error_usb_body">افتح جوالك واقبل الطلب. جرّب كابلاً آخر إذا استمر الفشل.</string>
@@ -225,7 +225,7 @@
     <string name="carlink_home_fail_step_picture">الصورة</string>
     <string name="carlink_repair_action">نسيان وإعادة الإقران</string>
     <string name="carlink_repair_title">نسيان %1$s وإقرانه مرة أخرى؟</string>
-    <string name="carlink_repair_body">ينسى CarLink هذا الجوال: إقران Bluetooth، وآخر اتصال نجح، وسجل الاتصالات. تُفتح إعدادات Bluetooth بعد ذلك: أقرن الجوال هناك مرة أخرى. وعلى الجوال، انسَ هذه السيارة من قائمة Bluetooth أيضاً.</string>
+    <string name="carlink_repair_body">يحذف CarLink بيانات هذا الجوال: إقران Bluetooth، وآخر اتصال نجح، وسجل الاتصالات. تُفتح إعدادات Bluetooth بعد ذلك: أقرن الجوال هناك مرة أخرى. وعلى الجوال، احذف هذه السيارة من قائمة Bluetooth أيضاً.</string>
     <string name="carlink_repair_confirm">نسيان وإعادة الإقران</string>
     <string name="carlink_repair_settings_detail">عندما يتكرر تعثّر الاتصال اللاسلكي: ابدأ من جديد مع جوال واحد</string>
 </resources>

@@ -21,7 +21,7 @@
     <string name="carlink_switcher_dimmer">التعتيم</string>
     <string name="carlink_switcher_dimmer_off">إيقاف</string>
     <string name="carlink_switcher_dimmer_level">المستوى %1$d</string>
-    <string name="carlink_switcher_stereo_home">جهاز الصوت</string>
+    <string name="carlink_switcher_stereo_home">الشاشة</string>
     <string name="carlink_switcher_stereo_home_value">المشغّل</string>
     <string name="carlink_switcher_night_next">يُطبَّق الوضع الليلي من الاتصال التالي؛ والتعتيم فوراً.</string>
 </resources>

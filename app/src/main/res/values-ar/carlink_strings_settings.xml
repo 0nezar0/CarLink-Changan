@@ -41,10 +41,10 @@
     <string name="carlink_settings_root_detail">لأجهزة الصوت ذات صلاحية Root. يمنح كل ما يطلبه الإعداد دون نوافذ منبثقة، ويبقي Wi-Fi في وضع زمن الاستجابة المنخفض أثناء اتصال جوال. يطلب مدير Root الموافقة مرة واحدة.</string>
     <string name="carlink_settings_root_unavailable">صلاحية Root غير متاحة أو رُفضت، لذلك يبقى وضع Root متوقفاً.</string>
     <string name="carlink_settings_auto_hotspot">تشغيل نقطة اتصال السيارة</string>
-    <string name="carlink_settings_auto_hotspot_detail">عندما يحتاج اتصال لاسلكي إلى نقطة اتصال جهاز الصوت وهي متوقفة، يحاول CarLink تشغيلها. يلزم إذن «تعديل إعدادات النظام» لـ CarLink؛ وبعض الأجهزة لا تسمح بذلك إلا بعد الموافقة على التصحيح.</string>
-    <string name="carlink_settings_external_bt">الاتصال اللاسلكي عبر وحدة Bluetooth في جهاز الصوت (تجريبي)</string>
-    <string name="carlink_settings_external_bt_detail">Bluetooth هذا الجهاز وحدة منفصلة. يصل Android Auto وCarPlay اللاسلكي إلى جوالك عبرها؛ والخيار شغّال افتراضياً. أوقفه إذا أساء الاتصال اللاسلكي على هذا الجهاز؛ USB يبقى يعمل. يُطبَّق من الاتصال التالي.</string>
-    <string name="carlink_settings_external_bt_fyt_note">عطّل أولاً تطبيق «Car Link» الخاص بجهاز الصوت (com.syu.carlink) من إعدادات Android ثم التطبيقات.</string>
+    <string name="carlink_settings_auto_hotspot_detail">عندما يحتاج اتصال لاسلكي إلى نقطة اتصال الشاشة وهي متوقفة، يحاول CarLink تشغيلها. يلزم إذن «تعديل إعدادات النظام» لـ CarLink؛ وبعض الشاشات لا تسمح بذلك إلا بعد الموافقة على تصحيح الأخطاء (USB debugging).</string>
+    <string name="carlink_settings_external_bt">الاتصال اللاسلكي عبر وحدة Bluetooth في الشاشة (تجريبي)</string>
+    <string name="carlink_settings_external_bt_detail">وحدة Bluetooth في هذه الشاشة منفصلة. يصل Android Auto وCarPlay اللاسلكي إلى جوالك عبرها؛ والخيار شغّال افتراضياً. أوقفه إذا لم يعمل الاتصال اللاسلكي جيداً على هذه الشاشة؛ USB يبقى يعمل. يُطبَّق من الاتصال التالي.</string>
+    <string name="carlink_settings_external_bt_fyt_note">عطّل أولاً تطبيق «Car Link» الخاص بالشاشة (com.syu.carlink) من إعدادات Android ثم التطبيقات.</string>
     <string name="carlink_settings_method">طريقة الاتصال</string>
     <string name="carlink_settings_method_detail">كيف يتشارك الجوال والسيارة شبكة Wi-Fi</string>
     <string name="carlink_settings_method_auto">تلقائي</string>
@@ -63,9 +63,9 @@
     <string name="carlink_settings_hotspot_sheet_body">يقرأها CarLink من السيارة حيث يستطيع ويمرّرها إلى جوالك. غيّرها هنا فيغيّر CarLink نقطة اتصال السيارة أيضاً، حيث يسمح Android بذلك.</string>
     <string name="carlink_settings_hotspot_read">قراءة من السيارة</string>
     <string name="carlink_settings_hotspot_reading">جارٍ قراءة نقطة اتصال السيارة…</string>
-    <string name="carlink_settings_hotspot_unreadable">لا يسمح هذا الجهاز لـ CarLink بقراءة نقطة اتصاله. أدخل الاسم وكلمة السر تماماً كما تظهر في إعدادات نقطة اتصال السيارة.</string>
+    <string name="carlink_settings_hotspot_unreadable">لا تسمح هذه الشاشة لـ CarLink بقراءة نقطة اتصالها. أدخل الاسم وكلمة السر تماماً كما تظهر في إعدادات نقطة اتصال السيارة.</string>
     <string name="carlink_settings_hotspot_applied">تستخدم نقطة اتصال السيارة الآن هذا الاسم وكلمة السر</string>
-    <string name="carlink_settings_hotspot_not_applied">حُفظ في CarLink. لا يسمح هذا الجهاز لـ CarLink بتغيير نقطة اتصاله: اضبط الاسم وكلمة السر نفسيهما في إعدادات نقطة اتصال السيارة.</string>
+    <string name="carlink_settings_hotspot_not_applied">حُفظ في CarLink. لا تسمح هذه الشاشة لـ CarLink بتغيير نقطة اتصالها: اضبط الاسم وكلمة السر نفسيهما في إعدادات نقطة اتصال السيارة.</string>
     <string name="carlink_settings_same_wifi">نفس شبكة Wi-Fi</string>
     <string name="carlink_settings_same_wifi_detail">الموجّه الذي تنضم إليه السيارة والـ iPhone معاً</string>
     <string name="carlink_settings_same_wifi_sheet_body">يجب أن تكون السيارة أصلاً على شبكة Wi-Fi هذه. يخبر CarLink الـ iPhone بالانضمام إليها عبر Bluetooth.</string>
@@ -228,12 +228,12 @@
         <item quantity="other">اضغط %1$d مرة إضافية لإظهار Lab</item>
     </plurals>
     <string name="carlink_settings_lab_toggle">إظهار إعدادات Lab</string>
-    <string name="carlink_settings_lab_toggle_detail">خيارات تجريبية وتصحيح، بإطار كهرماني</string>
+    <string name="carlink_settings_lab_toggle_detail">خيارات تجريبية وتصحيح أخطاء، بإطار كهرماني</string>
     <string name="carlink_settings_about_open">حول CarLink</string>
     <string name="carlink_settings_advanced">المتقدم</string>
     <string name="carlink_settings_advanced_detail">إعدادات المحرك للسائقين ذوي الخبرة. تغيير قيمة الصورة أو الحجم هنا يجعل الإعداد المطابق أعلاه «مخصّصاً».</string>
     <string name="carlink_settings_lab">Lab</string>
-    <string name="carlink_settings_lab_detail">خيارات تجريبية وتصحيح. إذا توقف اتصال، أوقفها أولاً.</string>
+    <string name="carlink_settings_lab_detail">خيارات تجريبية وتصحيح أخطاء. إذا توقف اتصال، أوقفها أولاً.</string>
     <string name="carlink_settings_floating_switcher">المبدّل العائم</string>
     <string name="carlink_settings_floating_switcher_detail">زر صغير فوق CarPlay وAndroid Auto لتبديل الجوالات أو فتح CarLink أو قطع الاتصال</string>
     <string name="carlink_settings_floating_switcher_permission">السماح بالعرض فوق التطبيقات الأخرى</string>
@@ -263,7 +263,7 @@
         <item quantity="many">ضُبط %d</item>
         <item quantity="other">ضُبط %d</item>
     </plurals>
-    <string name="carlink_wheel_keys_sheet_body">اضغط «تعليم»، ثم اضغط الزر على المقود. الأزرار التي يحتفظ بها جهاز الصوت لنفسه لا تصل إلى CarLink ولا يمكن تعليمها.</string>
+    <string name="carlink_wheel_keys_sheet_body">اضغط «تعليم»، ثم اضغط الزر على المقود. الأزرار التي تحتفظ بها الشاشة لنفسها لا تصل إلى CarLink ولا يمكن تعليمها.</string>
     <string name="carlink_wheel_action_voice">المساعد الصوتي</string>
     <string name="carlink_wheel_action_voice_detail">Siri أو Google Assistant</string>
     <string name="carlink_wheel_action_answer">الرد على المكالمة</string>
@@ -286,7 +286,7 @@
         <item quantity="other">بانتظار %d ثانية</item>
     </plurals>
     <string name="carlink_wheel_key_waiting_note">لا يمكن استخدام أزرار مستوى الصوت والرجوع والرئيسية.</string>
-    <string name="carlink_wheel_key_timed_out">لم يصل أي زر. قد يحتفظ جهاز الصوت بذلك الزر لنفسه.</string>
+    <string name="carlink_wheel_key_timed_out">لم يصل أي زر. قد تحتفظ الشاشة بذلك الزر لنفسها.</string>
     <string name="carlink_wheel_key_cancel">إلغاء</string>
     <string name="carlink_settings_setup_again">إعادة الإعداد</string>
     <string name="carlink_settings_setup_again_detail">الأذونات وماركة السيارة وإقران جوال، خطوة بخطوة</string>
