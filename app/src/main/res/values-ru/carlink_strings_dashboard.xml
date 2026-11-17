@@ -176,8 +176,9 @@
     <string name="carlink_home_usual_by_cable">по кабелю</string>
     <string name="carlink_home_usual_by_path">%1$s</string>
     <string name="carlink_home_aa_on_screen">Запустите Android Auto на этом экране</string>
-    <string name="carlink_home_open_aa_settings">Открытые настройки Android Auto</string>
+    <string name="carlink_home_open_aa_settings">Открыть настройки Android Auto</string>
     <string name="carlink_home_error_hu_server_title">Запуск сервера Android Auto Head Unit</string>
+    <string name="carlink_home_error_hu_server_stuck_title">Перезапустите сервер головного устройства Android Auto</string>
     <string name="carlink_home_fail_step_cable">кабель</string>
     <string name="carlink_home_fail_step_handshake">рукопожатие</string>
     <string name="carlink_home_fail_step_link">Ссылка</string>
@@ -186,4 +187,5 @@
     <string name="carlink_repair_body">CarLink забывает этот телефон: его соединение Bluetooth, соединение, которое работало в последний раз, и его историю соединения. Далее открываются настройки Bluetooth: снова подключите телефон. Забудьте об этом автомобиле в списке Bluetooth.</string>
     <string name="carlink_repair_confirm">Забыть и восстановить</string>
     <string name="carlink_repair_settings_detail">Когда беспроводная связь застревает: начните с одного телефона</string>
+    <string name="carlink_home_error_hu_server_stuck_body">Сервер головного устройства Android Auto принял подключение, но так и не ответил. Он завис на предыдущем подключении и сам не восстанавливается, поэтому CarLink прекратил попытки.\n1. Нажмите «Открыть настройки Android Auto».\n2. Откройте меню ⋮ в правом верхнем углу и нажмите Stop head unit server, затем Start head unit server.\n3. Подождите несколько секунд и вернитесь сюда: CarLink повторит попытку сам.</string>
 </resources>

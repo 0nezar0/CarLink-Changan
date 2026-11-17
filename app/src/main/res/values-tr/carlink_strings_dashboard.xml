@@ -179,8 +179,9 @@
     <string name="carlink_home_usual_by_cable">kablo ile</string>
     <string name="carlink_home_usual_by_path">%1$s</string>
     <string name="carlink_home_aa_on_screen">Android Auto\'yı bu ekranda çalıştırın</string>
-    <string name="carlink_home_open_aa_settings">Açık Android Auto ayarları</string>
+    <string name="carlink_home_open_aa_settings">Android Auto ayarlarını aç</string>
     <string name="carlink_home_error_hu_server_title">Android Auto\'nun baş ünitesi sunucusuna başlayın</string>
+    <string name="carlink_home_error_hu_server_stuck_title">Android Auto\'nun ana ünite sunucusunu yeniden başlatın</string>
     <string name="carlink_home_fail_step_cable">Kablo Kablo</string>
     <string name="carlink_home_fail_step_handshake">Handshake</string>
     <string name="carlink_home_fail_step_picture">Resim Resim</string>
@@ -189,4 +190,5 @@
     <string name="carlink_repair_body">CarLink bu telefonu unutur: Bluetooth çiftliği, son ve bağlantı tarihini çalışan bağlantı. Bluetooth ayarları bir sonraki açın: telefonu tekrar orada eşleştirin. Telefonda, bu arabayı Bluetooth listesinde de unutun.</string>
     <string name="carlink_repair_confirm">unutun ve yeniden şarj</string>
     <string name="carlink_repair_settings_detail">Kablosuz sıkı sıkışan zaman: Bir telefonla başlayın</string>
+    <string name="carlink_home_error_hu_server_stuck_body">Android Auto\'nun ana ünite sunucusu bağlantıyı kabul etti ama hiç yanıt vermedi. Önceki bir bağlantıda takılı kaldı ve kendiliğinden düzelmiyor, bu yüzden CarLink denemeyi bıraktı.\n1. «Android Auto ayarlarını aç» düğmesine dokunun.\n2. Sağ üstteki ⋮ menüsünü açın, Stop head unit server\'a ve ardından Start head unit server\'a dokunun.\n3. Birkaç saniye bekleyip buraya dönün: CarLink kendiliğinden yeniden dener.</string>
 </resources>

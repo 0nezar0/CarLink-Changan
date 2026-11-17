@@ -189,8 +189,10 @@
     <string name="carlink_home_usual_by_cable">par câble</string>
     <string name="carlink_home_usual_by_path">par %1$s</string>
     <string name="carlink_home_aa_on_screen">Exécuter Android Auto sur cet écran</string>
-    <string name="carlink_home_open_aa_settings">Ouvrez les paramètres Android Auto</string>
+    <string name="carlink_home_open_aa_settings">Ouvrir les paramètres Android Auto</string>
     <string name="carlink_home_error_hu_server_title">Démarrer le serveur principal d\'Android Auto</string>
+    <string name="carlink_home_error_hu_server_stuck_title">Redémarrer le serveur d\'unité principale d\'Android Auto</string>
+    <string name="carlink_home_error_hu_server_stuck_body">Le serveur d\'unité principale d\'Android Auto a accepté la connexion mais n\'a jamais répondu. Il est bloqué sur une connexion précédente et ne se rétablit pas tout seul, donc CarLink a arrêté d\'essayer.\n1. Appuyez sur Ouvrir les paramètres Android Auto.\n2. Ouvrez le menu ⋮ en haut à droite et appuyez sur Stop head unit server, puis sur Start head unit server.\n3. Attendez quelques secondes et revenez ici : CarLink réessaie tout seul.</string>
     <string name="carlink_home_fail_step_cable">Câble</string>
     <string name="carlink_home_fail_step_handshake">Serre-mains</string>
     <string name="carlink_home_fail_step_link">Lien</string>

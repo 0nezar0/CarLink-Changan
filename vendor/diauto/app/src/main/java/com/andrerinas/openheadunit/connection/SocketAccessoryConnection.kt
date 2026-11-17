@@ -89,7 +89,11 @@ class SocketAccessoryConnection(private val ip: String, private val port: Int, p
             if (!transport.isConnected) {
                 val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // CarLink: the loopback (Self Mode's 127.0.0.1:5277) belongs to no network, so binding
+                // it to Wi-Fi only fails with a warning; it connects the same either way.
+                if (isLoopback(ip)) {
+                    AppLog.i("Loopback $ip: no network binding")
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     var netToBind: android.net.Network? = null
                     try {
                         var wifiNetwork: android.net.Network? = null
@@ -248,3 +252,7 @@ class SocketAccessoryConnection(private val ip: String, private val port: Int, p
         private const val LOW_LATENCY_SOCKET_BUFFER_BYTES = 256 * 1024
     }
 }
+
+/** CarLink: 127.x.x.x, ::1 or "localhost", which no network carries. */
+internal fun isLoopback(ip: String): Boolean =
+    ip == "localhost" || ip == "::1" || ip.startsWith("127.")

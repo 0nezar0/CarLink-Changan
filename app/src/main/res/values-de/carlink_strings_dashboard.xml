@@ -190,8 +190,9 @@
     <string name="carlink_home_usual_by_cable">Kabel</string>
     <string name="carlink_home_usual_by_path">durch %1$s</string>
     <string name="carlink_home_aa_on_screen">Führen Sie Android Auto auf diesem Bildschirm</string>
-    <string name="carlink_home_open_aa_settings">Android Auto Einstellungen öffnen</string>
+    <string name="carlink_home_open_aa_settings">Android Auto-Einstellungen öffnen</string>
     <string name="carlink_home_error_hu_server_title">Starten Sie den Head Unit Server von Android Auto</string>
+    <string name="carlink_home_error_hu_server_stuck_title">Head-Unit-Server von Android Auto neu starten</string>
     <string name="carlink_home_fail_step_cable">Kabel</string>
     <string name="carlink_home_fail_step_handshake">Handshake</string>
     <string name="carlink_home_fail_step_link">Link</string>
@@ -201,4 +202,5 @@
     <string name="carlink_repair_body">CarLink vergisst dieses Telefon: seine Bluetooth-Paarung, die Verbindung, die zuletzt funktioniert hat und seine Verbindungshistorie. Bluetooth-Einstellungen öffnen sich als nächstes: koppeln Sie das Telefon dort wieder. Am Telefon vergessen Sie dieses Auto auch in seiner Bluetooth-Liste.</string>
     <string name="carlink_repair_confirm">Vergessen und Repair</string>
     <string name="carlink_repair_settings_detail">Wenn Wireless stecken bleibt: Starten Sie mit einem Telefon von vorne</string>
+    <string name="carlink_home_error_hu_server_stuck_body">Der Head-Unit-Server von Android Auto hat die Verbindung angenommen, aber nie geantwortet. Er hängt an einer früheren Verbindung und erholt sich nicht von selbst, daher hat CarLink aufgehört, es zu versuchen.\n1. Tippe auf „Android Auto-Einstellungen öffnen“.\n2. Öffne oben rechts das Menü ⋮ und tippe auf Stop head unit server, dann auf Start head unit server.\n3. Warte ein paar Sekunden und kehre hierher zurück: CarLink versucht es von selbst erneut.</string>
 </resources>

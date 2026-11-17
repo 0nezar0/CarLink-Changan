@@ -4,6 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.util.Locale
 
 class AppLanguageTest {
     @Test fun offersSystemDefaultFirstAndTheChosenLanguages() {
@@ -34,5 +35,21 @@ class AppLanguageTest {
         assertEquals("Türkçe", AppLanguage.nativeName("tr"))
         assertEquals("Русский", AppLanguage.nativeName("ru"))
         for (tag in AppLanguage.SUPPORTED.drop(1)) assertTrue(tag, AppLanguage.nativeName(tag) != tag)
+    }
+
+    @Test fun aChoiceInTheDevicesLanguageKeepsTheDevicesRegionAndNumbers() {
+        val device = Locale.forLanguageTag("ar-SA-u-nu-latn")
+        assertEquals(device, AppLanguage.resolve(AppLanguage.locale("ar"), device))
+        assertEquals("latn", AppLanguage.resolve(AppLanguage.locale("ar"), device).getUnicodeLocaleType("nu"))
+        assertEquals(device, AppLanguage.resolve(null, device))
+        // Another language, or the same one in another named region, is the choice itself.
+        assertEquals(Locale("en"), AppLanguage.resolve(AppLanguage.locale("en"), device))
+        val portugal = Locale.forLanguageTag("pt-PT")
+        assertEquals(Locale("pt", "BR"), AppLanguage.resolve(AppLanguage.locale("pt-BR"), portugal))
+        val brazil = Locale.forLanguageTag("pt-BR-u-nu-latn")
+        assertEquals(brazil, AppLanguage.resolve(AppLanguage.locale("pt-BR"), brazil))
+        // Indonesian: the resources' "in" and a device's "id" are one language.
+        val indonesia = Locale.forLanguageTag("id-ID")
+        assertEquals(indonesia, AppLanguage.resolve(AppLanguage.locale("in"), indonesia))
     }
 }

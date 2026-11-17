@@ -369,6 +369,14 @@ class AaSessionTrackerTest {
         assertEquals(FailureReason.HEAD_UNIT_SERVER_OFF, t.event(EngineEvent.HEAD_UNIT_SERVER_CLOSED).failure().reason)
     }
 
+    @Test fun selfModeStuckHeadUnitServerFailsAtTheFirstSilentHandshake() {
+        val failure = self().event(EngineEvent.HEAD_UNIT_SERVER_STUCK).failure()
+        assertEquals(FailureReason.HEAD_UNIT_SERVER_STUCK, failure.reason)
+        assertEquals(com.carlink.core.core.LinkProblem.HEAD_UNIT_SERVER_STUCK, failure.reason.toLinkProblem())
+        // On the network the server is only a ride-along probe: the session goes on.
+        assertEquals(emptyList<AdapterEvent>(), wireless().event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
+    }
+
     @Test fun selfModeWaitsWithoutTimeoutAndFailsOnADrop() {
         val t = self()
         assertEquals(emptyList<AdapterEvent>(), t.after(limits.acceptTimeoutMillis + 1))

@@ -184,8 +184,10 @@
     <string name="carlink_home_usual_by_cable">केबल द्वारा</string>
     <string name="carlink_home_usual_by_path">द्वारा %1$s</string>
     <string name="carlink_home_aa_on_screen">इस स्क्रीन पर Android Auto चलाएं</string>
-    <string name="carlink_home_open_aa_settings">ओपन Android Auto सेटिंग्स</string>
+    <string name="carlink_home_open_aa_settings">Android Auto सेटिंग खोलें</string>
     <string name="carlink_home_error_hu_server_title">प्रारंभ Android Auto का प्रमुख इकाई सर्वर</string>
+    <string name="carlink_home_error_hu_server_stuck_title">Android Auto का हेड यूनिट सर्वर फिर से शुरू करें</string>
+    <string name="carlink_home_error_hu_server_stuck_body">Android Auto के हेड यूनिट सर्वर ने कनेक्शन स्वीकार किया, लेकिन कभी जवाब नहीं दिया। यह पिछले कनेक्शन पर अटका हुआ है और अपने आप ठीक नहीं होता, इसलिए CarLink ने कोशिश करना बंद कर दिया।\n1. Android Auto सेटिंग खोलें पर टैप करें।\n2. ऊपर दाईं ओर ⋮ मेन्यू खोलें और Stop head unit server पर टैप करें, फिर Start head unit server पर।\n3. कुछ सेकंड रुकें और यहाँ वापस आएँ: CarLink अपने आप फिर से कोशिश करेगा।</string>
     <string name="carlink_home_fail_step_cable">केबल</string>
     <string name="carlink_home_fail_step_handshake">हैंडशेक</string>
     <string name="carlink_home_fail_step_link">लिंक</string>

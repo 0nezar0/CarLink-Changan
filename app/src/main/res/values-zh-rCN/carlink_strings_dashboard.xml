@@ -183,6 +183,7 @@
     <string name="carlink_home_aa_on_screen">在此屏幕上运行Android Auto</string>
     <string name="carlink_home_open_aa_settings">打开 Android Auto 设置</string>
     <string name="carlink_home_error_hu_server_title">启动 Android Auto 的头部单元服务器</string>
+    <string name="carlink_home_error_hu_server_stuck_title">重新启动 Android Auto 的主机服务器</string>
     <string name="carlink_home_fail_step_cable">电缆</string>
     <string name="carlink_home_fail_step_handshake">握个手</string>
     <string name="carlink_home_fail_step_link">链接</string>
@@ -192,4 +193,5 @@
     <string name="carlink_repair_body">CarLink忘记了这个电话:它的Bluetooth对齐,最后起作用的连接及其连接历史. Bluetooth 下一个打开的设置: 再次将电话对齐 。 在电话里,忘了这辆车 在它的Bluetooth列表。</string>
     <string name="carlink_repair_confirm">忘记和再做</string>
     <string name="carlink_repair_settings_detail">当无线不断卡住:从一个电话开始</string>
+    <string name="carlink_home_error_hu_server_stuck_body">Android Auto 的主机服务器接受了连接，但始终没有响应。它卡在之前的连接上，无法自行恢复，因此 CarLink 已停止重试。\n1. 点按“打开 Android Auto 设置”。\n2. 打开右上角的 ⋮ 菜单，点按 Stop head unit server，然后点按 Start head unit server。\n3. 等待几秒钟后回到这里：CarLink 会自动重试。</string>
 </resources>

@@ -120,8 +120,16 @@ object ConnectionLog {
         return out
     }
 
-    private fun diPlayLevel(message: String): Char? {
-        val lower = message.lowercase(Locale.ROOT)
+    internal fun diPlayLevel(message: String, sdk: Int = android.os.Build.VERSION.SDK_INT): Char? {
+        var lower = message.lowercase(Locale.ROOT)
+        if ("receivecounters" in lower) {
+            // DiPlay's optional kernel receive counters: a counter's name ("…ErrorsDelta=0") is no error.
+            lower = lower.replace(COUNTER_DELTA, "")
+            // Android 10 and later close /proc/net and the interface statistics to apps, so a
+            // missing file there is expected, not a problem.
+            val failures = lower.split("failureclass=").drop(1)
+            if (sdk >= 29 && failures.isNotEmpty() && failures.all { it.startsWith("filenotfoundexception") }) return null
+        }
         return when {
             // DiPlay's 10 s wired io summary: an idle iAP2 control read times out every 100 ms in a
             // healthy session (issue #5 reports were all such lines). Only a failure or end is a problem.
@@ -135,6 +143,8 @@ object ConnectionLog {
             else -> null
         }
     }
+
+    private val COUNTER_DELTA = Regex("[a-z0-9]+delta=-?\\d+")
 
     /** The last [TAIL_BYTES] of a file as lines (the first, likely partial, line dropped). */
     internal fun tail(file: File): List<String> = runCatching {

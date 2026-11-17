@@ -195,6 +195,8 @@
     <string name="carlink_home_open_aa_settings">Buka pengaturan Android Auto</string>
     <string name="carlink_home_error_hu_server_title">Start Android Auto \'s head unit server</string>
     <string name="carlink_home_error_hu_server_body">Android Auto on this screen needs Android Auto \'s head unit server, and it is off.\n1. Tap Open Android Auto settings.\n2. Scroll ke Versi dan tekan 10 kali, kemudian memungkinkan pengaturan pengembang.\n3. Buka plugmenu di kanan atas dan tekan start unit server kepala.\n4. Kembali ke sini: CarLink mencoba lagi dengan sendirinya.</string>
+    <string name="carlink_home_error_hu_server_stuck_title">Mulai ulang server head unit Android Auto</string>
+    <string name="carlink_home_error_hu_server_stuck_body">Server head unit Android Auto menerima koneksi tetapi tidak pernah menjawab. Server ini macet pada koneksi sebelumnya dan tidak pulih dengan sendirinya, jadi CarLink berhenti mencoba.\n1. Ketuk Buka pengaturan Android Auto.\n2. Buka menu ⋮ di kanan atas, ketuk Stop head unit server, lalu Start head unit server.\n3. Tunggu beberapa detik dan kembali ke sini: CarLink akan mencoba lagi dengan sendirinya.</string>
     <string name="carlink_home_fail_step_cable">Kabel</string>
     <string name="carlink_home_fail_step_handshake">Jabat tangan</string>
     <string name="carlink_home_fail_step_link">Taut</string>

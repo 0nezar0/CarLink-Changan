@@ -71,6 +71,16 @@ class ConnectionLogTest {
         assertEquals('E', lines[0].level)
     }
 
+    @Test fun hiddenReceiveCountersAreNormalFromAndroid10ButNotBefore() {
+        val hidden = "wireless snapshot receiveCounters windowMs=10002 udpScope=device udp4=unavailable failureClass=FileNotFoundException"
+        assertEquals(null, ConnectionLog.diPlayLevel(hidden, sdk = 29))
+        assertEquals('E', ConnectionLog.diPlayLevel(hidden, sdk = 28))
+        assertEquals('E', ConnectionLog.diPlayLevel(
+            "wireless snapshot receiveCounters windowMs=10002 udpScope=device udp4=unavailable failureClass=IOException", sdk = 29))
+        assertEquals(null, ConnectionLog.diPlayLevel(
+            "wireless snapshot receiveCounters windowMs=10002 udpScope=device ifaceRx=sampled ifaceRxErrorsDelta=0", sdk = 28))
+    }
+
     @Test fun anIdleWiredControlReadIsNotAProblemButAFailureIs() {
         val counters = "elapsedMs=100 readCalls=1833 writeCalls=40 readTimeouts=1797 ends=0 failures=0 maxReadMs=104 maxWriteMs=6"
         val prefix = "CONNECTION_DIAGNOSTIC attempt=12 run=1 phase=CONTROL wired io"

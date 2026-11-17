@@ -195,6 +195,7 @@
     <string name="carlink_home_aa_on_screen">Executar Android Auto nesta tela</string>
     <string name="carlink_home_open_aa_settings">Abrir configurações do Android Auto</string>
     <string name="carlink_home_error_hu_server_title">Iniciar servidor de unidade principal do Android Auto</string>
+    <string name="carlink_home_error_hu_server_stuck_title">Reinicie o servidor da central multimídia do Android Auto</string>
     <string name="carlink_home_fail_step_cable">Cabo</string>
     <string name="carlink_home_fail_step_handshake">Aperto de mão</string>
     <string name="carlink_home_fail_step_link">Ligação</string>
@@ -203,4 +204,5 @@
     <string name="carlink_repair_body">CarLink esquece este telefone: seu emparelhamento Bluetooth, a conexão que funcionou por último e seu histórico de conexão. Configurações Bluetooth abrir em seguida: emparelhe o telefone novamente lá. No telefone, esqueça este carro em sua lista Bluetooth também.</string>
     <string name="carlink_repair_confirm">Esqueça e repare</string>
     <string name="carlink_repair_settings_detail">Quando o wireless fica preso: comece de novo com um telefone</string>
+    <string name="carlink_home_error_hu_server_stuck_body">O servidor da central multimídia do Android Auto aceitou a conexão, mas nunca respondeu. Ele ficou preso em uma conexão anterior e não se recupera sozinho, então o CarLink parou de tentar.\n1. Toque em Abrir configurações do Android Auto.\n2. Abra o menu ⋮ no canto superior direito e toque em Stop head unit server e depois em Start head unit server.\n3. Aguarde alguns segundos e volte aqui: o CarLink tenta de novo sozinho.</string>
 </resources>

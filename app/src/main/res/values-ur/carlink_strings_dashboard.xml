@@ -203,6 +203,8 @@
     <string name="carlink_home_open_aa_settings">Android Auto کی ترتیبات کھولیں</string>
     <string name="carlink_home_error_hu_server_title">Android Auto کا ہیڈ یونٹ سرور شروع کریں</string>
     <string name="carlink_home_error_hu_server_body">اس اسکرین پر Android Auto کو Android Auto کے ہیڈ یونٹ سرور کی ضرورت ہے، اور وہ بند ہے۔\n1۔ Android Auto کی ترتیبات کھولیں پر ٹیپ کریں۔\n2۔ ورژن تک اسکرول کریں اور اس پر 10 بار ٹیپ کریں، پھر ڈیولپر ترتیبات کی اجازت دیں۔\n3۔ اوپر دائیں ⋮ مینو کھولیں اور Start head unit server پر ٹیپ کریں۔\n4۔ یہاں واپس آئیں: CarLink خود دوبارہ کوشش کرے گا۔</string>
+    <string name="carlink_home_error_hu_server_stuck_title">Android Auto کا ہیڈ یونٹ سرور دوبارہ شروع کریں</string>
+    <string name="carlink_home_error_hu_server_stuck_body">Android Auto کے ہیڈ یونٹ سرور نے کنکشن قبول کیا لیکن کوئی جواب نہیں دیا۔ یہ پچھلے کنکشن پر اٹکا ہوا ہے اور خود ٹھیک نہیں ہوتا، اس لیے CarLink نے کوشش روک دی۔\n1۔ Android Auto کی ترتیبات کھولیں پر ٹیپ کریں۔\n2۔ اوپر دائیں ⋮ مینو کھولیں، Stop head unit server پر ٹیپ کریں، پھر Start head unit server۔\n3۔ چند سیکنڈ انتظار کریں اور یہاں واپس آئیں: CarLink خود دوبارہ کوشش کرے گا۔</string>
     <string name="carlink_home_fail_step_bluetooth">Bluetooth</string>
     <string name="carlink_home_fail_step_cable">کیبل</string>
     <string name="carlink_home_fail_step_handshake">رابطہ</string>

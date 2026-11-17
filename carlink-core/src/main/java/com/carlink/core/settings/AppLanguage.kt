@@ -65,7 +65,26 @@ object AppLanguage {
         sanitize(runCatching { file(context).takeIf { it.isFile }?.readText()?.trim() }.getOrNull())
 
     /** The locale screens should use before Android 13: the choice, or the device's for [SYSTEM]. */
-    fun effectiveLocale(context: Context): Locale = locale(current(context)) ?: systemLocale()
+    fun effectiveLocale(context: Context): Locale = resolve(locale(current(context)), systemLocale())
+
+    /**
+     * [chosen], or the device's own [system] locale when it is the same language (and region, when
+     * the choice names one): "ar" on an ar-SA-u-nu-latn device keeps its region and number style.
+     */
+    fun resolve(chosen: Locale?, system: Locale): Locale {
+        if (chosen == null) return system
+        val sameLanguage = baseLanguage(chosen.language) == baseLanguage(system.language)
+        val sameRegion = chosen.country.isEmpty() || chosen.country.equals(system.country, ignoreCase = true)
+        return if (sameLanguage && sameRegion) system else chosen
+    }
+
+    /** Indonesian is "in" in Android's resources and "id" in newer locales; Hebrew and Yiddish alike. */
+    private fun baseLanguage(language: String): String = when (language.lowercase(Locale.ROOT)) {
+        "in" -> "id"
+        "iw" -> "he"
+        "ji" -> "yi"
+        else -> language.lowercase(Locale.ROOT)
+    }
 
     /** Before Android 13 the app supplies the language; from 13 the platform does. */
     val appSupplied: Boolean get() = Build.VERSION.SDK_INT < 33

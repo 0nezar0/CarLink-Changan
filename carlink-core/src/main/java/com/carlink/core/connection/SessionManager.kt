@@ -687,7 +687,7 @@ class SessionManager(
         val path = paths[index]
         val problems = if (request.selfMode) emptyList() else environment.preflight(request, path)
         if (problems.isNotEmpty()) {
-            note("${request.engine} blocked on ${path ?: "USB"}: $problems")
+            note("${request.engine} blocked on ${where(path, request.selfMode)}: $problems")
             _state.value = SessionState.Blocked(request, problems)
             // The hotspot was the only thing missing: switch it on and start again (once per start).
             if (problems == listOf(Problem.CAR_HOTSPOT_OFF) && hotspotTriedFor !== request) {
@@ -720,7 +720,7 @@ class SessionManager(
                     if (sessionToken != token) return@post
                     val a = Attempt(request, plan, paths, index, ++nextAttemptId, clock())
                     attempt = a
-                    note("${plan.engine} starting on ${path ?: "USB"} (attempt ${plan.attempt})")
+                    note("${plan.engine} starting on ${where(path, plan.selfMode)} (attempt ${plan.attempt})")
                     adapters.getValue(plan.engine).start(plan) { event -> main.post { onEvent(a, event) } }
                     armWatchdog()
                 }
@@ -758,7 +758,7 @@ class SessionManager(
                     profiles.recordSuccess(request, plan.path, took)
                 }
                 everConnected = true
-                note("${plan.engine} connected on ${plan.path ?: "USB"} in $took ms")
+                note("${plan.engine} connected on ${where(plan.path, plan.selfMode)} in $took ms")
                 if (plan.path != null && request.phoneAddress != null) {
                     environment.rememberWorkingPath(plan.engine, request.phoneAddress, plan.path)
                 }
@@ -771,7 +771,7 @@ class SessionManager(
                 _state.value = current.copy(phase = SessionState.Phase.Connected, notice = null)
             }
             AdapterEvent.ViaHeadUnitServer -> {
-                if (!a.viaHeadUnitServer) note("${plan.engine}: found the phone's head unit server on ${plan.path ?: "USB"}; connecting through it")
+                if (!a.viaHeadUnitServer) note("${plan.engine}: found the phone's head unit server on ${where(plan.path, plan.selfMode)}; connecting through it")
                 a.viaHeadUnitServer = true
             }
             is AdapterEvent.Stalled -> {
@@ -790,7 +790,7 @@ class SessionManager(
                 }
             }
             is AdapterEvent.Restart -> {
-                note("${plan.engine} restarting on ${plan.path ?: "USB"}: ${event.detail}")
+                note("${plan.engine} restarting on ${where(plan.path, plan.selfMode)}: ${event.detail}")
                 // The session ran, so its Wi-Fi Direct group works: the restart reads it instead of making one.
                 replaceAttempt(a, a.index, SessionState.Phase.Starting, notice = null, networkSuspect = false)
             }
@@ -946,7 +946,7 @@ class SessionManager(
         recoveries[key] = used
         val usual = profiles.usualMillis(request, plan.path, stage)
         val phaseName = StallPlaybook.phaseName(stage)
-        note("stall: ${plan.engine} ${phaseName.lowercase()} on ${plan.path ?: "USB"} has taken $waited ms " +
+        note("stall: ${plan.engine} ${phaseName.lowercase()} on ${where(plan.path, plan.selfMode)} has taken $waited ms " +
             "(deadline $deadline ms${usual?.let { ", usual $it ms" } ?: ""}); $action")
         val kind = AttemptOutcome.stallKind(stage)
         val what = "$phaseName took ${waited / 1000} s"
@@ -1097,6 +1097,13 @@ fun FailureReason.retryText(engine: Engine): String {
         FailureReason.BLOCKED -> "a permission or switch is missing"
         FailureReason.AUTHENTICATION -> "authentication failed"
         FailureReason.HEAD_UNIT_SERVER_OFF -> "Android Auto's head unit server is not running"
+        FailureReason.HEAD_UNIT_SERVER_STUCK -> "Android Auto's head unit server is stuck"
         FailureReason.ENGINE -> "the engine restarted"
     }
+}
+
+/** Where an attempt runs, for the log: the wireless path, "USB", or "Self mode" (Android Auto on this screen). */
+internal fun where(path: Any?, selfMode: Boolean): String = when {
+    selfMode -> "Self mode"
+    else -> path?.toString() ?: "USB"
 }
