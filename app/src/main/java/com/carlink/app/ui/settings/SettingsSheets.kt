@@ -437,18 +437,19 @@ private fun BrandTile(brand: CarBrand, selected: Boolean, narrow: Boolean, onCli
         shape = RoundedCornerShape(if (car) 24.dp else 18.dp), role = Role.RadioButton) {
         Row(Modifier.fillMaxSize().padding(horizontal = if (car) 18.dp else 14.dp, vertical = if (car) 12.dp else 8.dp),
             verticalAlignment = Alignment.CenterVertically) {
-            brandLogo(brand)?.let { logo ->
-                // On a white chip so the dark blue mark reads on the graphite glass too.
-                // Same footprint as the settings rows' icon tiles (RowGlyph: 56dp in a car, 40dp
-                // elsewhere), in dp so it scales with the panel's density; the mark keeps its aspect.
-                val chip = if (car) 56.dp else 40.dp
-                Box(Modifier.size(chip).clip(CircleShape).background(Color.White), contentAlignment = Alignment.Center) {
-                    androidx.compose.foundation.Image(painterResource(logo), null, Modifier.size(chip * 0.64f),
-                        contentScale = androidx.compose.ui.layout.ContentScale.Fit)
-                }
-                Spacer(Modifier.width(if (car) 14.dp else 10.dp))
-            }
             Column(Modifier.weight(1f)) {
+                brandLogo(brand)?.let { logo ->
+                    // Above the name, so a narrow tile never breaks "Changan" mid-word. Same footprint
+                    // as the settings rows' icon tiles (RowGlyph: 56dp in a car, 40dp elsewhere), in dp
+                    // so it scales with the panel's density; the mark keeps its aspect (Fit), on a
+                    // white chip so the dark blue reads on the graphite glass too.
+                    val chip = if (car) 56.dp else 40.dp
+                    Box(Modifier.size(chip).clip(CircleShape).background(Color.White), contentAlignment = Alignment.Center) {
+                        androidx.compose.foundation.Image(painterResource(logo), null, Modifier.size(chip * 0.64f),
+                            contentScale = androidx.compose.ui.layout.ContentScale.Fit)
+                    }
+                    Spacer(Modifier.height(if (car) 8.dp else 6.dp))
+                }
                 // "Mercedes-Benz" may wrap after its hyphen, never inside a word.
                 Text(carBrandLabel(brand).replace("-", "-\u200B"),
                     style = if (narrow) MaterialTheme.typography.titleSmall else MaterialTheme.typography.titleMedium,
