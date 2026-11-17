@@ -971,4 +971,18 @@ class SessionManagerTest {
         assertEquals(2, starts.size)
         assertTrue(androidAuto.plan!!.selfMode)
     }
+
+    @Test fun aSessionThroughTheProbedHeadUnitServerIsNeverTornDownForASlowPhase() {
+        val m = manager()
+        m.connect("AA:BB", PhoneKind.ANDROID, "Pixel"); idle()
+        val before = starts.size
+        androidAuto.emit(AdapterEvent.ViaHeadUnitServer); idle()
+        androidAuto.emit(AdapterEvent.Progress(4, 4, ProgressStage.STARTING_PROJECTION)); idle()
+        advance(60_000)
+        assertEquals("no nudge, retry or next path", emptyList<RecoveryAction>(), androidAuto.recovered)
+        assertEquals("no restart: it would leave the phone's server deaf", before, starts.size)
+        assertTrue(m.state.value is SessionState.Active)
+        androidAuto.emit(AdapterEvent.Connected); idle()
+        assertEquals(SessionState.Phase.Connected, active(m).phase)
+    }
 }

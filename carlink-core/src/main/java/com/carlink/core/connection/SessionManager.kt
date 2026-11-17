@@ -280,6 +280,8 @@ class SessionManager(
         var totalFired = false
         var phoneSilent = false
         var connectedOnce = false
+        /** The engine is connecting through the phone's head unit server (explicit path or the ride-along probe). */
+        var viaHeadUnitServer = plan.path == WirelessPath.HEADUNIT_SERVER
     }
 
     /**
@@ -768,9 +770,15 @@ class SessionManager(
                 }
                 _state.value = current.copy(phase = SessionState.Phase.Connected, notice = null)
             }
+            AdapterEvent.ViaHeadUnitServer -> {
+                if (!a.viaHeadUnitServer) note("${plan.engine}: found the phone's head unit server on ${plan.path ?: "USB"}; connecting through it")
+                a.viaHeadUnitServer = true
+            }
             is AdapterEvent.Stalled -> {
                 val now = clock()
                 note("${plan.engine} stuck at ${a.stage} after ${now - a.stageSince} ms: ${event.detail}")
+                // A restart would drop the head unit server's only connection (it stays deaf after).
+                if (a.viaHeadUnitServer) return
                 if (quickRetries < MAX_QUICK_RETRIES) {
                     quickRetries++
                     profiles.recordFailure(request, plan.path, event.reason.name, a.stage, event.detail)
@@ -931,7 +939,7 @@ class SessionManager(
         if (request.selfMode && stage != null) return note("stall: Android Auto on this screen, ${StallPlaybook.phaseName(stage).lowercase()} has taken $waited ms; still waiting")
         // The phone's head unit server (#70) is the same server Self Mode dials, with the same
         // weakness: a link torn down mid-handshake leaves it deaf until the driver restarts it.
-        if (plan.path == WirelessPath.HEADUNIT_SERVER && stage != null) return note("stall: head unit server, ${StallPlaybook.phaseName(stage).lowercase()} has taken $waited ms; still waiting")
+        if (a.viaHeadUnitServer && stage != null) return note("stall: head unit server, ${StallPlaybook.phaseName(stage).lowercase()} has taken $waited ms; still waiting")
         val key = a.index to stage
         val (action, used) = StallPlaybook.next(StallPlaybook.actions(plan.engine, plan.transport, stage),
             recoveries[key] ?: 0, a.index + 1 < a.paths.size)

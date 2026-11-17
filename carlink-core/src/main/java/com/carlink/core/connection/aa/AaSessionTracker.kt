@@ -187,6 +187,13 @@ internal class AaSessionTracker(
             EngineEvent.BOOT_LOOP_PAUSE.name -> fail(FailureReason.ENGINE, "wireless is paused by the engine's boot-loop guard")
             EngineEvent.USB_PERMISSION_DENIED.name -> fail(FailureReason.USB, "USB access was not allowed")
             EngineEvent.FIRST_VIDEO_FRAME.name -> if (sessionLive) connect() else emptyList()
+            // The engine found the phone's head unit server and dials it with the probe's socket:
+            // the phone has answered, so no more Bluetooth wakes for this attempt.
+            EngineEvent.HEAD_UNIT_SERVER_FOUND.name -> {
+                accepted = true
+                nextRepokeAt = null
+                listOf(AdapterEvent.ViaHeadUnitServer) + if (sessionLive) emptyList() else progress(2, ProgressStage.HANDSHAKE)
+            }
             EngineEvent.HEAD_UNIT_SERVER_CLOSED.name -> fail(FailureReason.HEAD_UNIT_SERVER_OFF,
                 "Android Auto's head unit server is not running (127.0.0.1:5277)")
             EngineEvent.ORIENTATION_CHANGED.name ->
@@ -365,7 +372,7 @@ internal class AaSessionTracker(
             EngineEvent.EXTERNAL_BLUETOOTH.name, EngineEvent.EXTERNAL_MODULE_UNAVAILABLE.name, EngineEvent.BT_CHANNEL_ACCEPTED.name,
             EngineEvent.CREDENTIALS_SENT.name, EngineEvent.POKE_ANSWERED_NO_ACCEPT.name, EngineEvent.QUICK_RECONNECT.name,
             EngineEvent.HANDSHAKE_BACKOFF.name, EngineEvent.PHONE_WIFI_STATUS.name,
-            EngineEvent.SETTLE_TIMEOUT.name, EngineEvent.LINK_READ_TIMEOUT.name,
+            EngineEvent.SETTLE_TIMEOUT.name, EngineEvent.LINK_READ_TIMEOUT.name, EngineEvent.HEAD_UNIT_SERVER_FOUND.name,
             EngineEvent.BOOT_LOOP_PAUSE.name,
         )
     }

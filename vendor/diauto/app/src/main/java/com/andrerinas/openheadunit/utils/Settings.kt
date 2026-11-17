@@ -45,6 +45,14 @@ class Settings(private val context: Context) {
             prefs.edit().putStringSet("network-addresses", addrs).apply()
         }
 
+    /**
+     * CarLink: Native AA (mode 3) on a network the car shares with the phone also looks, once per
+     * bring-up, for Android Auto's head unit server on 5277 and connects through it when found
+     * (HeadUnitServerProbePolicy). Written by CarLink every session; off for standalone DiAuto.
+     */
+    val carlinkHeadUnitServerProbe: Boolean
+        get() = prefs.getBoolean(com.andrerinas.openheadunit.aap.HeadUnitServerProbePolicy.SETTING_KEY, false)
+
     var bluetoothAddress: String
         get() = prefs.getString("bt-address", "")!!
         set(value) = prefs.edit().putString("bt-address", value).apply()

@@ -1,6 +1,7 @@
 package com.carlink.core.connection.aa
 
 import com.carlink.core.core.Transport
+import com.carlink.core.settings.ConnectionMethod
 import com.carlink.core.settings.InterfaceSize
 import com.carlink.core.settings.Picture
 import com.carlink.core.settings.UnifiedSettings
@@ -197,5 +198,41 @@ class AaSessionSettingsTest {
         assertEquals(16, v["inset-right"])
         assertEquals(24, v["inset-bottom"])
     }
-}
 
+    @Test fun sharedNetworkPathsAlsoProbeForTheHeadUnitServer() {
+        val key = AaSessionSettings.HEADUNIT_SERVER_PROBE_KEY
+        // Automatic: every native path, the car may already be on the phone's hotspot.
+        for (path in listOf(WirelessPath.WIFI_DIRECT, WirelessPath.CAR_HOTSPOT)) {
+            val v = values(path = path).values
+            assertEquals(path.name, true, v[key])
+            assertEquals("native AA stays the main route", 3, v["wifi-connection-mode"])
+        }
+        assertEquals(true, values(settings = base.copy(connectionMethod = ConnectionMethod.CAR_HOTSPOT),
+            path = WirelessPath.CAR_HOTSPOT).values[key])
+        assertEquals(true, values(settings = base.copy(connectionMethod = ConnectionMethod.SAME_WIFI,
+            homeWifi = WifiDetails("Home", "secret123")), path = WirelessPath.SAME_WIFI, wifi = joined).values[key])
+    }
+
+    @Test fun theProbeStaysOffWhereItDoesNotBelong() {
+        val key = AaSessionSettings.HEADUNIT_SERVER_PROBE_KEY
+        // Written every session, so no session inherits an earlier one's probe.
+        assertEquals(false, values(transport = Transport.USB, path = null).values[key])
+        assertEquals(false, values(settings = base.copy(connectionMethod = ConnectionMethod.WIFI_DIRECT)).values[key])
+        // The explicit method is the probe alone (mode 1), not native plus probe.
+        val hus = values(settings = base.copy(connectionMethod = ConnectionMethod.HEADUNIT_SERVER),
+            path = WirelessPath.HEADUNIT_SERVER).values
+        assertEquals(false, hus[key])
+        assertEquals(1, hus["wifi-connection-mode"])
+        // Self Mode (no path) never dials the network.
+        assertEquals(false, values(path = null).values[key])
+    }
+
+    @Test fun probeRuleTable() {
+        for (method in ConnectionMethod.values()) for (path in WirelessPath.values()) {
+            val expected = method in setOf(ConnectionMethod.AUTOMATIC, ConnectionMethod.CAR_HOTSPOT, ConnectionMethod.SAME_WIFI) &&
+                path != WirelessPath.HEADUNIT_SERVER
+            assertEquals("$method/$path", expected, AaSessionSettings.probesHeadUnitServer(method, Transport.WIRELESS, path))
+            assertFalse(AaSessionSettings.probesHeadUnitServer(method, Transport.USB, path))
+        }
+    }
+}

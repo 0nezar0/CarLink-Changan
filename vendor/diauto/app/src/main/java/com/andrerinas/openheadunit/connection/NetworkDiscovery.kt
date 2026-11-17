@@ -24,7 +24,15 @@ import java.net.NetworkInterface
 import java.net.Socket
 import java.util.Collections
 
-class NetworkDiscovery(private val context: Context, private val listener: Listener) {
+class NetworkDiscovery(
+    private val context: Context,
+    private val listener: Listener,
+    /**
+     * CarLink: the probe that rides along with Native AA (HeadUnitServerProbePolicy). Only port
+     * 5277 is checked (no Wireless Helper wake on 5289) and the car's own addresses are skipped.
+     */
+    private val headUnitServerOnly: Boolean = false,
+) {
 
     companion object {
         /**
@@ -190,7 +198,16 @@ class NetworkDiscovery(private val context: Context, private val listener: Liste
                 }
             }
             // Always try heuristics (X.X.X.1) for all interfaces
-            collectInterfaceSuspects(suspects)
+            if (headUnitServerOnly) {
+                // CarLink: the car's own addresses are not the phone (on its own hotspot the car
+                // usually is x.x.x.1), and a cellular modem's gateway is the carrier's.
+                val own = localIpv4Addresses()
+                val ownIps = own.map { it.second }.toSet()
+                suspects.removeAll(ownIps)
+                suspects.addAll(com.andrerinas.openheadunit.aap.HeadUnitServerProbePolicy.gatewaySuspects(own))
+            } else {
+                collectInterfaceSuspects(suspects)
+            }
 
             // Special case for emulators: 10.0.2.2 is the host machine
             if (isEmulator()) {
@@ -216,14 +233,25 @@ class NetworkDiscovery(private val context: Context, private val listener: Liste
         return foundAny
     }
 
-    private suspend fun scanSubnet(): Unit = coroutineScope {
-        val subnet = getSubnet()
-        if (subnet == null) {
+    private suspend fun scanSubnet() {
+        // CarLink: every private /24 the car is on, not only the first interface's. When the car
+        // is the hotspot the phone is a DHCP client on the access-point interface (ap0, wlan1,
+        // softap0), which is often not the first one listed and never the default route.
+        val own = localIpv4Addresses()
+        val subnets = com.andrerinas.openheadunit.aap.HeadUnitServerProbePolicy.subnets(own)
+            .ifEmpty { listOfNotNull(getSubnet()) }
+        if (subnets.isEmpty()) {
             AppLog.e("NetworkDiscovery: Could not determine subnet for deep scan")
-            return@coroutineScope
+            return
         }
+        val ownIps = own.map { it.second }.toSet() + listOfNotNull(getLocalIpAddress())
+        for (subnet in subnets) {
+            if (scanOneSubnet(subnet, ownIps)) return
+        }
+    }
 
-        val myIp = getLocalIpAddress()
+    /** @return true when this subnet answered (a server found ends the sweep). */
+    private suspend fun scanOneSubnet(subnet: String, ownIps: Set<String>): Boolean = coroutineScope {
         AppLog.i("NetworkDiscovery: Scanning subnet: $subnet.*")
 
         val tasks = mutableListOf<Deferred<Boolean>>()
@@ -231,7 +259,7 @@ class NetworkDiscovery(private val context: Context, private val listener: Liste
         // Scan range 1..254
         for (i in 1..254) {
             val ip = "$subnet.$i"
-            if (ip == myIp) continue // Skip self
+            if (ip in ownIps) continue // Skip self
 
             // Children of the scan job, not of a detached scope: stop() has to be able to
             // reach these. Detached, they outlived the scan that started them and kept
@@ -241,7 +269,20 @@ class NetworkDiscovery(private val context: Context, private val listener: Liste
             })
         }
 
-        tasks.awaitAll()
+        tasks.awaitAll().any { it }
+    }
+
+    /** CarLink: (interface name, IPv4 address) for every interface that is up, loopback excluded. */
+    private fun localIpv4Addresses(): List<Pair<String?, String>> = try {
+        Collections.list(NetworkInterface.getNetworkInterfaces() ?: return emptyList())
+            .filter { it.isUp && !it.isLoopback }
+            .flatMap { iface ->
+                Collections.list(iface.inetAddresses).filterIsInstance<Inet4Address>()
+                    .mapNotNull { addr -> addr.hostAddress?.let { iface.name to it } }
+            }
+    } catch (e: Exception) {
+        AppLog.e("NetworkDiscovery: Interface listing failed", e)
+        emptyList()
     }
 
     private fun getLocalIpAddress(): String? {
@@ -273,8 +314,9 @@ class NetworkDiscovery(private val context: Context, private val listener: Liste
         // and connecting is work.
         coroutineContext.ensureActive()
 
-        // Check Port 5289 (Wifi Launcher) - prioritizing this
-        val launcherSocket = checkPort(ip, 5289, timeout = 300)
+        // Check Port 5289 (Wifi Launcher) - prioritizing this. CarLink: not for the probe beside
+        // Native AA, which has no Wireless Helper to wake and only wants the head unit server.
+        val launcherSocket = if (headUnitServerOnly) null else checkPort(ip, 5289, timeout = 300)
         if (launcherSocket != null) {
             // The phone-side Wireless Helper watches for this inbound probe to auto-launch
             // itself. Hold the socket open briefly before closing so it has time to react;

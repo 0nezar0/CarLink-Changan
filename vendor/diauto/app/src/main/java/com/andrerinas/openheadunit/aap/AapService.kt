@@ -1529,7 +1529,11 @@ class AapService : Service(), UsbReceiver.Listener {
                 serviceScope.launch {
                     delay(500)
                     val discovery = networkDiscovery ?: return@launch
-                    if (!discovery.startScan()) {
+                    // CarLink: in Native AA the discovery is only the head unit server probe, a
+                    // single sweep on the network that just arrived, never while a session runs.
+                    val nativeProbe = activeWifiMode == 3
+                    if (nativeProbe && commManager.isBusy) return@launch
+                    if (!discovery.startScan(oneShot = nativeProbe)) {
                         // Folded into a sweep that was already running — which was started for the
                         // network we have just left. Do not cancel it; just do not make the next
                         // one wait ten seconds either.
@@ -1771,6 +1775,13 @@ class AapService : Service(), UsbReceiver.Listener {
 
                     // Start the official Bluetooth handshake servers
                     nativeAaHandshakeManager?.start()
+                }
+                // CarLink: on a network the car shares with the phone, also look once for
+                // Android Auto's head unit server (5277). No Bluetooth needed for that one, so it
+                // runs whatever the Bluetooth route above decided (HeadUnitServerProbePolicy).
+                if (HeadUnitServerProbePolicy.probesAlongsideNative(mode, settings.carlinkHeadUnitServerProbe)) {
+                    AppLog.i("AapService: Native AA - also probing for a head unit server on 5277")
+                    startDiscovery(oneShot = true, headUnitServerProbe = true)
                 }
             }
         }
@@ -2015,6 +2026,10 @@ class AapService : Service(), UsbReceiver.Listener {
                 // rather than silently ignoring them.
                 Settings.clearBootLoopState(this)
                 initWifiMode()
+                // CarLink: an already-armed Native AA skips initWifiMode's bring-up, and with it
+                // the head unit server probe; a new session still gets its one sweep. Folds into a
+                // sweep already in flight rather than starting a second one.
+                kickHeadUnitServerProbe()
             }
             ACTION_START_WIRELESS_SCAN   -> {
                 WirelessTiming.begin("start-wireless-scan", WirelessTiming.SAME_BRING_UP_MILLIS) // CarLink
@@ -2695,12 +2710,23 @@ class AapService : Service(), UsbReceiver.Listener {
      * @param oneShot if `true`, does not reschedule after the scan finishes —
      *                used for the "auto WiFi" reconnect case.
      */
-    private fun startDiscovery(oneShot: Boolean = false) {
+    /** CarLink: one 5277 sweep beside an armed Native AA, when the host asked for it and nothing is connected. */
+    private fun kickHeadUnitServerProbe() {
+        val settings = App.provide(this).settings
+        if (activeWifiMode != 3) return
+        if (!HeadUnitServerProbePolicy.probesAlongsideNative(settings.wifiConnectionMode, settings.carlinkHeadUnitServerProbe)) return
+        startDiscovery(oneShot = true, headUnitServerProbe = true)
+    }
+
+    private fun startDiscovery(oneShot: Boolean = false, headUnitServerProbe: Boolean = false) {
         val settings = App.provide(this).settings
         val mode = settings.wifiConnectionMode
         val strategy = settings.helperConnectionStrategy
+        // CarLink: Native AA's ride-along probe is always a single sweep (HeadUnitServerProbePolicy).
+        val nativeProbe = headUnitServerProbe &&
+            HeadUnitServerProbePolicy.probesAlongsideNative(mode, settings.carlinkHeadUnitServerProbe)
 
-        if (!DiscoveryModePolicy.usesNetworkDiscovery(mode, strategy)) return
+        if (!nativeProbe && !DiscoveryModePolicy.usesNetworkDiscovery(mode, strategy)) return
         // [BUG_FIX] isBusy, not isConnected. isConnected excludes Connecting, so a rescan landing
         // inside the connect-and-handshake window -- up to twelve seconds -- opened a second socket
         // to the head unit server, which connect() then refused at its own Connecting guard and
@@ -2724,7 +2750,7 @@ class AapService : Service(), UsbReceiver.Listener {
         // binds to the connection nobody follows through -- deaf until the user restarts it by
         // hand. Keeping the instance lets startScan() serialise, which is what it was written for.
         // A real mode change still gets a fresh instance: stopWirelessServer() nulls this.
-        val discovery = networkDiscovery ?: NetworkDiscovery(this, object : NetworkDiscovery.Listener {
+        val discovery = networkDiscovery ?: NetworkDiscovery(this, headUnitServerOnly = mode == 3, listener = object : NetworkDiscovery.Listener {
             override fun onServiceFound(ip: String, port: Int, socket: java.net.Socket?) {
                 if (commManager.isBusy) {
                     // Connected, or connecting, by the time this callback fired; discard the
@@ -2737,6 +2763,10 @@ class AapService : Service(), UsbReceiver.Listener {
                     5277 -> {
                         // Headunit Server detected — reuse the pre-opened socket when possible
                         AppLog.i("Auto-connecting to Headunit Server at $ip:$port (reusing socket)")
+                        // CarLink: the host stops treating this attempt as a Bluetooth handshake
+                        // (no teardown on a slow phase: that would leave the server deaf).
+                        com.andrerinas.openheadunit.HostIntegration.engineEvent(this@AapService,
+                            com.andrerinas.openheadunit.HostIntegration.EngineEvent.HEAD_UNIT_SERVER_FOUND, "ip=$ip")
                         serviceScope.launch {
                             if (socket != null && socket.isConnected)
                                 commManager.connect(socket)

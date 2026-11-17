@@ -379,4 +379,24 @@ class AaSessionTrackerTest {
         assertEquals(FailureReason.ENGINE, t.after(limits.endDebounceMillis).failure().reason)
         assertFalse(t.takeReswitchRequest())
     }
+
+    @Test fun aFoundHeadUnitServerStopsTheWakesAndMarksTheAttempt() {
+        val t = wireless()
+        assertEquals(listOf(AdapterEvent.ViaHeadUnitServer, AdapterEvent.Progress(2, 4, ProgressStage.HANDSHAKE)),
+            t.event(EngineEvent.HEAD_UNIT_SERVER_FOUND, "ip=192.168.43.1"))
+        assertFalse("the phone answered: no Bluetooth wake", t.shouldRepoke(now + limits.acceptHintMillis))
+        assertEquals("no 'did not answer over Bluetooth' timeout", emptyList<AdapterEvent>(), t.after(limits.acceptTimeoutMillis + 1))
+        t.state(P.CONNECTION_CONNECTING)
+        assertEquals(listOf(AdapterEvent.Connected), t.state(P.CONNECTION_TRANSPORT_STARTED, firstFrame = true).filter { it == AdapterEvent.Connected })
+    }
+
+    @Test fun aHeadUnitServerFoundAfterTheSessionStartedDoesNotStepBack() {
+        val t = wireless()
+        t.state(P.CONNECTION_CONNECTING)
+        assertEquals(listOf(AdapterEvent.ViaHeadUnitServer), t.event(EngineEvent.HEAD_UNIT_SERVER_FOUND))
+    }
+
+    @Test fun aUsbSessionIgnoresTheProbe() {
+        assertEquals(emptyList<AdapterEvent>(), usb().event(EngineEvent.HEAD_UNIT_SERVER_FOUND))
+    }
 }

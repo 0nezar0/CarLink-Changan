@@ -8,6 +8,7 @@ import com.carlink.core.connection.PicturePolicy
 import com.carlink.core.core.Transport
 import com.carlink.core.engine.AndroidAutoSettings
 import com.carlink.core.settings.AudioLevels
+import com.carlink.core.settings.ConnectionMethod
 import com.carlink.core.settings.DayNight
 import com.carlink.core.settings.InterfaceSize
 import com.carlink.core.settings.Picture
@@ -175,6 +176,10 @@ object AaSessionSettings {
                     put("auto-enable-hotspot", false)
                 }
             }
+            // The shared-network paths also look for the phone's head unit server (5277) beside the
+            // normal handshake, so turning on "Start head unit server" is enough without picking
+            // the Head unit server method. Written every session so no route inherits it.
+            put(HEADUNIT_SERVER_PROBE_KEY, probesHeadUnitServer(settings.connectionMethod, transport, path))
             // The driver's typed address for the head unit server, tried first by the engine's
             // discovery (a CarLink hook in NetworkDiscovery). Written every session so no other
             // route inherits it.
@@ -271,6 +276,25 @@ object AaSessionSettings {
      * hook in NetworkDiscovery tries before the gateway: the Head unit server method's typed address.
      */
     const val HEADUNIT_SERVER_ADDRESSES_KEY = "network-addresses"
+
+    /** DiAuto's HeadUnitServerProbePolicy.SETTING_KEY: Native AA also probes for a head unit server. */
+    const val HEADUNIT_SERVER_PROBE_KEY = "carlink-headunit-server-probe"
+
+    /**
+     * Whether this wireless Android Auto session also probes for the phone's head unit server
+     * (Android Auto developer settings, "Start head unit server", TCP 5277) and connects through it
+     * when one answers; otherwise the normal wireless handshake carries on untouched.
+     *
+     * On for Automatic, Car hotspot and Same Wi-Fi, on any of their native paths: the car's own
+     * hotspot and a common router put both on one network, and under Automatic the car may already
+     * be on the phone's hotspot while the session starts on Wi-Fi Direct. Off for USB, for the
+     * explicit Wi-Fi Direct method (the driver chose a private link), and for the explicit Head unit
+     * server method, which is the probe alone (mode 1).
+     */
+    fun probesHeadUnitServer(method: ConnectionMethod, transport: Transport, path: WirelessPath?): Boolean =
+        transport == Transport.WIRELESS &&
+            method in setOf(ConnectionMethod.AUTOMATIC, ConnectionMethod.CAR_HOTSPOT, ConnectionMethod.SAME_WIFI) &&
+            path in setOf(WirelessPath.CAR_HOTSPOT, WirelessPath.SAME_WIFI, WirelessPath.WIFI_DIRECT)
 
     private const val MIN_WIDTH_DP = 748
     private const val MIN_HEIGHT_DP = 450

@@ -51,12 +51,12 @@
     <string name="carlink_settings_method_same_wifi">نفس شبكة Wi-Fi</string>
     <string name="carlink_settings_method_hotspot">نقطة اتصال السيارة</string>
     <string name="carlink_settings_method_direct">Wi-Fi Direct</string>
-    <string name="carlink_settings_method_auto_detail">يختار أفضل مسار قبل كل اتصال: نفس شبكة Wi-Fi، ثم نقطة اتصال السيارة، ثم Wi-Fi Direct.</string>
+    <string name="carlink_settings_method_auto_detail">يختار أفضل مسار قبل كل اتصال: نفس شبكة Wi-Fi، ثم نقطة اتصال السيارة، ثم Wi-Fi Direct. ومع Android Auto يتصل كذلك عن طريق خادم الوحدة الرئيسية في الجوال إذا كان شغّال والجوال والسيارة على نفس الشبكة.</string>
     <string name="carlink_settings_method_same_wifi_detail">الجوال والسيارة على موجّه واحد، وهو أسرع مسار. تحتاج كلمة سر Wi-Fi مرة واحدة.</string>
     <string name="carlink_settings_method_hotspot_detail">ينضم الجوال إلى نقطة اتصال Wi-Fi التي تنشئها السيارة. يعمل مع كل الجوالات.</string>
     <string name="carlink_settings_method_direct_detail">رابط مباشر بين الجوال والسيارة. لا حاجة لشبكة.</string>
     <string name="carlink_settings_method_headunit_server">خادم الوحدة الرئيسية (للمطورين)</string>
-    <string name="carlink_settings_method_headunit_server_detail">لـ Android Auto فقط. أولاً على الجوال: إعدادات Android Auto ثم اضغط Version حتى تُفتح إعدادات المطوّر ثم ⋮ ثم Start head unit server (وكرر ذلك بعد كل إعادة تشغيل للجوال). يجب أن تكون السيارة على نقطة اتصال الجوال أو على نفس شبكة Wi-Fi معه.</string>
+    <string name="carlink_settings_method_headunit_server_detail">لـ Android Auto فقط. أولاً على الجوال: إعدادات Android Auto ثم اضغط Version حتى تُفتح إعدادات المطوّر ثم ⋮ ثم Start head unit server (وكرر ذلك بعد كل إعادة تشغيل للجوال). يجب أن تكون السيارة على نقطة اتصال الجوال أو على نفس شبكة Wi-Fi معه. الطرق «تلقائي» و«نقطة اتصال السيارة» و«نفس شبكة Wi-Fi» تجرّبه كذلك؛ اختر هذه الطريقة إذا تبغى تستخدمه لحاله.</string>
     <string name="carlink_settings_method_sheet_body">يبدأ Bluetooth الاتصال دائماً؛ ثم تنتقل الصورة والصوت عبر Wi-Fi.</string>
     <string name="carlink_settings_hotspot">نقطة اتصال السيارة</string>
     <string name="carlink_settings_hotspot_detail">اسم نقطة اتصال السيارة وكلمتها السرية</string>

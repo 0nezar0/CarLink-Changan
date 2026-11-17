@@ -122,6 +122,14 @@ sealed interface AdapterEvent {
      */
     data class Restart(val detail: String) : AdapterEvent
 
+    /**
+     * Android Auto: the engine reached the phone's head unit server (TCP 5277) and is connecting
+     * through it, whatever path the attempt started on (the probe that rides along with the shared-
+     * network paths). From here a slow phase must not tear the link down: the phone's server binds
+     * to the first connection it accepts and stays deaf after a dropped handshake.
+     */
+    data object ViaHeadUnitServer : AdapterEvent
+
     /** Terminal for this session: the engine stopped trying. */
     data class Failed(val reason: FailureReason, val detail: String? = null) : AdapterEvent
 }
