@@ -2,7 +2,7 @@
 <!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
 <resources>
     <string name="notification_channel_launch">Abrir o CarLink</string>
-    <string name="notification_open">PG para abrir CarLink.</string>
+    <string name="notification_open">Toque para abrir CarLink.</string>
     <string name="carlink_notification_channel_android_auto">Ligação Android Auto</string>
     <string name="carlink_back">Voltar</string>
     <string name="carlink_transport_wireless">Sem fio</string>
@@ -11,9 +11,9 @@
     <string name="carlink_transport_plugged_in">Ligado (USB)</string>
     <string name="carlink_transport_connected_cable">Ligado por cabo</string>
     <string name="carlink_transport_connected_wireless">Ligado sem fios</string>
-    <string name="carlink_transport_connecting_cable">Ligação por cabo</string>
+    <string name="carlink_transport_connecting_cable">Conexão por cabo</string>
     <string name="carlink_transport_connecting_wireless">Conectando sem fio</string>
-    <string name="carlink_state_on">Ligadonjing</string>
+    <string name="carlink_state_on">Ligado</string>
     <string name="carlink_state_off">Desligado</string>
     <string name="carlink_state_selected">Seleccionado</string>
 </resources>

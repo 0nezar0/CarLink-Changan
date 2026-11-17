@@ -19,7 +19,7 @@
     <string name="carlink_switcher_phone_fallback">Новый телефон</string>
     <string name="carlink_switcher_night">Ночной режим</string>
     <string name="carlink_switcher_dimmer">Диммер</string>
-    <string name="carlink_switcher_dimmer_off">Уходить</string>
+    <string name="carlink_switcher_dimmer_off">Огонь</string>
     <string name="carlink_switcher_dimmer_level">Уровень %1$d</string>
     <string name="carlink_switcher_stereo_home">Стереотип</string>
     <string name="carlink_switcher_stereo_home_value">пусковая установка</string>

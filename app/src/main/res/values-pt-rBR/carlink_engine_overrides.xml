@@ -3,22 +3,22 @@
 <resources>
     <string name="diplay">CarLink</string>
     <string name="back_to_diplay">Voltar para CarLink</string>
-    <string name="could_not_start_carplay_return_to_diplay_and_check_app_per">Não foi possívelIESr CarPlay. Retornar paraIES CarLink e verificar permissões de aplicativos.</string>
-    <string name="allow_nearby_devices_for_diplay_in_the_head_unit_s_app_per">IME caramelos para CarLink nas permissões da unidade Mediterrâneo.</string>
-    <string name="allow_precise_location_for_diplay_in_the_head_unit_s_app_p">Permitir Nomenclatura precisa para CarLink nas permissõespuras da unidade principal.</string>
-    <string name="existing_wifi_instructions">Connect the car and iPhone to the same external Wi-Fi in system settings. Enter its exact name and WPA2 password below; leave the password empty only for an open network. Use WPA2 or WPA2/WPA3 mixed mode and disable client isolation on the router. CarLink keeps this Wi-Fi connection and creates no hotspot.</string>
-    <string name="open_diplay_settings_hint">Durante CarPlay, deslize para baixo com %1$d dedos para abrir o menu CarPlay.</string>
+    <string name="could_not_start_carplay_return_to_diplay_and_check_app_per">Não foi possível iniciar o CarPlay. Volte ao CarLink e verifique as permissões do aplicativo.</string>
+    <string name="allow_nearby_devices_for_diplay_in_the_head_unit_s_app_per">Permitir dispositivos próximos para CarLink nas permissões de app da unidade principal.</string>
+    <string name="allow_precise_location_for_diplay_in_the_head_unit_s_app_p">Permitir a localização precisa para CarLink nas permissões de aplicação da unidade principal.</string>
+    <string name="existing_wifi_instructions">Conecte o carro e iPhone para o mesmo Wi-Fi externo nas configurações do sistema. Digite seu nome exato e senha WPA2 abaixo; deixe a senha vazia apenas para uma rede aberta. Use o modo misto WPA2 ou WPA2/WPA3 e desabilite o isolamento do cliente no roteador. O CarLink mantém esta ligação Wi-Fi e não cria hotspot.</string>
+    <string name="open_diplay_settings_hint">Durante o CarPlay, deslize para baixo com %1$d dedos para abrir o menu CarPlay.</string>
     <string name="carplay_settings">Menu CarPlay</string>
-    <string name="side_panel_full_screen">algae</string>
-    <string name="setup_error_auth">CarPlay authentication files are missing from this build. Settings › Diagnostics explains what is needed.</string>
-    <string name="cluster_waiting_for_map">CarLink · waiting for the CarPlay map</string>
-    <string name="wheel_key_service_label">CarLink wheel keys</string>
-    <string name="wheel_key_service_description">Permite ao CarLink usar as teclas de direção escolhidas para ampliar o mapa CarPlay no painel e mover-se em torno da tela do CarPlay. Ela tem um vídeo.</string>
+    <string name="side_panel_full_screen">Ecrã completo</string>
+    <string name="setup_error_auth">Os arquivos de autenticação CarPlay estão faltando nesta compilação. Configuração › O diagnóstico explica o que é necessário.</string>
+    <string name="cluster_waiting_for_map">CarLink · esperando pelo mapa CarPlay</string>
+    <string name="wheel_key_service_label">Chaves de roda CarLink</string>
+    <string name="wheel_key_service_description">Permite ao CarLink usar as teclas de direção escolhidas para ampliar o mapa CarPlay no painel e mover-se em torno da tela do CarPlay. Só recebe prensas de teclas e não lê a tela.</string>
     <string name="exit_dialog_title">Android Auto</string>
     <string name="exit_dialog_stop">Desligar</string>
     <string name="exit_dialog_background">Mover para o fundo</string>
     <string name="gesture_hint">Dica: deslize da borda esquerda com dois dedos para abrir o menu Android Auto.</string>
     <string name="notification_service_running">Android Auto está pronto</string>
-    <string name="boot_loop_paused_generic">This device restarted three times in a row shortly after CarLink started wireless Android Auto, so wireless was left off this time. USB still works. Open CarLink to turn it back on.</string>
-    <string name="boot_loop_paused_native_wifi_direct">This device restarted three times in a row shortly after CarLink started wireless Android Auto, so wireless was left off this time. On some head units the Wi-Fi chipset takes the whole system down when a phone joins a Wi-Fi Direct network. Try the car hotspot as the wireless method. USB still works.</string>
+    <string name="boot_loop_paused_generic">Este dispositivo reiniciado três vezes seguidas logo após CarLink começou sem fio Android Auto, então sem fio foi deixado de fora desta vez. O USB ainda funciona. Abra o CarLink para o ligar novamente.</string>
+    <string name="boot_loop_paused_native_wifi_direct">Este dispositivo reiniciado três vezes seguidas logo após CarLink começou sem fio Android Auto, então sem fio foi deixado de fora desta vez. Em algumas unidades principais, o chipset Wi-Fi derruba todo o sistema quando um telefone se junta a uma rede Wi-Fi Direct. Tente o hotspot do carro como o método wireless. O USB ainda funciona.</string>
 </resources>

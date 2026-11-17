@@ -3,7 +3,7 @@
 <resources>
     <string name="notification_channel_launch">Open CarLink</string>
     <string name="notification_phone_ready">%1$s ist nahe. Tippen zum Verbinden.</string>
-    <string name="notification_open">Tippen Sie auf CarLink öffnen.</string>
+    <string name="notification_open">Tippen Sie, um CarLink zu öffnen.</string>
     <string name="carlink_notification_channel_android_auto">Android Auto Verbindung</string>
     <string name="carlink_back">Rücken</string>
     <string name="carlink_transport_wireless">Drahtlos</string>

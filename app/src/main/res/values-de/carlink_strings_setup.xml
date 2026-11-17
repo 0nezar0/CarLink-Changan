@@ -27,7 +27,7 @@
     <string name="carlink_setup_permissions_all">Lassen Sie alle</string>
     <string name="carlink_setup_permissions_done">Alles Notwendige ist erlaubt</string>
     <string name="carlink_setup_permissions_missing">%1$d noch erlauben</string>
-    <string name="carlink_setup_permission_allowed">erlaubt</string>
+    <string name="carlink_setup_permission_allowed">Erlaubt</string>
     <string name="carlink_setup_permission_allow">zulässig</string>
     <string name="carlink_setup_permission_optional">Fakultativ</string>
     <string name="carlink_setup_permission_recommended">Empfohlen</string>
@@ -51,7 +51,7 @@
     <string name="carlink_setup_car_eyebrow">Dein Auto</string>
     <string name="carlink_setup_car_title">In welchem Auto ist dieser Bildschirm?</string>
     <string name="carlink_setup_car_body">Wählen Sie Ihre Marke. Sie können es später in Einstellungen ändern › Fahrzeug.</string>
-    <string name="carlink_setup_size_eyebrow">Screen Größe</string>
+    <string name="carlink_setup_size_eyebrow">Bildschirmgröße</string>
     <string name="carlink_setup_size_title">Wie groß sollten die Dinge aussehen?</string>
     <string name="carlink_setup_size_body">Die Größe von Icons und Text in CarPlay und Android Auto. Medium passt zu den meisten Bildschirmen, so dass Sie dies überspringen können. Ändern Sie es jederzeit in Einstellungen › Display.</string>
     <string name="carlink_setup_pair_eyebrow">Verbinden Sie Ihr Telefon</string>

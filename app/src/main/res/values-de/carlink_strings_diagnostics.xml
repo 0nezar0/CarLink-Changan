@@ -10,7 +10,7 @@
     <string name="carlink_diag_stage_idle">nicht verbunden</string>
     <string name="carlink_diag_stage_waiting">Warten auf das Telefon</string>
     <string name="carlink_diag_stage_connecting">Verbindung</string>
-    <string name="carlink_diag_stage_connected">Verbunden</string>
+    <string name="carlink_diag_stage_connected">verbunden</string>
     <string name="carlink_diag_stage_failed">Konnte nicht verbinden</string>
     <string name="carlink_diag_tile_engine">Motor</string>
     <string name="carlink_diag_tile_transport">Anschluss</string>
@@ -26,7 +26,7 @@
         <item quantity="one">%d Ding braucht Aufmerksamkeit</item>
         <item quantity="other">%d Dinge brauchen Aufmerksamkeit</item>
     </plurals>
-    <string name="carlink_diag_checking">Checken…</string>
+    <string name="carlink_diag_checking">Checking…</string>
     <string name="carlink_diag_status_pass">Passiert</string>
     <string name="carlink_diag_status_warn">Warnung</string>
     <string name="carlink_diag_status_fail">Problem</string>
@@ -104,11 +104,11 @@
     <string name="carlink_diag_p2p_ok">Wi-Fi Direct unterstützt</string>
     <string name="carlink_diag_p2p_missing">Wi-Fi Direct wird nicht unterstützt</string>
     <string name="carlink_diag_p2p_missing_body">Drahtlose Verbindungen benötigen stattdessen einen Hotspot.</string>
-    <string name="carlink_diag_avc_ok">Hardware H.264 Decoder</string>
+    <string name="carlink_diag_avc_ok">Hardware H.264-Decoder</string>
     <string name="carlink_diag_avc_missing">Keine Hardware H.264-Decoder</string>
     <string name="carlink_diag_avc_missing_body">Projiziertes Video kann stottern oder nicht starten.</string>
     <string name="carlink_diag_hevc_ok">Hardware HEVC-Decoder</string>
-    <string name="carlink_diag_hevc_missing">Kein HEVC-Decoder</string>
+    <string name="carlink_diag_hevc_missing">Kein Hardware-HEVC-Decoder</string>
     <string name="carlink_diag_hevc_missing_body">Fakultativ. H.264 wird stattdessen verwendet.</string>
     <string name="carlink_diag_decoder_detail">%1$s, bis %2$s</string>
     <string name="carlink_diag_summary_body">CarLink überprüft dieses Gerät jedes Mal erneut, wenn Sie diese Seite öffnen.</string>
@@ -126,7 +126,7 @@
     <string name="carlink_diag_log_loading">Die Logs lesen…</string>
     <string name="carlink_diag_log_empty_title">Noch keine Verbindungsaktivität</string>
     <string name="carlink_diag_log_empty_filtered">Nichts von %1$s noch</string>
-    <string name="carlink_diag_log_empty_body">Zeilen erscheinen hier, wenn ein Telefon verbunden ist oder CarLink CarPlay oder Android Auto startet.</string>
+    <string name="carlink_diag_log_empty_body">Zeilen werden hier angezeigt, wenn sich ein Telefon verbindet oder CarLink CarPlay oder Android Auto startet.</string>
     <string name="carlink_report_action">Bericht über GitHub</string>
     <string name="carlink_report_title">Ein Problem auf GitHub melden</string>
     <string name="carlink_report_intro">CarLink öffnet ein neues Problem auf GitHub mit diesen Details ausgefüllt. Überprüfen Sie es im Browser und tippen Sie dann auf Senden.</string>
@@ -158,7 +158,7 @@
     <string name="carlink_diag_hotspot_on_phone">Dieser Bildschirm befindet sich auf dem Hotspot eines Telefons</string>
     <string name="carlink_diag_hotspot_body">Sein Wi-Fi ist mit %1$s verbunden. Wireless CarPlay und Android Auto schalten diesen Hotspot aus und die Verbindung fällt in einer Schleife. Vergessen Sie dieses Netzwerk hier, oder verwenden Sie das Wi-Fi des Autos.</string>
     <string name="carlink_diag_unisoc_usb">Unisoc UMS512 Chip</string>
-    <string name="carlink_diag_unisoc_usb_body">Auf einigen Bildschirmen mit diesem Chip verbindet sich das kabelgebundene CarPlay, aber die Daten des iPhones kommen nie über USB an. Wenn das Kabel nie an der Verbindung vorbeikommt, verwenden Sie stattdessen Wireless CarPlay.</string>
+    <string name="carlink_diag_unisoc_usb_body">Auf einigen Bildschirmen mit diesem Chip verbindet sich kabelgebundenes CarPlay, aber die Daten des iPhones gelangen nie über USB. Wenn das Kabel nie an der Verbindung vorbeikommt, verwenden Sie stattdessen Wireless CarPlay.</string>
     <string name="carlink_diag_clock_ok">Uhr ist gesetzt</string>
     <string name="carlink_diag_clock_wrong">Die Stereouhr ist falsch</string>
     <string name="carlink_diag_clock_body">Das Datum liegt weit in der Vergangenheit, wie nach einem Start ohne Netzwerkzeit. Updates und einige Verbindungen können fehlschlagen; legen Sie das Datum fest oder lassen Sie die Stereoanlage die Netzwerkzeit erhalten.</string>
@@ -212,7 +212,7 @@
     <string name="carlink_about_lic_diplay">GNU GPL v3 Eine modifizierte Version von xcertplay von shilapi (GNU GPL v3).</string>
     <string name="carlink_about_lic_diauto">GNU AGPL v3. Behält die Open Headunit und Michael A. Reid Copyright-Hinweise.</string>
     <string name="carlink_about_lic_bydmate_name">BYD HUD Manöversymbole</string>
-    <string name="carlink_about_lic_bydmate">Copyright AndyShaman (BYDMate, github.com/AndyShaman/BYDMate). PolyForm Noncommercial License 1.0.0). Diese Bilder fallen nicht unter die CarLink-Lizenz. Upstream beschreibt sie als Spendervermögen; ihre ursprüngliche Quelle ist nicht unabhängig etabliert.</string>
+    <string name="carlink_about_lic_bydmate">Copyright AndyShaman (BYDMate, github.com/AndyShaman/BYDMate). PolyForm Noncommercial License 1.0.0). Diese Bilder sind nicht durch die Lizenz von CarLink abgedeckt. Upstream beschreibt sie als Spendervermögen; ihre ursprüngliche Quelle ist nicht unabhängig festgelegt.</string>
     <string name="carlink_about_lic_ffmpeg">GNU LGPL v2.1 oder höher. Software HEVC Dekodierung auf 64-Bit ARM.</string>
     <string name="carlink_about_lic_libusb">GNU LGPL v2.1 oder höher.</string>
     <string name="carlink_about_lic_speex">BSD-style 3-Klausel-Lizenz. Xiph. Org Foundation und Mitwirkende.</string>
@@ -232,11 +232,11 @@
     <string name="carlink_diag_phones_empty_body">Der Datensatz jedes Telefons erscheint hier nach seiner ersten Verbindung: wie oft es sich verbindet, wie schnell und was schief gelaufen ist.</string>
     <string name="carlink_diag_phone_attempts">%1$s · %2$d von %3$d verbunden</string>
     <string name="carlink_diag_phone_rate_description">Verbindet %1$d%% der Zeit</string>
-    <string name="carlink_diag_phone_typical">.</string>
+    <string name="carlink_diag_phone_typical">Übliche Zeit</string>
     <string name="carlink_diag_phone_best">Funktioniert am besten von</string>
     <string name="carlink_diag_phone_not_yet">Noch nicht</string>
     <string name="carlink_diag_phone_cable">Kabel</string>
-    <string name="carlink_diag_phone_problems">Jüngste Probleme</string>
+    <string name="carlink_diag_phone_problems">Die jüngsten Probleme</string>
     <string name="carlink_diag_phone_no_problems">Keine Probleme in letzter Zeit</string>
     <string name="carlink_diag_time_yesterday">Gestern %1$s</string>
     <string name="carlink_diag_problem_no_answer">Telefon hat nicht geantwortet</string>
@@ -245,14 +245,14 @@
     <string name="carlink_diag_problem_external_module">Stereo Bluetooth Modul antwortete nicht</string>
     <string name="carlink_diag_problem_refused_wifi">Telefon lehnte Wi-Fi des Autos ab</string>
     <string name="carlink_diag_problem_unreached">Telefon hat sich nicht über das Wi-Fi des Autos angeschlossen</string>
-    <string name="carlink_diag_problem_wifi_off">Das iPhone-Wi-Fi war ausgeschaltet</string>
+    <string name="carlink_diag_problem_wifi_off">iPhone Wi-Fi war ausgeschaltet</string>
     <string name="carlink_diag_problem_dropped">Anschluss fallen gelassen</string>
     <string name="carlink_diag_problem_wifi_setup">Auto Wi-Fi-Verbindung nicht gestartet</string>
     <string name="carlink_diag_problem_usb">USB-Verbindung fehlgeschlagen</string>
     <string name="carlink_diag_problem_blocked">Eine Erlaubnis oder ein Switch fehlte</string>
     <string name="carlink_diag_problem_auth">CarPlay-Authentifizierung fehlgeschlagen</string>
     <string name="carlink_diag_problem_engine">Der Motor stoppte</string>
-    <string name="carlink_diag_problem_slow_reaching">Langsame Antwort</string>
+    <string name="carlink_diag_problem_slow_reaching">Langsam zu antworten</string>
     <string name="carlink_diag_problem_slow_handshake">Langsamer Händedruck</string>
     <string name="carlink_diag_problem_slow_linking">Langsam für Wi-Fi</string>
     <string name="carlink_diag_problem_slow_picture">Langsam, um das Bild zu starten</string>

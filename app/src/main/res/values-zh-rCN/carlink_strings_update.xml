@@ -27,7 +27,7 @@
     <string name="carlink_update_error_unreadable">下载的文件不是一个有效的应用程序 。 现已删除。</string>
     <string name="carlink_update_error_package">下载的文件不是“ CarLink ” 。 现已删除。</string>
     <string name="carlink_update_error_not_newer">下载的文件并不比你拥有的版本更新 。 现已删除。</string>
-    <string name="carlink_update_error_signer">下载的文件没有用 CarLink 释放密钥签名, 所以没有安装 。 现已删除。</string>
+    <string name="carlink_update_error_signer">下载的文件没有与 CarLink 的发行密钥签名, 所以没有安装 。 现已删除。</string>
     <string name="carlink_update_error_install">Android没有安装更新。 再试一次</string>
     <string name="carlink_update_error_install_detail">Android没有安装更新 (%1$s) 。 再试一次</string>
     <string name="carlink_update_error_install_cancelled">安装被取消.</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
 <resources>
-    <string name="notification_channel_launch">Açık CarLink</string>
+    <string name="notification_channel_launch">Open CarLink</string>
     <string name="notification_phone_ready">%1$s yakın. Bağlanmak için Tap.</string>
     <string name="notification_open">CarLink açmak için Tap.</string>
     <string name="carlink_notification_channel_android_auto">Android Auto bağlantısı</string>

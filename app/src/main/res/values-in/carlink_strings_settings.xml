@@ -58,7 +58,7 @@
     <string name="carlink_settings_method_sheet_body">Bluetooth selalu memulai koneksi; gambar dan suara kemudian melakukan perjalanan di atas Wi-Fi.</string>
     <string name="carlink_settings_hotspot">Mobil hotspot</string>
     <string name="carlink_settings_hotspot_detail">Nama dan sandi hotspot mobil sendiri</string>
-    <string name="carlink_settings_hotspot_sheet_body">CarLink membacanya dari mobil dimana dia bisa dan mengirimkannya ke ponselmu. Change them here and CarLink changes the car \'s hotspot too, where Android allowed it.</string>
+    <string name="carlink_settings_hotspot_sheet_body">CarLink membacanya dari mobil di mana ia bisa dan mengirimkannya ke ponselmu. Change them here and CarLink changes the car \'s hotspot too, where Android allosin it.</string>
     <string name="carlink_settings_hotspot_read">Baca dari mobil</string>
     <string name="carlink_settings_hotspot_reading">Membaca hotspot mobil …</string>
     <string name="carlink_settings_hotspot_unreadable">stereo ini tidak membiarkan CarLink membaca hotspot nya. Masukkan nama dan sandi persis seperti pengaturan hotspot mobil menunjukkan mereka.</string>
@@ -70,7 +70,7 @@
     <string name="carlink_settings_headunit_server_address">Alamat telepon</string>
     <string name="carlink_settings_headunit_server_address_detail">Opsional. CarLink menemukan telepon dengan sendirinya: pertama hotspot telepon, kemudian sisa jaringan.</string>
     <string name="carlink_settings_headunit_server_address_auto">Cari secara otomatis</string>
-    <string name="carlink_settings_headunit_server_sheet_body">Sebelum menyambung, nyalakan server unit kepala di telepon: Android Auto atur › tekan Versi sampai pengaturan pengembang terbuka › › Mulai unit kepala server. Lakukan lagi setelah setiap telepon dijalankan ulang. Tinggalkan alamat kosong untuk menemukan telepon secara otomatis, atau ketik alamat Wi-Fi (misalnya 192.168.43.1).</string>
+    <string name="carlink_settings_headunit_server_sheet_body">Sebelum menyambung, nyalakan server unit kepala di telepon: Android Auto seting › tekan Versi sampai pengaturan pengembang terbuka ›} › Mulai unit kepala server. Lakukan lagi setelah setiap telepon dijalankan ulang. Tinggalkan alamat kosong untuk menemukan telepon secara otomatis, atau ketik alamat Wi-Fi (misalnya 192.168.43.1).</string>
     <string name="carlink_settings_headunit_server_address_field">Alamat IP telepon</string>
     <string name="carlink_settings_headunit_server_address_error">Masukkan alamat IPv 4 seperti 192.168.1.20</string>
     <string name="carlink_settings_wifi_name">Nama jaringan</string>
@@ -120,10 +120,9 @@
     <string name="carlink_settings_daynight_schedule_detail">Gelap antara dua kali Anda memilih</string>
     <string name="carlink_settings_night_start">Malam dimulai</string>
     <string name="carlink_settings_night_end">Malam berakhir</string>
-    <string name="carlink_settings_time_earlier">15 min sebelumnya</string>
     <string name="carlink_settings_time_later">15 min kemudian</string>
     <string name="carlink_settings_group_margins">Marjin layar</string>
-    <string name="carlink_settings_margins_detail">Move CarPlay and Android Auto away from the car \'s status or navigation bar, so the buttons stay easy to press. Nilai atas juga bantalan pengaturan dan Rumah langsung. CarPlay dan Android Auto mengambilnya dari koneksi berikutnya.</string>
+    <string name="carlink_settings_margins_detail">Giliran CarPlay dan Android Auto menjauh dari status atau batang navigasi mobil, sehingga tombol-tombol tetap mudah ditekan. Nilai atas juga bantalan pengaturan dan Rumah langsung. CarPlay dan Android Auto mengambilnya dari koneksi berikutnya.</string>
     <string name="carlink_settings_margin_top">Puncak</string>
     <string name="carlink_settings_margin_top_detail">Tinggalkan ruang di bawah batang pemberitahuan mobil</string>
     <string name="carlink_settings_margin_app">Layar CarLink (atas)</string>
@@ -131,7 +130,7 @@
     <string name="carlink_settings_group_margins_carplay">Margin CarPlay</string>
     <string name="carlink_settings_group_margins_aa">Margin Android Auto</string>
     <string name="carlink_settings_margin_bottom">Dasar</string>
-    <string name="carlink_settings_margin_bottom_detail">Tinggalkan ruang di atas navigasi mobil atau home bar</string>
+    <string name="carlink_settings_margin_bottom_detail">Tinggalkan Musuh di atas navigasi mobil atau home bar</string>
     <string name="carlink_settings_margin_left">Kiri</string>
     <string name="carlink_settings_margin_left_detail">Tinggalkan ruang di tepi kiri</string>
     <string name="carlink_settings_margin_right">Kanan</string>
@@ -208,7 +207,7 @@
     <string name="carlink_settings_rendering">Efek visual</string>
     <string name="carlink_settings_rendering_detail">Cahaya, cahaya dan animasi pada layar CarLink</string>
     <string name="carlink_settings_rendering_auto">Otomatis</string>
-    <string name="carlink_settings_rendering_full">Penuh</string>
+    <string name="carlink_settings_rendering_full">Usahakan penuh.</string>
     <string name="carlink_settings_rendering_lite">Lite</string>
     <string name="carlink_settings_rendering_auto_value">Otomatis · %1$s</string>
     <string name="carlink_settings_rendering_auto_detail_lite">Lite di perangkat ini, yang memiliki sedikit daya memori atau prosesor</string>
@@ -226,7 +225,7 @@
         <item quantity="other">Sentuh %1$d lebih banyak waktu untuk menampilkan Lab</item>
     </plurals>
     <string name="carlink_settings_lab_toggle">Tampilkan pengaturan Lab</string>
-    <string name="carlink_settings_lab_toggle_detail">Pilihan percobaan dan debug, dibingkai dalam amber</string>
+    <string name="carlink_settings_lab_toggle_detail">Pilihan eksperimental dan debug, dibingkai dalam amber</string>
     <string name="carlink_settings_about_open">Tentang CarLink</string>
     <string name="carlink_settings_advanced">Tingkat lanjut</string>
     <string name="carlink_settings_advanced_detail">Pengaturan mesin untuk pengemudi berpengalaman. Mengubah nilai gambar atau ukuran di sini mengatur pengaturan yang cocok di atas ke Ubahan.</string>
@@ -268,9 +267,6 @@
     <string name="carlink_wheel_key_reset">Reset semua</string>
     <string name="carlink_wheel_key_waiting">Tekan tombol pada setir …</string>
     <string name="carlink_wheel_key_waiting_for">Untuk: %1$s</string>
-    <plurals name="carlink_wheel_key_seconds">
-        <item quantity="other">Menunggu %d detik</item>
-    </plurals>
     <string name="carlink_wheel_key_waiting_note">Volume, Tombol Back and Home tidak dapat digunakan.</string>
     <string name="carlink_wheel_key_timed_out">Tidak ada tombol tiba. Stereonya bisa menyimpan itu sendiri.</string>
     <string name="carlink_wheel_key_cancel">Batal</string>

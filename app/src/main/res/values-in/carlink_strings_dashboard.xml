@@ -36,7 +36,7 @@
     <string name="carlink_home_diagnostics">Diagnostik</string>
     <string name="carlink_home_open_settings">Buka pengaturan</string>
     <string name="carlink_home_error_auth_title">CarPlay tidak dapat masuk</string>
-    <string name="carlink_home_error_auth_body">Pembangunan ini kehilangan berkas otentikasi CarPlay. Android Auto masih bekerja.</string>
+    <string name="carlink_home_error_auth_body">Pembakaran ini kehilangan berkas otentikasi CarPlay. Android Auto masih bekerja.</string>
     <string name="carlink_home_error_iphone_title">Pair iPhone Anda pertama</string>
     <string name="carlink_home_error_iphone_body">Pair dalam pengaturan Bluetooth mobil, kemudian coba lagi. Sebuah kabel bekerja tanpa pasangan.</string>
     <string name="carlink_home_error_hotspot_details_title">Tambah hotspot mobil</string>
@@ -67,9 +67,9 @@
     <string name="carlink_choose_bt_module_body">Pair telepon dalam aplikasi Bluetooth sendiri stereo</string>
     <string name="carlink_choose_bt_android">Bluetooth layar ini</string>
     <string name="carlink_choose_bt_android_body">Android \'s own Bluetooth; pair phones in Android\' s settings</string>
-    <string name="carlink_home_bt_chip_module">Modul Stereakala</string>
+    <string name="carlink_home_bt_chip_module">Modul Stereo</string>
     <string name="carlink_home_ready_module_body">Bluetooth stereo ini adalah modul terpisah. Pasangkan ponsel Anda pada pengaturan Bluetooth sendiri atau aplikasi telepon sendiri; setelah koneksi pertama CarLink daftar di sini.</string>
-    <string name="carlink_home_bt_chip_off">melalui</string>
+    <string name="carlink_home_bt_chip_off">Mati</string>
     <string name="carlink_home_bt_no_permission">Perlu izin</string>
     <string name="carlink_home_bt_chip_unsupported">Tidak tersedia</string>
     <string name="carlink_home_net_same_wifi">Sama Wi-Fi · tercepat</string>
@@ -116,7 +116,7 @@
     <string name="carlink_home_error_not_paired_body">Di ponselmu, buka Bluetooth dan pasang dengan layar ini, lalu coba lagi.</string>
     <string name="carlink_home_error_pairing_lost_title">%1$s perlu dipasangkan lagi</string>
     <string name="carlink_home_error_pairing_lost_body">Di telepon, lupakan layar ini dalam pengaturan Bluetooth, kemudian pair lagi.</string>
-    <string name="carlink_home_error_pairing_lost_phone">Ponselmu</string>
+    <string name="carlink_home_error_pairing_lost_phone">Telepon Anda</string>
     <string name="carlink_home_open_bluetooth_settings">Buka pengaturan Bluetooth</string>
     <string name="carlink_notice_call_microphone">Link telepon stereo sendiri dapat mengambil mikrofon. Jawaban pada CarPlay atau Android Auto screen, atau memutuskan telepon dari pengaturan telepon stereo.</string>
     <string name="carlink_home_error_wifi_off_title">Wi-Fi mati</string>

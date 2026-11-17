@@ -14,7 +14,6 @@
     <string name="carlink_update_cancel">रद्द करना</string>
     <string name="carlink_update_verifying_body">यह सुनिश्चित करने के लिए कि फ़ाइल पूर्ण है और CarLink द्वारा हस्ताक्षरित है।</string>
     <string name="carlink_update_permission_title">CarLink अद्यतन स्थापित करने की अनुमति दें</string>
-    <string name="carlink_update_permission_body">Android को एक बार आपकी अनुमति की आवश्यकता होती है। अगली स्क्रीन पर, “ पर बारी इस स्रोत से अनुमति दें”, फिर वापस लौटें CarLink. अद्यतन स्वयं जारी है।</string>
     <string name="carlink_update_open_settings">ओपन सेटिंग्स</string>
     <string name="carlink_update_installing_title">स्थापित करना CarLink %1$s</string>
     <string name="carlink_update_installing_body">Android की इंस्टॉल स्क्रीन पर पुष्टि करें। CarLink अद्यतन करते समय बंद हो जाता है; इसे फिर से खोलें जब यह किया जाता है।</string>
@@ -40,7 +39,7 @@
     <string name="carlink_about_updates_available">CarLink %1$s उपलब्ध है</string>
     <string name="carlink_about_updates_failed">GitHub तक नहीं पहुंच सका। इंटरनेट कनेक्शन की जाँच करें और फिर से प्रयास करें।</string>
     <string name="carlink_about_updates_rate_limited">GitHub अभी व्यस्त है। थोड़ी देर में फिर से कोशिश करें।</string>
-    <string name="carlink_about_updates_unsupported">यह निर्माण खुद को अपडेट नहीं करता है। अद्यतन प्राप्त करने के लिए GitHub से रिलीज स्थापित करें।</string>
+    <string name="carlink_about_updates_unsupported">यह निर्माण खुद को अपडेट नहीं करता है। GitHub से रिहाई को अद्यतन करने के लिए स्थापित करें।</string>
     <string name="carlink_about_auto_updates">अपडेट के लिए स्वचालित रूप से चेक करें</string>
     <string name="carlink_about_auto_updates_body">हर 6 घंटे जबकि CarLink खुला है और कोई फोन जुड़ा हुआ नहीं है। बिना पूछ के कुछ डाउनलोड नहीं.</string>
     <string name="carlink_about_test_versions">परीक्षण संस्करण</string>

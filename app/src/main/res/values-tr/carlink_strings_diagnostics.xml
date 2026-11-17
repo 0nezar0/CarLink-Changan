@@ -36,7 +36,7 @@
     <string name="carlink_diag_auth_missing">CarPlay doğrulama dosyaları bu inşadan eksik</string>
     <string name="carlink_diag_auth_missing_note">CarPlay onları içerene kadar bağlantı kuramaz. Android Auto etkilenmez.</string>
     <string name="carlink_diag_auth_external">CarPlay dış doğrulama kullanır</string>
-    <string name="carlink_diag_auth_external_body">CarPlay ayarları %1$s kullanır, böylece yerleşik dosyalar gerekli değildir.</string>
+    <string name="carlink_diag_auth_external_body">CarPlay ayarları %1$s kullanır, bu yüzden yerleşik dosyalar gerekli değildir.</string>
     <string name="carlink_diag_auth_target_ch341">Bir USB doğrulama çipi (CH341)</string>
     <string name="carlink_diag_auth_target_remote">Uzak bir doğrulama sunucusu</string>
     <string name="carlink_diag_bt_on">Bluetooth üzerindedir</string>
@@ -55,10 +55,10 @@
     <string name="carlink_diag_stereo_signal_module_port">Bir Bluetooth modülünün seri port</string>
     <string name="carlink_diag_stereo_signal_module_setting">stereo\'nin ayarları Bluetooth\'u dış dışı olarak işaret ediyor</string>
     <string name="carlink_diag_bt_absent">Bu cihazın Bluetooth yok</string>
-    <string name="carlink_diag_bt_absent_body">USB için telefonları bağlayın.</string>
+    <string name="carlink_diag_bt_absent_body">USB tarafından telefonlara bağlan.</string>
     <string name="carlink_diag_bt_perm_ok">Bluetooth İzin izin verilir</string>
     <string name="carlink_diag_bt_perm_missing">Bluetooth iznine izin verilmiyor</string>
-    <string name="carlink_diag_bt_perm_body">CarLink, telefonlarınızı bulmak ve kablosuz bağlantılar başlatmak için ihtiyaç duyar.</string>
+    <string name="carlink_diag_bt_perm_body">CarLink, telefonlarınızı bulmak ve kablosuz bağlantılar başlatmak için ihtiyaç duyuyor.</string>
     <plurals name="carlink_diag_phones_count">
         <item quantity="one">%d çiftleştirilmiş telefon</item>
         <item quantity="other">%d çiftleştirilmiş telefonlar</item>
@@ -85,7 +85,7 @@
     <string name="carlink_diag_mic_body">Çağrılar ve ses asistanları buna ihtiyaç duyar.</string>
     <string name="carlink_diag_notif_ok">Bildirimlere izin verilir</string>
     <string name="carlink_diag_notif_missing">Bildirimlere izin verilmez</string>
-    <string name="carlink_diag_notif_body">CarLink bir telefon hazır olduğunda size bir bildirim kullanır.</string>
+    <string name="carlink_diag_notif_body">CarLink, bir telefon hazır olduğunda size bir bildirim kullanır.</string>
     <string name="carlink_diag_overlay_ok">Diğer uygulamalar üzerinde görüntülenme izin verilen</string>
     <string name="carlink_diag_overlay_missing">Diğer uygulamalar üzerinde görüntülenmeme izin verilmez</string>
     <string name="carlink_diag_overlay_body">CarLink açık CarPlay veya Android Auto, bir telefon arka planda bağlanırken.</string>
@@ -159,7 +159,7 @@
     <string name="carlink_diag_storage_low">Depolama neredeyse tam dolu</string>
     <string name="carlink_diag_storage_body">100 MB ücretsiz. CarLink, ayarları, logları veya CarPlay\'in kurulum dosyalarını kurtaramaz.</string>
     <string name="carlink_diag_vpn_ok">Başka VPN yok</string>
-    <string name="carlink_diag_vpn_other">Diğer VPN olmak üzere</string>
+    <string name="carlink_diag_vpn_other">Başka bir VPN\'de</string>
     <string name="carlink_diag_vpn_body">Wired CarPlay, Android\'in VPN slotuna ihtiyaç duyar. Diğer VPN\'i veya her zaman-onunu kapatın, sürüş sırasında.</string>
     <string name="carlink_diag_competing_ok">Başka bir telefon projesi yok</string>
     <string name="carlink_diag_competing_found">Başka bir telefon projesi uygulaması kuruldu</string>
@@ -187,10 +187,9 @@
     <string name="carlink_about_qr_aa">Android Auto motoru (DiAuto)</string>
     <string name="carlink_about_qr_a11y">QR kodu %1$s</string>
     <string name="carlink_about_legal">Markalar</string>
-    <string name="carlink_about_trademarks">CarPlay Apple Inc. Android Auto bir marka Google LLC. CarLink Apple veya ılmasına bağlı değildir Google.</string>
     <string name="carlink_about_not_certified">CarPlay motoru (DiPlay) Apple sertifikalı bir üründür.</string>
     <string name="carlink_about_byd">BYD ve DiLink sahibine ait. CarLink BYD tarafından bağlı veya onaylanmamış değildir.</string>
-    <string name="carlink_about_licenses_source">Lisans size tam kaynak koduna sahiptir. QR kodları her iki motor kaynağı için sayfa bağlantısı.</string>
+    <string name="carlink_about_licenses_source">Lisans tam kaynak koduna size aittir. QR kodları her iki motor kaynağına bağlantı.</string>
     <string name="carlink_about_components">Bileşenler</string>
     <string name="carlink_about_read_agpl">GNU Affero General Public Lisans v3</string>
     <string name="carlink_about_read_gpl">GNU General Public Lisans v3</string>

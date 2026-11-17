@@ -29,7 +29,7 @@
     <string name="carlink_setup_permissions_missing">%1$d masih memungkinkan</string>
     <string name="carlink_setup_permission_allowed">Diijinkan</string>
     <string name="carlink_setup_permission_allow">Ijinkan</string>
-    <string name="carlink_setup_permission_optional">Opsional</string>
+    <string name="carlink_setup_permission_optional">tafsir</string>
     <string name="carlink_setup_permission_recommended">Disarankan</string>
     <string name="carlink_setup_perm_bluetooth_detail">Temukan dan pasang telepon Anda, dan bangun untuk nirkabel</string>
     <string name="carlink_setup_perm_wifi">Perangkat Wi-Fi terdekat</string>
@@ -89,7 +89,7 @@
     <string name="carlink_setup_pair_name_label">Nama Bluetooth layar ini</string>
     <string name="carlink_setup_pair_name_unknown">Hidupkan Bluetooth untuk melihatnya</string>
     <string name="carlink_setup_pair_visible">Terlihat pada telepon</string>
-    <string name="carlink_setup_pair_not_visible">Tidak terlihat ke telepon baru belum</string>
+    <string name="carlink_setup_pair_not_visible">Tidak Janga terlihat pada telepon baru</string>
     <string name="carlink_setup_pair_make_visible">Membuat terlihat</string>
     <string name="carlink_setup_pair_known">Dibayar sebelum</string>
     <string name="carlink_setup_pair_connect_known">Menyambung %1$s</string>

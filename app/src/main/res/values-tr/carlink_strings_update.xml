@@ -5,7 +5,7 @@
     <string name="carlink_update_installed">%1$s</string>
     <string name="carlink_update_whats_new">What\'s new</string>
     <string name="carlink_update_no_notes">Bu sürüm için sürüm notları yok.</string>
-    <string name="carlink_update_ignore">Bu versiyonu görmezden gel</string>
+    <string name="carlink_update_ignore">Ignore this version</string>
     <string name="carlink_update_later">Daha sonra daha sonra</string>
     <string name="carlink_update_download">Download &amp; install</string>
     <string name="carlink_update_downloading_title">Downloading CarLink %1$s</string>

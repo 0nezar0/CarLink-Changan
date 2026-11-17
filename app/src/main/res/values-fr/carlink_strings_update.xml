@@ -3,6 +3,7 @@
 <resources>
     <string name="carlink_update_available_title">Mise à jour disponible</string>
     <string name="carlink_update_installed">Vous avez %1$s</string>
+    <string name="carlink_update_whats_new">Quoi de neuf</string>
     <string name="carlink_update_no_notes">Aucune note de sortie pour cette version.</string>
     <string name="carlink_update_ignore">Ignorez cette version</string>
     <string name="carlink_update_later">Plus tard</string>
@@ -12,13 +13,13 @@
     <string name="carlink_update_progress_unknown">%1$s téléchargé</string>
     <string name="carlink_update_download_body">Vous pouvez continuer à utiliser CarLink. Rien n\'est installé tant que le téléchargement n\'a pas été vérifié.</string>
     <string name="carlink_update_cancel">Annuler</string>
-    <string name="carlink_update_verifying_title">Vérification du Politics</string>
-    <string name="carlink_update_verifying_body">S joinedtecter que le fichier est complet et signé par CarLink.</string>
-    <string name="carlink_update_permission_title">Autoriser CarLink à installer la mise à jour</string>
-    <string name="carlink_update_permission_body">Android a besoin de votre permission une fois.Agency Sur llearning Sur l\'écran suivant, allumez “Agency Commenclearning Autorise à partir de cette source”, puis reviens à CarLink. La mise à jour se poursuit tout seul.</string>
-    <string name="carlink_update_open_settings">Afficher les paramètres creation</string>
+    <string name="carlink_update_verifying_title">Vérification du téléchargement</string>
+    <string name="carlink_update_verifying_body">S\'assurer que le fichier est complet et signé par CarLink.</string>
+    <string name="carlink_update_permission_title">Autorise carrying CarLink à installer la mise à jour</string>
+    <string name="carlink_update_permission_body">Android a besoin de votre permission une fois. Sur l\'écran suivant, allumez “ Autoriser à partir de cette source”, puis revenir à CarLink. La mise à jour se poursuit tout seul.</string>
+    <string name="carlink_update_open_settings">Ouvrir les paramètres</string>
     <string name="carlink_update_installing_title">Installation de CarLink %1$s</string>
-    <string name="carlink_update_installing_body">Confirmer sur l\'écran d\'installation Android. CarLink ferme pendant qu\'il met à jour ; l\'ouvrir à nouveau quand il a fait.</string>
+    <string name="carlink_update_installing_body">Confirmer sur Android install screen. CarLink ferme pendant qu\'il met à jour ; l\'ouvrir à nouveau quand il a fait.</string>
     <string name="carlink_update_failed_title">Mise à jour non installée</string>
     <string name="carlink_update_error_download">Le téléchargement n\'a pas fini. Vérifiez la connexion Internet et essayez à nouveau.</string>
     <string name="carlink_update_error_checksum_missing">Cette version n\'a pas de fichier de somme de contrôle, donc le téléchargement ne peut pas être vérifié. Essaie encore plus tard.</string>
@@ -29,13 +30,14 @@
     <string name="carlink_update_error_signer">Le fichier téléchargé n\'est pas signé avec la clé de sortie CarLink, donc il n\'était pas installé. Elle a été supprimée.</string>
     <string name="carlink_update_error_install">Android n\'a pas installé la mise à jour. Essaie encore.</string>
     <string name="carlink_update_error_install_detail">Android n\'a pas installé la mise à jour (%1$s). Essaie encore.</string>
-    <string name="carlink_update_error_install_cancelled">L\'installation est annulée.</string>
-    <string name="carlink_update_try_again">Essaie encoreRT</string>
+    <string name="carlink_update_error_install_cancelled">L\'installation a été annulée.</string>
+    <string name="carlink_update_try_again">Essaie encore</string>
     <string name="carlink_update_close">Fermer</string>
-    <string name="carlink_about_updates">Bruxelles</string>
-    <string name="carlink_about_check_updates">de vérifier les mises à tagged</string>
+    <string name="carlink_about_updates">Mises à jour</string>
+    <string name="carlink_about_check_updates">Vérifier les mises à jour</string>
     <string name="carlink_about_updates_last_checked">Version %1$s · dernière vérification %2$s</string>
-    <string name="carlink_about_updates_never">Version %1$s · non coULTée</string>
+    <string name="carlink_about_updates_never">Version %1$s · non cochée</string>
+    <string name="carlink_about_updates_checking">Vérification …</string>
     <string name="carlink_about_updates_just_now">Juste maintenant</string>
     <string name="carlink_about_updates_up_to_date">Vous êtes à jour</string>
     <string name="carlink_about_updates_available">CarLink %1$s est disponible</string>
@@ -43,7 +45,7 @@
     <string name="carlink_about_updates_rate_limited">GitHub est occupé. Essaie encore.</string>
     <string name="carlink_about_updates_unsupported">Cette construction ne se met pas à jour. Installez la version de GitHub pour obtenir des mises à jour.</string>
     <string name="carlink_about_auto_updates">Vérifier automatiquement les mises à jour</string>
-    <string name="carlink_about_auto_updates_body">WT Toutes les 6 heures pendant que CarLink est ouvert et aucun téléphone n\'est connecté. Rien à télécharger sans demander CANCEL</string>
-    <string name="carlink_about_test_versions">patri Obtenir des versions de test</string>
-    <string name="carlink_about_test_versions_body">Offrez également des versions de test publiées avant une sortie. Ils peuvent avoir de nouveaux problèmes; veuillez les signaler. Chacun est vérifié et signé comme une version libre.</string>
+    <string name="carlink_about_auto_updates_body">Toutes les 6 heures pendant que CarLink est ouvert et aucun téléphone n\'est connecté. Rien ne télécharge sans demander.</string>
+    <string name="carlink_about_test_versions">Obtenir des versions de test</string>
+    <string name="carlink_about_test_versions_body">Offrez également des versions de test publiées avant une sortie. Ils peuvent avoir de nouveaux problèmes; veuillez les signaler. Chacun est vérifié et signé comme une libération.</string>
 </resources>

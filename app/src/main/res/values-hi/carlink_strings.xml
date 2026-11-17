@@ -9,7 +9,7 @@
     <string name="carlink_transport_wireless">वायरलेस</string>
     <string name="carlink_transport_cable">केबल</string>
     <string name="carlink_transport_usb_cable">USB केबल</string>
-    <string name="carlink_transport_plugged_in">प्लग-इन (USB)</string>
+    <string name="carlink_transport_plugged_in">प्लग इन (USB)</string>
     <string name="carlink_transport_connected_cable">केबल द्वारा कनेक्ट</string>
     <string name="carlink_transport_connected_wireless">वायरलेस कनेक्ट</string>
     <string name="carlink_transport_connecting_cable">केबल द्वारा कनेक्ट करना</string>

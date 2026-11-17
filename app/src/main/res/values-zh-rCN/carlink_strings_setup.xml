@@ -9,18 +9,17 @@
     <string name="carlink_setup_step_welcome">欢迎光临</string>
     <string name="carlink_setup_step_permissions">访问</string>
     <string name="carlink_setup_step_car">车</string>
-    <string name="carlink_setup_step_pair">寂静号</string>
+    <string name="carlink_setup_step_pair">电话</string>
     <string name="carlink_setup_step_done">写好了</string>
     <string name="carlink_setup_welcome_eyebrow">欢迎光临</string>
     <string name="carlink_setup_welcome_title">让我们连接您的手机</string>
     <string name="carlink_setup_welcome_body">CarLink为iPhone运行Apple CarPlay,为Android手机运行Android Auto,通过有线或无线操作. 设置大约需要两分钟。</string>
     <string name="carlink_setup_welcome_start">开始</string>
     <string name="carlink_setup_plan_access">允许访问</string>
-    <string name="carlink_setup_plan_access_detail">Bluetooth,Wi-Fi 和几个开关, 全部同时</string>
+    <string name="carlink_setup_plan_access_detail">Bluetooth,Wi-Fi和几个开关,全部同时</string>
     <string name="carlink_setup_plan_car">选择你的车</string>
     <string name="carlink_setup_plan_car_detail">其品牌; BYD 获得其 DiLink 额外产品</string>
     <string name="carlink_setup_plan_pair">电话对齐</string>
-    <string name="carlink_setup_plan_pair_detail">一次,从手机的Bluetooth设置</string>
     <string name="carlink_setup_permissions_eyebrow">访问</string>
     <string name="carlink_setup_permissions_title">允许 CarLink 需要的</string>
     <string name="carlink_setup_permissions_body">Android每一次都问一次 现在允许推荐者在您开车时不要询问; 可选者可以等待 。</string>
@@ -30,7 +29,7 @@
     <string name="carlink_setup_permission_allowed">允许</string>
     <string name="carlink_setup_permission_allow">允许</string>
     <string name="carlink_setup_permission_optional">可选</string>
-    <string name="carlink_setup_permission_recommended">驴建议</string>
+    <string name="carlink_setup_permission_recommended">建议</string>
     <string name="carlink_setup_perm_bluetooth_detail">找到和对你的手机, 并唤醒它无线</string>
     <string name="carlink_setup_perm_wifi">接近 Wi-Fi 设备</string>
     <string name="carlink_setup_perm_wifi_detail">设置私人Wi-Fi电话链接</string>
@@ -63,7 +62,7 @@
     <string name="carlink_setup_pair_found_iphone">找到 iPhone → CarPlay</string>
     <string name="carlink_setup_pair_found_android">Android 电话找到→Android Auto</string>
     <string name="carlink_setup_pair_found">找到电话</string>
-    <string name="carlink_setup_pair_accept_iphone">接受“ 在您的 iPhone 上使用 CarPlay”</string>
+    <string name="carlink_setup_pair_accept_iphone">在您的iPhone上接受“使用CarPlay”</string>
     <string name="carlink_setup_pair_accept_iphone_body">保持%1$s解锁. 第一次连接可长达半分钟.</string>
     <string name="carlink_setup_pair_accept_android">在您的电话中接受Android Auto</string>
     <string name="carlink_setup_pair_accept_android_body">跟着Android Auto在%1$s上的屏幕,并保持解锁.</string>
@@ -82,7 +81,7 @@
     <string name="carlink_setup_pair_wireless">相对 Bluetooth</string>
     <string name="carlink_setup_pair_skip">跳过</string>
     <string name="carlink_setup_pair_cable_title">把手机插进屏幕</string>
-    <string name="carlink_setup_pair_cable_body">在此屏幕的USB端口使用电话充电电缆。 解锁电话; CarLink 由自己开始 。</string>
+    <string name="carlink_setup_pair_cable_body">在此屏幕的 USB 端口使用电话充电电缆 。 解锁电话; CarLink 由自己开始 。</string>
     <string name="carlink_setup_pair_cable_prompts">插入时, Android 请求一次允许 CarLink — 勾选“ 总是打开 CarLink” —— 一个 iPhone 请求您信任此屏幕 。</string>
     <string name="carlink_setup_pair_cable_waiting">在电缆上等待电话…</string>
     <string name="carlink_setup_pair_name_label">此屏幕的Bluetooth 名称</string>
@@ -96,7 +95,7 @@
     <string name="carlink_setup_done_title">你们都准备好了</string>
     <string name="carlink_setup_done_body_phone">下次刚进入 :%1$s 当它靠近这个屏幕时, 或者当你插上它时, 自己连接。</string>
     <string name="carlink_setup_done_action">转到家</string>
-    <string name="carlink_setup_done_phone">寂静号</string>
+    <string name="carlink_setup_done_phone">电话</string>
     <string name="carlink_setup_done_phone_none">尚未对齐</string>
     <string name="carlink_setup_done_car">车</string>
     <string name="carlink_setup_done_access">访问</string>

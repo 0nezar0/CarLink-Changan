@@ -2,6 +2,7 @@
 <!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
 <resources>
     <string name="notification_channel_launch">打开CarLink</string>
+    <string name="notification_open">点击打开CarLink 。</string>
     <string name="carlink_notification_channel_android_auto">Android Auto 连接</string>
     <string name="carlink_back">回来</string>
     <string name="carlink_transport_wireless">无线</string>

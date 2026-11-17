@@ -20,5 +20,5 @@
     <string name="gesture_hint">İpucu: Sol kenardan, Android Auto menüsünü açmak için iki parmakla kaydırın.</string>
     <string name="notification_service_running">Android Auto hazır</string>
     <string name="boot_loop_paused_generic">Bu cihaz kısa bir süre sonra CarLink kablosuz Android Auto\'ya başladıktan üç kez yeniden başladı, bu yüzden kablosuz bu sefer ayrıldı. USB hala çalışır. Open CarLink geri dönmek için.</string>
-    <string name="boot_loop_paused_native_wifi_direct">Bu cihaz kısa bir süre sonra üç kez yeniden başladı CarLink kablosuz Android Auto, bu yüzden kablosuz bu sefer ayrıldı. Bazı kafa birimlerinde Wi-Fi çipet bir telefon Wi-Fi Direct ağına katıldığında tüm sistemi alır. Araba noktalarını kablosuz yöntem olarak deneyin. USB hala çalışır.</string>
+    <string name="boot_loop_paused_native_wifi_direct">Bu cihaz kısa bir süre sonra üç kez yeniden başladı CarLink kablosuz Android Auto, bu yüzden kablosuz bu sefer ayrıldı. Bazı kafa birimlerinde Wi-Fi çipet bir telefon Wi-Fi Direct ağına katıldığında tüm sistemi alır. Araba noktaları kablosuz yöntem olarak deneyin. USB hala çalışır.</string>
 </resources>

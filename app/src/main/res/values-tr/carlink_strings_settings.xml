@@ -108,10 +108,10 @@
     <string name="carlink_settings_time_earlier">15 daha önce</string>
     <string name="carlink_settings_time_later">15 daha sonra</string>
     <string name="carlink_settings_group_margins">Ekran marjları</string>
-    <string name="carlink_settings_margins_detail">CarPlay ve Android Auto, aracın statüsünden veya navigasyon barından uzaklaşır, bu yüzden düğmeler basına kolay kalır. Üst değer aynı zamanda peds Ayarlar ve Home hemen uzakta. CarPlay ve Android Auto bir sonraki bağlantıdan alır.</string>
+    <string name="carlink_settings_margins_detail">CarPlay ve Android Auto araba durumu veya navigasyon barından uzak, bu yüzden düğmeler basına kolay kalıyor. Üst değer aynı zamanda peds Settings and Home doğrudan uzakta. CarPlay ve Android Auto bir sonraki bağlantıdan alır.</string>
     <string name="carlink_settings_margin_top_detail">Arabanın bildirim çubuğunun altında yer bırak</string>
     <string name="carlink_settings_margin_app">CarLink ekranları (top)</string>
-    <string name="carlink_settings_margin_app_detail">Arabanın bildirim çubuğunun altında yer bırak Home ve Ayarlar. Bir kez kiralayın.</string>
+    <string name="carlink_settings_margin_app_detail">Arabanın Home ve Ayarlar üzerindeki bildirim çubuğunun altında yer bırakın. Bir seferde uygun.</string>
     <string name="carlink_settings_group_margins_carplay">CarPlay kenar boşlukları</string>
     <string name="carlink_settings_group_margins_aa">Android Auto kenar boşlukları</string>
     <string name="carlink_settings_margin_bottom">Alt</string>
@@ -131,7 +131,7 @@
     <string name="carlink_settings_sound_carlink">CarLink</string>
     <string name="carlink_settings_sound_bluetooth">Arabanın Bluetooth sayesinde</string>
     <string name="carlink_settings_sound_carlink_detail">Kafa ünitesi tüm sesi oynar. Önerilen.</string>
-    <string name="carlink_settings_sound_bluetooth_detail">Müzik, arabanın kendi Bluetooth sesini yerine geçer.</string>
+    <string name="carlink_settings_sound_bluetooth_detail">Müzik, arabanın kendi Bluetooth sesinden geçiyor.</string>
     <string name="carlink_settings_audio_delay">CarPlay audio gecikme</string>
     <string name="carlink_settings_audio_delay_detail">Ne kadar müzik ve video sesi resmin arkasında tamponlanır</string>
     <string name="carlink_settings_audio_delay_low_detail">Görüntüye en yakın ses: yaklaşık 0.1 USB üzerinden. Kablosuz 0.3 s. müzik kekleri karıştırırsa Normal deneyin.</string>
@@ -150,7 +150,7 @@
     <string name="carlink_settings_call_stream_phone">Telefon arama</string>
     <string name="carlink_settings_call_stream_phone_detail">Önerilen. Baş ünite bir çağrı olarak davranır ve yankıyı iptal eder.</string>
     <string name="carlink_settings_call_stream_media">Media Media Media</string>
-    <string name="carlink_settings_call_stream_media_detail">Oyun oynayan kafa birimleri çok sessizce veya hiç değil. Diğer kişi bir yankı duyabilir: eğer öyleyse, Gelişmiş Show altında yankı iptali çağırın veya Telefon çağrısına geri dön.</string>
+    <string name="carlink_settings_call_stream_media_detail">Oyun oynayan kafa birimleri çok sessizce veya hiç değil. Diğer kişi bir yankı duyabilir: eğer öyleyse, Gelişmiş Show altında yankı iptalini çağırın veya Telefon çağrısına geri dön.</string>
     <string name="carlink_settings_resume_music">Yeniden bağlantı kurmaktan sonra müzik</string>
     <string name="carlink_settings_resume_music_detail">Eğer müzik telefon kapandığında oynuyorsa, basın oyunu bir kez geri döndü</string>
     <string name="carlink_settings_group_microphone">Microphone</string>
@@ -166,7 +166,7 @@
     <string name="carlink_settings_driving_side">Sürüş yan yana</string>
     <string name="carlink_settings_driving_side_detail">CarPlay ve Android Auto sürücünün yanında kontroller</string>
     <string name="carlink_settings_drive_left">Sol el araba</string>
-    <string name="carlink_settings_drive_right">Sağ el sürücüsü</string>
+    <string name="carlink_settings_drive_right">Sağ el arabası</string>
     <string name="carlink_settings_drive_left_detail">Soldaki direksiyon</string>
     <string name="carlink_settings_drive_right_detail">Doğru tekerlek sağ tarafta</string>
     <string name="carlink_settings_appearance">Görünüm görünümü</string>
@@ -185,7 +185,7 @@
     <string name="carlink_settings_layout_car_detail">Arabada sabit bir ekran: büyük kontroller, resim asla dönüşmüyor</string>
     <string name="carlink_settings_layout_handheld_detail">Ekran olarak bir telefon veya tablet: standart boyutlarda, resim ekranla döner</string>
     <string name="carlink_settings_rendering">Görsel efektler</string>
-    <string name="carlink_settings_rendering_detail">Işık, ışık ve animasyon CarLink ekranları</string>
+    <string name="carlink_settings_rendering_detail">Işık, ışık ve CarLink\'in ekranlarında animasyon</string>
     <string name="carlink_settings_rendering_lite">Lite</string>
     <string name="carlink_settings_rendering_auto_value">Otomatik · %1$s</string>
     <string name="carlink_settings_rendering_auto_detail_lite">Bu cihazda, küçük hafıza veya işlemci gücü var</string>

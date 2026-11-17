@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Machine-translated from values/ (CarLink 1.0.5); review welcome. -->
 <resources>
-    <string name="carlink_setup_title">cita CarLink</string>
+    <string name="carlink_setup_title">Configura CarLink</string>
     <string name="carlink_setup_close">Skip setup</string>
     <string name="carlink_setup_back">Atrás</string>
     <string name="carlink_setup_continue">Continuar</string>
@@ -42,10 +42,11 @@
     <string name="carlink_setup_perm_notifications">Notificaciones</string>
     <string name="carlink_setup_perm_notifications_detail">Muestra que CarLink está conectado y te permite detenerlo</string>
     <string name="carlink_setup_perm_overlay">Mostrar sobre otras aplicaciones</string>
-    <string name="carlink_setup_perm_overlay_detail">Permite CarLink abrir por sí mismo cuando su teléfono se conecta</string>
+    <string name="carlink_setup_perm_overlay_detail">Permite que CarLink abra por sí mismo cuando su teléfono se conecta</string>
     <string name="carlink_setup_perm_battery">Corre en el fondo</string>
-    <string name="carlink_setup_perm_battery_detail">que sea por lo que sea,</string>
-    <string name="carlink_setup_perm_vpn_detail">Deja que CarPlay corra por el cable USB. Nada va a internet a través de ella</string>
+    <string name="carlink_setup_perm_battery_detail">Mantiene la conexión cuando la pantalla duerme</string>
+    <string name="carlink_setup_perm_vpn">Wired CarPlay link</string>
+    <string name="carlink_setup_perm_vpn_detail">Permite que CarPlay corra sobre el cable USB. Nada va a internet a través de ella</string>
     <string name="carlink_setup_car_eyebrow">Tu auto</string>
     <string name="carlink_setup_car_title">¿En qué coche está esta pantalla?</string>
     <string name="carlink_setup_car_body">Escoge su marca. Puedes cambiarlo más tarde en Ajustes › Coche.</string>
@@ -67,22 +68,22 @@
     <string name="carlink_setup_pair_accept_android_body">Siga las pantallas Android Auto en %1$s y manténgalo desbloqueado.</string>
     <string name="carlink_setup_pair_kind_title">%1$s está emparejado</string>
     <string name="carlink_setup_pair_kind_body">¿Es un iPhone o un teléfono Android?</string>
-    <string name="carlink_setup_pair_failed_title">Aún no conectado</string>
+    <string name="carlink_setup_pair_failed_title">Aún no conectados</string>
     <string name="carlink_setup_pair_failed_body">El teléfono está emparejado. Desbloquearlo, compruebe que Bluetooth y Wi-Fi están encendidos e inténtelo de nuevo.</string>
     <string name="carlink_setup_pair_bt_off_title">Activar Bluetooth</string>
     <string name="carlink_setup_pair_bt_off_body">Los teléfonos encuentran esta pantalla sobre Bluetooth. Enciende a par.</string>
     <string name="carlink_setup_pair_bt_on">Activar Bluetooth</string>
     <string name="carlink_setup_pair_cable">Enchufe con un cable en su lugar</string>
     <string name="carlink_setup_pair_other">Usa otro teléfono</string>
-    <string name="carlink_setup_pair_external_bt">Aún no hay unmutador disponible. Conecte el teléfono con un cable USB — funciona igual.</string>
-    <string name="carlink_setup_pair_wireless">Pareja sobre Bluetooth en su lugar</string>
+    <string name="carlink_setup_pair_external_bt">Aún no está disponible en este estéreo. Enchufe el teléfono con un cable USB — funciona igual.</string>
+    <string name="carlink_setup_pair_wireless">Pareja sobre Bluetooth en lugar</string>
     <string name="carlink_setup_pair_skip">Skip</string>
     <string name="carlink_setup_pair_cable_title">Enchufa tu teléfono en esta pantalla</string>
-    <string name="carlink_setup_pair_cable_body">Utilice el cable de carga del teléfono en el puerto USB de esta marino. Desbloquea el teléfono; CarLink de CarLink comienza por símax.</string>
+    <string name="carlink_setup_pair_cable_body">Utilice el cable de carga del teléfono en el puerto USB de esta pantalla. Desbloquear el teléfono; CarLink comienza por sí mismo.</string>
     <string name="carlink_setup_pair_cable_prompts">Cuando se conecta, Android pide una vez para permitir CarLink — tick “ Siempre abre CarLink” — y un iPhone te pide que confíes en esta pantalla.</string>
     <string name="carlink_setup_pair_cable_waiting">Esperando un teléfono en el cable …</string>
-    <string name="carlink_setup_pair_name_label">Esta pantalla es Bluetooth nombre</string>
-    <string name="carlink_setup_pair_name_unknown">Enciende el Bluetooth para verlo</string>
+    <string name="carlink_setup_pair_name_label">Nombre Bluetooth de esta pantalla</string>
+    <string name="carlink_setup_pair_name_unknown">Gire en Bluetooth para verlo</string>
     <string name="carlink_setup_pair_visible">Visible a teléfonos</string>
     <string name="carlink_setup_pair_not_visible">Aún no es visible para los teléfonos nuevos</string>
     <string name="carlink_setup_pair_make_visible">Hacer visible</string>
