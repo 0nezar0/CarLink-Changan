@@ -240,7 +240,7 @@
     <string name="carlink_about_licenses">Open-source licenses</string>
     <string name="carlink_about_licenses_body">CarLink is free software under the GNU AGPL v3.</string>
     <string name="carlink_about_credits">Credits</string>
-    <string name="carlink_about_credits_body">DiPlay, DiAuto, Open Headunit, headunit and others</string>
+    <string name="carlink_about_credits_body">F-e-n-y-x (CarLink), DiPlay, DiAuto, Open Headunit and others</string>
     <string name="carlink_about_source">Source code</string>
     <string name="carlink_about_source_body">Scan with your phone to get the source of both engines.</string>
     <string name="carlink_about_qr_carplay">CarPlay engine (DiPlay)</string>
@@ -344,4 +344,11 @@
     <string name="carlink_diag_call_test_failed">The microphone could not be opened.</string>
     <string name="carlink_diag_call_test_permission">CarLink needs the microphone permission (Readiness checks above).</string>
     <string name="carlink_diag_call_test_busy">Not during a session: the phone is using the microphone.</string>
+    <!-- About › Thanks to the original developer -->
+    <string name="carlink_about_thanks">Special thanks</string>
+    <string name="carlink_about_thanks_body">Special thanks to %1$s, the original developer of CarLink, for this wonderful work.</string>
+    <string name="carlink_about_thanks_builds_on">Thanks also to DiPlay and DiAuto / Open Headunit, the projects CarLink builds on.</string>
+    <string name="carlink_about_thanks_qr">Original CarLink</string>
+    <string name="carlink_about_credit_carlink_name" translatable="false">CarLink</string>
+    <string name="carlink_about_credit_carlink">The original CarLink app, by %1$s. %2$s</string>
 </resources>

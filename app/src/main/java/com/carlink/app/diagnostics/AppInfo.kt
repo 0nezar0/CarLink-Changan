@@ -35,6 +35,9 @@ object AppInfo {
     }
 
     /** Where the source of each engine is published; CarLink's own repository is added when public. */
+    /** The original CarLink app by F-e-n-y-x, thanked on About. */
+    const val ORIGINAL_CARLINK_SOURCE = "https://github.com/F-e-n-y-x/CarLink"
+    const val ORIGINAL_CARLINK_AUTHOR = "F-e-n-y-x"
     const val CARPLAY_ENGINE_SOURCE = "https://github.com/shihabal3amri/DiPlay"
     const val ANDROID_AUTO_ENGINE_SOURCE = "https://github.com/shihabal3amri/DiAuto"
 

@@ -1,5 +1,6 @@
 package com.carlink.app.ui.about
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -168,6 +169,7 @@ internal fun AboutContent(
                     verticalArrangement = Arrangement.spacedBy(gap * 1.5f),
                 ) {
                     Identity(facts, stacked = true)
+                    ThanksCard()
                     SourceCard()
                 }
                 Spacer(Modifier.width(dimens.gutter * 1.5f))
@@ -189,6 +191,7 @@ internal fun AboutContent(
                 ) {
                     Identity(facts, stacked = false)
                     Spacer(Modifier.height(4.dp))
+                    ThanksCard()
                     UpdatesCard(facts, updates, updateActions)
                     InfoCards(facts, openLicenses, openCredits, withLegal = false)
                     SourceCard()
@@ -255,6 +258,36 @@ private fun Identity(facts: AboutFacts, stacked: Boolean) {
                 versionTag()
             }
         }
+    }
+}
+
+/** A thank-you to F-e-n-y-x, who wrote the original CarLink, with a code for its source. */
+@Composable
+private fun ThanksCard() {
+    val context = LocalContext.current
+    val qrSize = if (CarLinkTokens.profile == UiProfile.CAR) 160.dp else 120.dp
+    GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_about_thanks), icon = R.drawable.carlink_ic_groups) }) {
+        Column(Modifier.fillMaxWidth().padding(start = rowPadding, end = rowPadding, top = 6.dp, bottom = rowPadding),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(stringResource(R.string.carlink_about_thanks_body, ltr(AppInfo.ORIGINAL_CARLINK_AUTHOR)),
+                style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(8.dp))
+            Text(stringResource(R.string.carlink_about_thanks_builds_on), style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(if (isCar) 20.dp else 14.dp))
+            QrPanel(stringResource(R.string.carlink_about_thanks_qr), AppInfo.ORIGINAL_CARLINK_SOURCE, qrSize,
+                Modifier.semantics(mergeDescendants = true) {}.then(
+                    Modifier.clickable { openLink(context, AppInfo.ORIGINAL_CARLINK_SOURCE) }))
+        }
+    }
+}
+
+/** Opens [url] in a browser when the head unit has one; car screens often don't, hence the QR code. */
+private fun openLink(context: android.content.Context, url: String) {
+    runCatching {
+        context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))
+            .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }
 
@@ -428,6 +461,8 @@ private fun ColumnScope.LicensesContent(onRead: (String) -> Unit) {
 
 @Composable
 private fun ColumnScope.CreditsContent() {
+    CreditItem(stringResource(R.string.carlink_about_credit_carlink_name),
+        stringResource(R.string.carlink_about_credit_carlink, ltr(AppInfo.ORIGINAL_CARLINK_AUTHOR), ltr(AppInfo.ORIGINAL_CARLINK_SOURCE.removePrefix("https://"))))
     CreditItem(stringResource(R.string.carlink_about_lic_diplay_name), stringResource(R.string.carlink_about_credit_diplay))
     CreditItem(stringResource(R.string.carlink_about_lic_diauto_name), stringResource(R.string.carlink_about_credit_diauto))
     CreditItem(stringResource(R.string.carlink_about_credit_openheadunit_name), stringResource(R.string.carlink_about_credit_openheadunit))

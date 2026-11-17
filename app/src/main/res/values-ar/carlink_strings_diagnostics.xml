@@ -218,7 +218,7 @@
     <string name="carlink_about_licenses">رخص المصدر المفتوح</string>
     <string name="carlink_about_licenses_body">CarLink برنامج حر بموجب GNU AGPL v3.</string>
     <string name="carlink_about_credits">شكر وتقدير</string>
-    <string name="carlink_about_credits_body">DiPlay وDiAuto وOpen Headunit وheadunit وآخرون</string>
+    <string name="carlink_about_credits_body">F-e-n-y-x (CarLink) وDiPlay وDiAuto وOpen Headunit وآخرون</string>
     <string name="carlink_about_source">الشيفرة المصدرية</string>
     <string name="carlink_about_source_body">امسح بجوالك للحصول على مصدر المحركين.</string>
     <string name="carlink_about_qr_carplay">محرك CarPlay (DiPlay)</string>
@@ -302,4 +302,10 @@
     <string name="carlink_diag_call_test_failed">تعذّر فتح الميكروفون.</string>
     <string name="carlink_diag_call_test_permission">يحتاج CarLink إلى إذن الميكروفون (فحوصات الجاهزية أعلاه).</string>
     <string name="carlink_diag_call_test_busy">ليس أثناء جلسة: الجوال يستخدم الميكروفون.</string>
+    <!-- About › Thanks to the original developer -->
+    <string name="carlink_about_thanks">شكر خاص</string>
+    <string name="carlink_about_thanks_body">شكر خاص لمطوّر CarLink الأصلي %1$s على هذا العمل الرائع.</string>
+    <string name="carlink_about_thanks_builds_on">والشكر موصول لمشروعَي DiPlay وDiAuto / Open Headunit اللذين بُني عليهما CarLink.</string>
+    <string name="carlink_about_thanks_qr">CarLink الأصلي</string>
+    <string name="carlink_about_credit_carlink">تطبيق CarLink الأصلي، من %1$s. %2$s</string>
 </resources>
