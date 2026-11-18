@@ -61,11 +61,12 @@ android {
         applicationId = providers.gradleProperty("carlink.applicationId").get()
         minSdk = 25
         targetSdk = 37
-        // Releases: change versionName only. versionCode = major * 10000 + minor * 100 + patch
-        // (1.0.0 → 10000, 1.2.3 → 10203), so minor and patch stay below 100. The in-app updater
-        // (update/AppVersion.kt) and scripts/release.sh rely on it; docs/RELEASING.md.
-        versionName = "1.0.16"
-        versionCode = carLinkVersionCode(versionName!!)
+        // CarLink CS75 Plus 2023 (this build): its own name and counter, so it is never mistaken for
+        // upstream CarLink's 1.0.x. versionCode carries on from upstream's scheme and rises by one
+        // with every release (10030 = CS75 Plus 2023 v1.0). The in-app updater runs only in
+        // upstream's signed release build, so a name it cannot parse changes nothing here.
+        versionName = "CS75 Plus 2023 v1.0"
+        versionCode = 10030
         buildConfigField("String", "DIPLAY_VERSION_NAME", "\"$diPlayVersionName\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
