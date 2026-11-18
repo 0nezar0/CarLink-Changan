@@ -84,14 +84,7 @@
 
 | النسخة | الجديد |
 |---|---|
-| CS75 Plus 2023 v1.0 | اسم جديد للنسخة مرتبط بـ CS75 Plus 2023 عشان ما تختلط بالمشروع الأصلي، وبدون أي تغيير في عمل التطبيق |
-| 1.0.11 | CarPlay على 30 إطار افتراضياً في شانجان لتقليل التعليق، و60 متاحة من الإعدادات المتقدمة (معدل الإطارات) |
-| 1.0.10 | تحديث أمني: مكتبة protobuf إلى 3.25.9 (CVE-2024-7254) |
-| 1.0.9 | الوضع الخفيف الاختياري، اتصال أسرع بآخر طريقة نجحت، حفظ تقرير كامل على الفلاش، شعار شانجان في CarPlay، العربي والإنجليزي بس |
-| 1.0.8 | كلمة «لاسلكي» في الدائرة الرئيسية صارت على نفس خط أيقونة الواي فاي |
-| 1.0.7 | رسالة واضحة إذا علّق خادم الوحدة الرئيسية، وتحسينات في السجل وقائمة الخروج وشكل الأرقام |
-| 1.0.6 | ملف شانجان مع الشعار، هوامش شانجان الافتراضية، HEVC لـ CarPlay |
-| 1.0.5 وقبل | خادم الوحدة الرئيسية، هوامش الشاشة، اختيار اللغة، التشغيل مع السيارة، سجل الأخطاء، أزرار الطارة، بطاقة الشكر |
+| CS75 Plus 2023 v1.0 | أول نسخة خاصة بشانجان، وفيها كل الإضافات: خادم الوحدة الرئيسية لـ Android Auto يتجرّب تلقائياً · هوامش شاشة لكل نظام (48 بكسل من فوق لشانجان) مع زر «الرجوع لهوامش شانجان» · العربي والإنجليزي بس مع إصلاح محاذاة النص العربي · ملف شانجان مع الشعار · شعار شانجان على زر الرجوع للسيارة في CarPlay · HEVC مفعّل من الأساس في CarPlay · CarPlay على 30 إطار افتراضياً في شانجان (و60 من الإعدادات المتقدمة) · الوضع الخفيف الاختياري · اتصال أسرع بآخر طريقة نجحت · حفظ تقرير كامل على الفلاش · التشغيل مع السيارة · أزرار الطارة · سجل الأخطاء · تحديث أمني لمكتبة protobuf · بطاقة شكر للمطوّر F-e-n-y-x · اسم نسخة خاص يميّزها عن المشروع الأصلي |
 
 
 ## البناء والملفات غير المضمنة
@@ -150,14 +143,7 @@ version)** head unit (Android 9, Allwinner T7) and is based on [CarLink](https:/
 
 | Version | Changes |
 |---|---|
-| CS75 Plus 2023 v1.0 | New version name tied to the CS75 Plus 2023, so it is not confused with the original project; no functional change |
-| 1.0.11 | CarPlay at 30 fps by default in a Changan to reduce stutter; 60 still available in Advanced settings |
-| 1.0.10 | Security update: protobuf library to 3.25.9 (CVE-2024-7254) |
-| 1.0.9 | Optional Lite mode, faster reconnect on the last working path, one-tap full report to USB, Changan logo in CarPlay, Arabic and English only |
-| 1.0.8 | The Arabic "Wireless" label in the home dial lines up with its Wi-Fi glyph |
-| 1.0.7 | Clear message when the head unit server is stuck; log, exit menu and number-style fixes |
-| 1.0.6 | Changan profile and logo, Changan default margins, HEVC for CarPlay |
-| 1.0.5 and earlier | Head unit server, screen margins, language picker, start with the car, error log, wheel keys, thanks card |
+| CS75 Plus 2023 v1.0 | The first Changan build, with every addition: Android Auto head unit server tried automatically · per-protocol screen margins (48 px top for Changan) with a "Reset to Changan margins" button · Arabic and English only, with the Arabic text alignment fix · Changan profile with its logo · Changan logo on CarPlay's back-to-car button · HEVC on by default for CarPlay · CarPlay at 30 fps by default in a Changan (60 in Advanced settings) · optional Lite mode · faster reconnect on the last working path · one-tap full report to USB · start with the car · steering-wheel keys · error log · protobuf security update · thanks card for F-e-n-y-x · its own version name, apart from the original project |
 
 
 ### Building and what's not included
