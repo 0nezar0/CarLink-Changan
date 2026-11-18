@@ -268,6 +268,11 @@ object Connection {
             choice = quirk.apply(choice)
             com.carlink.core.diagnostics.EventLog.add("CarLink", "Stereo quirk profile ${quirk.id}: ${quirk.describe()} (${quirk.evidence})")
         }
+        // A Changan's CarPlay at 30 fps (settings/CarBrand.kt, ChanganPicture).
+        com.carlink.core.settings.ChanganPicture.apply(carBrand(app), choice).takeIf { it != choice }?.let {
+            choice = it
+            com.carlink.core.diagnostics.EventLog.add("CarLink", "Changan: CarPlay ${it.carPlayFps} fps")
+        }
         // Lite mode (settings/LiteMode): fewer frames and no extra GPU pass, never a lower resolution.
         val memory = com.carlink.core.settings.LiteModeMemory(app)
         if (com.carlink.core.settings.LitePicture.active(settings.liteMode, memory.engaged)) {
