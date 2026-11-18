@@ -13,7 +13,7 @@
 **CarPlay و Android Auto في تطبيق واحد لشاشة شانجان CS75 Plus 2023 (النسخة السعودية).**<br>
 **CarPlay and Android Auto in one app, for the Changan CS75 Plus 2023 head unit (Saudi version).**
 
-[![Version](https://img.shields.io/badge/version-1.0.11-blue)](#الجديد-في-كل-نسخة)
+[![Version](https://img.shields.io/badge/version-CS75%20Plus%202023%20v1.0-blue)](#الجديد-في-كل-نسخة)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue)](LICENSE)
 [![Android 9](https://img.shields.io/badge/Android-9%20·%20Allwinner%20T7-3DDC84?logo=android&logoColor=white)](#المتطلبات)
 [![CarPlay auth files](https://img.shields.io/badge/CarPlay%20auth%20files-not%20included-orange)](#البناء-والملفات-غير-المضمنة)
@@ -84,6 +84,7 @@
 
 | النسخة | الجديد |
 |---|---|
+| CS75 Plus 2023 v1.0 | اسم جديد للنسخة مرتبط بـ CS75 Plus 2023 عشان ما تختلط بالمشروع الأصلي، وبدون أي تغيير في عمل التطبيق |
 | 1.0.11 | CarPlay على 30 إطار افتراضياً في شانجان لتقليل التعليق، و60 متاحة من الإعدادات المتقدمة (معدل الإطارات) |
 | 1.0.10 | تحديث أمني: مكتبة protobuf إلى 3.25.9 (CVE-2024-7254) |
 | 1.0.9 | الوضع الخفيف الاختياري، اتصال أسرع بآخر طريقة نجحت، حفظ تقرير كامل على الفلاش، شعار شانجان في CarPlay، العربي والإنجليزي بس |
@@ -149,6 +150,7 @@ version)** head unit (Android 9, Allwinner T7) and is based on [CarLink](https:/
 
 | Version | Changes |
 |---|---|
+| CS75 Plus 2023 v1.0 | New version name tied to the CS75 Plus 2023, so it is not confused with the original project; no functional change |
 | 1.0.11 | CarPlay at 30 fps by default in a Changan to reduce stutter; 60 still available in Advanced settings |
 | 1.0.10 | Security update: protobuf library to 3.25.9 (CVE-2024-7254) |
 | 1.0.9 | Optional Lite mode, faster reconnect on the last working path, one-tap full report to USB, Changan logo in CarPlay, Arabic and English only |
