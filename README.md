@@ -8,106 +8,114 @@
 &nbsp;&nbsp;&nbsp;
 <img alt="Changan" src="docs/assets/changan-logo.png" width="120">
 
-# CarLink · شانجان CS75 Plus
+# CarLink
 
-**CarPlay و Android Auto في تطبيق واحد لشاشة شانجان CS75 Plus 2023 (النسخة السعودية).**<br>
-**CarPlay and Android Auto in one app, for the Changan CS75 Plus 2023 head unit (Saudi version).**
+**CarPlay و Android Auto في تطبيق واحد لعموم الشاشات العاملة بنظام أندرويد، مع دعم وتخصيص خاص لشاشة شانجان CS75 Plus 2023.**
 
-[![Version](https://img.shields.io/badge/version-CS75%20Plus%202023%20v1.0-blue)](#الجديد-في-كل-نسخة)
+**CarPlay and Android Auto in one app for Android car head units in general, with dedicated support and tuning for the Changan CS75 Plus 2023 head unit.**
+
+[![Release](https://img.shields.io/github/v/release/0nezar0/carlink-releases?include_prereleases&label=release)](https://github.com/0nezar0/carlink-releases/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue)](LICENSE)
-[![Android 9](https://img.shields.io/badge/Android-9%20·%20Allwinner%20T7-3DDC84?logo=android&logoColor=white)](#المتطلبات)
+[![Android](https://img.shields.io/badge/Android-car%20head%20units-3DDC84?logo=android&logoColor=white)](#المتطلبات)
+[![Languages](https://img.shields.io/badge/languages-11-8A2BE2)](#الميزات)
 [![CarPlay auth files](https://img.shields.io/badge/CarPlay%20auth%20files-not%20included-orange)](#البناء-والملفات-غير-المضمنة)
 
-[الميزات](#الميزات) · [الجديد](#الجديد-في-كل-نسخة) · [البناء](#البناء-والملفات-غير-المضمنة) · [شكر وتقدير](#شكر-وتقدير) · [English](#english)
+[**التحميل / Download**](https://github.com/0nezar0/carlink-releases/releases) ·
+[الميزات](#الميزات) · [التثبيت والتحديث](#التثبيت-والتحديث) · [البناء](#البناء-والملفات-غير-المضمنة) · [English](#english)
 
 </div>
 
-> [!IMPORTANT]
-> **هذا المستودع فيه الكود فقط:** ما فيه ملف تطبيق (APK) ولا ملفات مصادقة CarPlay (MFi). ملفات المصادقة يجيبها صاحب البناء بنفسه.
-> **Source only:** no APK and no CarPlay (MFi) authentication files. Whoever builds it supplies their own.
+> هذا المستودع للكود المصدري فقط: لا يحتوي على ملف APK ولا على ملفات مصادقة CarPlay. التحميل من [صفحة الإصدارات](https://github.com/0nezar0/carlink-releases/releases).
 
 <div dir="rtl">
 
-ركّب CarLink على شاشة السيارة، ووصّل جوالك بالسلك أو لاسلكياً: **الآيفون يشتغل CarPlay** و**جوال الأندرويد يشتغل Android Auto**،
-والتطبيق يعرف نوع الجوال لحاله. هذه النسخة معدّلة لشاشة **شانجان CS75 Plus 2023**: أندرويد 9 ومعالج Allwinner T7،
-ومبنية على مشروع [CarLink الأصلي](https://github.com/F-e-n-y-x/CarLink) للمطوّر **F-e-n-y-x**.
+ركّب CarLink على شاشة السيارة العاملة بنظام أندرويد، ووصّل جوالك بالسلك أو لاسلكياً: **الآيفون يشتغل CarPlay** و**جوال الأندرويد يشتغل Android Auto**، والتطبيق يعرف نوع الجوال لحاله.
+
+هذه النسخة مبنية على مشروع [CarLink](https://github.com/F-e-n-y-x/CarLink) للمطوّر **F-e-n-y-x**، وتعمل على **عموم الشاشات العاملة بنظام أندرويد**، مع **دعم وتخصيص خاص لشاشة شانجان CS75 Plus 2023** (أندرويد 9 ومعالج Allwinner T7): شعار شانجان، والهامش العلوي حتى لا يختفي شيء تحت شريط حالة السيارة، وضبط الصورة بما يناسب هذه الشاشة.
 
 </div>
 
 <table>
   <tr>
-    <td width="50%"><a href="docs/changan/screenshots/home-ar.png"><img src="docs/changan/screenshots/home-ar.png" alt="الشاشة الرئيسية"></a><br><sub>الشاشة الرئيسية · Home</sub></td>
-    <td width="50%"><a href="docs/changan/screenshots/settings-connection-ar.png"><img src="docs/changan/screenshots/settings-connection-ar.png" alt="الاتصال"></a><br><sub>الاتصال والتشغيل مع السيارة · Connection</sub></td>
+    <td width="50%"><a href="docs/changan/screenshots/home-ar.png"><img src="docs/changan/screenshots/home-ar.png" alt="الشاشة الرئيسية"></a></td>
+    <td width="50%"><a href="docs/changan/screenshots/settings-main-ar.png"><img src="docs/changan/screenshots/settings-main-ar.png" alt="الإعدادات"></a></td>
   </tr>
   <tr>
-    <td><a href="docs/changan/screenshots/lite-mode-ar.jpg"><img src="docs/changan/screenshots/lite-mode-ar.jpg" alt="الوضع الخفيف"></a><br><sub>الوضع الخفيف (اختياري) · Lite mode (optional)</sub></td>
-    <td><a href="docs/changan/screenshots/full-report-ar.jpg"><img src="docs/changan/screenshots/full-report-ar.jpg" alt="حفظ تقرير كامل"></a><br><sub>حفظ تقرير كامل · Save full report</sub></td>
+    <td><a href="docs/changan/screenshots/language-picker-ar.png"><img src="docs/changan/screenshots/language-picker-ar.png" alt="اختيار اللغة"></a></td>
+    <td><a href="docs/changan/screenshots/connection-status-ar.png"><img src="docs/changan/screenshots/connection-status-ar.png" alt="حالة الاتصال"></a></td>
   </tr>
   <tr>
-    <td><a href="docs/changan/screenshots/margins-ar.png"><img src="docs/changan/screenshots/margins-ar.png" alt="هوامش الشاشة"></a><br><sub>هوامش الشاشة · Screen margins</sub></td>
-    <td><a href="docs/changan/screenshots/margins-reset-changan-ar.png"><img src="docs/changan/screenshots/margins-reset-changan-ar.png" alt="الرجوع لهوامش شانجان"></a><br><sub>الرجوع لهوامش شانجان · Reset to Changan margins</sub></td>
-  </tr>
-  <tr>
-    <td><a href="docs/changan/screenshots/car-picker-changan-ar.png"><img src="docs/changan/screenshots/car-picker-changan-ar.png" alt="اختيار السيارة"></a><br><sub>اختيار السيارة: شانجان مع شعارها · Car brand</sub></td>
-    <td><a href="docs/changan/screenshots/settings-car-changan-ar.png"><img src="docs/changan/screenshots/settings-car-changan-ar.png" alt="ماركة السيارة"></a><br><sub>ماركة السيارة في الإعدادات · Car settings</sub></td>
-  </tr>
-  <tr>
-    <td><a href="docs/changan/screenshots/language-picker-ar.jpg"><img src="docs/changan/screenshots/language-picker-ar.jpg" alt="اختيار اللغة"></a><br><sub>العربي والإنجليزي · Arabic and English</sub></td>
-    <td><a href="docs/changan/screenshots/about-thanks-ar.png"><img src="docs/changan/screenshots/about-thanks-ar.png" alt="حول CarLink"></a><br><sub>حول CarLink وبطاقة الشكر · About and thanks</sub></td>
+    <td><a href="docs/changan/screenshots/car-picker-ar.png"><img src="docs/changan/screenshots/car-picker-ar.png" alt="اختيار السيارة"></a></td>
+    <td><a href="docs/changan/screenshots/settings-display-ar.png"><img src="docs/changan/screenshots/settings-display-ar.png" alt="الشاشة والهامش العلوي"></a></td>
   </tr>
 </table>
 
 <div dir="rtl">
 
-الصور من محاكي أندرويد 9 أو مرسومة على الكمبيوتر (Robolectric) ببيانات تجريبية، مو من السيارة.
+الصور من محاكي أندرويد 9 بواجهة الوضع الليلي واللغة العربية، مو من السيارة.
 
 ## الميزات
 
 - **CarPlay و Android Auto معاً:** بالسلك أو لاسلكياً، والتطبيق يعرف الآيفون من الأندرويد بدون ما تختار.
-- **خادم الوحدة الرئيسية لـ Android Auto:** إذا كان «Start head unit server» شغّال في الجوال والاثنين على نفس الشبكة، يتصل عن طريق المنفذ 5277 تلقائياً، والزر موجود كاحتياط.
-- **اتصال أسرع:** يفتح مع تشغيل الشاشة، ويتصل بآخر جوال، ويجرّب أول الطريقة اللي نجحت آخر مرة.
-- **الوضع الخفيف (اختياري، مطفّي افتراضياً):** إيقاف / تلقائي / دائماً. 30 إطار بدل 60 والصورة ترسم مباشرة على الشاشة، بنفس الدقة والجودة بدون بكسلة ولا تشويش.
-- **ملف شانجان:** شانجان أول القائمة ومع شعارها ومختارة من أول تنصيب، وشعار شانجان على زر الرجوع للسيارة في CarPlay.
-- **هوامش الشاشة:** هوامش منفصلة لـ CarPlay و Android Auto وشاشات CarLink، والافتراضي 48 px من فوق وصفر للباقي، مع زر «الرجوع لهوامش شانجان».
+- **لعموم شاشات أندرويد، مع تخصيص لشانجان CS75 Plus 2023:** يعمل على شاشات السيارات العاملة بنظام أندرويد عموماً. وإذا اخترت شانجان: شعارها على زر الرجوع للسيارة في CarPlay وفي الإعدادات › السيارة، وهامش علوي 48 بكسل لـ CarPlay و Android Auto وشاشات CarLink حتى لا يختفي شيء تحت شريط حالة السيارة. باقي السيارات (أو بدون اختيار ماركة): أيقونة السيارة الافتراضية بدون شعار ماركة.
+- **التشغيل مع السيارة:** يفتح مع تشغيل الشاشة، ويتصل بآخر جوال، ويجرّب أول الطريقة اللي نجحت آخر مرة.
+- **11 لغة من داخل التطبيق:** عربي، إنجليزي، إسباني، برتغالي، فرنسي، إيطالي، ألماني، ماليزي، تركي، صيني مبسّط ومجري. التبديل من الإعدادات › عام › اللغة (أو متابعة لغة الجهاز).
+- **حالة الاتصال:** من الإعدادات › الاتصال › حالة الاتصال (وفي التشخيص). أرقام مباشرة تتحدّث نحو مرة كل ثانية أثناء الاتصال: نوع الاتصال والطريقة اللاسلكية واسم الجوال، والفيديو (الدقة ومعدل الإطارات والترميز والمفكّك والإطارات الواردة والمسقطة والمتأخرة وزمن فك التشفير ومعدل النقل)، والصوت، ونطاق الواي فاي وسرعته والإشارة عند الاتصال اللاسلكي، ومدة الجلسة وعدد إعادة الاتصال. أي رقم غير متاح يظهر «غير متوفر».
+- **التحديث من داخل التطبيق:** الإعدادات › حول › «التحقق من التحديثات»، مع بحث تلقائي كل 6 ساعات إن فعّلته. يُحفظ الملف في Downloads/CarLink ويُفحص (sha256 ومفتاح التوقيع) قبل التثبيت. خيار «الحصول على نسخ تجريبية» يعرض الإصدارات التجريبية المنشورة قبل الإصدار المستقر.
+- **خادم الوحدة الرئيسية لـ Android Auto:** إذا كان «Start head unit server» شغّال في الجوال والاثنين على نفس الشبكة، يتصل عن طريق المنفذ 5277 تلقائياً.
+- **الوضع الخفيف (اختياري، مطفّي افتراضياً):** إيقاف / تلقائي / دائماً. 30 إطار بدل 60 والصورة ترسم مباشرة على الشاشة، وتأثيرات CarLink تصير بسيطة، بنفس الدقة والجودة.
 - **HEVC لـ CarPlay مفعّل من البداية:** ويرجع لـ H.264 تلقائياً إذا الشاشة ما تدعمه.
-- **العربي والإنجليزي:** واجهة عربية مكتوبة يدوياً، والتبديل من الإعدادات › عام › اللغة.
-- **حفظ تقرير كامل بضغطة:** إصدار التطبيق ومعلومات الجهاز والإعدادات والسجل الكامل في ملف واحد، على الفلاش أو في Downloads/CarLink، بدون كلمات المرور.
-- **أزرار الطارة:** التالي/السابق/تشغيل-إيقاف توصل لـ CarPlay و Android Auto حتى لو التطبيق بالخلفية.
-- **خفيف:** حجم أصغر (حوالي 17 ميجا) ومضغوط بـ R8، وبدون خدمات زيادة في الخلفية.
+- **حفظ تقرير كامل بضغطة، وأزرار الطارة** تصل لـ CarPlay و Android Auto حتى لو التطبيق بالخلفية.
 
 ## المتطلبات
 
-- **الشاشة:** شاشة شانجان CS75 Plus 2023 (أندرويد 9، Allwinner T7). ما يحتاج روت ولا تعديل على النظام.
+- **الشاشة:** شاشة سيارة عاملة بنظام أندرويد. هذه النسخة فيها دعم وتخصيص خاص لشاشة شانجان CS75 Plus 2023 (أندرويد 9، Allwinner T7). ما يحتاج روت ولا تعديل على النظام.
 - **الجوال:** آيفون لـ CarPlay أو جوال أندرويد لـ Android Auto، بالسلك أو بالبلوتوث والواي فاي للاسلكي.
 
-## الجديد في كل نسخة
+## التثبيت والتحديث
+
+هذا المستودع للكود المصدري فقط. لتحميل التطبيق:
+
+1. نزّل ملف APK من [صفحة الإصدارات](https://github.com/0nezar0/carlink-releases/releases). كل إصدار معه ملف `.sha256` للتحقق.
+2. انقل الملف إلى شاشة السيارة وثبّته (يُسمح بتثبيت التطبيقات من مصادر غير متجر التطبيقات إن طلبت الشاشة ذلك).
+3. بعد التثبيت، حدّث من داخل التطبيق: **الإعدادات › حول › التحقق من التحديثات**.
+4. إذا تبي تجرب النسخ التجريبية قبل الإصدار المستقر، فعّل **الإعدادات › حول › الحصول على نسخ تجريبية**.
+
+الإصدار الحالي للتجربة: [CS75 Plus 2023 v1.5](https://github.com/0nezar0/carlink-releases/releases/tag/v1.5). كل النسخ في [صفحة الإصدارات](https://github.com/0nezar0/carlink-releases/releases).
+
+## الجديد
 
 | النسخة | الجديد |
 |---|---|
-| CS75 Plus 2023 v1.0 | أول نسخة خاصة بشانجان، وفيها كل الإضافات: خادم الوحدة الرئيسية لـ Android Auto يتجرّب تلقائياً · هوامش شاشة لكل نظام (48 بكسل من فوق لشانجان) مع زر «الرجوع لهوامش شانجان» · العربي والإنجليزي بس مع إصلاح محاذاة النص العربي · ملف شانجان مع الشعار · شعار شانجان على زر الرجوع للسيارة في CarPlay · HEVC مفعّل من الأساس في CarPlay · CarPlay على 30 إطار افتراضياً في شانجان (و60 من الإعدادات المتقدمة) · الوضع الخفيف الاختياري · اتصال أسرع بآخر طريقة نجحت · حفظ تقرير كامل على الفلاش · التشغيل مع السيارة · أزرار الطارة · سجل الأخطاء · تحديث أمني لمكتبة protobuf · بطاقة شكر للمطوّر F-e-n-y-x · اسم نسخة خاص يميّزها عن المشروع الأصلي |
-
+| [CS75 Plus 2023 v1.5](https://github.com/0nezar0/carlink-releases/releases/tag/v1.5) (تجريبي) | إصدار تجريبي يشمل لغات التطبيق وصفحة حالة الاتصال، والتحديث من داخل التطبيق مع خيار النسخ التجريبية. |
+| [CS75 Plus 2023 v1.4](https://github.com/0nezar0/carlink-releases/releases/tag/v1.4) (تجريبي) | 11 لغة مع اختيار اللغة من الإعدادات › عام › اللغة · صفحة «حالة الاتصال» المباشرة في الإعدادات › الاتصال والتشخيص. |
+| [CS75 Plus 2023 v1.2](https://github.com/0nezar0/carlink-releases/releases/tag/v1.2) | إصدار لاختبار التحديث من داخل التطبيق من v1.1. |
+| [CS75 Plus 2023 v1.1](https://github.com/0nezar0/carlink-releases/releases/tag/v1.1) | تحديث من CarLink 1.0.17 للمطوّر F-e-n-y-x: طريقة اتصال «خادم الوحدة الرئيسية» · خفض الموسيقى وقت إرشادات CarPlay · أحجام واجهة أكبر · HEVC لـ CarPlay · زر الهامش العلوي لشانجان · شعار شانجان في CarPlay لشانجان فقط · تحسينات الوضع الخفيف وغيرها. |
 
 ## البناء والملفات غير المضمنة
 
 - **CarPlay يحتاج ملفات مصادقة (MFi) خاصة، وهي مو موجودة في هذا المستودع** ولن تُرفع له. صاحب البناء يوفّرها بنفسه.
 - وقت البناء، المتغيّر `DIPLAY_AUTH_ASSETS_DIR` يشير لمجلد فيه `offline-mfi/`، وينسخ منه هذا المجلد بس داخل التطبيق.
 - بدون المتغيّر يكتمل البناء عادي و Android Auto يشتغل، أما CarPlay فيعرض إن ملفات المصادقة ناقصة.
-- تفاصيل البناء في [docs/BUILDING.md](docs/BUILDING.md).
+- تفاصيل البناء في [docs/BUILDING.md](docs/BUILDING.md). حلقة التطوير المحلية:
+
+```sh
+bash .claude/skills/carlink-dev/scripts/dev.sh build
+bash .claude/skills/carlink-dev/scripts/dev.sh test
+```
 
 ## شكر وتقدير
 
 مبنية على [CarLink](https://github.com/F-e-n-y-x/CarLink) للمطوّر **F-e-n-y-x**، مع شكر خاص له على هذا العمل الرائع،
-وعلى محرّكَي [DiPlay](https://github.com/shihabal3amri/DiPlay) (CarPlay) و [DiAuto](https://github.com/shihabal3amri/DiAuto) / Open Headunit (Android Auto).
-تفاصيل الرخص والشكر داخل التطبيق في «حول CarLink».
+وعلى مشروعَي [DiPlay](https://github.com/shihabal3amri/DiPlay) (CarPlay) و[DiAuto](https://github.com/shihabal3amri/DiAuto) / Open Headunit (Android Auto). الرخص والشكر موجودة داخل التطبيق في «حول CarLink».
 
 ## الرخصة
 
-الكود مرخّص تحت **GNU AGPL-3.0** مثل المشروع الأصلي ([LICENSE](LICENSE)).
+مرخّصة برخصة **GNU AGPL-3.0**، مثل CarLink للمطوّر F-e-n-y-x ([LICENSE](LICENSE)).
 
-## تنويه
+## العلامات التجارية
 
-شعار شانجان واسمها علامات تجارية مملوكة لشركة Changan Automobile، واستخدامها هنا للتعريف بالسيارة فقط.
-هذا مشروع غير رسمي، ولا توجد أي علاقة مع الشركة. الشعار من [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Changan_icon.svg) (292Jacob، CC BY-SA 4.0)، وملفات الشعار هنا تبقى تحت نفس الرخصة.
+شعار شانجان واسمها علامات تجارية مملوكة لشركة Changan Automobile، واستخدامها هنا للتعريف بالسيارة فقط، ولا توجد أي علاقة رسمية مع الشركة. هذا مشروع غير رسمي. الشعار من [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Changan_icon.svg) (292Jacob، CC BY-SA 4.0)، وملفات الشعار هنا تبقى تحت نفس الرخصة.
 CarPlay علامة تجارية لـ Apple، و Android Auto علامة تجارية لـ Google.
 
 </div>
@@ -116,56 +124,60 @@ CarPlay علامة تجارية لـ Apple، و Android Auto علامة تجار
 
 ## English
 
-Install CarLink on the car's screen and connect your phone by cable or wirelessly: an **iPhone gets CarPlay**, an
-**Android phone gets Android Auto**, detected automatically. This build targets the **Changan CS75 Plus 2023 (Saudi
-version)** head unit (Android 9, Allwinner T7) and is based on [CarLink](https://github.com/F-e-n-y-x/CarLink) by **F-e-n-y-x**.
+This repository is **source only**: it does not include an APK or CarPlay authentication files. Download builds from the [releases page](https://github.com/0nezar0/carlink-releases/releases).
+
+Install CarLink on an **Android car head unit** and connect your phone by cable or wirelessly: an **iPhone gets CarPlay**, an **Android phone gets Android Auto**, detected automatically.
+
+This project is based on [CarLink](https://github.com/F-e-n-y-x/CarLink) by **F-e-n-y-x**. It is meant for **Android car head units in general**, with **dedicated support and tuning for the Changan CS75 Plus 2023 head unit** (Android 9, Allwinner T7): the Changan logo, a top margin so nothing hides under the car's status bar, and picture defaults that suit this screen.
 
 ### Features
 
 - **CarPlay and Android Auto in one app**, wired or wireless, with automatic phone detection.
-- **Android Auto head unit server:** with "Start head unit server" on in the phone and both on the same network, Android Auto connects through port 5277 automatically; the button stays as a backup.
-- **Faster reconnect:** starts with the head unit, reconnects the last phone and tries the path that worked last time first.
-- **Lite mode (optional, off by default):** Off / Auto / Always. 30 instead of 60 frames per second, drawn straight to the screen, same resolution and quality (no pixelation or blur).
-- **Changan profile:** Changan first in the list with its logo, preselected on a fresh install; the Changan logo on CarPlay's back-to-car button.
-- **Screen margins:** separate margins for CarPlay, Android Auto and CarLink's screens; 48 px at the top by default, with a "Reset to Changan margins" button.
-- **HEVC on for CarPlay by default**, falling back to H.264 when the head unit has no hardware decoder.
-- **Arabic and English:** hand-written Arabic UI; switch in Settings › General › Language.
-- **One-tap full report:** version, device, settings and the full log in one file, on a USB flash drive or in Downloads/CarLink, without passwords.
-- **Steering-wheel keys:** next/previous/play-pause reach CarPlay and Android Auto even in the background.
-- **Light:** about 17 MB, R8-shrunk, no extra background services.
+- **For Android head units in general, with special Changan CS75 Plus 2023 support:** choose Changan for its logo on CarPlay's back-to-car button and in Settings › Car, plus a 48 px top margin for CarPlay, Android Auto and CarLink. Other cars, or no brand, get the default car icon.
+- **Starts with the car:** opens when the screen turns on, reconnects the last phone and tries the path that worked last time first.
+- **11 languages in the app:** Arabic, English, Spanish, Portuguese, French, Italian, German, Malay, Turkish, Simplified Chinese and Hungarian. Switch in Settings › General › Language (or follow the system language).
+- **Connection status:** Settings › Connection › Connection status (also in Diagnostics). Live figures, refreshed about once a second while connected: connection type and wireless method, phone name, video (resolution, frame rate, codec, decoder, incoming fps, dropped and late frames, decode latency, bitrate), audio, Wi-Fi band, link speed and signal when wireless, session uptime and reconnect count. Anything unavailable is shown as such.
+- **In-app updates:** Settings › About › Check for updates, plus an optional automatic check every 6 hours. The APK is saved in Downloads/CarLink and checked (sha256 and signing key) before installing. Turn on **Get test versions** to also be offered pre-releases.
+- **Android Auto head unit server**, Lite mode (optional), HEVC for CarPlay with an H.264 fallback, one-tap full reports, and steering-wheel keys.
 
 ### Requirements
 
-- **The display:** the Changan CS75 Plus 2023 head unit (Android 9, Allwinner T7). No root and no system changes.
+- **The display:** an Android car head unit. This project includes dedicated tuning for the Changan CS75 Plus 2023 (Android 9, Allwinner T7). No root and no system changes.
 - **The phone:** an iPhone (CarPlay) or an Android phone (Android Auto), with a cable, or Bluetooth and Wi-Fi for wireless.
 
-### What's new
+### Install and update
 
-| Version | Changes |
-|---|---|
-| CS75 Plus 2023 v1.0 | The first Changan build, with every addition: Android Auto head unit server tried automatically · per-protocol screen margins (48 px top for Changan) with a "Reset to Changan margins" button · Arabic and English only, with the Arabic text alignment fix · Changan profile with its logo · Changan logo on CarPlay's back-to-car button · HEVC on by default for CarPlay · CarPlay at 30 fps by default in a Changan (60 in Advanced settings) · optional Lite mode · faster reconnect on the last working path · one-tap full report to USB · start with the car · steering-wheel keys · error log · protobuf security update · thanks card for F-e-n-y-x · its own version name, apart from the original project |
+1. Download the APK from the [releases page](https://github.com/0nezar0/carlink-releases/releases). Each release includes a `.sha256` file.
+2. Copy it to the head unit and install it (allow installation from outside the store if the unit asks).
+3. Later updates can be installed from **Settings › About › Check for updates**.
+4. To receive test builds, turn on **Settings › About › Get test versions**.
 
+The current test build is [CS75 Plus 2023 v1.5](https://github.com/0nezar0/carlink-releases/releases/tag/v1.5). All builds are on the [releases page](https://github.com/0nezar0/carlink-releases/releases).
 
 ### Building and what's not included
 
 - **CarPlay needs private MFi authentication files, which are not in this repository** and never will be; whoever builds supplies their own.
 - At build time the `DIPLAY_AUTH_ASSETS_DIR` environment variable points to a folder containing `offline-mfi/`; only that folder is copied into the app.
 - Without it the build still completes and Android Auto works; CarPlay reports that authentication assets are missing.
-- Build details are in [docs/BUILDING.md](docs/BUILDING.md).
+- Build details are in [docs/BUILDING.md](docs/BUILDING.md). The local loop:
+
+```sh
+bash .claude/skills/carlink-dev/scripts/dev.sh build
+bash .claude/skills/carlink-dev/scripts/dev.sh test
+```
 
 ### Credits
 
-Based on [CarLink](https://github.com/F-e-n-y-x/CarLink) by **F-e-n-y-x**, with special thanks for the original work, and on the
+Based on [CarLink](https://github.com/F-e-n-y-x/CarLink) by **F-e-n-y-x**, with special thanks for this wonderful work, and on the
 [DiPlay](https://github.com/shihabal3amri/DiPlay) (CarPlay) and [DiAuto](https://github.com/shihabal3amri/DiAuto) / Open Headunit
 (Android Auto) engines. Licences and credits are in the app under About CarLink.
 
 ### License
 
-Licensed under the **GNU AGPL-3.0**, like the original ([LICENSE](LICENSE)).
+Licensed under the **GNU AGPL-3.0**, like CarLink by F-e-n-y-x ([LICENSE](LICENSE)).
 
 ### Trademarks
 
-The Changan name and logo are trademarks of Changan Automobile, used here only to identify the car.
-This is an unofficial project with no connection to the company. Logo from
-[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Changan_icon.svg) (292Jacob, CC BY-SA 4.0); the logo files here stay under that licence.
+The Changan name and logo are trademarks of Changan Automobile, used here only to identify the car; there is no official connection with the company. This is an unofficial project. Logo from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Changan_icon.svg) (292Jacob, CC BY-SA 4.0); the logo files here stay under that licence.
 CarPlay is a trademark of Apple Inc.; Android Auto is a trademark of Google LLC.
+
