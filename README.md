@@ -25,6 +25,12 @@
 
 </div>
 
+## الكود المصدري | Source code
+
+هذا المستودع للكود المصدري العام لنسخة CarLink المخصصة لشانجان CS75 Plus 2023. لتنزيل ملف التثبيت ومراجعة ملاحظات التحديث، افتح [صفحة الإصدارات](https://github.com/0nezar0/carlink-releases/releases).
+
+This repository contains the public source. For APK downloads and release notes, see [CarLink releases](https://github.com/0nezar0/carlink-releases/releases).
+
 > هذا المستودع للكود المصدري فقط: لا يحتوي على ملف APK ولا على ملفات مصادقة CarPlay. التحميل من [صفحة الإصدارات](https://github.com/0nezar0/carlink-releases/releases).
 
 <div dir="rtl">
