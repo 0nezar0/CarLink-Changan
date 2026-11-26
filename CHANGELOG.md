@@ -6,7 +6,13 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
-- Bluetooth: after connecting through CarLink, the phone kept the car as "media only (no phone)" until its Bluetooth was turned off and on. The Android Auto wake poke opens a connection to the phone's hands-free record, which pushes the car's own hands-free (calls) link off the phone's single slot, and nothing reconnected it afterwards. Now, once the poke lets go and no handshake, handoff or call is in progress, CarLink asks the car's own hands-free client to reconnect the phone (up to 3 tries at 2, 6 and 15 s), and stops as soon as the link is back. Only on screens with their own hands-free; never for an iPhone. The log says `asked this unit's hands-free client to reconnect` / `hands-free link ... is up after the poke`.
+## [CS75 Plus 2023 v1.6.7] - 2026-11-26 (test)
+
+Test build from branch `trial/1.6.7-hfp`, versionCode 10050. It installs over v1.6.6 (10049) and every earlier build, and keeps your settings.
+
+- Bluetooth calls: after connecting through CarLink, the phone kept the car as "media only (no phone)" until its Bluetooth was turned off and on. The Android Auto wake poke opens a connection to the phone's hands-free record, which pushes the car's own hands-free (calls) link off the phone's single slot, and nothing reconnected it afterwards. Now, once the poke lets go and no handshake, handoff or call is in progress, CarLink asks the car's own hands-free client to reconnect the phone (up to 3 tries at 2, 6 and 15 s), and stops as soon as the link is back. Only on screens with their own hands-free; never for an iPhone. The log says `asked this unit's hands-free client to reconnect` / `hands-free link ... is up after the poke`.
+
+- Includes everything from v1.6.6.
 
 ## [CS75 Plus 2023 v1.6.6] - 2026-11-26 (test)
 
