@@ -210,14 +210,14 @@ object AaSessionSettings {
             val address = settings.headunitServerAddress.trim()
             put(HEADUNIT_SERVER_ADDRESSES_KEY,
                 if (route == WirelessPath.HEADUNIT_SERVER && address.isNotEmpty()) setOf(address) else emptySet<String>())
-            // Head-unit screen margins (DiAuto's inset-*), written every session so a previous
-            // value cannot stick. The engine sizes the video to the usable area, pads the
-            // surface, and tells the phone the same insets, so touches stay aligned.
-            val margins = settings.screenMargins
-            put("inset-left", margins.left)
-            put("inset-top", margins.top)
-            put("inset-right", margins.right)
-            put("inset-bottom", margins.bottom)
+            // Head-unit screen insets (DiAuto's inset-*), written every session so a previous
+            // value cannot stick. The Top margin setting was removed; these stay zero so the
+            // projection uses the full screen. Layout insets the engine uses for video crop
+            // or a turning screen are separate and unchanged.
+            put("inset-left", 0)
+            put("inset-top", 0)
+            put("inset-right", 0)
+            put("inset-bottom", 0)
         }
         return AaSessionValues(values, problem)
     }

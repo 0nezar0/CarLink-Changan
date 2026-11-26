@@ -51,13 +51,26 @@ internal object NavigationBarPreference {
 }
 
 /**
+ * When the 8 dp edge strips are attached. They stay up during CarPlay and Android Auto
+ * ([projectionInFront] true): removing them in v1.6.6 made it impossible to swipe the bar
+ * open to go back.
+ */
+internal object NavigationBarStrips {
+    fun shouldAttach(enabled: Boolean, projectionInFront: Boolean): Boolean {
+        // projectionInFront must not hide the strips.
+        return enabled
+    }
+}
+
+/**
  * The CS75 Plus navigation bar: an 8 dp strip on each screen edge; an inward swipe from an edge
  * opens the bar on that edge, the same swipe again closes it.
  *
  * An overlay window cannot hand a touch it has received to the app below, so a touch on a closed
  * strip that is not an inward swipe (a tap, a long press, a vertical drag) is replayed to the app
  * underneath with [AccessibilityService.dispatchGesture] while the strip is briefly untouchable.
- * The strips are removed while CarPlay or Android Auto is on screen ([setProjectionInFront]).
+ * The strips stay up while CarPlay or Android Auto is on screen, so an inward swipe can still
+ * open the bar to go back. v1.6.6 removed them during projection, which blocked that swipe.
  */
 internal class Cs75NavigationOverlay(private val service: AccessibilityService) {
     private val windows = service.getSystemService(WindowManager::class.java)
@@ -85,7 +98,10 @@ internal class Cs75NavigationOverlay(private val service: AccessibilityService) 
         expandedRight = null
     }
 
-    /** CarPlay or Android Auto came to the front (true) or left it (false). */
+    /**
+     * CarPlay or Android Auto came to the front (true) or left it (false). An open bar is
+     * closed so it does not sit on the new session; the edge strips stay attached.
+     */
     fun setProjectionInFront(inFront: Boolean) {
         if (inFront == projectionInFront) return
         projectionInFront = inFront
@@ -99,7 +115,7 @@ internal class Cs75NavigationOverlay(private val service: AccessibilityService) 
 
     private fun render() {
         remove()
-        if (projectionInFront || !NavigationBarPreference.enabled(service)) return
+        if (!NavigationBarStrips.shouldAttach(NavigationBarPreference.enabled(service), projectionInFront)) return
         addEdge(onRight = false)
         addEdge(onRight = true)
     }

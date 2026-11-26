@@ -1,14 +1,11 @@
 package com.carlink.app.ui.settings
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.carlink.app.R
 import com.carlink.app.ui.premium.GlassButton
 import com.carlink.app.ui.premium.IonButton
@@ -55,26 +52,19 @@ internal fun RestoreConfirmDialog(backup: SettingsBackup.Backup, onConfirm: () -
 }
 
 /**
- * Shown after the driver picks the CS75 Plus entry (brand list, setup, or Yes on the first-launch
- * car question). Enable turns on status-bar hide in every app except the car's home screen.
- * Skip or Back leaves it off. The switch stays in the CS75 Settings category. The 48 px top
- * margin is not changed here; it stays off until they turn it on in Settings.
+ * Asked once, for every car except the Changan CS75 Plus (which has HEVC on by default): turn on
+ * CarPlay HEVC. Yes turns it on and No (or Back) turns it off; either is kept as the driver's choice. The text says where to turn it off
+ * if the screen goes black. The status-bar hide is not part of this question (its broadcast is Changan-specific).
  */
 @Composable
-internal fun Cs75HideBarDialog(onAnswer: (Boolean) -> Unit) {
+internal fun HevcPromptDialog(onAnswer: (Boolean) -> Unit) {
     val scheme = MaterialTheme.colorScheme
     AlertDialog(
         onDismissRequest = { onAnswer(false) },
-        title = { Text(stringResource(R.string.carlink_cs75_hide_bar_prompt_title)) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(R.string.carlink_cs75_hide_bar_prompt_body), color = scheme.onSurface)
-                Text(stringResource(R.string.carlink_cs75_hide_bar_prompt_hint), color = scheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodySmall)
-            }
-        },
-        confirmButton = { IonButton(stringResource(R.string.carlink_cs75_hide_bar_prompt_enable), { onAnswer(true) }) },
-        dismissButton = { GlassButton(stringResource(R.string.carlink_cs75_hide_bar_prompt_skip), { onAnswer(false) }) },
+        title = { Text(stringResource(R.string.carlink_hevc_prompt_title)) },
+        text = { Text(stringResource(R.string.carlink_hevc_prompt_body), color = scheme.onSurface) },
+        confirmButton = { IonButton(stringResource(R.string.carlink_hevc_prompt_yes), { onAnswer(true) }) },
+        dismissButton = { GlassButton(stringResource(R.string.carlink_hevc_prompt_no), { onAnswer(false) }) },
         containerColor = scheme.surfaceContainerHigh,
     )
 }
@@ -94,7 +84,7 @@ internal fun RestoreErrorDialog(reason: String?, onDismiss: () -> Unit) {
 
 /**
  * First launch after a fresh install only. Yes selects the CS75 Plus brand and applies its
- * projection defaults, then the status-bar hide prompt is shown. No leaves the normal flow.
+ * projection defaults and the status-bar hide on. No leaves the normal flow, then the HEVC question follows.
  * Back counts as No. Shown once.
  */
 @Composable

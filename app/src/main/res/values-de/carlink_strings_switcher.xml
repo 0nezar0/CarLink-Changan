@@ -25,4 +25,10 @@
     <string name="carlink_switcher_stereo_home">Stereo</string>
     <string name="carlink_switcher_stereo_home_value">Launcher</string>
     <string name="carlink_switcher_night_next">Der Nachtmodus gilt ab der nächsten Verbindung; der Dimmer sofort.</string>
+    <!-- Quick toggle in the switcher panel: CarPlay HEVC (Settings > Display > Efficient video (HEVC)); applies from the next connection. -->
+    <string name="carlink_switcher_hevc">HEVC</string>
+    <string name="carlink_switcher_hevc_on">An</string>
+    <string name="carlink_switcher_hevc_off">Aus</string>
+    <string name="carlink_switcher_hevc_toast_on">HEVC für CarPlay ein. Gilt ab der nächsten Verbindung.</string>
+    <string name="carlink_switcher_hevc_toast_off">HEVC für CarPlay aus. Gilt ab der nächsten Verbindung.</string>
 </resources>

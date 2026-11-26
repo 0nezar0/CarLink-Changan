@@ -58,14 +58,6 @@ data class UnifiedSettings(
      */
     val headunitServerAddress: String = "",
     /**
-     * Settings › Display › Top margin: one switch for CarLink's own screens, CarPlay and Android
-     * Auto together. On keeps [ScreenMargins.CHANGAN] (48 px at the top, nothing on the other
-     * edges) clear of the car's status bar; off is no margins. Each car has its own saved switch
-     * ([marginsFor], [withMarginFor]).
-     */
-    val topMargin: Boolean = false,
-    val otherMarginBrands: Set<String> = emptySet(),
-    /**
      * Changan only: how the car's floating FceSystemUI status bar is hidden. Off by default;
      * the driver picks a mode in the Changan section at the top of Settings. [hideCarStatusBar]
      * is true when a hide mode is on (kept for backups of the earlier on/off switch).
@@ -79,37 +71,6 @@ data class UnifiedSettings(
     /** Lite mode for a weak CPU ([LiteMode]), off unless the driver turns it on: fewer frames, never a lower resolution; from the next connection. */
     val liteMode: LiteMode = LiteMode.OFF,
 ) {
-    /** The margins the Top margin switch stands for, the same for the app, CarPlay and Android Auto. */
-    val screenMargins: ScreenMargins get() = if (topMargin) ScreenMargins.CHANGAN else ScreenMargins()
-
-    /** Top pixels kept clear on CarLink's own screens (Home, Settings, setup), applied at once. */
-    val marginTopPx: Int get() = screenMargins.top
-
-    /**
-     * Keep the existing CS75 choice and opt in separately for each other selected make.
-     */
-    fun marginsFor(brand: CarBrand?): UnifiedSettings =
-        if (brand?.isChanganCs75Plus == true) this else copy(topMargin = (brand?.name ?: "AUTO") in otherMarginBrands)
-
-    fun withMarginFor(brand: CarBrand?, enabled: Boolean): UnifiedSettings {
-        if (brand?.isChanganCs75Plus == true) return copy(topMargin = enabled)
-        val key = brand?.name ?: "AUTO"
-        return copy(otherMarginBrands = if (enabled) otherMarginBrands + key else otherMarginBrands - key)
-    }
-}
-
-/** Pixels kept clear on each edge of a projection (activity pixels, never negative). */
-data class ScreenMargins(val left: Int = 0, val top: Int = 0, val right: Int = 0, val bottom: Int = 0) {
-    fun sanitized() = ScreenMargins(left.coerceAtLeast(0), top.coerceAtLeast(0), right.coerceAtLeast(0), bottom.coerceAtLeast(0))
-
-    companion object {
-        /**
-         * The Top margin (this build's car, the Changan CS75 Plus): 48 px clear of its notification
-         * bar at the top, nothing on the other edges, for CarPlay, Android Auto and CarLink's own
-         * screens while [UnifiedSettings.topMargin] is on.
-         */
-        val CHANGAN = ScreenMargins(top = 48)
-    }
 }
 
 data class WifiDetails(val ssid: String = "", val password: String = "")
@@ -137,7 +98,11 @@ class UnifiedSettingsStore(context: Context) {
     private val appContext = context.applicationContext
     private val prefs = appContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
-    fun load(): UnifiedSettings = read()
+    fun load(): UnifiedSettings {
+        dropRemovedMarginPrefs()
+        return read()
+    }
+
 
     private fun read() = UnifiedSettings(
         connectionMethod = enumOr(prefs.getString("connection_method", null), ConnectionMethod.AUTOMATIC),
@@ -168,8 +133,6 @@ class UnifiedSettingsStore(context: Context) {
         sameWifiWired = prefs.getBoolean("same_wifi_wired", false),
         micGainDb = prefs.getInt("mic_gain_db", 0),
         headunitServerAddress = prefs.getString("headunit_server_address", "")!!,
-        topMargin = topMargin(),
-        otherMarginBrands = prefs.getStringSet("cars_with_top_margin", emptySet()).orEmpty().toSet(),
         hideCarStatusBarMode = hideCarStatusBarMode(),
         hideCarStatusBarPackages = hideCarStatusBarPackages(),
         hideCarStatusBar = hideCarStatusBarMode() != HideCarStatusBarMode.OFF,
@@ -182,11 +145,9 @@ class UnifiedSettingsStore(context: Context) {
     /** The stored language alone (cheap; read at startup to refresh [AppLanguage]'s copy). */
     fun appLanguage(): String = AppLanguage.sanitize(prefs.getString("app_language", AppLanguage.SYSTEM))
 
-    /**
-     * The Top margin switch. Until it is saved once, it follows the margins an earlier version
-     * stored: on when any top margin was set (CarLink screens, CarPlay or Android Auto), so an
-     * update keeps the space a driver already had. Left, right and bottom margins are gone.
-     */
+    /** True once a hide mode was ever stored (an explicit On or Off), so a default must not replace it. */
+    fun hasHideCarStatusBarMode(): Boolean = prefs.contains(KEY_HIDE_CAR_STATUS_BAR_MODE)
+
     private fun hideCarStatusBarMode(): HideCarStatusBarMode =
         enumOr(prefs.getString(KEY_HIDE_CAR_STATUS_BAR_MODE, null), HideCarStatusBarMode.OFF)
 
@@ -196,12 +157,13 @@ class UnifiedSettingsStore(context: Context) {
         return raw.split(',').map { it.trim() }.filter { it.isNotEmpty() }.toSet()
     }
 
-    private fun topMargin(): Boolean {
-        if (prefs.contains(KEY_TOP_MARGIN)) return prefs.getBoolean(KEY_TOP_MARGIN, false)
-        val savedTop = LEGACY_TOP_KEYS.filter { prefs.contains(it) }.map { prefs.getInt(it, 0) }
-        // A previous private build adopted the Changan 48 px default and then deleted the keys.
-        if (savedTop.isEmpty()) return prefs.getBoolean(KEY_CHANGAN_MARGINS, false)
-        return savedTop.any { it > 0 }
+    /**
+     * Drops leftover Top margin keys from earlier versions. The setting was removed; an old
+     * on-value must not apply a 48 px inset after an update. Safe to call repeatedly.
+     */
+    fun dropRemovedMarginPrefs() {
+        if (REMOVED_MARGIN_KEYS.none { prefs.contains(it) }) return
+        prefs.edit().also { edit -> REMOVED_MARGIN_KEYS.forEach { edit.remove(it) } }.apply()
     }
 
     fun save(settings: UnifiedSettings) {
@@ -237,12 +199,10 @@ class UnifiedSettingsStore(context: Context) {
             .putBoolean("same_wifi_wired", settings.sameWifiWired)
             .putInt("mic_gain_db", settings.micGainDb)
             .putString("headunit_server_address", settings.headunitServerAddress)
-            .putBoolean(KEY_TOP_MARGIN, settings.topMargin)
-            .putStringSet("cars_with_top_margin", settings.otherMarginBrands)
             .putString(KEY_HIDE_CAR_STATUS_BAR_MODE, settings.hideCarStatusBarMode.name)
             .putString(KEY_HIDE_CAR_STATUS_BAR_PACKAGES, settings.hideCarStatusBarPackages.sorted().joinToString(","))
             .putBoolean(KEY_HIDE_CAR_STATUS_BAR, settings.hideCarStatusBarMode != HideCarStatusBarMode.OFF)
-            .also { edit -> LEGACY_MARGIN_KEYS.forEach { edit.remove(it) } }
+            .also { edit -> REMOVED_MARGIN_KEYS.forEach { edit.remove(it) } }
             .putString("app_language", AppLanguage.sanitize(settings.appLanguage))
             .putString("lite_mode", settings.liteMode.name)
             .putInt("custom_size_percent", settings.customSizePercent)
@@ -262,17 +222,17 @@ class UnifiedSettingsStore(context: Context) {
     companion object {
         const val PREFS = "carlink_unified"
         const val KEY_SOUND_CAR_BLUETOOTH = "sound_car_bluetooth"
-        const val KEY_TOP_MARGIN = "top_margin"
         const val KEY_HIDE_CAR_STATUS_BAR = "hide_car_status_bar"
         const val KEY_HIDE_CAR_STATUS_BAR_MODE = "hide_car_status_bar_mode"
         const val KEY_HIDE_CAR_STATUS_BAR_PACKAGES = "hide_car_status_bar_packages"
+        /** Removed Top margin switch and earlier per-edge keys; dropped on load and save. */
+        const val KEY_TOP_MARGIN = "top_margin"
+        const val KEY_CARS_WITH_TOP_MARGIN = "cars_with_top_margin"
         const val KEY_CHANGAN_MARGINS = "changan_margins_adopted"
-        /** Top margins of earlier versions: CarLink's screens, CarPlay, Android Auto (1.0.3 to 1.1). */
-        val LEGACY_TOP_KEYS = listOf("margin_top_px", "cp_margin_top_px", "aa_margin_top_px")
-        /** Every margin key of earlier versions, dropped once the switch is saved. */
         val LEGACY_MARGIN_KEYS = listOf("", "cp_", "aa_").flatMap { prefix ->
             listOf("left", "top", "right", "bottom").map { "${prefix}margin_${it}_px" }
         } + KEY_CHANGAN_MARGINS
+        val REMOVED_MARGIN_KEYS = (LEGACY_MARGIN_KEYS + KEY_TOP_MARGIN + KEY_CARS_WITH_TOP_MARGIN).distinct()
         private const val KEY_DRIVE_SIDE_CHOSEN = "drive_side_chosen"
         private const val KEY_STEREO_RIGHT = "stereo_right_hand_drive"
 

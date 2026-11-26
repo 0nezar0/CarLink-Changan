@@ -33,14 +33,13 @@ import com.carlink.app.R
 import com.carlink.app.switcher.FceBarAccessibilityService
 import com.carlink.app.ui.premium.IonButton
 import com.carlink.app.ui.theme.CarLinkTokens
-import com.carlink.core.settings.CarBrand
 import com.carlink.core.settings.HideCarStatusBarMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
  * CS75-only switches, shown as the first Settings category when the driver has chosen
- * the CS75 Plus brand: hide-mode radios, the accessibility prompt, the app picker, and top margin.
+ * the CS75 Plus brand: hide-mode radios, the accessibility prompt, and the app picker.
  * Rendered in the same scrollable content pane as the other categories.
  */
 @Composable
@@ -86,8 +85,6 @@ internal fun ChanganSettingsSection(ui: SettingsUi, actions: SettingsActions) {
                 },
             )
         }
-        GroupDivider()
-        TopMarginRow(ui, actions)
     }
 }
 

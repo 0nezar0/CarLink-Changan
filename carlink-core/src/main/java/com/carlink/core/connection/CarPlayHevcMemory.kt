@@ -9,7 +9,7 @@ import com.carlink.core.diagnostics.EventLog
  * tries H.264. Only when that H.264 attempt shows a picture is HEVC blamed, and Automatic picture
  * sends CarPlay H.264 for good. When H.264 stalls too, the cause was elsewhere (iOS 27's "sound but
  * no frames", DiPlay #249) and HEVC stays. Picture presets and Custom never read it
- * ([Connection.automaticPicture] is Automatic only).
+ * ([Connection.automaticPicture] is Automatic only). The Changan CS75 Plus is exempt: HEVC stays on there.
  */
 class CarPlayHevcMemory(context: Context) {
     private val prefs = context.applicationContext.getSharedPreferences("carlink_picture_memory", Context.MODE_PRIVATE)
@@ -17,7 +17,13 @@ class CarPlayHevcMemory(context: Context) {
     val failed: Boolean get() = prefs.getBoolean(KEY_FAILED, false)
 
     /** Automatic's CarPlay [choice] with HEVC off where it failed or is on trial; notes what this attempt sends. */
-    fun apply(choice: PictureChoice): PictureChoice {
+    fun apply(choice: PictureChoice, exempt: Boolean = false): PictureChoice {
+        // [exempt] (the CS75 Plus): HEVC is never given up here, so nothing is suspected or remembered.
+        if (exempt) {
+            hevcInUse = false
+            suspect = false
+            return choice
+        }
         val out = when {
             choice.carPlayHevc != true -> choice
             failed -> choice.copy(carPlayHevc = false).also {
