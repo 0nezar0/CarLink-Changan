@@ -11,13 +11,15 @@
 # Modes:
 #   release   R8, ARM only, package com.carlink.app.hudtest, signed with the installed app's key.
 #             The signer must equal EXPECTED_CERT_SHA256 or the build fails, so an APK signed with
-#             any other key never comes out of this workflow.
-#   validate  Decodes the MFi secrets, builds a debug APK, checks the MFi files inside it match the
-#             secrets, and uploads nothing. Used automatically on main while CARLINK_KEYSTORE_B64
-#             is not set.
+#             any other key never comes out of this workflow. Used on workflow_dispatch (default),
+#             v* tags, and push to main (when CARLINK_KEYSTORE_B64 is set).
+#   validate  Decodes the MFi secrets, builds a debug APK and checks the MFi files inside it match
+#             the secrets. Used on workflow_dispatch if chosen, and automatically on a push to main
+#             while CARLINK_KEYSTORE_B64 is not set.
 #
-# Never add pull_request / pull_request_target triggers: secrets must not reach code from forks.
-# This workflow never creates or publishes a GitHub release.
+# This workflow never uploads an APK artifact and never creates a GitHub release. After the checks
+# pass, the APK is deleted from the runner. Never add pull_request / pull_request_target triggers:
+# secrets must not reach code from forks.
 name: Build CarLink
 
 on:
@@ -148,23 +150,8 @@ jobs:
             echo "::error::APK signer $got is not the expected $EXPECTED_CERT_SHA256"; exit 1
           fi
 
-      - name: Name the APK
-        if: env.MODE == 'release'
-        run: |
-          mkdir -p out
-          cp "$APK" out/CarLink-CS75Plus2023.apk
-
-      # A workflow artifact that expires; this workflow never creates a GitHub release.
-      - uses: actions/upload-artifact@v5
-        if: env.MODE == 'release'
-        with:
-          name: CarLink-CS75Plus2023
-          path: out/*.apk
-          retention-days: 14
-          if-no-files-found: error
-
-      - name: Remove the secrets from the runner
+      - name: Remove the APK and the secrets from the runner
         if: always()
         run: |
-          rm -rf mfi/offline-mfi app/build/generated/carlinkAuthAssets
-          rm -f "${KEYSTORE_PATH:-$RUNNER_TEMP/carlink-release.keystore}"
+          rm -rf mfi/offline-mfi app/build/generated/carlinkAuthAssets app/build/outputs/apk out
+          rm -f "${KEYSTORE_PATH:-$RUNNER_TEMP/carlink-release.keystore}" ${APK:-}
