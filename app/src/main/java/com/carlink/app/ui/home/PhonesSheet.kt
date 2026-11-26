@@ -190,7 +190,7 @@ internal fun PhonesSheet(ui: HomeUi, actions: HomeActions, onDismiss: () -> Unit
             title = { Text(stringResource(R.string.carlink_home_kind_title)) },
             text = { Text(isolate(phone.name)) },
             confirmButton = {
-                IonButton(stringResource(R.string.carlink_home_kind_iphone), {
+                GlassButton(stringResource(R.string.carlink_home_kind_iphone), { // CarLink: no default answer
                     actions.setPhoneKind(phone, PhoneKind.IPHONE); askKind = null
                     actions.connect(phone.copy(kind = PhoneKind.IPHONE)); onDismiss()
                 })
