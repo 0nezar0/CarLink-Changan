@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for strings_settings_layout.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_display">Paparan</string>
+    <string name="settings_navigation">Navigasi</string>
+    <string name="settings_advanced">Lanjutan</string>
+</resources>

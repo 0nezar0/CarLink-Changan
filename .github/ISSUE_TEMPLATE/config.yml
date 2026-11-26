@@ -1,8 +1,11 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Email the maintainer
+    url: mailto:alhazmi.n.car@gmail.com
+    about: Support and private security reports for this CS75 Plus build (alhazmi.n.car@gmail.com).
   - name: Troubleshooting guide
-    url: https://github.com/F-e-n-y-x/CarLink/blob/main/docs/TROUBLESHOOTING.md
+    url: https://github.com/0nezar0/carlink-private-build/blob/main/docs/TROUBLESHOOTING.md
     about: What each message on Home means and what to do.
   - name: Report a security vulnerability
-    url: https://github.com/F-e-n-y-x/CarLink/security/advisories/new
-    about: Please report security problems privately, not as a public issue.
+    url: mailto:alhazmi.n.car@gmail.com
+    about: Please report security problems privately by email, not as a public issue.

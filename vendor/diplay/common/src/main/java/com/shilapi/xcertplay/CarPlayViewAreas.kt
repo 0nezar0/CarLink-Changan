@@ -189,6 +189,7 @@ class CarPlayViewAreas private constructor(
         ): CarPlayViewAreas? {
             val splits = screens.associateWith { splitWindow(it.portrait) }
             if (screens.size == 1 && dock.edge == null && splits.values.all { it == null } && !sidePanel &&
+                sizeWidthsMm.none { it in 1 until sessionWidthMm } && // CarLink: size variants need the area list
                 screens[0].width == canvasWidth && screens[0].height == canvasHeight) return null
             val edges = dock.edge?.let { listOf(AirPlayInfoPlist.DOCK_EDGE_DRIVER_SIDE, AirPlayInfoPlist.DOCK_EDGE_BOTTOM) }
                 ?: listOf(null)
@@ -208,8 +209,8 @@ class CarPlayViewAreas private constructor(
             for (screen in screens) {
                 val window = splits[screen] ?: continue
                 // The window's own size (BYD shows its bars in split screen), kept even for the encoder.
-                val splitWidth = (screen.width * window.first).toInt().coerceIn(2, screen.width) and 1.inv()
-                val splitHeight = (screen.height * window.second).toInt().coerceIn(2, screen.height) and 1.inv()
+                val splitWidth = (screen.width * window.first).toInt().coerceIn(2, screen.width.coerceAtLeast(2)) and 1.inv()
+                val splitHeight = (screen.height * window.second).toInt().coerceIn(2, screen.height.coerceAtLeast(2)) and 1.inv()
                 for (edge in edges) {
                     areas += AirPlayViewArea(splitWidth, splitHeight, dockEdge = edge)
                     slots += Slot(Kind.SPLIT_SCREEN, screen.portrait)

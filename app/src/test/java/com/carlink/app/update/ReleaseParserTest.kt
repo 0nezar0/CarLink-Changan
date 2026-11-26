@@ -23,13 +23,25 @@ class ReleaseParserTest {
 
     @Test fun parsesAUsableRelease() {
         val release = (ReleaseParser.parse(fixture("release_ok.json")) as ParsedRelease.Usable).release
-        assertEquals("v1.1.0", release.tag)
-        assertEquals(AppVersion(1, 1, 0), release.version)
-        assertEquals("CarLink 1.1.0", release.title)
-        assertEquals("https://github.com/F-e-n-y-x/CarLink/releases/download/v1.1.0/CarLink-1.1.0.apk", release.apkUrl)
-        assertEquals("https://github.com/F-e-n-y-x/CarLink/releases/download/v1.1.0/CarLink-1.1.0.apk.sha256", release.checksumUrl)
+        assertEquals("v1.2", release.tag)
+        assertEquals(AppVersion(1, 2), release.version)
+        assertEquals("CarLink CS75 Plus 2023 v1.2", release.title)
+        assertEquals("https://github.com/0nezar0/carlink-releases/releases/download/v1.2/CarLink-CS75Plus2023-v1.2.apk", release.apkUrl)
+        assertEquals("https://github.com/0nezar0/carlink-releases/releases/download/v1.2/CarLink-CS75Plus2023-v1.2.apk.sha256", release.checksumUrl)
         assertEquals(48_234_567L, release.apkSize)
         assertTrue(release.notes.contains("Faster"))
+    }
+
+    @Test fun parsesThePublishedV11Release() {
+        // GitHub's answer for v1.1 (trimmed): this build's tag and asset names.
+        val release = (ReleaseParser.parse(fixture("release_v1_1_github.json")) as ParsedRelease.Usable).release
+        assertEquals(AppVersion(1, 1), release.version)
+        assertEquals("https://github.com/0nezar0/carlink-releases/releases/download/v1.1/CarLink-CS75Plus2023-v1.1.apk", release.apkUrl)
+        assertEquals(release.apkUrl + ".sha256", release.checksumUrl)
+        // The installed v1.1 is up to date with it; v1.0 would be offered it.
+        val http = FakeHttp(HttpText(200, fixture("release_v1_1_github.json")))
+        assertEquals(CheckOutcome.UpToDate, GitHubReleaseSource(http, AppVersion.parseVersionName("CS75 Plus 2023 v1.1")!!).latest())
+        assertTrue(GitHubReleaseSource(http, AppVersion.parseVersionName("CS75 Plus 2023 v1.0")!!).latest() is CheckOutcome.Newer)
     }
 
     @Test fun releaseWithoutApkIsUnusable() = assertEquals(ParsedRelease.Reason.NO_APK, unusable("release_no_apk.json"))
@@ -39,6 +51,17 @@ class ReleaseParserTest {
     @Test fun preReleaseIsUnusable() = assertEquals(ParsedRelease.Reason.PRERELEASE, unusable("release_prerelease.json"))
 
     @Test fun malformedTagIsIgnored() = assertEquals(ParsedRelease.Reason.MALFORMED_TAG, unusable("release_malformed_tag.json"))
+
+    @Test fun anApkForAnotherVersionOrUpstreamIsIgnored() {
+        // The tag says v1.3 but the APK is v1.2: not offered.
+        assertEquals(ParsedRelease.Reason.NO_APK, (ReleaseParser.parse(fixture("release_ok.json").replace("\"tag_name\": \"v1.2\"", "\"tag_name\": \"v1.3\""))
+            as ParsedRelease.Unusable).reason)
+        // Upstream CarLink's asset names are never picked.
+        assertEquals(ParsedRelease.Reason.NO_APK, (ReleaseParser.parse(fixture("release_ok.json").replace("CarLink-CS75Plus2023-v1.2", "CarLink-1.2.0"))
+            as ParsedRelease.Unusable).reason)
+        // A v1.2.0 tag with v1.2 assets is the same release.
+        assertTrue(ReleaseParser.parse(fixture("release_ok.json").replace("\"tag_name\": \"v1.2\"", "\"tag_name\": \"v1.2.0\"")) is ParsedRelease.Usable)
+    }
 
     @Test fun assetsFromAnotherRepositoryAreIgnored() =
         assertEquals(ParsedRelease.Reason.NO_APK, unusable("release_foreign_assets.json"))
@@ -53,7 +76,7 @@ class ReleaseParserTest {
     @Test fun parsesChecksumFiles() {
         val hex = "a".repeat(64)
         assertEquals(hex, ReleaseParser.parseChecksum(hex))
-        assertEquals(hex, ReleaseParser.parseChecksum("${hex.uppercase()}  CarLink-1.1.0.apk\n"))
+        assertEquals(hex, ReleaseParser.parseChecksum("${hex.uppercase()}  CarLink-CS75Plus2023-v1.2.apk\n"))
         assertNull(ReleaseParser.parseChecksum("not a digest"))
         assertNull(ReleaseParser.parseChecksum("abc123"))
         assertNull(ReleaseParser.parseChecksum(""))
@@ -74,13 +97,14 @@ class ReleaseParserTest {
     }
 
     @Test fun gitHubSourceAnswers() {
-        val current = AppVersion(1, 0, 0)
+        val current = AppVersion(1, 1)
         fun source(answer: HttpText) = GitHubReleaseSource(FakeHttp(answer), current).latest()
         val ok = fixture("release_ok.json")
         assertTrue(source(HttpText(200, ok)) is CheckOutcome.Newer)
-        assertEquals(CheckOutcome.UpToDate, GitHubReleaseSource(FakeHttp(HttpText(200, ok)), AppVersion(1, 1, 0)).latest())
+        assertEquals(CheckOutcome.UpToDate, GitHubReleaseSource(FakeHttp(HttpText(200, ok)), AppVersion(1, 2)).latest())
         assertEquals(CheckOutcome.UpToDate, source(HttpText(200, fixture("release_no_apk.json"))))
-        assertEquals(CheckOutcome.UpToDate, source(HttpText(404, "{\"message\":\"Not Found\"}")))
+        // A private repository (or none published yet) is not "up to date".
+        assertEquals(CheckOutcome.NotFound, source(HttpText(404, "{\"message\":\"Not Found\"}")))
         assertEquals(CheckOutcome.RateLimited, source(HttpText(403, "{}", rateLimited = true)))
         assertEquals(CheckOutcome.RateLimited, source(HttpText(429, "", rateLimited = true)))
         assertTrue(source(HttpText(500, "")) is CheckOutcome.Failed)
@@ -89,36 +113,36 @@ class ReleaseParserTest {
 
     /** [fixture] as version [v] (tag, assets), a pre-release or draft when asked. */
     private fun release(v: String, prerelease: Boolean = false, draft: Boolean = false): String =
-        fixture("release_ok.json").replace("1.1.0", v)
+        fixture("release_ok.json").replace("1.2", v)
             .replace("\"prerelease\": false", "\"prerelease\": $prerelease").replace("\"draft\": false", "\"draft\": $draft")
 
     private fun versionOf(parsed: ParsedRelease) = (parsed as ParsedRelease.Usable).release.version
 
     @Test fun testVersionsTakeTheHighestUsableReleaseOrPreRelease() {
         // GitHub lists newest first by date, not by version: the highest version wins.
-        val list = "[" + listOf(release("1.0.16"), release("1.0.17", prerelease = true), release("1.0.18", draft = true),
-            fixture("release_no_apk.json").replace("1.1.0", "1.0.19")).joinToString(",") + "]"
-        assertEquals(AppVersion(1, 0, 17), versionOf(ReleaseParser.newest(list)))
+        val list = "[" + listOf(release("1.1.1"), release("1.1.2", prerelease = true), release("1.1.3", draft = true),
+            fixture("release_no_apk.json").replace("1.2", "1.1.4")).joinToString(",") + "]"
+        assertEquals(AppVersion(1, 1, 2), versionOf(ReleaseParser.newest(list)))
         // A stable release newer than every pre-release is still offered.
-        assertEquals(AppVersion(1, 1, 0), versionOf(ReleaseParser.newest("[${release("1.0.17", prerelease = true)},${release("1.1.0")}]")))
+        assertEquals(AppVersion(1, 2), versionOf(ReleaseParser.newest("[${release("1.1.2", prerelease = true)},${release("1.2")}]")))
         assertTrue(ReleaseParser.newest("[]") is ParsedRelease.Unusable)
         assertTrue(ReleaseParser.newest("{}") is ParsedRelease.Unusable)
-        assertEquals(ParsedRelease.Reason.DRAFT, (ReleaseParser.newest("[${release("1.2.0", draft = true)}]") as ParsedRelease.Unusable).reason)
+        assertEquals(ParsedRelease.Reason.DRAFT, (ReleaseParser.newest("[${release("1.3", draft = true)}]") as ParsedRelease.Unusable).reason)
         // Without test versions a pre-release is never usable.
         assertEquals(ParsedRelease.Reason.PRERELEASE,
-            (ReleaseParser.parse(release("1.0.17", prerelease = true)) as ParsedRelease.Unusable).reason)
+            (ReleaseParser.parse(release("1.1.2", prerelease = true)) as ParsedRelease.Unusable).reason)
     }
 
     @Test fun gitHubSourceAsksForTheListOnlyWithTestVersions() {
-        val list = "[${release("1.0.17", prerelease = true)},${release("1.0.16")}]"
+        val list = "[${release("1.1.2", prerelease = true)},${release("1.1.1")}]"
         var beta = true
-        val source = GitHubReleaseSource(FakeHttp(HttpText(200, list), ReleaseRepo.LIST_URL), AppVersion(1, 0, 16)) { beta }
-        assertEquals(AppVersion(1, 0, 17), (source.latest() as CheckOutcome.Newer).release.version)
+        val source = GitHubReleaseSource(FakeHttp(HttpText(200, list), ReleaseRepo.LIST_URL), AppVersion(1, 1, 1)) { beta }
+        assertEquals(AppVersion(1, 1, 2), (source.latest() as CheckOutcome.Newer).release.version)
         assertEquals(CheckOutcome.UpToDate,
-            GitHubReleaseSource(FakeHttp(HttpText(200, list), ReleaseRepo.LIST_URL), AppVersion(1, 0, 17)) { true }.latest())
+            GitHubReleaseSource(FakeHttp(HttpText(200, list), ReleaseRepo.LIST_URL), AppVersion(1, 1, 2)) { true }.latest())
         beta = false
         assertEquals(CheckOutcome.UpToDate,
-            GitHubReleaseSource(FakeHttp(HttpText(200, release("1.0.16"))), AppVersion(1, 0, 16)) { beta }.latest())
+            GitHubReleaseSource(FakeHttp(HttpText(200, release("1.1.1"))), AppVersion(1, 1, 1)) { beta }.latest())
     }
 
     private class FakeHttp(private val answer: HttpText?, private val expectedUrl: String = ReleaseRepo.LATEST_URL) : UpdateHttp {

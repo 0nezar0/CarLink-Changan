@@ -51,7 +51,8 @@ Design and engineering references: [design/REBUILD_V2.md](../design/REBUILD_V2.m
 connection design), [dissection/DIPLAY.md](dissection/DIPLAY.md) and
 [dissection/DIAUTO.md](dissection/DIAUTO.md) (how each engine works and fails),
 [design/HOME_V2_RATIONALE.md](../design/HOME_V2_RATIONALE.md) (the current UI). CarLink follows the device language for
-**English and Arabic**, including the engines' screens (`androidResources.localeFilters` in
+**Arabic, English, Spanish, Portuguese, French, Italian, German, Malay, Turkish, Simplified Chinese
+and Hungarian**, including the engines' screens (`androidResources.localeFilters` in
 [`app/build.gradle.kts`](../app/build.gradle.kts)); any other language falls back to English. It picks a size profile automatically (Settings › General › Layout):
 **Car display** (large touch targets and text, sized from the panel's pixels) or **Phone or
 tablet** (Material 3 sizes).

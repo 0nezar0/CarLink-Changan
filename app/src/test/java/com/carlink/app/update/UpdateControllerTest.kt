@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -60,7 +61,7 @@ class UpdateControllerTest {
             source = { checks++; outcome }, http = http,
             verifier = UpdateVerifier(JavaSha256, { facts }, Updates.RELEASE_PACKAGE, 10000L),
             installer = installer, prefs = prefs, current = AppVersion(1, 0, 0), supported = supported,
-            downloadDir = downloadDir, clock = { now }, awaitSessionQuiet = { quiet?.await() },
+            downloadDir = { downloadDir }, clock = { now }, awaitSessionQuiet = { quiet?.await() },
         )
     }
 
@@ -103,6 +104,21 @@ class UpdateControllerTest {
         prefs.autoCheckUpdates = false
         assertFalse(controller().maybeAutoCheck(true))
         assertEquals(0, checks)
+    }
+
+    @Test fun theReportSheetLearnsOfANewerVersionAndCanOfferIt() {
+        val c = controller()
+        c.refreshNewer()
+        assertEquals("a quiet check: no dialog", UpdateState.Idle, c.state.value)
+        assertEquals(release, c.newer.value)
+        c.refreshNewer()
+        assertEquals("known already: no second request", 1, checks)
+        c.offerNewer()
+        assertEquals(UpdateState.Available(release), c.state.value)
+        // Ignored for the automatic dialog, still named on the report sheet.
+        c.ignore()
+        assertEquals(release, c.newer.value)
+        assertNull(controller(supported = false).also { it.refreshNewer() }.newer.value)
     }
 
     @Test fun ignoredVersionIsNotOfferedAgainButANewerOneIs() {
@@ -150,11 +166,20 @@ class UpdateControllerTest {
         outcome = CheckOutcome.Failed("offline")
         c.checkNow()
         assertEquals(UpdateState.CheckFailed(rateLimited = false), c.state.value)
+        c.dismiss()
+        // A private release repository answers 404: say so, never "up to date".
+        outcome = CheckOutcome.NotFound
+        c.checkNow()
+        assertEquals(UpdateState.CheckFailed(rateLimited = false, notFound = true), c.state.value)
     }
 
     @Test fun automaticFailuresStaySilent() {
         outcome = CheckOutcome.RateLimited
         val c = controller()
+        c.maybeAutoCheck(true)
+        assertEquals(UpdateState.Idle, c.state.value)
+        outcome = CheckOutcome.NotFound
+        now += 7 * hour
         c.maybeAutoCheck(true)
         assertEquals(UpdateState.Idle, c.state.value)
     }
@@ -165,11 +190,15 @@ class UpdateControllerTest {
         c.download()
         assertEquals(UpdateState.Installing(release), c.state.value)
         assertEquals(apkBytes, installer.installed.single())
-        assertTrue("the verified file is deleted once the session has it", downloadDir.listFiles().isNullOrEmpty())
+        // The verified APK stays in Downloads/CarLink under its release name.
+        val kept = File(downloadDir, "CarLink-CS75Plus2023-v1.1.apk")
+        assertEquals(listOf(kept), downloadDir.listFiles()!!.toList())
+        assertEquals(apkBytes, kept.readText())
         c.onInstallStatus(InstallStatus.WaitingForUser)
         assertEquals(UpdateState.Installing(release), c.state.value)
         c.onInstallStatus(InstallStatus.Aborted)
         assertEquals(UpdateError.INSTALL_CANCELLED, (c.state.value as UpdateState.Failed).error)
+        assertTrue("a cancelled install keeps the checked file", kept.exists())
     }
 
     @Test fun askForInstallPermissionThenContinue() {
@@ -218,10 +247,17 @@ class UpdateControllerTest {
         assertEquals(UpdateState.Installing(release), c.state.value)
     }
 
-    @Test fun staleDownloadsAreRemovedAtStart() {
-        val stale = File(temp.root, "updates/CarLink-0.9.0.apk").apply { parentFile!!.mkdirs(); writeText("old") }
-        controller()
-        assertFalse(stale.exists())
+    @Test fun olderUpdateApksAreRemovedAtStartButNothingElse() {
+        val dir = File(temp.root, "updates").apply { mkdirs() }
+        fun file(name: String) = File(dir, name).apply { writeText(name) }
+        val older = file("CarLink-CS75Plus2023-v0.9.apk")
+        val installed = file("CarLink-CS75Plus2023-v1.0.apk")
+        val newer = file("CarLink-CS75Plus2023-v1.1.apk")
+        val report = file("CarLink-report-2026-11-19.txt")
+        val other = file("CarLink-0.9.0.apk")
+        controller() // installed version 1.0
+        assertFalse(older.exists())
+        listOf(installed, newer, report, other).forEach { assertTrue(it.name, it.exists()) }
     }
 
     private fun assertFailure(error: UpdateError): UpdateController {

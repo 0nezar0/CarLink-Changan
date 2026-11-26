@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spanish (es) translation of carlink_strings_switcher.xml. -->
+<resources>
+    <string name="carlink_switcher_bubble">Selector de CarLink</string>
+    <string name="carlink_switcher_bubble_action">Abrir el selector de teléfonos</string>
+    <string name="carlink_switcher_panel_window">Panel del selector de CarLink</string>
+    <string name="carlink_switcher_dimmer_window">Atenuador de CarLink</string>
+    <string name="carlink_switcher_connected_for">Conectado · %1$s</string>
+    <string name="carlink_switcher_switch_title">Cambiar de teléfono</string>
+    <string name="carlink_switcher_no_phones">No hay otros teléfonos emparejados</string>
+    <string name="carlink_switcher_no_phones_hint">Empareja otro teléfono en los ajustes de Bluetooth para cambiar a él aquí.</string>
+    <string name="carlink_switcher_switching">Cambiando…</string>
+    <string name="carlink_switcher_home">Inicio de CarLink</string>
+    <string name="carlink_switcher_size_reconnects">Al cambiarlo, se vuelve a conectar unos segundos</string>
+    <string name="carlink_switcher_size_upright">En vertical, Android Auto se detiene en %1$s</string>
+    <string name="carlink_switcher_next_connection">La sesión actual mantiene su conexión.</string>
+    <string name="carlink_switcher_close">Cerrar</string>
+    <string name="carlink_switcher_back">Atrás</string>
+    <string name="carlink_switcher_not_now">Ahora no</string>
+    <string name="carlink_switcher_phone_fallback">el teléfono nuevo</string>
+    <string name="carlink_switcher_night">Modo nocturno</string>
+    <string name="carlink_switcher_dimmer">Atenuador</string>
+    <string name="carlink_switcher_dimmer_off">Desactivado</string>
+    <string name="carlink_switcher_dimmer_level">Nivel %1$d</string>
+    <string name="carlink_switcher_stereo_home">Estéreo</string>
+    <string name="carlink_switcher_stereo_home_value">Lanzador</string>
+    <string name="carlink_switcher_night_next">El modo nocturno se aplica en la siguiente conexión; el atenuador, al instante.</string>
+</resources>

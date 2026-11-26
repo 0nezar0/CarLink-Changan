@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carlink_cs75_nav_title">Gezinme çubuğu</string>
+    <string name="carlink_cs75_nav_description">Çubuğu göstermek için sol veya sağ kenardan içeri kaydırın. Gizlemek için aynı kenardan tekrar kaydırın. CarLink erişilebilirlik hizmeti gerekir.</string>
+    <string name="carlink_cs75_nav_back">Geri</string>
+    <string name="carlink_cs75_nav_home">Ana ekran</string>
+    <string name="carlink_cs75_nav_apps">Yüklü uygulamalar</string>
+    <string name="carlink_cs75_nav_settings">Android ayarları</string>
+    <string name="carlink_cs75_nav_apps_unavailable">Uygulama açılamadı.</string>
+</resources>

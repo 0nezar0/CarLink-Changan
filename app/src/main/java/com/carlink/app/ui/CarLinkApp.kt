@@ -25,6 +25,8 @@ import com.carlink.app.ui.about.AboutScreen
 import com.carlink.app.ui.diagnostics.DiagnosticsScreen
 import com.carlink.app.ui.home.HomeScreen
 import com.carlink.app.ui.premium.LocalScreenMarginTopPx
+import com.carlink.app.ui.settings.Cs75HideBarDialog
+import com.carlink.app.ui.settings.Cs75FirstLaunchDialog
 import com.carlink.app.ui.settings.SettingsScreen
 import com.carlink.app.ui.theme.CarMotion
 import com.carlink.app.ui.theme.LocalReduceMotion
@@ -79,6 +81,9 @@ fun CarLinkApp(vm: CarLinkViewModel, onExitToCarHome: () -> Unit) {
     val reduceMotion = LocalReduceMotion.current
     val travel = with(LocalDensity.current) { 48.dp.roundToPx() }
     val unified by vm.unified.collectAsStateWithLifecycle()
+    val vehicle by vm.vehicle.collectAsStateWithLifecycle()
+    val askCs75HideBar by vm.cs75HideBarPrompt.collectAsStateWithLifecycle()
+    val askCs75FirstLaunch by vm.cs75FirstLaunchPrompt.collectAsStateWithLifecycle()
     // A Surface (not a plain background) so every screen's text defaults to onBackground.
     androidx.compose.material3.Surface(
         Modifier.fillMaxSize(),
@@ -86,8 +91,11 @@ fun CarLinkApp(vm: CarLinkViewModel, onExitToCarHome: () -> Unit) {
         contentColor = MaterialTheme.colorScheme.onBackground,
     ) {
         // Every screen draws its atmosphere behind the system bars and pads its own content.
-        // Top uses the larger of the system status-bar inset and Screen margins › Top.
-        CompositionLocalProvider(LocalScreenMarginTopPx provides unified.marginTopPx) {
+        // Top uses the larger of the system status-bar inset and the Top margin switch (48 px).
+        // The switch applies only while the car is a Changan.
+        CompositionLocalProvider(LocalScreenMarginTopPx provides unified.marginsFor(vehicle.brand).marginTopPx) {
+            if (askCs75FirstLaunch) Cs75FirstLaunchDialog(onAnswer = vm::answerCs75FirstLaunch)
+            if (askCs75HideBar) Cs75HideBarDialog(onAnswer = vm::answerCs75HideBar)
             Box(Modifier.fillMaxSize()) {
                 AnimatedContent(
                     targetState = route,

@@ -197,6 +197,10 @@ private fun homeEntries(): List<GalleryEntry> = with(HomeFakes) { listOf(
     home("failed-external-module") {
         HomeContent(ui(link = failed(LinkProblem.EXTERNAL_MODULE, engine = Engine.ANDROID_AUTO), phones = listOf(pixel)), actions)
     },
+    // Android Auto's head unit server took the connection and went silent: restart it (#84).
+    home("failed-head-unit-server-stuck") {
+        HomeContent(ui(link = failed(LinkProblem.HEAD_UNIT_SERVER_STUCK, engine = Engine.ANDROID_AUTO), phones = listOf(pixel)), actions)
+    },
     home("failed-engine") {
         HomeContent(ui(link = failed(LinkProblem.ENGINE, engine = Engine.ANDROID_AUTO), phones = listOf(pixel, iphone)), actions)
     },
@@ -254,6 +258,12 @@ private fun diagnosticsEntries(): List<GalleryEntry> = listOf(
         DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
         com.carlink.app.ui.diagnostics.IssueConfirmSheet(com.carlink.app.ui.diagnostics.previewIssueReport(), onOpen = {}, onCopyLog = {}, onCancel = {})
     },
+    // The same sheet on an old version, for a report already sent an hour ago: update first, send again.
+    GalleryEntry("diagnostics", "report-confirm-resend", opensWindow = true, configs = setOf("tablet", "car-landscape", "phone-portrait")) {
+        DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
+        com.carlink.app.ui.diagnostics.IssueConfirmSheet(com.carlink.app.ui.diagnostics.previewIssueReport(), onOpen = {}, onCopyLog = {},
+            onCancel = {}, sentAtMillis = System.currentTimeMillis() - 3_600_000, newerVersion = "1.0.16", installedVersion = "1.0.13")
+    },
     GalleryEntry("diagnostics", "report-qr", opensWindow = true, configs = setOf("tablet", "car-landscape", "phone-portrait")) {
         DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
         com.carlink.app.ui.diagnostics.IssueQrSheet(com.carlink.app.ui.diagnostics.previewIssueReport(), onShareLog = {}, onCopyLog = {}, onDone = {})
@@ -289,6 +299,13 @@ private fun settingsEntries(): List<GalleryEntry> = listOf(
             connection = settingsPreviewUi().connection.copy(wirelessOnExternalBluetooth = true)), SettingsPreviewActions, onBack = {},
             startCategory = SettingsCategory.CONNECTION)
     },
+    // Same Wi-Fi over a wired Ethernet link (#87, advanced): the switch under the Same Wi-Fi row.
+    GalleryEntry("settings", "connection-same-wifi-wired") {
+        val ui = settingsPreviewUi(showAdvanced = true)
+        SettingsContent(ui.copy(unified = ui.unified.copy(connectionMethod = com.carlink.core.settings.ConnectionMethod.SAME_WIFI,
+            homeWifi = com.carlink.core.settings.WifiDetails("HomeNet", "homepassword"), sameWifiWired = true)),
+            SettingsPreviewActions, onBack = {}, startCategory = SettingsCategory.CONNECTION)
+    },
     // Root mode on (advanced): the switch and what it does.
     GalleryEntry("settings", "connection-root") {
         SettingsContent(settingsPreviewUi(showAdvanced = true).copy(
@@ -321,6 +338,24 @@ private fun settingsEntries(): List<GalleryEntry> = listOf(
             }
         }
     },
+    // #83 and the call-rate option: CarPlay's Advanced and Lab sound rows.
+    GalleryEntry("settings", "sound-advanced-carplay") {
+        com.carlink.app.ui.premium.PremiumScreen("Sound & voice", onBack = {}) { margin ->
+            androidx.compose.foundation.layout.Column(androidx.compose.ui.Modifier
+                .verticalScroll(androidx.compose.foundation.rememberScrollState())
+                .padding(horizontal = margin)
+                .widthIn(max = 900.dp)) {
+                com.carlink.app.ui.settings.GlassGroup(header = { com.carlink.app.ui.settings.EngineHeader(Engine.CARPLAY) }) {
+                    com.carlink.core.settings.AdvancedSettings.all.filter { it.id in setOf("cp_clear_prompts", "cp_echo", "cp_call_rate") }
+                        .forEachIndexed { index, setting ->
+                            if (index > 0) com.carlink.app.ui.settings.GroupDivider()
+                            com.carlink.app.ui.settings.EngineSettingRow(setting, settingsPreviewUi().advancedValues,
+                                SettingsPreviewActions, openSheet = {})
+                        }
+                }
+            }
+        }
+    },
     GalleryEntry("settings", "sheet-audio-delay", opensWindow = true) {
         SettingsContent(settingsPreviewUi(), SettingsPreviewActions, onBack = {}, startCategory = SettingsCategory.SOUND,
             initialSheet = SheetKey.of(EssentialSheet.AUDIO_DELAY))
@@ -328,6 +363,29 @@ private fun settingsEntries(): List<GalleryEntry> = listOf(
     GalleryEntry("settings", "sound-advanced-lab") {
         SettingsContent(settingsPreviewUi(showAdvanced = true, lab = true), SettingsPreviewActions, onBack = {},
             startCategory = SettingsCategory.SOUND)
+    },
+    // Sound › Advanced, Android Auto's audio buffer and queue (#86), below the fold above.
+    GalleryEntry("settings", "sound-advanced-aa-buffer") {
+        com.carlink.app.ui.premium.PremiumScreen("Sound", onBack = {}) { margin ->
+            androidx.compose.foundation.layout.Column(androidx.compose.ui.Modifier
+                .verticalScroll(androidx.compose.foundation.rememberScrollState())
+                .padding(horizontal = margin)
+                .widthIn(max = 900.dp)) {
+                com.carlink.app.ui.settings.GlassGroup(header = { com.carlink.app.ui.settings.EngineHeader(Engine.ANDROID_AUTO) }) {
+                    com.carlink.app.ui.settings.engineRows(SettingsCategory.SOUND, com.carlink.core.settings.Tier.ADVANCED)
+                        .first { it.first == Engine.ANDROID_AUTO }.second.dropWhile { it.id != "aa_playback_focus" }.forEachIndexed { index, setting ->
+                            if (index > 0) com.carlink.app.ui.settings.GroupDivider()
+                            com.carlink.app.ui.settings.EngineSettingRow(setting, settingsPreviewUi().advancedValues,
+                                SettingsPreviewActions, openSheet = {})
+                        }
+                }
+            }
+        }
+    },
+    GalleryEntry("settings", "sheet-aa-audio-buffer", opensWindow = true) {
+        SettingsContent(settingsPreviewUi(showAdvanced = true), SettingsPreviewActions, onBack = {},
+            startCategory = SettingsCategory.SOUND,
+            initialSheet = SheetKey.of(AdvancedSettings.all.first { it.id == "aa_audio_buffer" }))
     },
     GalleryEntry("settings", "general-lab") {
         SettingsContent(settingsPreviewUi(lab = true), SettingsPreviewActions, onBack = {},
@@ -421,6 +479,17 @@ private fun settingsEntries(): List<GalleryEntry> = listOf(
         SettingsContent(settingsPreviewUi(showAdvanced = true), SettingsPreviewActions, onBack = {},
             startCategory = SettingsCategory.DISPLAY,
             initialSheet = SheetKey.of(AdvancedSettings.all.first { it.id == "aa_resolution" }))
+    },
+    // #83: 10 mm steps between the CarPlay size presets.
+    GalleryEntry("settings", "sheet-carplay-width", opensWindow = true) {
+        SettingsContent(settingsPreviewUi(showAdvanced = true), SettingsPreviewActions, onBack = {},
+            startCategory = SettingsCategory.DISPLAY,
+            initialSheet = SheetKey.of(AdvancedSettings.all.first { it.id == "cp_width" }))
+    },
+    // #83: directions up to +12 dB.
+    GalleryEntry("settings", "sheet-navigation-level", opensWindow = true) {
+        SettingsContent(settingsPreviewUi(), SettingsPreviewActions, onBack = {}, startCategory = SettingsCategory.SOUND,
+            initialSheet = SheetKey.of(EssentialSheet.NAVIGATION_LEVEL))
     },
 )
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Simplified Chinese (zh-CN) translation of carlink_strings_switcher.xml. -->
+<resources>
+    <string name="carlink_switcher_bubble">CarLink 切换器</string>
+    <string name="carlink_switcher_bubble_action">打开手机切换器</string>
+    <string name="carlink_switcher_panel_window">CarLink 切换器面板</string>
+    <string name="carlink_switcher_dimmer_window">CarLink 调光</string>
+    <string name="carlink_switcher_connected_for">已连接 · %1$s</string>
+    <string name="carlink_switcher_switch_title">切换手机</string>
+    <string name="carlink_switcher_no_phones">没有其他已配对的手机</string>
+    <string name="carlink_switcher_no_phones_hint">在蓝牙设置中再配对一部手机，即可在此处切换。</string>
+    <string name="carlink_switcher_switching">正在切换…</string>
+    <string name="carlink_switcher_home">CarLink 主屏幕</string>
+    <string name="carlink_switcher_size_reconnects">更改后会重新连接几秒钟</string>
+    <string name="carlink_switcher_size_upright">竖持时，Android Auto 最大到 %1$s</string>
+    <string name="carlink_switcher_next_connection">当前会话会保持连接。</string>
+    <string name="carlink_switcher_close">关闭</string>
+    <string name="carlink_switcher_back">返回</string>
+    <string name="carlink_switcher_not_now">暂不</string>
+    <string name="carlink_switcher_phone_fallback">新手机</string>
+    <string name="carlink_switcher_night">夜间模式</string>
+    <string name="carlink_switcher_dimmer">调光</string>
+    <string name="carlink_switcher_dimmer_off">关</string>
+    <string name="carlink_switcher_dimmer_level">级别 %1$d</string>
+    <string name="carlink_switcher_stereo_home">车机</string>
+    <string name="carlink_switcher_stereo_home_value">启动器</string>
+    <string name="carlink_switcher_night_next">夜间模式从下次连接起生效；调光立即生效。</string>
+</resources>

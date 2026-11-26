@@ -1,0 +1,43 @@
+package com.carlink.app.ui.settings
+
+import com.carlink.core.settings.SettingsCategory
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Test
+import java.io.File
+
+class Cs75SettingsCategoryTest {
+    @Test fun cs75IsTheFirstCategoryOnlyWhenThatBrandIsSelected() {
+        val withCs75 = categoryOrder(includeCs75 = true)
+        assertEquals(SettingsCategory.CHANGAN_CS75, withCs75.first())
+        assertEquals(SettingsCategory.CONNECTION, withCs75[1])
+        val without = categoryOrder(includeCs75 = false)
+        assertFalse(SettingsCategory.CHANGAN_CS75 in without)
+        assertEquals(SettingsCategory.CONNECTION, without.first())
+    }
+
+    @Test fun arabicCs75TitlesIsolateTheLatinSegment() {
+        val xml = File("src/main/res/values-ar/carlink_strings_settings.xml").takeIf { it.isFile }
+            ?: File("../src/main/res/values-ar/carlink_strings_settings.xml")
+        val text = xml.readText()
+        // XML source uses the \u2068 escape; either the escape or the real isolate is fine.
+        val fsi = "\\u2068"
+        val pdi = "\\u2069"
+        val isolated = fsi + "CS75 Plus 2023-2022" + pdi
+        val isolatedChar = "⁨CS75 Plus 2023-2022⁩"
+        for (name in listOf(
+            "carlink_settings_group_changan",
+            "carlink_settings_car_brand_cs75",
+            "carlink_cs75_first_launch_title",
+        )) {
+            val match = Regex("""<string name="$name">([^<]+)</string>""").find(text)
+                ?: error("missing $name")
+            val value = match.groupValues[1]
+            assertTrue(
+                "$name must wrap the Latin model in FSI/PDI: $value",
+                value.contains(isolated) || value.contains(isolatedChar),
+            )
+        }
+    }
+}

@@ -78,6 +78,11 @@ import com.carlink.app.diagnostics.CheckResult
 import com.carlink.app.diagnostics.CheckStatus
 import com.carlink.app.diagnostics.Checks
 import com.carlink.app.diagnostics.ConnectionLog
+import com.carlink.app.diagnostics.ConnectionStatusCollector
+import com.carlink.app.ui.premium.wirelessPathName
+import com.carlink.core.diagnostics.AudioStreamKind
+import com.carlink.core.diagnostics.ConnectionStatus
+import com.carlink.core.diagnostics.WifiBand
 import com.carlink.app.diagnostics.DecoderInfo
 import com.carlink.core.diagnostics.EventLog
 import com.carlink.app.diagnostics.LogLine
@@ -125,6 +130,10 @@ internal data class DiagnosticsUi(
     val log: List<LogLine>?,
     /** Each known phone's connection record, most recently used first. */
     val health: List<com.carlink.core.connection.PhoneHealth> = emptyList(),
+    /** Live picture, sound and link figures; refreshed about once a second while a session is up. */
+    val status: ConnectionStatus? = null,
+    /** v1.6.6: the car hotspot's automatic IPv4 / IPv4 + IPv6 decision; null before the first one. */
+    val ipFamily: IpFamilyUi? = null,
 )
 
 internal interface DiagnosticsActions {
@@ -155,6 +164,24 @@ fun DiagnosticsScreen(vm: CarLinkViewModel, onBack: () -> Unit, openSettings: (S
     val connection by vm.connection.collectAsStateWithLifecycle()
     val attemptStartedAt by vm.attemptStartedAt.collectAsStateWithLifecycle()
     val health by vm.health.collectAsStateWithLifecycle()
+    val session by vm.sessionState.collectAsStateWithLifecycle()
+    val collector = remember { ConnectionStatusCollector(context) }
+    val status by produceState<ConnectionStatus?>(
+        initialValue = null,
+        key1 = home.link,
+        key2 = session,
+        key3 = home.connectedSince,
+    ) {
+        value = collector.collect(home.link, session, home.connectedSince)
+        val live = home.link.stage == LinkStage.WAITING ||
+            home.link.stage == LinkStage.CONNECTING ||
+            home.link.stage == LinkStage.CONNECTED
+        if (!live) return@produceState
+        while (true) {
+            delay(1000)
+            value = collector.collect(home.link, session, home.connectedSince)
+        }
+    }
 
     var resumes by remember { mutableIntStateOf(0) }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { resumes++ }
@@ -170,6 +197,12 @@ fun DiagnosticsScreen(vm: CarLinkViewModel, onBack: () -> Unit, openSettings: (S
         value = withContext(Dispatchers.Default) { Checks.sorted(Checks.evaluate(context, inputs)) }
     }
     val log = rememberConnectionLog()
+    // v1.6.6: the engine's last car-hotspot address-family decision, re-read on resume and per stage.
+    val ipFamily by produceState<IpFamilyUi?>(null, resumes, home.link.stage) {
+        value = withContext(Dispatchers.IO) {
+            IpFamilyUi.from(com.shilapi.xcertplay.network.CarHotspotIpFamily.lastDecision(context))
+        }
+    }
 
     // A permission is asked for once from here; after that (or when Android stops showing the
     // prompt) Fix opens CarLink's app page, where it can always be granted.
@@ -222,7 +255,7 @@ fun DiagnosticsScreen(vm: CarLinkViewModel, onBack: () -> Unit, openSettings: (S
             override fun back() = onBack()
         }
     }
-    DiagnosticsContent(DiagnosticsUi(home.link, home.connectedSince, attemptStartedAt, checks, log, health), actions)
+    DiagnosticsContent(DiagnosticsUi(home.link, home.connectedSince, attemptStartedAt, checks, log, health, status, ipFamily), actions)
 }
 
 /**
@@ -273,6 +306,7 @@ internal fun DiagnosticsContent(ui: DiagnosticsUi, actions: DiagnosticsActions, 
                     Summary(ui.checks)
                     if (checksFirst) ChecksCard(ui.checks, actions)
                     SessionCard(ui)
+                    IpFamilyCard(ui.ipFamily)
                     PhonesHealthCard(ui.health)
                     if (!checksFirst) ChecksCard(ui.checks, actions)
                     CallAudioTestCard(ui.link.stage != LinkStage.IDLE)
@@ -291,9 +325,9 @@ internal fun DiagnosticsContent(ui: DiagnosticsUi, actions: DiagnosticsActions, 
                 ) {
                     Summary(ui.checks)
                     if (compact || checksFirst) {
-                        ChecksCard(ui.checks, actions); SessionCard(ui); PhonesHealthCard(ui.health)
+                        ChecksCard(ui.checks, actions); SessionCard(ui); IpFamilyCard(ui.ipFamily); PhonesHealthCard(ui.health)
                     } else {
-                        SessionCard(ui); PhonesHealthCard(ui.health); ChecksCard(ui.checks, actions)
+                        SessionCard(ui); IpFamilyCard(ui.ipFamily); PhonesHealthCard(ui.health); ChecksCard(ui.checks, actions)
                     }
                     CallAudioTestCard(ui.link.stage != LinkStage.IDLE)
                     LogPanel(ui.log, filter, { filter = it }, actions::shareLog, actions::copyLog, actions::reportProblem, Modifier.fillMaxWidth().height(logHeight))
@@ -345,7 +379,7 @@ private fun SessionCard(ui: DiagnosticsUi) {
     val link = ui.link
     GlassGroup(header = {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.weight(1f)) { GroupHeader(stringResource(R.string.carlink_diag_live_session), icon = R.drawable.carlink_ic_monitor_heart) }
+            Box(Modifier.weight(1f)) { GroupHeader(stringResource(R.string.carlink_status_title), icon = R.drawable.carlink_ic_monitor_heart) }
             if (link.stage != LinkStage.IDLE) StageTag(link.stage)
         }
     }) {
@@ -383,6 +417,8 @@ private fun IdleSession() {
     }
 }
 
+private data class SessionTile(val label: String, val value: String, val maxLines: Int = 2, val labelLines: Int = 1)
+
 @Composable
 private fun ActiveSession(ui: DiagnosticsUi) {
     val link = ui.link
@@ -400,18 +436,23 @@ private fun ActiveSession(ui: DiagnosticsUi) {
         color = scheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
     Spacer(Modifier.height(if (isCar) 20.dp else 14.dp))
 
-    data class Tile(val label: String, val value: String)
     val tiles = buildList {
-        add(Tile(stringResource(R.string.carlink_diag_tile_engine), link.engine?.let { engineName(it) } ?: unknown))
-        add(Tile(stringResource(R.string.carlink_diag_tile_transport), link.transport?.let { transportName(it) } ?: unknown))
+        add(SessionTile(stringResource(R.string.carlink_diag_tile_engine), link.engine?.let { engineName(it) } ?: unknown))
+        add(SessionTile(stringResource(R.string.carlink_diag_tile_transport),
+            link.transport?.let { t ->
+                val name = transportName(t)
+                val path = ui.status?.wirelessPath
+                if (path != null) stringResource(R.string.carlink_transport_with_path, name, wirelessPathName(path)) else name
+            } ?: unknown))
         if (link.stepCount > 0 && (link.stage == LinkStage.WAITING || link.stage == LinkStage.CONNECTING)) {
-            add(Tile(stringResource(R.string.carlink_diag_tile_step),
+            add(SessionTile(stringResource(R.string.carlink_diag_tile_step),
                 stringResource(R.string.carlink_diag_step_value, link.step.coerceIn(1, link.stepCount), link.stepCount)))
         }
-        if (timerLabel != null && elapsed != null) add(Tile(timerLabel, formatElapsed(elapsed)))
+        if (timerLabel != null && elapsed != null) add(SessionTile(timerLabel, formatElapsed(elapsed)))
+        addAll(connectionStatusTiles(ui))
     }
     StatGrid(tiles.size, minTileWidth = if (isCar) 200.dp else 130.dp) { i, m ->
-        StatTile(tiles[i].label, tiles[i].value, m)
+        StatTile(tiles[i].label, tiles[i].value, m, maxLines = tiles[i].maxLines, labelLines = tiles[i].labelLines)
     }
 
     // The driver's wording of why it waits; a failure's own detail; never the internal "phone_not_answering" marker.
@@ -422,6 +463,72 @@ private fun ActiveSession(ui: DiagnosticsUi) {
         Spacer(Modifier.height(CarLinkTokens.dimens.targetGap))
         StatTile(stringResource(if (failed) R.string.carlink_diag_tile_last_error else R.string.carlink_diag_tile_current_step),
             detail, Modifier.fillMaxWidth(), tint = if (failed) scheme.error else null, maxLines = 6)
+    }
+}
+
+@Composable
+private fun connectionStatusTiles(ui: DiagnosticsUi): List<SessionTile> {
+    val missing = stringResource(R.string.carlink_status_unavailable)
+    val status = ui.status
+    val link = ui.link
+    val video = status?.video
+    val audio = status?.audio
+    val wifi = status?.wifi
+    val decoderName = video?.decoderName
+    val decoder = when {
+        decoderName != null && video?.hardwareDecoder == true ->
+            stringResource(R.string.carlink_status_decoder_hardware, decoderName)
+        decoderName != null && video?.hardwareDecoder == false ->
+            stringResource(R.string.carlink_status_decoder_software, decoderName)
+        decoderName != null -> decoderName
+        else -> missing
+    }
+    val streamNames = audio?.streams.orEmpty().toList().sortedBy { it.ordinal }.map { kind ->
+        stringResource(when (kind) {
+            AudioStreamKind.MEDIA -> R.string.carlink_status_audio_media
+            AudioStreamKind.NAVIGATION -> R.string.carlink_status_audio_nav
+            AudioStreamKind.VOICE -> R.string.carlink_status_audio_voice
+            AudioStreamKind.CALL -> R.string.carlink_status_audio_call
+        })
+    }
+    val streams = streamNames.joinToString(stringResource(R.string.carlink_status_list_separator))
+        .ifEmpty { missing }
+    return buildList {
+        add(SessionTile(stringResource(R.string.carlink_status_resolution),
+            if (video?.width != null && video.height != null) "${video.width}×${video.height}" else missing))
+        add(SessionTile(stringResource(R.string.carlink_status_fps),
+            video?.configuredFps?.let { stringResource(R.string.carlink_status_fps_value, it) } ?: missing))
+        add(SessionTile(stringResource(R.string.carlink_status_incoming_fps),
+            video?.incomingFps?.let { stringResource(R.string.carlink_status_fps_value, it) } ?: missing))
+        add(SessionTile(stringResource(R.string.carlink_status_codec), video?.codec ?: missing))
+        add(SessionTile(stringResource(R.string.carlink_status_decoder), decoder, labelLines = 2))
+        add(SessionTile(stringResource(R.string.carlink_status_dropped),
+            video?.droppedFrames?.toString() ?: missing))
+        add(SessionTile(stringResource(R.string.carlink_status_late),
+            video?.lateFrames?.toString() ?: missing))
+        add(SessionTile(stringResource(R.string.carlink_status_decode_latency),
+            video?.decodeLatencyMs?.let { stringResource(R.string.carlink_status_latency_value, it) } ?: missing))
+        add(SessionTile(stringResource(R.string.carlink_status_bitrate),
+            video?.bitrateKbps?.let { stringResource(R.string.carlink_status_bitrate_value, it) } ?: missing))
+        add(SessionTile(stringResource(R.string.carlink_status_audio), streams, maxLines = 3))
+        add(SessionTile(stringResource(R.string.carlink_status_sample_rate),
+            audio?.sampleRateHz?.let { stringResource(R.string.carlink_status_sample_rate_value, it) } ?: missing))
+        add(SessionTile(stringResource(R.string.carlink_status_audio_buffer),
+            audio?.bufferFillMs?.let { stringResource(R.string.carlink_status_buffer_value, it) } ?: missing))
+        if (link.transport == Transport.WIRELESS) {
+            add(SessionTile(stringResource(R.string.carlink_status_wifi_band),
+                when (wifi?.band) {
+                    WifiBand.GHZ_2_4 -> stringResource(R.string.carlink_status_band_24)
+                    WifiBand.GHZ_5 -> stringResource(R.string.carlink_status_band_5)
+                    null -> missing
+                }))
+            add(SessionTile(stringResource(R.string.carlink_status_wifi_speed),
+                wifi?.linkSpeedMbps?.let { stringResource(R.string.carlink_status_speed_value, it) } ?: missing))
+            add(SessionTile(stringResource(R.string.carlink_status_wifi_rssi),
+                wifi?.rssiDbm?.let { stringResource(R.string.carlink_status_rssi_value, it) } ?: missing))
+        }
+        add(SessionTile(stringResource(R.string.carlink_status_reconnects),
+            status?.reconnectCount?.toString() ?: missing))
     }
 }
 

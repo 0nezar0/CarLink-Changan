@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Italian (it) translation of carlink_strings_switcher.xml. -->
+<resources>
+    <string name="carlink_switcher_bubble">Selettore CarLink</string>
+    <string name="carlink_switcher_bubble_action">Apri il selettore del telefono</string>
+    <string name="carlink_switcher_panel_window">Pannello del selettore CarLink</string>
+    <string name="carlink_switcher_dimmer_window">Oscuramento CarLink</string>
+    <string name="carlink_switcher_connected_for">Connesso · %1$s</string>
+    <string name="carlink_switcher_switch_title">Cambia telefono</string>
+    <string name="carlink_switcher_no_phones">Nessun altro telefono associato</string>
+    <string name="carlink_switcher_no_phones_hint">Associa un altro telefono nelle impostazioni Bluetooth per passare ad esso qui.</string>
+    <string name="carlink_switcher_switching">Cambio in corso…</string>
+    <string name="carlink_switcher_home">Home di CarLink</string>
+    <string name="carlink_switcher_size_reconnects">Modificarlo riconnette per alcuni secondi</string>
+    <string name="carlink_switcher_size_upright">In verticale, Android Auto si ferma a %1$s</string>
+    <string name="carlink_switcher_next_connection">La sessione attuale mantiene la connessione.</string>
+    <string name="carlink_switcher_close">Chiudi</string>
+    <string name="carlink_switcher_back">Indietro</string>
+    <string name="carlink_switcher_not_now">Non ora</string>
+    <string name="carlink_switcher_phone_fallback">il nuovo telefono</string>
+    <string name="carlink_switcher_night">Modalità notturna</string>
+    <string name="carlink_switcher_dimmer">Oscuramento</string>
+    <string name="carlink_switcher_dimmer_off">Disattivo</string>
+    <string name="carlink_switcher_dimmer_level">Livello %1$d</string>
+    <string name="carlink_switcher_stereo_home">Stereo</string>
+    <string name="carlink_switcher_stereo_home_value">Launcher</string>
+    <string name="carlink_switcher_night_next">La modalità notturna si applica alla connessione successiva; l’oscuramento, subito.</string>
+</resources>

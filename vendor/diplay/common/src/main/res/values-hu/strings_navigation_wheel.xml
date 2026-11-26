@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings_navigation_wheel.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_navigation_wheel_service_required">Engedélyezze a kormánygombok akadálymentesítési szolgáltatását az Android beállításaiban, vagy használja a meglévő ADB-engedélyezés gombot.</string>
+    <string name="settings_navigation_wheel_volume">Kormányhangerő navigációs utasítás közben (kísérleti)</string>
+    <string name="settings_navigation_wheel_volume_description">A CarPlay beszélt utasításai alatt a hangerőgombok a kiválasztott navigációs hangfolyamot állítják. Egyébként a gombok a fejegységet követik. A kormánygombok akadálymentesítési engedélyét igényli. A hívások, a térképnagyítás és a joystick megtartják az elsőbbséget. Helyben egy Tang platform-21 fejegységen tesztelve; a járműben történő upstream tesztelés még folyamatban. Az automatikus vagy médiaútvonalat nem fogja el.</string>
+</resources>

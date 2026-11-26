@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for home_layout_strings.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_force_full_settings">Paksa susun atur Tetapan penuh</string>
+    <string name="settings_force_full_settings_hint">Gunakan susun atur Tetapan penuh dengan bar sisi kategori dalam landskap, dengan susun atur automatik dalam potret. Tidak mengubah skrin utama atau CarPlay.</string>
+</resources>

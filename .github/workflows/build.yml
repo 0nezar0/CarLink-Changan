@@ -1,0 +1,157 @@
+# Builds CarLink for Changan CS75 Plus 2023 with the CarPlay MFi files and the app signing key
+# injected at build time from GitHub Actions secrets. Nothing secret is stored in this repository.
+#
+# Secrets (Settings > Secrets and variables > Actions):
+#   CARLINK_MFI_IDENTITY_PK8_B64     base64 of offline-mfi/identity.pk8     (required)
+#   CARLINK_MFI_CERTIFICATE_P7B_B64  base64 of offline-mfi/certificate.p7b  (required)
+#   CARLINK_KEYSTORE_B64             base64 of the installed app's keystore (release only)
+#   CARLINK_KEYSTORE_PASSWORD / CARLINK_KEY_ALIAS / CARLINK_KEY_PASSWORD   optional; default to the
+#                                    Android debug-keystore values (android / androiddebugkey / android)
+#
+# Modes:
+#   release   R8, ARM only, package com.carlink.app.hudtest, signed with the installed app's key.
+#             The signer must equal EXPECTED_CERT_SHA256 or the build fails, so an APK signed with
+#             any other key never comes out of this workflow. Used on workflow_dispatch (default),
+#             v* tags, and push to main (when CARLINK_KEYSTORE_B64 is set).
+#   validate  Decodes the MFi secrets, builds a debug APK and checks the MFi files inside it match
+#             the secrets. Used on workflow_dispatch if chosen, and automatically on a push to main
+#             while CARLINK_KEYSTORE_B64 is not set.
+#
+# This workflow never uploads an APK artifact and never creates a GitHub release. After the checks
+# pass, the APK is deleted from the runner. Never add pull_request / pull_request_target triggers:
+# secrets must not reach code from forks.
+name: Build CarLink
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Build mode
+        type: choice
+        options: [release, validate]
+        default: release
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-carlink-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # Forks never run this (they also never receive the secrets).
+    if: github.repository == '0nezar0/CarLink-Changan'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      EXPECTED_CERT_SHA256: 4b194c0c5d3f25bb65927771c30e5a78bb57a4aca1e85babd763b03dd9554a6b
+      MODE: ${{ inputs.mode || 'release' }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: CarPlay MFi files from secrets
+        env:
+          MFI_PK8_B64: ${{ secrets.CARLINK_MFI_IDENTITY_PK8_B64 }}
+          MFI_P7B_B64: ${{ secrets.CARLINK_MFI_CERTIFICATE_P7B_B64 }}
+        run: |
+          set -euo pipefail
+          if [ -z "$MFI_PK8_B64" ] || [ -z "$MFI_P7B_B64" ]; then
+            echo "::error::CARLINK_MFI_IDENTITY_PK8_B64 and CARLINK_MFI_CERTIFICATE_P7B_B64 are required."; exit 1
+          fi
+          umask 077
+          mkdir -p mfi/offline-mfi
+          printf '%s' "$MFI_PK8_B64" | base64 -d > mfi/offline-mfi/identity.pk8
+          printf '%s' "$MFI_P7B_B64" | base64 -d > mfi/offline-mfi/certificate.p7b
+          for f in identity.pk8 certificate.p7b; do
+            test -s "mfi/offline-mfi/$f" || { echo "::error::$f decoded empty"; exit 1; }
+          done
+          echo "DIPLAY_AUTH_ASSETS_DIR=$GITHUB_WORKSPACE/mfi" >> "$GITHUB_ENV"
+          echo "CarPlay MFi files are in place (contents not shown)."
+
+      - name: Signing key from secrets
+        env:
+          KEYSTORE_B64: ${{ secrets.CARLINK_KEYSTORE_B64 }}
+        run: |
+          set -euo pipefail
+          keystore="$RUNNER_TEMP/carlink-release.keystore"
+          echo "KEYSTORE_PATH=$keystore" >> "$GITHUB_ENV"
+          if [ -n "$KEYSTORE_B64" ]; then
+            umask 077
+            printf '%s' "$KEYSTORE_B64" | base64 -d > "$keystore"
+            test -s "$keystore"
+            echo "Signing key is in place."
+          elif [ "$MODE" = release ]; then
+            if [ "$GITHUB_EVENT_NAME" = push ] && [ "$GITHUB_REF" = refs/heads/main ]; then
+              echo "::warning::CARLINK_KEYSTORE_B64 is not set: validating only, no signed APK."
+              echo "MODE=validate" >> "$GITHUB_ENV"
+            else
+              echo "::error::A release build needs the CARLINK_KEYSTORE_B64 secret."; exit 1
+            fi
+          fi
+
+      - name: Build
+        env:
+          KS_PASSWORD: ${{ secrets.CARLINK_KEYSTORE_PASSWORD }}
+          KS_ALIAS: ${{ secrets.CARLINK_KEY_ALIAS }}
+          KS_KEY_PASSWORD: ${{ secrets.CARLINK_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ "$MODE" = release ]; then
+            export ANDROID_KEYSTORE_PATH="$KEYSTORE_PATH"
+            export ANDROID_KEYSTORE_PASSWORD="${KS_PASSWORD:-android}"
+            export ANDROID_KEY_ALIAS="${KS_ALIAS:-androiddebugkey}"
+            export ANDROID_KEY_PASSWORD="${KS_KEY_PASSWORD:-android}"
+            ./gradlew :app:assembleRelease --stacktrace \
+              -Pcarlink.applicationId=com.carlink.app.hudtest \
+              -Pcarlink.abis=arm64-v8a,armeabi-v7a
+            apk=$(ls app/build/outputs/apk/release/*.apk | head -1)
+          else
+            ./gradlew :app:assembleDebug --stacktrace -Pcarlink.abis=arm64-v8a,armeabi-v7a
+            apk=$(ls app/build/outputs/apk/debug/*.apk | head -1)
+          fi
+          echo "APK=$apk" >> "$GITHUB_ENV"
+
+      - name: Check the CarPlay files inside the APK match the secrets
+        run: |
+          set -euo pipefail
+          names=$(unzip -Z1 "$APK")
+          for f in identity.pk8 certificate.p7b; do
+            grep -qx "assets/offline-mfi/$f" <<< "$names" \
+              || { echo "::error::assets/offline-mfi/$f is missing from the APK"; exit 1; }
+            unzip -p "$APK" "assets/offline-mfi/$f" | cmp -s - "mfi/offline-mfi/$f" \
+              || { echo "::error::assets/offline-mfi/$f differs from the secret"; exit 1; }
+            echo "assets/offline-mfi/$f is inside and matches"
+          done
+
+      - name: Check the signer is the installed app's key
+        if: env.MODE == 'release'
+        run: |
+          set -euo pipefail
+          apksigner=$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          "$apksigner" verify "$APK"
+          certs=$("$apksigner" verify --print-certs "$APK")
+          printf '%s\n' "$certs"
+          got=$(grep -oE 'certificate SHA-256 digest: [0-9a-f]{64}' <<< "$certs" | head -1 | awk '{print $NF}' || true)
+          echo "Signer SHA-256: $got"
+          if [ "$got" != "$EXPECTED_CERT_SHA256" ]; then
+            echo "::error::APK signer $got is not the expected $EXPECTED_CERT_SHA256"; exit 1
+          fi
+
+      - name: Remove the APK and the secrets from the runner
+        if: always()
+        run: |
+          rm -rf mfi/offline-mfi app/build/generated/carlinkAuthAssets app/build/outputs/apk out
+          rm -f "${KEYSTORE_PATH:-$RUNNER_TEMP/carlink-release.keystore}" ${APK:-}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings_settings_layout.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_display">Anzeige</string>
+    <string name="settings_navigation">Navigation</string>
+    <string name="settings_vehicle">Fahrzeug</string>
+    <string name="settings_advanced">Erweitert</string>
+    <string name="settings_search_hint">Einstellungen suchen</string>
+</resources>

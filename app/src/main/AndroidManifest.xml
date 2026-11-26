@@ -20,9 +20,12 @@
     <!-- The in-app updater (update/): asks GitHub for the latest release and installs a verified
          APK with PackageInstaller. Both are also declared by the engines; listed here for CarLink. -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Settings › Save error log: the public Download folder on Android 9 and older (Android 10+ uses MediaStore). -->
+    <!-- Settings › Save error log and downloaded updates: the public Download folder on Android 9 and older (Android 10+ uses MediaStore or CarLink's own folder). -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- CS75 hide-bar app picker: list every launchable user and system package on Android 11+.
+         The MAIN/LAUNCHER <queries> below is the narrower declaration; this covers getInstalledPackages. -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="QueryAllPackagesPermission" />
 
     <!-- "Report a problem on GitHub" asks whether any browser opens web links (Android 11+ package visibility). -->
     <queries>
@@ -30,6 +33,19 @@
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" />
+        </intent>
+        <!-- Changan hide mode 2: list launchable apps for the picker (Android 11+ package visibility). -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.CAR_LAUNCHER" />
         </intent>
     </queries>
 
@@ -48,6 +64,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarLink"
         tools:replace="android:name,android:label,android:icon,android:roundIcon,android:theme,android:allowBackup,android:fullBackupContent,android:dataExtractionRules,android:localeConfig">
+
+        <activity android:name=".switcher.InstalledAppsActivity" android:exported="false"
+            android:excludeFromRecents="true" android:taskAffinity="" />
 
         <activity
             android:name=".ui.HomeActivity"
@@ -78,6 +97,20 @@
             android:exported="false" />
 
         <!-- Shares Diagnostics' connection log (cache/shared only); independent of the engines' providers. -->
+        <!-- Changan status-bar hide: watches the foreground app (TYPE_WINDOW_STATE_CHANGED). -->
+        <service
+            android:name=".switcher.FceBarAccessibilityService"
+            android:exported="true"
+            android:label="@string/carlink_fce_accessibility_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/carlink_fce_accessibility" />
+        </service>
+
         <provider
             android:name=".diagnostics.CarLinkFileProvider"
             android:authorities="${applicationId}.carlink.files"

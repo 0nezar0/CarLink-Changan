@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for diauto.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="da_brand">DiAuto</string>
+    <string name="da_connecting">Csatlakozás a telefonhoz</string>
+    <string name="da_settings">Beállítások</string>
+    <string name="da_pair">Telefon párosítása</string>
+    <string name="da_system_settings">Bluetooth-beállítások</string>
+    <string name="da_device">Android-telefon</string>
+    <string name="da_permissions">Engedélyek</string>
+    <string name="da_tagline">AZ ÖN TELEFONJA. AZ ÖN ÚTJA.</string>
+    <string name="da_headline">Egy ismerős utazás.</string>
+    <string name="da_description">A térképei, a zenéje és a beszélgetései.
+Android Auto, éppen itt az autó kijelzőjén.</string>
+    <string name="da_connect">Telefon csatlakoztatása</string>
+    <string name="da_open">Android Auto megnyitása</string>
+    <string name="da_ready">Készen áll, ha Ön is</string>
+    <string name="da_connected">Az Android Auto csatlakozik</string>
+    <string name="da_hint">Párosítsa a telefonját az autó Bluetooth-beállításaiban, majd válassza a Telefon csatlakoztatása lehetőséget. Tartsa bekapcsolva a Bluetoothot és a Wi-Fit.</string>
+    <string name="da_wireless">VEZETÉK NÉLKÜLI ANDROID AUTO</string>
+    <string name="da_usb">Csatlakozás USB-vel</string>
+    <string name="da_usb_hint">Inkább kábellel? Dugja be a telefonját.</string>
+    <string name="da_settings_hint">Érezze otthon magát.</string>
+    <string name="da_close">Autó kezdőképernyő</string>
+    <string name="da_no_paired">Először párosítsa Android-telefonját az autóval. Térjen ide vissza, ha a párosítás kész.</string>
+    <string name="da_bluetooth_off">Kapcsolja be a Bluetoothot az autó beállításaiban a telefon csatlakoztatásához.</string>
+    <string name="da_preferences">Az Ön útja, az Ön módján.</string>
+    <string name="da_preferences_hint">Kapcsolat, kijelző és hang — minden egy helyen.</string>
+    <string name="da_automation">Automatikus kapcsolat</string>
+    <string name="da_automation_hint">Indítson az autójával, és csatlakozzon újra a telefonjához.</string>
+    <string name="da_display">Kijelző és teljesítmény</string>
+    <string name="da_display_hint">Képméret, képkockasebesség és hangbeállítások.</string>
+    <string name="da_permissions_hint">Ellenőrizze a Bluetooth-, mikrofon- és helyhozzáférést.</string>
+    <string name="da_about">A DiAuto névjegye</string>
+    <string name="da_about_hint">Verzió, licencek és nyílt forráskódú köszönetnyilvánítás.</string>
+    <string name="da_saved_hint">A videobeállítások módosításai a következő csatlakozáskor érvényesek.</string>
+    <string name="da_settings_subtitle">Állítsa be a kijelzőt, a hangot és a kapcsolatot.</string>
+    <string name="da_bluetooth_music">Zene az autó Bluetoothján keresztül</string>
+    <string name="da_bluetooth_music_hint">Tartsa a zenét az autó Bluetooth-lejátszóján. A DiAuto békén hagyja a hangfókuszát; a navigáció és az asszisztens hangja elérhető marad. A módosítás után csatlakoztassa újra az Android Autót.</string>
+</resources>

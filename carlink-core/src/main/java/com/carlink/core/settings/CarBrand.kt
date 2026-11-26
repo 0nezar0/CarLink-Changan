@@ -21,13 +21,15 @@ import android.content.SharedPreferences
  * of 72,665 units splits the combined Skoda-Volkswagen entry, leaving Volkswagen about 35,600,
  * just behind Renault's 36,420), then the smaller makes, then the luxury makes, then [OTHER].
  *
- * This build is made for a Changan CS75 Plus head unit, so [CHANGAN] comes first and is the brand a
- * fresh install starts with ([DEFAULT]); it labels the car, gives CarPlay's car button the Changan
- * logo and holds CarPlay's Automatic picture to 30 fps ([ChanganPicture]), and sets nothing else in
- * the engines.
+ * This build lists [CHANGAN_CS75_PLUS] first, then a generic [CHANGAN] entry that only labels the
+ * car (same as any other non-BYD make). All CS75-specific behaviour — CarPlay's Changan logo,
+ * holding Automatic CarPlay to 30 fps ([ChanganPicture]), the Top margin ([UnifiedSettings.marginsFor]),
+ * and the status-bar hide section — applies only to [CHANGAN_CS75_PLUS]. A saved [CHANGAN] choice
+ * from earlier builds is migrated once to [CHANGAN_CS75_PLUS] ([CarBrandStore]).
  */
 enum class CarBrand(val displayName: String, val profile: VehicleProfile = VehicleProfile.GENERIC, val luxury: Boolean = false,
                     val motorcycle: Boolean = false) {
+    CHANGAN_CS75_PLUS("Changan / CS75 Plus 2022-2023 only"),
     CHANGAN("Changan"),
     MARUTI_SUZUKI("Maruti Suzuki"),
     MAHINDRA("Mahindra"),
@@ -43,6 +45,7 @@ enum class CarBrand(val displayName: String, val profile: VehicleProfile = Vehic
     NISSAN("Nissan"),
     CITROEN("Citroën"),
     JEEP("Jeep"),
+    FORD("Ford"), // GitHub #33: sold in India until 2021, common elsewhere
     BYD("BYD", VehicleProfile.BYD_DILINK),
     MERCEDES_BENZ("Mercedes-Benz", luxury = true),
     BMW("BMW", luxury = true),
@@ -66,10 +69,10 @@ enum class CarBrand(val displayName: String, val profile: VehicleProfile = Vehic
     OTHER("Other"),
     ;
 
-    companion object {
-        /** The brand a fresh install starts with on a screen that is not a BYD DiLink unit. */
-        val DEFAULT: CarBrand = CHANGAN
+    /** The CS75 Plus 2022-2023 entry: the only brand that gets this build's Changan-specific behaviour. */
+    val isChanganCs75Plus: Boolean get() = this == CHANGAN_CS75_PLUS
 
+    companion object {
         /** The brand this screen identifies as when the driver never chose: BYD on a BYD DiLink unit, else none. */
         fun detect(context: Context): CarBrand? = detected(VehicleProfile.detect(context))
 
@@ -89,31 +92,44 @@ enum class CarBrand(val displayName: String, val profile: VehicleProfile = Vehic
  */
 class CarBrandStore(
     private val prefs: SharedPreferences,
-    /** The brand in effect before the driver chooses, on a screen not detected as BYD ([CarBrand.DEFAULT] in the app). */
-    private val fallback: CarBrand?,
+    private val appContext: Context? = null,
     private val detect: () -> VehicleProfile,
 ) {
 
-    constructor(prefs: SharedPreferences, detect: () -> VehicleProfile) : this(prefs, null, detect)
-
     constructor(context: Context) : this(
         context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE),
-        CarBrand.DEFAULT,
+        context.applicationContext,
         { VehicleProfile.detect(context.applicationContext) },
     )
 
-    /**
-     * The driver's choice; with none stored, [fallback] (Changan in this build) unless this screen
-     * is a detected BYD DiLink unit; null when there is neither.
-     */
+    /** The driver's choice, or null when they never chose. */
     fun chosen(): CarBrand? {
-        prefs.getString(KEY_BRAND, null)?.let { name -> runCatching { CarBrand.valueOf(name) }.getOrNull()?.let { return it } }
-        val legacy = prefs.getString(KEY_LEGACY_PROFILE, null)
-            ?.let { runCatching { VehicleProfile.valueOf(it) }.getOrNull() }
-            ?: return fallback?.takeIf { detect() == VehicleProfile.GENERIC }
-        val brand = CarBrand.fromProfile(legacy)
-        prefs.edit().putString(KEY_BRAND, brand.name).remove(KEY_LEGACY_PROFILE).apply()
+        migrateChanganToCs75Once()
+        val brand = prefs.getString(KEY_BRAND, null)?.let { name -> runCatching { CarBrand.valueOf(name) }.getOrNull() }
+            ?: run {
+                val legacy = prefs.getString(KEY_LEGACY_PROFILE, null)
+                    ?.let { runCatching { VehicleProfile.valueOf(it) }.getOrNull() } ?: return null
+                val migrated = CarBrand.fromProfile(legacy)
+                prefs.edit().putString(KEY_BRAND, migrated.name).remove(KEY_LEGACY_PROFILE).apply()
+                migrated
+            }
+        if (brand.isChanganCs75Plus) applyCs75ProjectionDefaults()
         return brand
+    }
+
+    /**
+     * Earlier builds stored CS75-specific settings under [CarBrand.CHANGAN]. Once, rewrite that
+     * saved choice to [CarBrand.CHANGAN_CS75_PLUS] so the same behaviour remains after the split.
+     * After the flag is set, a later pick of generic [CarBrand.CHANGAN] is left alone.
+     */
+    private fun migrateChanganToCs75Once() {
+        if (prefs.getBoolean(KEY_CS75_MIGRATED, false)) return
+        val name = prefs.getString(KEY_BRAND, null)
+        val edit = prefs.edit().putBoolean(KEY_CS75_MIGRATED, true)
+        if (name == CarBrand.CHANGAN.name) {
+            edit.putString(KEY_BRAND, CarBrand.CHANGAN_CS75_PLUS.name)
+        }
+        edit.apply()
     }
 
     /** The engines' profile: the chosen brand's, or the detected one when nothing was chosen. */
@@ -123,7 +139,12 @@ class CarBrandStore(
     fun set(brand: CarBrand): Boolean {
         val previous = profile()
         prefs.edit().putString(KEY_BRAND, brand.name).remove(KEY_LEGACY_PROFILE).apply()
+        if (brand.isChanganCs75Plus) applyCs75ProjectionDefaults()
         return brand.profile != previous
+    }
+
+    private fun applyCs75ProjectionDefaults() {
+        appContext?.let { Cs75ProjectionDefaults.applyIfUnset(it) }
     }
 
     companion object {
@@ -131,11 +152,12 @@ class CarBrandStore(
         const val KEY_BRAND = "car_brand"
         /** Before 2026-10 CarLink stored only the [VehicleProfile] name here. */
         const val KEY_LEGACY_PROFILE = "vehicle_profile"
+        const val KEY_CS75_MIGRATED = "car_brand_cs75_migrated"
     }
 }
 
 /**
- * CarPlay's Automatic picture in a Changan: at most [FPS] frames a second, because the CS75 Plus
+ * CarPlay's Automatic picture on a [CarBrand.CHANGAN_CS75_PLUS]: at most [FPS] frames a second, because the CS75 Plus
  * head unit (Allwinner T7) stutters at 60. Only the Automatic picture: Best, Advanced › Frame rate
  * and Lite mode keep their own frame rates.
  */
@@ -143,6 +165,6 @@ object ChanganPicture {
     const val FPS = 30
 
     fun apply(brand: CarBrand?, choice: com.carlink.core.connection.PictureChoice): com.carlink.core.connection.PictureChoice =
-        if (brand != CarBrand.CHANGAN || choice.carPlayFps <= FPS) choice
-        else choice.copy(carPlayFps = FPS, summary = choice.summary + "; Changan: CarPlay $FPS fps")
+        if (brand?.isChanganCs75Plus != true || choice.carPlayFps <= FPS) choice
+        else choice.copy(carPlayFps = FPS, summary = choice.summary + "; Changan CS75 Plus: CarPlay $FPS fps")
 }

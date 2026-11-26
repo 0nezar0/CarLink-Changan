@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor arrays. -->
+<resources>
+    <string-array name="night_mode">
+        <item>Auto (matahari terbit/terbenam)</item>
+        <item>Cerah</item>
+        <item>Gelap</item>
+        <item>Masa manual</item>
+        <item>Penderia cahaya</item>
+        <item>Kecerahan skrin</item>
+        <item>Isyarat lampu kereta (ILL+)</item>
+        <item>Lokasi (mengikut kawasan)</item>
+    </string-array>
+    <string-array name="app_theme">
+        <item>Automatik (sistem)</item>
+        <item>Cerah</item>
+        <item>Gelap</item>
+        <item>Gelap lampau</item>
+        <item>Auto (matahari terbit/terbenam)</item>
+        <item>Masa manual</item>
+        <item>Penderia cahaya</item>
+        <item>Kecerahan skrin</item>
+        <item>Isyarat lampu kereta (ILL+)</item>
+        <item>Lokasi (mengikut kawasan)</item>
+    </string-array>
+    <string-array name="screen_orientation">
+        <item>@string/orientation_system_default</item>
+        <item>@string/orientation_auto_sensor</item>
+        <item>@string/orientation_landscape</item>
+        <item>@string/orientation_landscape_reverse</item>
+        <item>@string/orientation_portrait</item>
+        <item>@string/orientation_portrait_reverse</item>
+    </string-array>
+</resources>

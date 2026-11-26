@@ -62,6 +62,13 @@ class SessionManagerTest {
 
         override fun hasSession() = session
 
+        /** A start-up report found the engine's process alive but idle (e.g. prewarmed). */
+        var orphanIdle = false
+        override fun whenOrphanKnown(decide: (projecting: Boolean) -> Unit) {
+            if (orphanIdle) session = false
+            decide(false)
+        }
+
         val recovered = mutableListOf<RecoveryAction>()
         var recoverWorks = true
         override fun recover(action: RecoveryAction): Boolean { recovered += action; return recoverWorks }
@@ -82,8 +89,12 @@ class SessionManagerTest {
         var wirelessUnavailable = false
         var blockedFor: ((Engine) -> Boolean)? = null
         override fun wirelessUnavailable(engine: Engine) = blockedFor?.invoke(engine) ?: wirelessUnavailable
+        var stereoChanged: (() -> Unit)? = null
+        override fun recheckStereo(engine: Engine, changed: () -> Unit) { stereoChanged = changed }
         override fun preflight(request: SessionRequest, path: WirelessPath?) = problems(request, path)
         override fun wirelessPaths(request: SessionRequest) = paths
+        var noPictures = 0
+        override fun carPlayPictureNeverCame() { noPictures++ }
         override fun rememberWorkingPath(engine: Engine, phoneAddress: String, path: WirelessPath) { remembered += phoneAddress to path }
         override fun rememberPhone(phoneAddress: String, kind: PhoneKind?, name: String?) { rememberedKinds += phoneAddress to kind }
         var connected: List<PhoneOption> = emptyList()
@@ -147,6 +158,14 @@ class SessionManagerTest {
         assertEquals(listOf<Pair<String, PhoneKind?>>("AA:BB" to null), rememberedKinds)
         androidAuto.emit(AdapterEvent.Connected); idle()
         assertEquals("AA:BB" to PhoneKind.ANDROID, rememberedKinds.last())
+    }
+
+    @Test fun anIdleEngineProcessFoundAtStartUpIsNotStopped() { // 2026-11-10: prewarmed ":aa"
+        androidAuto.session = true
+        androidAuto.orphanIdle = true
+        manager(); idle()
+        assertTrue(log.none { "stop" in it })
+        assertTrue(notes.none { "orphaned" in it })
     }
 
     @Test fun connectingTheSamePhoneAgainKeepsTheRunningAttempt() {
@@ -445,6 +464,36 @@ class SessionManagerTest {
         assertEquals(1, starts.size)
     }
 
+    @Test fun aStartBlockedByAnEarlyStereoProbeStartsWhenTheProbeChanges() {
+        // 2026-11-15: the car woke, the first probe said "external module", the next said otherwise.
+        env.wirelessUnavailable = true
+        val m = manager()
+        m.connect("EE:FF", PhoneKind.IPHONE, "iPhone"); idle()
+        assertEquals(listOf(Problem.EXTERNAL_BLUETOOTH), (m.state.value as SessionState.Blocked).problems)
+        env.wirelessUnavailable = false
+        env.stereoChanged!!.invoke(); idle()
+        assertEquals(listOf("CARPLAY start WIRELESS WIFI_DIRECT"), starts)
+    }
+
+    @Test fun aStereoProbeThatStillBlocksDoesNotRestart() {
+        env.wirelessUnavailable = true
+        val m = manager()
+        m.connect("EE:FF", PhoneKind.IPHONE, "iPhone"); idle()
+        env.stereoChanged!!.invoke(); idle()
+        assertTrue(starts.isEmpty())
+        assertTrue(m.state.value is SessionState.Blocked)
+    }
+
+    @Test fun aStereoProbeAfterTheDriverMovedOnDoesNothing() {
+        env.wirelessUnavailable = true
+        val m = manager()
+        m.connect("EE:FF", PhoneKind.IPHONE, "iPhone"); idle()
+        m.stop()
+        env.wirelessUnavailable = false
+        env.stereoChanged!!.invoke(); idle()
+        assertTrue(starts.isEmpty())
+    }
+
     @Test fun theEnginesOwnRefusalStillShowsTheExternalBluetoothProblem() {
         env.blockedFor = { DeviceEnvironment.wirelessBlocked(com.carlink.core.detect.StereoBluetooth.EXTERNAL_UNKNOWN, moduleOn = true, it) }
         val m = manager()
@@ -585,6 +634,20 @@ class SessionManagerTest {
         assertEquals("paused by the driver", 1, starts.size)
     }
 
+    @Test fun accOnLiftsTheHomeCooldownsButNotThePause() {
+        val m = manager()
+        m.onHomeShown("AA:BB", PhoneKind.IPHONE, "iPhone"); idle()
+        m.stop(); idle()
+        m.onCarStarted()
+        m.onHomeShown("AA:BB", PhoneKind.IPHONE, "iPhone"); idle()
+        assertEquals("the car started: no cooldown", 2, starts.size)
+        m.stop(); idle()
+        env.autoConnectPaused = true
+        m.onCarStarted()
+        m.onHomeShown("AA:BB", PhoneKind.IPHONE, "iPhone"); idle()
+        assertEquals("paused by the driver", 2, starts.size)
+    }
+
     @Test fun unpluggingAUsbPhoneNeverStartsTheLastWirelessPhone() {
         val m = manager()
         m.onUsbPhone(PhoneKind.ANDROID, "S25", null); idle()
@@ -691,8 +754,10 @@ class SessionManagerTest {
         advance(AdaptiveDeadlines.HINT_MILLIS + 1)
         assertEquals("the driver is told before anything is torn down", Notice.Kind.SLOW, active(m).notice?.kind)
         assertEquals(1, starts.size)
+        assertEquals("a slow picture is not yet a failed one", 0, env.noPictures)
         advance(10_000)
         assertEquals(listOf("CARPLAY start WIRELESS WIFI_DIRECT", "CARPLAY start WIRELESS WIFI_DIRECT"), starts)
+        assertEquals("told before the retry writes its settings (HEVC fallback)", 1, env.noPictures)
         assertEquals(RecoveryAction.RETRY_STEP, active(m).notice?.action)
         assertTrue(active(m).phase.let { it is SessionState.Phase.Retrying || it is SessionState.Phase.Starting })
         carPlay.emit(AdapterEvent.Progress(4, 4, ProgressStage.STARTING_PROJECTION)); idle()
@@ -711,6 +776,19 @@ class SessionManagerTest {
         assertEquals(4, health.attempts)
         assertEquals(0, health.successes)
         assertEquals(AttemptOutcome.STALL_PICTURE, health.lastProblems.first().kind)
+    }
+
+    @Test fun onlyACarPlayPictureStallCountsAsNoPicture() {
+        val m = manager()
+        m.connect("AA:BB", PhoneKind.IPHONE, "iPhone"); idle()
+        carPlay.emit(AdapterEvent.Progress(3, 4, ProgressStage.JOINING_WIFI)); idle()
+        advance(30_001)
+        assertEquals("a Wi-Fi stall says nothing about the codec", 0, env.noPictures)
+        m.stop(); idle()
+        m.connect("AA:BB", PhoneKind.ANDROID, "Pixel"); idle()
+        androidAuto.emit(AdapterEvent.Progress(4, 4, ProgressStage.STARTING_PROJECTION)); idle()
+        advance(30_001)
+        assertEquals("Android Auto has its own codec rule", 0, env.noPictures)
     }
 
     @Test fun aUsbAndroidAutoHandshakeStallIsReswitchedThenNeedsAReplug() {
@@ -984,5 +1062,29 @@ class SessionManagerTest {
         assertTrue(m.state.value is SessionState.Active)
         androidAuto.emit(AdapterEvent.Connected); idle()
         assertEquals(SessionState.Phase.Connected, active(m).phase)
+    }
+
+    @Test fun theHeadUnitServerPathIsNeverTornDownForASlowPhase() {
+        paths = listOf(WirelessPath.HEADUNIT_SERVER)
+        val m = manager()
+        m.connect("AA:BB", PhoneKind.ANDROID, "Pixel"); idle()
+        androidAuto.emit(AdapterEvent.Stalled(FailureReason.ENGINE, "slow")); idle()
+        advance(60_000)
+        assertEquals("no nudge, retry or next path", emptyList<RecoveryAction>(), androidAuto.recovered)
+        assertEquals("no restart: it would leave the phone's server deaf", 1, starts.size)
+        assertTrue(m.state.value is SessionState.Active)
+    }
+
+    @Test fun aStuckHeadUnitServerFailsWithItsOwnProblem() {
+        val m = manager()
+        m.startSelf(); idle()
+        androidAuto.emit(AdapterEvent.Failed(FailureReason.HEAD_UNIT_SERVER_STUCK, "silent")); idle()
+        assertEquals(LinkProblem.HEAD_UNIT_SERVER_STUCK, (m.state.value as SessionState.Failed).toLinkState().problem)
+    }
+
+    @Test fun theLogNamesSelfMode() {
+        assertEquals("Self mode", where(null, selfMode = true))
+        assertEquals("USB", where(null, selfMode = false))
+        assertEquals("HEADUNIT_SERVER", where(WirelessPath.HEADUNIT_SERVER, selfMode = false))
     }
 }

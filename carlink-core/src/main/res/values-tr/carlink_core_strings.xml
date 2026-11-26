@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Turkish (tr) translation of carlink_core_strings.xml. -->
+<resources>
+    <string name="carlink_core_ipad_no_carplay">iPad ve iPod’lar CarPlay çalıştıramaz. Bir iPhone takın.</string>
+    <string name="carlink_core_lite_mode_engaged">Görüntü zorlanıyordu, bu yüzden Lite modu sonraki bağlantıdan itibaren açılır: saniyede 30 kare, aynı çözünürlük.</string>
+</resources>

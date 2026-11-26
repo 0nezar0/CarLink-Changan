@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) translation of carlink_strings_update.xml. -->
+<resources>
+    <string name="carlink_update_available_title">Frissítés elérhető</string>
+    <string name="carlink_update_version">CarLink %1$s</string>
+    <string name="carlink_update_installed">Jelenlegi: %1$s</string>
+    <string name="carlink_update_whats_new">Újdonságok</string>
+    <string name="carlink_update_no_notes">Ehhez a verzióhoz nincs kiadási jegyzet.</string>
+    <string name="carlink_update_ignore">Verzió mellőzése</string>
+    <string name="carlink_update_later">Később</string>
+    <string name="carlink_update_download">Letöltés és telepítés</string>
+    <string name="carlink_update_downloading_title">A CarLink %1$s letöltése</string>
+    <string name="carlink_update_progress">%1$s / %2$s</string>
+    <string name="carlink_update_progress_unknown">%1$s letöltve</string>
+    <string name="carlink_update_download_body">A CarLinket tovább használhatja. Addig semmi sem települ, amíg a letöltést ellenőriztük.</string>
+    <string name="carlink_update_cancel">Mégse</string>
+    <string name="carlink_update_verifying_title">A letöltés ellenőrzése</string>
+    <string name="carlink_update_verifying_body">Ellenőrizzük, hogy a fájl teljes, és a CarLink írta alá.</string>
+    <string name="carlink_update_permission_title">Engedélyezze, hogy a CarLink telepítse a frissítést</string>
+    <string name="carlink_update_permission_body">Az Androidnak egyszer van szüksége az engedélyére. A következő képernyőn kapcsolja be: „Engedélyezés ebből a forrásból”, majd térjen vissza a CarLinkhez. A frissítés magától folytatódik.</string>
+    <string name="carlink_update_open_settings">Beállítások megnyitása</string>
+    <string name="carlink_update_installing_title">A CarLink %1$s telepítése</string>
+    <string name="carlink_update_installing_body">Erősítse meg az Android telepítőképernyőjén. Frissítés közben a CarLink bezárul; ha kész, nyissa meg újra.</string>
+    <string name="carlink_update_failed_title">A frissítés nem települt</string>
+    <string name="carlink_update_error_download">A letöltés nem fejeződött be. Ellenőrizze az internetkapcsolatot, és próbálja újra.</string>
+    <string name="carlink_update_error_checksum_missing">Ehhez a kiadáshoz nincs ellenőrzőösszeg-fájl, ezért a letöltést nem lehet ellenőrizni. Próbálja később.</string>
+    <string name="carlink_update_error_checksum">A letöltött fájl nem egyezik az ellenőrzőösszeggel, ezért sérült lehet. Töröltük.</string>
+    <string name="carlink_update_error_unreadable">A letöltött fájl nem érvényes alkalmazás. Töröltük.</string>
+    <string name="carlink_update_error_package">A letöltött fájl nem a CarLink. Töröltük.</string>
+    <string name="carlink_update_error_not_newer">A letöltött fájl nem újabb, mint a jelenlegi verzió. Töröltük.</string>
+    <string name="carlink_update_error_signer">A letöltött fájlt nem a CarLink kiadási kulcsa írta alá, ezért nem telepítettük. Töröltük.</string>
+    <string name="carlink_update_error_install">Az Android nem telepítette a frissítést. Próbálja újra.</string>
+    <string name="carlink_update_error_install_detail">Az Android nem telepítette a frissítést (%1$s). Próbálja újra.</string>
+    <string name="carlink_update_error_install_cancelled">A telepítést megszakították.</string>
+    <string name="carlink_update_try_again">Újra</string>
+    <string name="carlink_update_close">Bezárás</string>
+    <string name="carlink_about_updates">Frissítések</string>
+    <string name="carlink_about_check_updates">Frissítések keresése</string>
+    <string name="carlink_about_updates_last_checked">%1$s verzió · utoljára ellenőrizve: %2$s</string>
+    <string name="carlink_about_updates_never">%1$s verzió · még nincs ellenőrizve</string>
+    <string name="carlink_about_updates_checking">Ellenőrzés…</string>
+    <string name="carlink_about_updates_just_now">épp most</string>
+    <string name="carlink_about_updates_up_to_date">Naprakész</string>
+    <string name="carlink_about_updates_available">Elérhető a CarLink %1$s</string>
+    <string name="carlink_about_updates_failed">Nem sikerült elérni a GitHubot. Ellenőrizze az internetkapcsolatot, és próbálja újra.</string>
+    <string name="carlink_about_updates_rate_limited">A GitHub most foglalt. Próbálja egy kicsit később.</string>
+    <string name="carlink_about_updates_not_found">Nem találhatók a GitHubon ennek a buildnek a frissítései. A kiadási oldal lehet privát, vagy még nincs kiadás. Új verziót továbbra is telepíthet kézzel.</string>
+    <string name="carlink_about_updates_unsupported">Ez a build nem frissíti magát. A frissítésekhez telepítse a GitHubon lévő kiadást.</string>
+    <string name="carlink_about_auto_updates">Frissítések automatikus keresése</string>
+    <string name="carlink_about_auto_updates_body">6 óránként, amíg a CarLink nyitva van, és nincs telefon csatlakoztatva. Kérdés nélkül semmi sem töltődik le.</string>
+    <string name="carlink_about_test_versions">Tesztverziók fogadása</string>
+    <string name="carlink_about_test_versions_body">A kiadás előtt megjelent tesztverziókat is felajánlja. Új hibáik lehetnek; kérjük, jelezze őket. Mindegyiket a kiadásokhoz hasonlóan ellenőrizzük és aláírjuk.</string>
+</resources>

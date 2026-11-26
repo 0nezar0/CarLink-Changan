@@ -121,6 +121,7 @@
     <string name="carlink_home_not_answering_title_iphone">تعذّر الوصول إلى الـ iPhone عبر Bluetooth</string>
     <string name="carlink_home_not_answering_body_iphone">افتح %1$s وتأكد أن Bluetooth شغّال، أو صِله بكابل. إذا استمر الرفض: في الـ iPhone، الإعدادات ثم عام ثم CarPlay يجب ألا تكون هذه السيارة منسيّة، ووقت الشاشة ثم المحتوى والخصوصية ثم التطبيقات المسموح بها يجب أن يسمح لـ CarPlay، ويجب تشغيل «السماح لـ CarPlay أثناء القفل».</string>
     <string name="carlink_home_not_answering_body_usb">افتح %1$s واقبل الطلب على شاشته. إذا لم يحدث شيء، افصله ثم صِله مرة أخرى.</string>
+    <string name="carlink_home_server_waiting">يبحث عن خادم الوحدة الرئيسية لجوال %1$s. أبقِ هذه الشاشة على نقطة اتصال الجوال. على الجوال افتح إعدادات Android Auto، واضغط Version حتى تُفتح إعدادات المطوّر، ثم اختر Start head unit server من القائمة. ينطفئ عند إعادة تشغيل الجوال.</string>
     <string name="carlink_home_not_answering_body_android">تأكد أن Bluetooth في %1$s شغّال وأن الجوال مفتوح، ثم أبقه قريباً من هذه الشاشة. يبدأ Android Auto تلقائياً بعد الاتصال.</string>
     <string name="carlink_home_error_bt_off_title">Bluetooth متوقف</string>
     <string name="carlink_home_error_bt_off_body">الاتصالات اللاسلكية تبدأ عبر Bluetooth. شغّله، أو صِل جوالك بكابل.</string>
@@ -218,7 +219,7 @@
 3. افتح قائمة ⋮ في أعلى الشاشة واضغط Start head unit server.
 4. عد إلى هنا: يحاول CarLink مرة أخرى تلقائياً.</string>
     <string name="carlink_home_error_hu_server_stuck_title">أعد تشغيل خادم الوحدة الرئيسية في Android Auto</string>
-    <string name="carlink_home_error_hu_server_stuck_body">استقبل خادم الوحدة الرئيسية في Android Auto الاتصال لكنه لم يرد. الخادم عالق على اتصال سابق ولا يتعافى من نفسه، لذلك أوقف CarLink المحاولة.\n1. اضغط «فتح إعدادات Android Auto».\n2. افتح قائمة ⋮ في أعلى الشاشة واضغط Stop head unit server ثم Start head unit server.\n3. انتظر بضع ثوانٍ وعد إلى هنا: يحاول CarLink مرة أخرى تلقائياً.</string>
+    <string name="carlink_home_error_hu_server_stuck_body">استقبل خادم الوحدة الرئيسية في Android Auto الاتصال لكنه لم يرد. الخادم عالق على اتصال سابق ولا يتعافى من نفسه، لذلك أوقف CarLink المحاولة.\n1. اضغط «فتح إعدادات Android Auto».\n2. افتح قائمة ⋮ في أعلى الشاشة واضغط Stop head unit server ثم Start head unit server.\n3. عد إلى هنا: يحاول CarLink مرة أخرى تلقائياً.</string>
     <string name="carlink_home_fail_step_bluetooth">Bluetooth</string>
     <string name="carlink_home_fail_step_cable">الكابل</string>
     <string name="carlink_home_fail_step_handshake">المصافحة</string>

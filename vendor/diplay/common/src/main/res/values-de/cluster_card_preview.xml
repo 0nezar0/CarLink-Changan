@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for cluster_card_preview.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="card_preview_title">Vorschau der Abbiegekarten-Platzierung</string>
+    <string name="card_preview_note">Proportionale Position auf dem gesamten Kombiinstrument. Der tatsächliche Rand des kleinen Fensters ist je nach Auto unterschiedlich.</string>
+    <string name="card_preview_full">Vollbild</string>
+    <string name="card_preview_small">Kleines Fenster</string>
+</resources>

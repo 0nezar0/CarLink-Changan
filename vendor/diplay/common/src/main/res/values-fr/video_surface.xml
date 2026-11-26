@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French (fr) vendor strings for video_surface.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="picture_surface_output_unavailable">Les réglages de l’image sont indisponibles avec la sortie vidéo compatible de cet écran. Vos réglages enregistrés sont conservés.</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings_navigation_wheel.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_navigation_wheel_service_required">Erlauben Sie den Eingabehilfen-Dienst der Lenkradtasten in den Android-Einstellungen, oder verwenden Sie die vorhandene Schaltfläche zur ADB-Autorisierung.</string>
+    <string name="settings_navigation_wheel_volume">Lenkradlautstärke während der Navigationsführung (experimentell)</string>
+    <string name="settings_navigation_wheel_volume_description">Während gesprochener CarPlay-Führung passen die Lautstärketasten den ausgewählten Navigations-Audiostream an. Andernfalls folgen die Tasten der Hauptgerät. Erfordert die Eingabehilfe-Berechtigung für die Lenkradtasten. Anrufe, Kartenzoom und Joystick behalten Vorrang. Lokal an einer Tang-Hauptgerät der Plattform 21 getestet; Tests im Fahrzeug durch Upstream stehen noch aus. Automatisches oder Media-Routing wird nicht abgefangen.</string>
+</resources>

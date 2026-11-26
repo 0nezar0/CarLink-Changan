@@ -85,3 +85,29 @@ private fun SettingsPhonePreview() {
         SettingsContent(settingsPreviewUi(), SettingsPreviewActions, onBack = {})
     }
 }
+
+@Preview(name = "CS75 phone portrait", widthDp = 400, heightDp = 860, locale = "ar")
+@Composable
+private fun SettingsCs75PhonePreview() {
+    CarLinkTheme(profile = UiProfile.HANDHELD, themeMode = ThemeMode.DARK) {
+        SettingsContent(
+            settingsPreviewUi(carBrand = com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS),
+            SettingsPreviewActions,
+            onBack = {},
+            startCategory = SettingsCategory.CHANGAN_CS75,
+        )
+    }
+}
+
+@Preview(name = "CS75 head-unit landscape", widthDp = 1280, heightDp = 480, locale = "ar")
+@Composable
+private fun SettingsCs75HeadUnitPreview() {
+    CarLinkTheme(profile = UiProfile.CAR, themeMode = ThemeMode.DARK) {
+        SettingsContent(
+            settingsPreviewUi(carBrand = com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS),
+            SettingsPreviewActions,
+            onBack = {},
+            startCategory = SettingsCategory.CHANGAN_CS75,
+        )
+    }
+}

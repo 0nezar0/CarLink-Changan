@@ -161,7 +161,7 @@ fun SettingsScreen(vm: CarLinkViewModel, onBack: () -> Unit, navigate: (Route) -
             override fun setRenderingMode(mode: com.carlink.app.ui.theme.RenderingMode) = vm.setRenderingMode(mode)
             override fun openBluetoothSettings() = vm.openBluetoothSettings()
             override fun openAppSettings() = vm.openAppSettings()
-            override fun setCarBrand(brand: com.carlink.core.settings.CarBrand) = vm.setCarBrand(brand)
+            override fun setCarBrand(brand: com.carlink.core.settings.CarBrand) = vm.chooseCarBrand(brand)
             override fun navigate(route: Route) = goTo(route)
             override fun returnToProjection() { vm.settingsFromCar.value = false; vm.returnToProjection() }
             override suspend fun readCarHotspot() = vm.readCarHotspot()
@@ -212,7 +212,16 @@ fun SettingsScreen(vm: CarLinkViewModel, onBack: () -> Unit, navigate: (Route) -
     pendingRestore?.let { backup ->
         RestoreConfirmDialog(backup, onConfirm = {
             pendingRestore = null
+            val languageBefore = com.carlink.core.settings.AppLanguage.current(context)
             vm.restoreSettings(backup)
+            if (android.os.Build.VERSION.SDK_INT < 33 &&
+                com.carlink.core.settings.AppLanguage.current(context) != languageBefore
+            ) {
+                generateSequence(context) { (it as? android.content.ContextWrapper)?.baseContext }
+                    .filterIsInstance<android.app.Activity>()
+                    .firstOrNull()
+                    ?.recreate()
+            }
             // Engine values go through the same writer as the Advanced rows (":aa" over IPC: off the main thread).
             vm.viewModelScope.launch(Dispatchers.IO) {
                 backup.advanced.forEach { (id, value) ->
@@ -299,12 +308,14 @@ fun SettingsContent(
     Atmosphere(Modifier.fillMaxSize()) {
         BoxWithConstraints(Modifier.fillMaxSize().windowInsetsPadding(appChromeInsets())) {
             val wide = maxWidth >= 720.dp
-            BackHandler(enabled = !wide && selected != null) { selected = null }
+            val categories = categoryOrder(ui.carBrand?.isChanganCs75Plus == true)
+            val visibleSelected = selected?.takeIf { it in categories }
+            BackHandler(enabled = !wide && visibleSelected != null) { selected = null }
             if (wide) {
-                WideSettings(selected ?: SettingsCategory.CONNECTION, ui, actions::returnToProjection, onSelect = { selected = it }, onBack = onBack,
+                WideSettings(visibleSelected ?: categories.first(), ui, actions, actions::returnToProjection, onSelect = { selected = it }, onBack = onBack,
                     onAbout = { actions.navigate(Route.ABOUT) }, setAdvanced = setAdvanced, page = page, maxWidth = maxWidth)
             } else {
-                NarrowSettings(selected, ui, actions::returnToProjection, onSelect = { selected = it }, onBack = onBack,
+                NarrowSettings(visibleSelected, ui, actions, actions::returnToProjection, onSelect = { selected = it }, onBack = onBack,
                     onAbout = { actions.navigate(Route.ABOUT) }, setAdvanced = setAdvanced, page = page)
             }
         }
@@ -314,7 +325,7 @@ fun SettingsContent(
 
 @Composable
 private fun WideSettings(
-    selected: SettingsCategory, ui: SettingsUi, onReturn: () -> Unit, onSelect: (SettingsCategory) -> Unit, onBack: () -> Unit, onAbout: () -> Unit,
+    selected: SettingsCategory, ui: SettingsUi, actions: SettingsActions, onReturn: () -> Unit, onSelect: (SettingsCategory) -> Unit, onBack: () -> Unit, onAbout: () -> Unit,
     setAdvanced: (Boolean) -> Unit, page: @Composable (SettingsCategory, Modifier) -> Unit, maxWidth: Dp,
 ) {
     val dimens = CarLinkTokens.dimens
@@ -325,21 +336,24 @@ private fun WideSettings(
             ui.liveEngine?.let { ReturnButton(it, onReturn); Spacer(Modifier.width(dimens.gutter)) }
             AdvancedPill(ui.unified.showAdvanced, setAdvanced)
         }
+        val categories = categoryOrder(ui.carBrand?.isChanganCs75Plus == true)
+        val current = selected.takeIf { it in categories } ?: categories.first()
         Row(Modifier.fillMaxSize().padding(start = margin, end = margin)) {
             Column(
                 Modifier.width(railWidth).fillMaxHeight().verticalScroll(rememberScrollState()).padding(top = 8.dp, bottom = dimens.gutter),
                 verticalArrangement = Arrangement.spacedBy(if (isCar) 12.dp else 8.dp),
             ) {
-                categoryOrder.forEach { category ->
-                    RailTile(stringResource(category.title), if (category == selected) category.selectedIcon else category.icon,
-                        category == selected, { onSelect(category) })
+                categories.forEach { category ->
+                    val titleLines = if (category == SettingsCategory.CHANGAN_CS75) 2 else 1
+                    RailTile(stringResource(category.title), if (category == current) category.selectedIcon else category.icon,
+                        category == current, { onSelect(category) }, titleMaxLines = titleLines)
                 }
                 Spacer(Modifier.height(if (isCar) 8.dp else 4.dp))
                 RailTile(stringResource(R.string.carlink_settings_about), R.drawable.carlink_ic_info, false, onAbout,
                     trailingIcon = R.drawable.carlink_ic_chevron_right)
             }
             Spacer(Modifier.width(dimens.gutter * 1.5f))
-            CategoryCrossfade(selected, Modifier.weight(1f).fillMaxHeight()) { category ->
+            CategoryCrossfade(current, Modifier.weight(1f).fillMaxHeight()) { category ->
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 8.dp, bottom = dimens.gutter * 2)) {
                     Column(Modifier.widthIn(max = 1040.dp)) {
                         PageTitle(category)
@@ -354,7 +368,7 @@ private fun WideSettings(
 
 @Composable
 private fun NarrowSettings(
-    selected: SettingsCategory?, ui: SettingsUi, onReturn: () -> Unit, onSelect: (SettingsCategory?) -> Unit, onBack: () -> Unit, onAbout: () -> Unit,
+    selected: SettingsCategory?, ui: SettingsUi, actions: SettingsActions, onReturn: () -> Unit, onSelect: (SettingsCategory?) -> Unit, onBack: () -> Unit, onAbout: () -> Unit,
     setAdvanced: (Boolean) -> Unit, page: @Composable (SettingsCategory, Modifier) -> Unit,
 ) {
     val dimens = CarLinkTokens.dimens
@@ -371,18 +385,21 @@ private fun NarrowSettings(
                 Header(stringResource(R.string.carlink_settings_title), onBack, margin)
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = margin)
                     .padding(top = 8.dp, bottom = dimens.gutter * 2), verticalArrangement = Arrangement.spacedBy(dimens.targetGap)) {
+                    val categories = categoryOrder(ui.carBrand?.isChanganCs75Plus == true)
                     ui.liveEngine?.let { ReturnButton(it, onReturn, Modifier.fillMaxWidth()) }
                     GlassGroup {
                         SwitchRow(stringResource(R.string.carlink_settings_show_advanced), ui.unified.showAdvanced, setAdvanced,
                             description = stringResource(R.string.carlink_settings_show_advanced_detail), icon = R.drawable.carlink_ic_tune)
                     }
                     Spacer(Modifier.height(dimens.targetGap))
-                    (categoryOrder.map { it as SettingsCategory? } + null).chunked(2).forEach { row ->
+                    (categories.map { it as SettingsCategory? } + null).chunked(2).forEach { row ->
                         Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(dimens.targetGap)) {
                             row.forEach { item ->
                                 val tileModifier = Modifier.weight(1f).fillMaxHeight()
                                 if (item != null) {
-                                    GridTile(stringResource(item.title), stringResource(item.summary), item.icon, { onSelect(item) }, tileModifier)
+                                    val titleLines = if (item == SettingsCategory.CHANGAN_CS75) 2 else 1
+                                    GridTile(stringResource(item.title), stringResource(item.summary), item.icon, { onSelect(item) }, tileModifier,
+                                        titleMaxLines = titleLines)
                                 } else {
                                     GridTile(stringResource(R.string.carlink_settings_about), stringResource(R.string.carlink_settings_about_summary),
                                         R.drawable.carlink_ic_info, onAbout, tileModifier)
@@ -392,7 +409,8 @@ private fun NarrowSettings(
                     }
                 }
             } else {
-                Header(stringResource(category.title), { onSelect(null) }, margin)
+                Header(stringResource(category.title), { onSelect(null) }, margin,
+                    titleMaxLines = if (category == SettingsCategory.CHANGAN_CS75) 2 else 1)
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = margin)
                     .padding(top = 8.dp, bottom = dimens.gutter * 2)) {
                     Text(stringResource(category.summary), style = MaterialTheme.typography.bodyMedium,
@@ -415,7 +433,7 @@ private fun CategoryCrossfade(category: SettingsCategory, modifier: Modifier, co
 }
 
 @Composable
-private fun Header(title: String, onBack: () -> Unit, margin: Dp, trailing: (@Composable () -> Unit)? = null) {
+private fun Header(title: String, onBack: () -> Unit, margin: Dp, titleMaxLines: Int = 1, trailing: (@Composable () -> Unit)? = null) {
     val dimens = CarLinkTokens.dimens
     Row(
         Modifier.fillMaxWidth().heightIn(min = dimens.topBar + if (isCar) 16.dp else 8.dp).padding(horizontal = margin),
@@ -424,7 +442,7 @@ private fun Header(title: String, onBack: () -> Unit, margin: Dp, trailing: (@Co
         RoundGlassButton(R.drawable.carlink_ic_arrow_back, stringResource(R.string.carlink_settings_back), onBack)
         Spacer(Modifier.width(if (isCar) 24.dp else 16.dp))
         Text(title, Modifier.weight(1f).semantics { heading() }, style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            color = MaterialTheme.colorScheme.onSurface, maxLines = titleMaxLines, overflow = TextOverflow.Ellipsis)
         if (trailing != null) {
             Spacer(Modifier.width(dimens.gutter))
             trailing()

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for diauto.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="da_settings">Tetapan</string>
+    <string name="da_pair">Pasangkan telefon</string>
+    <string name="da_system_settings">Tetapan Bluetooth</string>
+    <string name="da_device">Telefon Android</string>
+    <string name="da_brand">DiAuto</string>
+    <string name="da_tagline">TELEFON ANDA. PEMANDUAN ANDA.</string>
+    <string name="da_headline">Pemanduan yang biasa.</string>
+    <string name="da_description">Peta, muzik dan perbualan anda.
+Android Auto, di sini pada paparan kereta anda.</string>
+    <string name="da_connect">Sambungkan telefon</string>
+    <string name="da_open">Buka Android Auto</string>
+    <string name="da_ready">Sedia apabila anda sedia</string>
+    <string name="da_connected">Android Auto disambungkan</string>
+    <string name="da_hint">Pasangkan telefon anda dalam tetapan Bluetooth kereta, kemudian pilih Sambungkan telefon. Pastikan Bluetooth dan Wi-Fi dihidupkan.</string>
+    <string name="da_wireless">ANDROID AUTO WAYARLES</string>
+    <string name="da_usb">Sambung dengan USB</string>
+    <string name="da_usb_hint">Lebih suka kabel? Palamkan telefon anda.</string>
+    <string name="da_settings_hint">Rasakan seperti di rumah.</string>
+    <string name="da_close">Laman kereta</string>
+    <string name="da_no_paired">Pasangkan telefon Android anda dengan kereta dahulu. Kembali ke sini apabila pemasangan selesai.</string>
+    <string name="da_bluetooth_off">Hidupkan Bluetooth dalam tetapan kereta untuk menyambungkan telefon anda.</string>
+    <string name="da_preferences">Pemanduan anda, cara anda.</string>
+    <string name="da_preferences_hint">Sambungan, paparan dan bunyi — semuanya di satu tempat.</string>
+    <string name="da_automation">Sambungan automatik</string>
+    <string name="da_automation_hint">Mula bersama kereta anda dan sambung semula ke telefon.</string>
+    <string name="da_display">Paparan dan prestasi</string>
+    <string name="da_display_hint">Saiz gambar, kadar bingkai dan tetapan audio.</string>
+    <string name="da_permissions_hint">Semak akses Bluetooth, mikrofon dan lokasi.</string>
+    <string name="da_about">Perihal DiAuto</string>
+    <string name="da_about_hint">Versi, lesen dan kredit sumber terbuka.</string>
+    <string name="da_saved_hint">Perubahan kepada tetapan video digunakan pada sambungan seterusnya.</string>
+    <string name="da_settings_subtitle">Tala paparan, bunyi dan sambungan anda.</string>
+    <string name="da_bluetooth_music">Muzik melalui Bluetooth kereta</string>
+    <string name="da_bluetooth_music_hint">Kekalkan muzik dengan pemain Bluetooth kereta. DiAuto tidak mengganggu fokus audionya; navigasi dan audio pembantu kekal tersedia. Sambung semula Android Auto selepas menukar ini.</string>
+    <string name="da_connecting">Menyambung ke telefon anda…</string>
+    <string name="da_permissions">Kebenaran</string>
+</resources>

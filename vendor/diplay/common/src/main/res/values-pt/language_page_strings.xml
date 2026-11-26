@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Portuguese (pt) vendor strings for language_page_strings.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_language_summary">Escolha um idioma para o DiPlay</string>
+</resources>

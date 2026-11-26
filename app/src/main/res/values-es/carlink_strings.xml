@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spanish (es) translation of carlink_strings.xml. -->
+<resources>
+    <string name="app_name">CarLink</string>
+    <string name="notification_channel_launch">Abrir CarLink</string>
+    <string name="notification_phone_ready">%1$s está cerca. Toca para conectar.</string>
+    <string name="notification_open">Toca para abrir CarLink.</string>
+    <string name="carlink_notification_channel_android_auto">Conexión de Android Auto</string>
+    <string name="carlink_back">Atrás</string>
+    <string name="carlink_engine_carplay">CarPlay</string>
+    <string name="carlink_engine_android_auto">Android Auto</string>
+    <string name="carlink_transport_usb">USB</string>
+    <string name="carlink_transport_wireless">Inalámbrico</string>
+    <string name="carlink_transport_cable">Cable</string>
+    <string name="carlink_transport_usb_cable">Cable USB</string>
+    <string name="carlink_transport_plugged_in">Conectado (USB)</string>
+    <string name="carlink_transport_with_path">%1$s · %2$s</string>
+    <string name="carlink_transport_connected_cable">Conectado por cable</string>
+    <string name="carlink_transport_connected_wireless">Conectado de forma inalámbrica</string>
+    <string name="carlink_transport_connecting_cable">Conectando por cable</string>
+    <string name="carlink_transport_connecting_wireless">Conectando de forma inalámbrica</string>
+    <string name="carlink_state_on">Activado</string>
+    <string name="carlink_state_off">Desactivado</string>
+    <string name="carlink_state_selected">Seleccionado</string>
+</resources>

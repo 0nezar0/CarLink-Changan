@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import com.andrerinas.openheadunit.main.MainActivity
+import java.io.File
 
 /**
  * CarLink: lets an APK that embeds this engine choose the screens the engine opens on its own
@@ -36,6 +37,9 @@ object HostIntegration {
     @Volatile
     @JvmStatic
     var mediaSessionTag: String = "HeadunitRevived"
+
+    /** CarLink's short-lived wheel learning window. True consumes the media event. */
+    @Volatile var onLearnMediaButton: ((android.view.KeyEvent) -> Boolean)? = null // CarLink
 
     /**
      * Sees every engine toast first; returns true when the host handled it (showed its own status
@@ -74,6 +78,14 @@ object HostIntegration {
     @Volatile
     @JvmStatic
     var openCarScreen: (() -> Unit)? = null
+
+    /**
+     * CarLink: the :aa process writes live decoder figures here so the main process can show
+     * Settings › Diagnostics › Connection status. Null in standalone DiAuto.
+     */
+    @Volatile
+    @JvmStatic
+    var mediaSnapshotFile: File? = null
 
     // CarLink: process lifecycle. Standalone DiAuto keeps both true: it owns the device and wants
     // its engine back after a low-memory kill or a task swipe. A host that drives the engine itself
@@ -269,8 +281,24 @@ object HostIntegration {
     @JvmStatic
     var microphonePcm: ((data: ByteArray, length: Int) -> Unit)? = null
 
+    /**
+     * CarLink: scales played PCM (16-bit, in place) before the track or mixer gets it; [channel] is the
+     * Android Auto channel id (Channel.ID_AUD, ID_AU1, ID_AU2).
+     */
+    @Volatile
+    @JvmStatic
+    var playbackPcm: ((channel: Int, data: ByteArray, length: Int) -> Unit)? = null
+
     /** CarLink: the phone's play state from each media playback status it sends. */
     @Volatile
     @JvmStatic
     var onPhonePlaying: ((Boolean) -> Unit)? = null
+
+    /**
+     * CarLink: the GitHub issues URL on the support screen (the clickable link and the QR code).
+     * Null keeps the upstream DiAuto resource string.
+     */
+    @Volatile
+    @JvmStatic
+    var reportIssuesUrl: String? = null
 }

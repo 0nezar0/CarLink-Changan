@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for home_layout_strings.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_force_full_settings">A teljes Beállítások elrendezés kényszerítése</string>
+    <string name="settings_force_full_settings_hint">A teljes Beállítások elrendezést használja kategória oldalsávval fekvő módban, automatikus elrendezéssel álló módban. Nem változtatja meg a kezdőképernyőt vagy a CarPlayt.</string>
+</resources>

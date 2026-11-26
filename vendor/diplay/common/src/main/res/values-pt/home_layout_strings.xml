@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Portuguese (pt) vendor strings for home_layout_strings.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_force_full_settings">Forçar layout completo de Definições</string>
+    <string name="settings_force_full_settings_hint">Usa o layout completo de Definições com barra lateral de categorias no modo paisagem, e layout automático no modo retrato. Não altera a ecrã inicial nem o CarPlay.</string>
+</resources>

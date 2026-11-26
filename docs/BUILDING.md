@@ -22,13 +22,16 @@ python3 scripts/resource_collisions.py --check
 The debug APK (`com.carlink.app.hudtest`) is in `app/build/outputs/apk/debug/`. It installs
 alongside DiAuto and DiPlay. Run one projection app at a time.
 
-The project uses **no GitHub Actions**: tests run locally, before every pull request and (through
+There is no automatic CI: tests run locally, before every pull request and (through
 `scripts/release.sh`) before every release. `dev.sh test` (below) runs the same checks as the
 commands above.
 
-Releases are built, signed and published from the maintainer's computer with
-`scripts/release.sh`: [RELEASING.md](RELEASING.md). Versions and changes:
-[CHANGELOG.md](../CHANGELOG.md).
+A manual GitHub Actions workflow, "Build CarLink" ([`.github/workflows/build.yml`](../.github/workflows/build.yml)),
+can also build a debug or release APK when started by hand (Actions › Build CarLink › Run workflow).
+It uploads the APK as a private artifact of this repository and does not publish a release.
+Public releases for the in-app updater are built, signed and published from the maintainer's
+computer with `scripts/release.sh`. Both paths are described in [RELEASING.md](RELEASING.md).
+Versions and changes: [CHANGELOG.md](../CHANGELOG.md).
 
 ## CarPlay authentication files (not in git)
 

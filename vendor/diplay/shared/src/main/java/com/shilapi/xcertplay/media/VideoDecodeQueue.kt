@@ -39,6 +39,8 @@ internal class VideoDecodeQueue(
     private val maxBytes: Int = 8 * 1024 * 1024,
 ) {
     private val jobs = LinkedBlockingQueue<VideoJob>()
+    // CarLink: Connection status counts frames shed to keep the queue within its limits.
+    @Volatile var onFramesDiscarded: ((Int) -> Unit)? = null
 
     data class Backlog(val pendingFrames: Int, val newestPendingReceivedNs: Long?)
 
@@ -56,8 +58,20 @@ internal class VideoDecodeQueue(
 
     @Synchronized fun offer(job: VideoJob) {
         if (job is VideoJob.Frame) {
-            val frames = jobs.filterIsInstance<VideoJob.Frame>()
-            if (frames.size >= maxFrames || frames.sumOf { it.nalus.size.toLong() } + job.nalus.size > maxBytes) {
+            var frames = 0
+            var bytes = job.nalus.size.toLong()
+            var overflow = maxFrames <= 0 || bytes > maxBytes
+            if (!overflow) for (pending in jobs) {
+                if (pending is VideoJob.Frame) {
+                    frames++
+                    bytes += pending.nalus.size.toLong()
+                    if (frames >= maxFrames || bytes > maxBytes) {
+                        overflow = true
+                        break
+                    }
+                }
+            }
+            if (overflow) {
                 discardFrames()
                 jobs.offer(VideoJob.Resync)
             }
@@ -69,17 +83,35 @@ internal class VideoDecodeQueue(
 
     /** Drop only the invalidated chain; the next config/surface owns later frames. */
     @Synchronized fun discardCurrentChain() {
+        var dropped = 0
         val iterator = jobs.iterator()
         while (iterator.hasNext()) {
-            when (iterator.next()) {
-                is VideoJob.Frame, VideoJob.Resync -> iterator.remove()
-                else -> return
+            when (val job = iterator.next()) {
+                is VideoJob.Frame, VideoJob.Resync -> {
+                    if (job is VideoJob.Frame) dropped++
+                    iterator.remove()
+                }
+                else -> {
+                    notifyDiscarded(dropped)
+                    return
+                }
             }
         }
+        notifyDiscarded(dropped)
     }
 
     @Synchronized fun discardFrames() {
-        jobs.removeIf { it is VideoJob.Frame || it is VideoJob.Resync }
+        var dropped = 0
+        jobs.removeIf {
+            val frame = it is VideoJob.Frame
+            if (frame) dropped++
+            frame || it is VideoJob.Resync
+        }
+        notifyDiscarded(dropped)
+    }
+
+    private fun notifyDiscarded(count: Int) {
+        if (count > 0) onFramesDiscarded?.invoke(count) // CarLink
     }
 
     fun poll(timeoutMillis: Long): VideoJob? = jobs.poll(timeoutMillis, TimeUnit.MILLISECONDS)

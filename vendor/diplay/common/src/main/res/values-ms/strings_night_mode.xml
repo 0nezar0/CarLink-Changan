@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for strings_night_mode.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_app_appearance_dark">Gelap</string>
+    <string name="settings_app_appearance_light">Cerah</string>
+    <string name="carplay_night_start">Malam bermula</string>
+    <string name="carplay_night_end">Malam berakhir</string>
+    <string name="settings_app_appearance">Penampilan apl</string>
+    <string name="settings_app_appearance_auto">Automatik</string>
+    <string name="settings_app_appearance_description">Automatik mengikuti tetapan siang/malam CarPlay yang disimpan; semasa CarPlay dibuka, ia mengikuti hasil semasa. Cerah dan Gelap kekal tetap dan tidak memerlukan sambungan semula.</string>
+    <string name="settings_switch_to_dark_appearance">Tukar kepada penampilan gelap</string>
+    <string name="settings_switch_to_light_appearance">Tukar kepada penampilan cerah</string>
+    <string name="carplay_night_mode">Mod siang/malam CarPlay</string>
+    <string name="carplay_night_system">Ikuti sistem Android</string>
+    <string name="carplay_night_ambient">Ikuti cahaya ambien</string>
+    <string name="carplay_night_day">Sentiasa siang</string>
+    <string name="carplay_night_night">Sentiasa malam</string>
+    <string name="carplay_night_schedule">Dijadualkan</string>
+    <string name="carplay_night_schedule_hint">Menggunakan masa setempat unit kepala. Tetapkan masa mula dan tamat yang berbeza; julat semalaman disokong.</string>
+    <string name="carplay_night_schedule_same_time">Masa mula dan tamat mesti berbeza.</string>
+    <string name="carplay_night_hint">Simpan dan kembali ke CarPlay untuk menggunakan.</string>
+    <string name="carplay_night_ambient_hint">Menggunakan ambang dan kelewatan di bawah. Tanpa penderia cahaya, ia mengikuti Android.</string>
+    <string name="carplay_night_time_note">Apabila penampilan ditetapkan kepada Automatik dalam tetapan CarPlay, CarPlay juga mempertimbangkan masa iPhone. Walaupun anda pilih Sentiasa siang, CarPlay masih boleh kelihatan gelap pada waktu malam.</string>
+</resources>

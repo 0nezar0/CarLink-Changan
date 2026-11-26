@@ -94,6 +94,9 @@ object SwitcherController {
     private var panelUi by mutableStateOf<SwitcherUi?>(null)
     private var safeInsets by mutableStateOf(SafeInsets())
     private var switching = false
+    /** Last FCE hide/show command sent; null until the first one, so we do not show on startup. */
+    private var fceBarHidden: Boolean? = null
+    private val fceRehide = Runnable { rehideFceBar() }
 
     /** The session's "Switch to …?" offer (a second phone plugged in), and its prompt window. */
     private var pending: SessionRequest? = null
@@ -123,6 +126,7 @@ object SwitcherController {
                 // session layer touched (creating it early would change its start-up behaviour).
                 if (state.projections.isNotEmpty() || state.carLinkScreenInFront) observeSession()
                 evaluate()
+                syncFceBar(force = true)
             }
         }
         application.registerComponentCallbacks(object : ComponentCallbacks {
@@ -136,7 +140,56 @@ object SwitcherController {
 
     /** The driver changed the setting (Settings › General). */
     fun onSettingChanged() {
-        if (installed) evaluate()
+        if (installed) {
+            evaluate()
+            syncFceBar(force = true)
+            FceBarAccessibilityService.refresh(app)
+        }
+    }
+
+    /**
+     * Changan only: hide the car's FceSystemUI floating status bar while a CarPlay or Android
+     * Auto projection is in front, and show it again when the projection leaves or the setting
+     * / brand no longer applies.
+     *
+     * [force] is used on setting changes and each front-state update: FceSystemUI can re-show
+     * the bar on a task-stack change (CarLink is not on its whitelist), so a later hide must
+     * still be sent even if we already think the bar is hidden. A short timer keeps re-sending
+     * hide while the projection stays in front. Turning the setting on also sends hide at once,
+     * so the switch is visible from Settings before a projection starts.
+     */
+    private fun syncFceBar(force: Boolean = false) {
+        val projectionInFront = front.projections.isNotEmpty()
+        val hide = FceSystemBar.shouldHide(app, projectionInFront)
+        if (hide) {
+            if (force || fceBarHidden != true) {
+                FceSystemBar.apply(app, hide = true, reason = if (force) "front-or-setting" else "projection-front")
+            }
+            fceBarHidden = true
+            scheduleFceRehide()
+            return
+        }
+        main.removeCallbacks(fceRehide)
+        if (force && FceSystemBar.changanAndEnabled(app)) {
+            FceSystemBar.apply(app, hide = true, reason = "setting-on")
+            fceBarHidden = true
+            return
+        }
+        if (fceBarHidden == true) {
+            FceSystemBar.apply(app, hide = false, reason = "show")
+            fceBarHidden = false
+        }
+    }
+
+    private fun scheduleFceRehide() {
+        main.removeCallbacks(fceRehide)
+        main.postDelayed(fceRehide, FceSystemBar.REHIDE_INTERVAL_MS)
+    }
+
+    private fun rehideFceBar() {
+        if (!FceSystemBar.shouldHide(app, front.projections.isNotEmpty())) return
+        FceSystemBar.apply(app, hide = true, reason = "timer")
+        scheduleFceRehide()
     }
 
     private fun observeSession() {
@@ -158,8 +211,20 @@ object SwitcherController {
         }
     }
 
+    /** A size was saved that the running session could not take live; it waits for the driver's reconnect. */
+    private var sizePending = false
+
+    /** After a size change: live → close the panel; not live → keep it open on "Reconnect with the new size". */
+    private fun applied(live: Boolean) {
+        if (live) return closePanel()
+        sizePending = true
+        panelUi = panelUi?.copy(sizePending = true, page = SwitcherPage.MAIN)
+    }
+
     private fun trackConnectedTime(state: SessionState) {
         val active = state as? SessionState.Active
+        // Any reconnect starts with the saved size, so nothing is waiting any more.
+        if (active?.phase != SessionState.Phase.Connected) sizePending = false
         when {
             active == null -> { connectedRequest = null; connectedSince = null }
             active.phase == SessionState.Phase.Connected && connectedRequest != active.request -> {
@@ -262,6 +327,14 @@ object SwitcherController {
 
     // ---- Panel --------------------------------------------------------------------------------
 
+    /** Android Auto on a turning screen (phone, tablet) held upright cannot grow past about Medium. */
+    private fun sizesThatGrow(engine: com.carlink.core.core.Engine): List<InterfaceSize>? {
+        if (engine != com.carlink.core.core.Engine.ANDROID_AUTO || !com.carlink.core.detect.HeadUnitDetector.handheld(app)) return null
+        val metrics = app.resources.displayMetrics
+        val max = com.carlink.core.connection.aa.AaSessionSettings.turningMaxPercent(metrics.densityDpi, metrics.widthPixels, metrics.heightPixels)
+        return com.carlink.core.connection.aa.AaSessionSettings.sizesThatGrow(max)
+    }
+
     private fun openPanel() {
         if (panel != null) return
         val active = session as? SessionState.Active ?: return
@@ -277,6 +350,11 @@ object SwitcherController {
             usbKinds = com.carlink.app.ui.premium.usbPhoneKinds(app),
             method = UnifiedSettingsStore(app).load().connectionMethod,
             interfaceSize = UnifiedSettingsStore(app).load().interfaceSize,
+            sizesThatGrow = sizesThatGrow(active.request.engine),
+            sizePending = sizePending,
+            customSize = if (active.request.engine == com.carlink.core.core.Engine.CARPLAY)
+                com.carlink.core.connection.CarPlaySettingsPolicy.percentForWidth(com.shilapi.xcertplay.AirPlayPersistence.loadWidthPhysicalMm(app))
+                else UnifiedSettingsStore(app).load().customSizePercent,
             dayNight = UnifiedSettingsStore(app).load().dayNight, dimmer = ScreenDimmer.level,
             edge = bubble?.let { if (it.params.x + geometry.bubble / 2 < geometry.screenWidth / 2) Edge.LEFT else Edge.RIGHT }
                 ?: Edge.RIGHT,
@@ -385,19 +463,42 @@ object SwitcherController {
             val store = UnifiedSettingsStore(app)
             store.save(store.load().copy(interfaceSize = size))
             val engine = panelUi?.engine
-            closePanel()
-            // The size is agreed when the session starts: restart it with the same phone and transport,
-            // unless the session can take it live (Android Auto on a turning screen; CarPlay with a
-            // size area declared at start). The saved size starts the next session natively (sharp).
+            panelUi = panelUi?.copy(interfaceSize = size)
+            // The size is agreed when the session starts. A session that can take it live (Android Auto
+            // on a turning screen; CarPlay up to the width it started with) switches now; otherwise the
+            // size is saved and the panel offers "Reconnect with the new size", the driver's choice.
             if (engine == com.carlink.core.core.Engine.CARPLAY) {
                 val mm = com.carlink.core.connection.CarPlaySettingsPolicy.widthMm(size)
-                if (mm == null || !com.shilapi.xcertplay.CarPlayHostIntegration.setInterfaceSizeLive(mm)) Connection.get(app).retry()
+                applied(mm != null && com.shilapi.xcertplay.CarPlayHostIntegration.setInterfaceSizeLive(mm))
                 return
             }
-            if (engine != com.carlink.core.core.Engine.ANDROID_AUTO) return Connection.get(app).retry()
-            com.carlink.core.connection.aa.AaLiveSize.request(app, com.carlink.core.connection.aa.AaSessionSettings.sizePercent(size)) { live ->
-                if (!live) Connection.get(app).retry()
-            }
+            if (engine != com.carlink.core.core.Engine.ANDROID_AUTO) return applied(false)
+            com.carlink.core.connection.aa.AaLiveSize.request(app, com.carlink.core.connection.aa.AaSessionSettings.sizePercent(size), ::applied)
+        }
+
+        override fun setCustomSize(value: Int) {
+            val engine = panelUi?.engine ?: return
+            val store = UnifiedSettingsStore(app)
+            val settings = store.load()
+            val carPlay = engine == com.carlink.core.core.Engine.CARPLAY
+            // The same Custom size Settings uses (DiPlay's width; Android Auto's percent with Automatic DPI), and
+            // the matching size for the other engine, so Custom looks alike on both.
+            // [value] is a percent for both engines (100 % = Small); CarPlay's is turned into the width it is told.
+            val widthMm = if (carPlay) com.carlink.core.connection.CarPlaySettingsPolicy.widthForPercent(value)
+                else com.carlink.core.connection.aa.AaSessionSettings.carPlayWidthForPercent(value)
+            val percent = if (carPlay) com.carlink.core.connection.aa.AaSessionSettings.percentForCarPlayWidth(widthMm) else value
+            com.shilapi.xcertplay.AirPlayPersistence.saveWidthPhysicalMm(app, widthMm)
+            store.save(settings.copy(interfaceSize = InterfaceSize.CUSTOM, customSizePercent = percent))
+            if (!carPlay) com.carlink.core.engine.AndroidAutoSettings.write(app, android.os.Bundle().apply { putInt("dpi-pixel-density", 0) })
+            panelUi = panelUi?.copy(interfaceSize = InterfaceSize.CUSTOM, customSize = value)
+            if (carPlay) applied(com.shilapi.xcertplay.CarPlayHostIntegration.setInterfaceSizeLive(widthMm))
+            else com.carlink.core.connection.aa.AaLiveSize.request(app, percent, ::applied)
+        }
+
+        override fun reconnectForSize() {
+            sizePending = false
+            closePanel()
+            Connection.get(app).retry()
         }
 
         override fun disconnect() {

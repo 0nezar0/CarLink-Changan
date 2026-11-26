@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings_settings_layout.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_display">Kijelző</string>
+    <string name="settings_navigation">Navigáció</string>
+    <string name="settings_vehicle">Jármű</string>
+    <string name="settings_advanced">Speciális</string>
+    <string name="settings_search_hint">Beállítások keresése</string>
+</resources>

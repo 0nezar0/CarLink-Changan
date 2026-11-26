@@ -47,11 +47,14 @@ import com.carlink.app.diagnostics.GitHubIssueReport
 import com.carlink.app.diagnostics.IssueReporter
 import com.carlink.app.ui.CarLinkViewModel
 import com.carlink.app.ui.components.CarSheet
+import com.carlink.app.ui.components.ltr
 import com.carlink.app.ui.components.QrCode
 import com.carlink.app.ui.premium.GlassButton
 import com.carlink.app.ui.premium.IonButton
 import com.carlink.app.ui.settings.isCar
 import com.carlink.app.ui.theme.CarLinkTokens
+import com.carlink.app.update.Updates
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -59,7 +62,8 @@ import kotlinx.coroutines.withContext
 /** Where the "Report on GitHub" flow is: the confirmation sheet (null report while it is built) or the QR fallback. */
 internal sealed interface ReportStage {
     data object Closed : ReportStage
-    data class Confirm(val report: GitHubIssueReport.Report?) : ReportStage
+    /** [sentAtMillis]: when this same report was already opened on GitHub, within [GitHubIssueReport.RESEND_WINDOW_MILLIS]. */
+    data class Confirm(val report: GitHubIssueReport.Report?, val sentAtMillis: Long? = null) : ReportStage
     data class Qr(val report: GitHubIssueReport.Report) : ReportStage
 }
 
@@ -74,11 +78,18 @@ fun rememberReportProblem(vm: CarLinkViewModel): () -> Unit {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var stage by remember { mutableStateOf<ReportStage>(ReportStage.Closed) }
+    val updater = remember { Updates.get(context) }
+    val newer by updater.newer.collectAsStateWithLifecycle()
     when (val s = stage) {
         ReportStage.Closed -> Unit
         is ReportStage.Confirm -> IssueConfirmSheet(s.report,
+            sentAtMillis = s.sentAtMillis,
+            newerVersion = newer?.version?.toString(),
+            installedVersion = updater.current.toString(),
+            onUpdate = { stage = ReportStage.Closed; updater.offerNewer() },
             onOpen = {
                 val report = s.report ?: return@IssueConfirmSheet
+                IssueReporter.markSent(context, report)
                 val route = GitHubIssueReport.route(IssueReporter.browserAvailable(context, report.url))
                 stage = if (route == GitHubIssueReport.Route.BROWSER && IssueReporter.open(context, report.url)) ReportStage.Closed
                 else ReportStage.Qr(report)
@@ -94,10 +105,13 @@ fun rememberReportProblem(vm: CarLinkViewModel): () -> Unit {
         {
             if (stage == ReportStage.Closed) {
                 stage = ReportStage.Confirm(null)
+                updater.refreshNewer()
                 val inputs = vm.reportInputs()
                 scope.launch {
-                    val report = withContext(Dispatchers.IO) { runCatching { IssueReporter.build(context, inputs) }.getOrNull() }
-                    if (stage is ReportStage.Confirm) stage = if (report != null) ReportStage.Confirm(report) else ReportStage.Closed
+                    val built = withContext(Dispatchers.IO) {
+                        runCatching { IssueReporter.build(context, inputs).let { it to IssueReporter.sentAt(context, it) } }.getOrNull()
+                    }
+                    if (stage is ReportStage.Confirm) stage = if (built != null) ReportStage.Confirm(built.first, built.second) else ReportStage.Closed
                 }
             }
         }
@@ -200,17 +214,44 @@ private val monoStyle: TextStyle
 /**
  * Before anything leaves the stereo: what the issue will hold (readable, with the first lines),
  * that it is public with addresses and passwords removed, and that the browser must be signed in.
- * Open GitHub and Cancel stay docked under the scrolling details, as large targets.
+ * Open GitHub and Copy stay docked under the scrolling details, as large targets; the header's close button
+ * cancels (a third docked button wrapped to a second row and squeezed the details on a car screen).
  */
 @Composable
-internal fun IssueConfirmSheet(report: GitHubIssueReport.Report?, onOpen: () -> Unit, onCopyLog: () -> Unit, onCancel: () -> Unit) {
+internal fun IssueConfirmSheet(
+    report: GitHubIssueReport.Report?,
+    onOpen: () -> Unit,
+    onCopyLog: () -> Unit,
+    onCancel: () -> Unit,
+    /** When this same report was already sent (shown first, so the driver does not open a duplicate issue). */
+    sentAtMillis: Long? = null,
+    /** A newer CarLink release the updater knows of, and the installed version. */
+    newerVersion: String? = null,
+    installedVersion: String = "",
+    onUpdate: () -> Unit = {},
+) {
     val scheme = MaterialTheme.colorScheme
     val dimens = CarLinkTokens.dimens
+    val context = LocalContext.current
     CarSheet(stringResource(R.string.carlink_report_title), onDismiss = onCancel, scrollable = false) {
         Column(Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState())) {
+            // Said first: an old version's report is often fixed already (#78-#80 came from 1.0.13 with 1.0.16 out).
+            if (newerVersion != null) {
+                Note(R.drawable.carlink_ic_system_update, stringResource(R.string.carlink_report_update_first, newerVersion, installedVersion))
+                Spacer(Modifier.height(10.dp))
+                IonButton(stringResource(R.string.carlink_report_update_action, newerVersion), onUpdate, icon = R.drawable.carlink_ic_download)
+                Spacer(Modifier.height(if (isCar) 20.dp else 14.dp))
+            }
+            if (sentAtMillis != null) {
+                val time = android.text.format.DateFormat.getTimeFormat(context).format(java.util.Date(sentAtMillis))
+                Note(R.drawable.carlink_ic_warning, stringResource(R.string.carlink_report_already_sent, time))
+                Spacer(Modifier.height(if (isCar) 20.dp else 14.dp))
+            }
             Text(stringResource(R.string.carlink_report_intro), style = MaterialTheme.typography.bodyLarge, color = scheme.onSurfaceVariant)
             Spacer(Modifier.height(if (isCar) 20.dp else 14.dp))
             Note(R.drawable.carlink_ic_lock, stringResource(R.string.carlink_report_public))
+            Spacer(Modifier.height(10.dp))
+            Note(R.drawable.carlink_ic_info, stringResource(R.string.carlink_report_email, ltr(AppInfo.CONTACT_EMAIL)))
             Spacer(Modifier.height(10.dp))
             Note(R.drawable.carlink_ic_info, stringResource(R.string.carlink_report_sign_in))
             Spacer(Modifier.height(10.dp))
@@ -227,9 +268,14 @@ internal fun IssueConfirmSheet(report: GitHubIssueReport.Report?, onOpen: () -> 
         Box(Modifier.fillMaxWidth().height(1.dp).background(CarLinkTokens.colors.hairline))
         FlowRow(Modifier.fillMaxWidth().padding(vertical = if (isCar) 20.dp else 14.dp),
             horizontalArrangement = Arrangement.spacedBy(dimens.targetGap), verticalArrangement = Arrangement.spacedBy(dimens.targetGap)) {
-            IonButton(stringResource(R.string.carlink_report_open), { if (report != null) onOpen() }, icon = R.drawable.carlink_ic_open_in_new)
+            // With an update or an earlier send to point at, opening GitHub is the secondary choice.
+            val openLabel = stringResource(if (sentAtMillis != null) R.string.carlink_report_open_again else R.string.carlink_report_open)
+            if (newerVersion != null || sentAtMillis != null) {
+                GlassButton(openLabel, { if (report != null) onOpen() }, icon = R.drawable.carlink_ic_open_in_new)
+            } else {
+                IonButton(openLabel, { if (report != null) onOpen() }, icon = R.drawable.carlink_ic_open_in_new)
+            }
             GlassButton(stringResource(R.string.carlink_diag_log_copy), onCopyLog, icon = R.drawable.carlink_ic_content_copy)
-            GlassButton(stringResource(R.string.carlink_report_cancel), onCancel, icon = R.drawable.carlink_ic_close)
         }
     }
 }

@@ -30,8 +30,9 @@ class CarBrandTest {
     @Test fun popularBrandsComeFirstThenLuxuryThenOther() {
         val all = CarBrand.entries
         // This build's car first, then the mass-market makes.
-        assertEquals(CarBrand.CHANGAN, all.first())
-        assertEquals(CarBrand.MARUTI_SUZUKI, all[1])
+        assertEquals(CarBrand.CHANGAN_CS75_PLUS, all.first())
+        assertEquals(CarBrand.CHANGAN, all[1])
+        assertEquals(CarBrand.MARUTI_SUZUKI, all[2])
         assertEquals(CarBrand.OTHER, all.last())
         val firstLuxury = all.indexOfFirst { it.luxury }
         val firstMotorcycle = all.indexOfFirst { it.motorcycle }
@@ -93,16 +94,32 @@ class CarBrandTest {
         assertTrue(store().set(CarBrand.KIA))
     }
 
-    @Test fun aFreshInstallStartsAsChanganUnlessTheScreenIsByd() {
-        val fresh = CarBrandStore(prefs, CarBrand.DEFAULT) { detected }
-        assertEquals(CarBrand.CHANGAN, fresh.chosen())
+    @Test fun aFreshInstallChoosesNoBrandUnlessTheScreenIsByd() {
+        val fresh = CarBrandStore(prefs) { detected }
+        assertNull(fresh.chosen())
         assertEquals(VehicleProfile.GENERIC, fresh.profile())
         detected = VehicleProfile.BYD_DILINK
-        assertEquals(null, fresh.chosen())
+        assertNull(fresh.chosen())
         assertEquals(VehicleProfile.BYD_DILINK, fresh.profile())
-        // A stored choice always wins.
         detected = VehicleProfile.GENERIC
         fresh.set(CarBrand.TOYOTA)
         assertEquals(CarBrand.TOYOTA, fresh.chosen())
+    }
+
+    @Test fun migratesASavedGenericChanganOnceToCs75Plus() {
+        prefs.edit().putString(CarBrandStore.KEY_BRAND, CarBrand.CHANGAN.name).commit()
+        assertEquals(CarBrand.CHANGAN_CS75_PLUS, store().chosen())
+        assertEquals(CarBrand.CHANGAN_CS75_PLUS.name, prefs.getString(CarBrandStore.KEY_BRAND, null))
+        assertTrue(prefs.getBoolean(CarBrandStore.KEY_CS75_MIGRATED, false))
+        // A later explicit pick of generic Changan is kept.
+        store().set(CarBrand.CHANGAN)
+        assertEquals(CarBrand.CHANGAN, store().chosen())
+    }
+
+    @Test fun doesNotMigrateUnsetOrOtherBrandsToCs75() {
+        assertNull(store().chosen())
+        assertTrue(prefs.getBoolean(CarBrandStore.KEY_CS75_MIGRATED, false))
+        store().set(CarBrand.CHANGAN)
+        assertEquals(CarBrand.CHANGAN, store().chosen())
     }
 }

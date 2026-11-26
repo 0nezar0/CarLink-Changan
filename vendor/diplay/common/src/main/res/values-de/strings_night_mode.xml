@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings_night_mode.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_app_appearance_dark">Dunkel</string>
+    <string name="settings_app_appearance_light">Hell</string>
+    <string name="settings_app_appearance_auto">Automatisch</string>
+    <string name="carplay_night_start">Nacht beginnt</string>
+    <string name="carplay_night_end">Nacht endet</string>
+    <string name="settings_app_appearance">App-Erscheinungsbild</string>
+    <string name="settings_app_appearance_description">Automatisch folgt der gespeicherten CarPlay-Tag/Nacht-Einstellung; während CarPlay geöffnet ist, folgt es dem aktuellen Ergebnis. Hell und Dunkel bleiben fest und erfordern keine erneute Verbindung.</string>
+    <string name="settings_switch_to_dark_appearance">Zum dunklen Erscheinungsbild wechseln</string>
+    <string name="settings_switch_to_light_appearance">Zum hellen Erscheinungsbild wechseln</string>
+    <string name="carplay_night_mode">CarPlay-Tag/Nacht-Modus</string>
+    <string name="carplay_night_system">Android-System folgen</string>
+    <string name="carplay_night_ambient">Umgebungslicht folgen</string>
+    <string name="carplay_night_day">Immer Tag</string>
+    <string name="carplay_night_night">Immer Nacht</string>
+    <string name="carplay_night_schedule">Zeitplan</string>
+    <string name="carplay_night_schedule_hint">Verwendet die Ortszeit des Hauptgeräts. Legen Sie unterschiedliche Start- und Endzeiten fest; Zeiträume über Mitternacht werden unterstützt.</string>
+    <string name="carplay_night_schedule_same_time">Start- und Endzeit müssen unterschiedlich sein.</string>
+    <string name="carplay_night_hint">Speichern und zu CarPlay zurückkehren, um zu übernehmen.</string>
+    <string name="carplay_night_ambient_hint">Verwendet die Schwelle und Verzögerung unten. Ohne Lichtsensor folgt es Android.</string>
+    <string name="carplay_night_time_note">Wenn in den CarPlay-Einstellungen das Erscheinungsbild auf Automatisch steht, berücksichtigt CarPlay auch die iPhone-Zeit. Selbst wenn Sie Immer Tag wählen, kann CarPlay nachts trotzdem dunkel erscheinen.</string>
+</resources>

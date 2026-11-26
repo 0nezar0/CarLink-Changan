@@ -4,17 +4,32 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-/** Where CarLink's releases are published (built locally and uploaded; docs/RELEASING.md). */
+/**
+ * Where this build's releases are published. [OWNER_REPO] is the only place to change: point it at
+ * any GitHub repository whose releases carry `CarLink-CS75Plus2023-vX.Y.apk` and its `.sha256`.
+ * The app asks GitHub without signing in, so the repository's releases must be public; a private
+ * repository answers 404 ([CheckOutcome.NotFound]). Upstream CarLink (F-e-n-y-x) is never asked:
+ * its APKs are another package and key and could not install over this build.
+ */
 object ReleaseRepo {
-    const val OWNER_REPO = "F-e-n-y-x/CarLink"
+    const val OWNER_REPO = "0nezar0/carlink-releases"
     const val LATEST_URL = "https://api.github.com/repos/$OWNER_REPO/releases/latest"
     /** The newest releases, pre-releases included (drafts are visible only when signed in): "Get test versions". */
     const val LIST_URL = "https://api.github.com/repos/$OWNER_REPO/releases?per_page=20"
     const val DOWNLOAD_PREFIX = "https://github.com/$OWNER_REPO/releases/download/"
     const val ACCEPT = "application/vnd.github+json"
+    /** The release page, for people who install by hand. */
+    const val RELEASES_PAGE = "https://github.com/$OWNER_REPO/releases"
 
-    fun apkName(version: AppVersion) = "CarLink-$version.apk"
+    private const val APK_PREFIX = "CarLink-CS75Plus2023-"
+
+    fun apkName(version: AppVersion) = "$APK_PREFIX${version.tag}.apk"
     fun checksumName(version: AppVersion) = "${apkName(version)}.sha256"
+
+    /** The version in an APK asset's name (`CarLink-CS75Plus2023-v1.1.apk`, `-v1.1.0.apk`), or null for any other file. */
+    fun apkVersion(assetName: String): AppVersion? =
+        assetName.takeIf { it.startsWith(APK_PREFIX) && it.endsWith(".apk") }
+            ?.removePrefix(APK_PREFIX)?.removeSuffix(".apk")?.let(AppVersion::parseTag)
 }
 
 /** A published release that carries an installable APK and its checksum. */
@@ -41,8 +56,8 @@ sealed interface ParsedRelease {
 /**
  * Parses `GET /repos/{owner}/{repo}/releases/latest`. That endpoint already skips drafts and
  * pre-releases; they are rejected here as well. A release is usable only when its tag is
- * `vX.Y.Z` and it has the assets `CarLink-X.Y.Z.apk` and `CarLink-X.Y.Z.apk.sha256`, both
- * served from this repository's release downloads.
+ * `vX.Y` or `vX.Y.Z` and it has the assets `CarLink-CS75Plus2023-vX.Y.apk` (the same version as
+ * the tag) and that name plus `.sha256`, both served from [ReleaseRepo]'s release downloads.
  */
 object ReleaseParser {
     fun parse(json: String): ParsedRelease {
@@ -74,14 +89,14 @@ object ReleaseParser {
         val assets = release.optJSONArray("assets")
         var apk: Pair<String, Long>? = null
         var checksum: String? = null
-        for (i in 0 until (assets?.length() ?: 0)) {
-            val asset = assets!!.optJSONObject(i) ?: continue
-            val url = asset.optString("browser_download_url")
-            if (!url.startsWith(ReleaseRepo.DOWNLOAD_PREFIX)) continue
-            when (asset.optString("name")) {
-                ReleaseRepo.apkName(version) -> apk = url to asset.optLong("size", 0L)
-                ReleaseRepo.checksumName(version) -> checksum = url
-            }
+        val usable = (0 until (assets?.length() ?: 0)).mapNotNull { assets!!.optJSONObject(it) }
+            .filter { it.optString("browser_download_url").startsWith(ReleaseRepo.DOWNLOAD_PREFIX) }
+        // The APK named for the tag's version (v1.1 and v1.1.0 are the same), then its checksum.
+        val apkAsset = usable.firstOrNull { ReleaseRepo.apkVersion(it.optString("name")) == version }
+        if (apkAsset != null) {
+            apk = apkAsset.optString("browser_download_url") to apkAsset.optLong("size", 0L)
+            checksum = usable.firstOrNull { it.optString("name") == apkAsset.optString("name") + ".sha256" }
+                ?.optString("browser_download_url")
         }
         if (apk == null) return ParsedRelease.Unusable(ParsedRelease.Reason.NO_APK)
         if (checksum == null) return ParsedRelease.Unusable(ParsedRelease.Reason.NO_CHECKSUM)
@@ -98,7 +113,7 @@ object ReleaseParser {
 
     /**
      * The hex SHA-256 from a `.sha256` file: the bare digest, or `sha256sum` output
-     * (`<digest>  CarLink-X.Y.Z.apk`). Null when the file holds anything else.
+     * (`<digest>  CarLink-CS75Plus2023-v1.1.apk`). Null when the file holds anything else.
      */
     fun parseChecksum(text: String): String? =
         text.trim().split(Regex("\\s+")).firstOrNull()?.lowercase()?.takeIf { it.matches(Regex("[0-9a-f]{64}")) }

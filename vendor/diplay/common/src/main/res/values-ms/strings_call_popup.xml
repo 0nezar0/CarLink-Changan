@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for strings_call_popup.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_hide_byd_call_popup">Sembunyikan tetingkap timbul panggilan BYD (uji kaji)</string>
+    <string name="settings_hide_byd_call_popup_description">Hanya unit kepala BYD dengan Android 10 atau lebih baharu. Memerlukan ADB setempat yang diluluskan. Menyembunyikan tetingkap timbul panggilan asli semasa CarPlay yang disambungkan di latar depan; memulihkannya di latar belakang. Tidak mengubah audio Bluetooth atau menyembunyikan apl telefon penuh.</string>
+</resources>

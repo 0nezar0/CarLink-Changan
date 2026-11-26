@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings_contrib_audio.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="contrib_audio_home_choice_summary">%1$s · %2$s</string>
+    <string name="contrib_audio_home_toggle_audio_focus">Audiofokus</string>
+    <string name="contrib_audio_home_channel_preview_unavailable">Der Android-Audiostream %1$d kann auf diesem Gerät nicht vorgehört werden.</string>
+    <string name="contrib_audio_home_media_channel_label">Medien-Audiostream</string>
+    <string name="contrib_audio_home_nav_channel_label">Navigations-Audiostream</string>
+    <string name="contrib_audio_home_nav_channel_note">0 = automatisches Routing. Die Werte 1–20 wählen ältere Audiostream-IDs, einschließlich herstellerspezifischer Ausgänge, soweit das Hauptgerät sie unterstützt. Tippen Sie auf einen Wert, um ihn vorzuhören. Änderungen gelten beim erneuten Verbinden.</string>
+    <string name="contrib_audio_home_toggle_audio_focus_desc">CarPlay-Medien beanspruchen den Audiofokus. Wenn der Ton bei Aktivierung verschwindet (manche Hauptgeräte behandeln den Fokus schlecht), schalten Sie ihn aus. Änderungen gelten beim erneuten Verbinden.</string>
+    <string name="audio_focus_auto_yield">Medien bei vorübergehendem Fokusverlust stummschalten</string>
+    <string name="audio_focus_auto_yield_desc">Wenn Audiofokus eingeschaltet ist, werden Medien bei Android-Audio-Unterbrechungen einschließlich Anrufen stummgeschaltet. Der Ton kehrt zurück, wenn der Fokus zurückkehrt. Deaktivieren Sie dies, wenn Ihr Hauptgerät den Fokus nicht zurückgibt. Änderungen gelten beim erneuten Verbinden.</string>
+</resources>

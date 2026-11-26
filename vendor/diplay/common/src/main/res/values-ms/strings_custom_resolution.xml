@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for strings_custom_resolution.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="custom_resolution_summary">%1$d%%</string>
+    <string name="custom_resolution_hint">Masukkan 30–160 peratus. Gunakan untuk menyambung semula CarPlay.</string>
+    <string name="resolution_number_error">Masukkan integer dari %1$d hingga %2$d.</string>
+    <string name="resolution_reset_defaults">Tetapkan semula lalai</string>
+    <string name="resolution_canvas_unsupported">Unit kepala ini tidak dapat menyahkod resolusi yang dibesarkan. Menggunakan 100%.</string>
+</resources>

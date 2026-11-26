@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings_contrib_audio.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="contrib_audio_home_choice_summary">%1$s · %2$s</string>
+    <string name="contrib_audio_home_toggle_audio_focus">Hangfókusz</string>
+    <string name="contrib_audio_home_channel_preview_unavailable">Az Android %1$d hangfolyam nem hallgatható meg előre ezen az eszközön.</string>
+    <string name="contrib_audio_home_media_channel_label">Média hangfolyam</string>
+    <string name="contrib_audio_home_nav_channel_label">Navigációs hangfolyam</string>
+    <string name="contrib_audio_home_nav_channel_note">0 = automatikus útválasztás. Az 1–20 értékek régebbi hangfolyam-azonosítókat választanak, beleértve a gyártóspecifikus kimeneteket, ha a fejegység támogatja. Koppintson egy értékre az előhallgatáshoz. A változások újracsatlakozáskor érvényesek.</string>
+    <string name="contrib_audio_home_toggle_audio_focus_desc">A CarPlay média igényli a hangfókuszt. Ha a hang eltűnik bekapcsoláskor (egyes fejegységek rosszul kezelik a fókuszt), kapcsolja ki. A változások újracsatlakozáskor érvényesek.</string>
+    <string name="audio_focus_auto_yield">Média némítása ideiglenes fókuszvesztéskor</string>
+    <string name="audio_focus_auto_yield_desc">Ha a hangfókusz be van kapcsolva, a média némul az Android hangmegszakításai alatt, a hívásokat is beleértve. A hang visszatér, amikor a fókusz visszatér. Kapcsolja ki, ha a fejegység nem adja vissza a fókuszt. A változások újracsatlakozáskor érvényesek.</string>
+</resources>

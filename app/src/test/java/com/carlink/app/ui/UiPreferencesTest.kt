@@ -19,7 +19,7 @@ class UiPreferencesTest {
 
     @Test fun uiPreferencesDefaults() {
         val prefs = UiPreferences(app)
-        assertEquals(ThemeMode.FOLLOW_SYSTEM, prefs.themeMode)
+        assertEquals(ThemeMode.DARK, prefs.themeMode)
         assertEquals(UiProfileMode.AUTO, prefs.uiProfileMode)
         assertEquals(1f, prefs.interfaceScale)
         assertTrue(prefs.interfaceScale in UiPreferences.INTERFACE_SCALES)
@@ -38,10 +38,10 @@ class UiPreferencesTest {
         }
     }
 
-    @Test fun unknownThemeNameFallsBackToFollowSystem() {
+    @Test fun unknownThemeNameFallsBackToDark() {
         app.getSharedPreferences("carlink", Context.MODE_PRIVATE).edit()
             .putString("theme_mode", "SEPIA").putString("ui_profile_mode", "WATCH").commit()
-        assertEquals(ThemeMode.FOLLOW_SYSTEM, UiPreferences(app).themeMode)
+        assertEquals(ThemeMode.DARK, UiPreferences(app).themeMode)
         assertEquals(UiProfileMode.AUTO, UiPreferences(app).uiProfileMode)
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carlink_cs75_nav_title">Bar navigasi</string>
+    <string name="carlink_cs75_nav_description">Leret ke dalam dari tepi kiri atau kanan untuk menunjukkan bar. Leret sekali lagi dari tepi yang sama untuk menyembunyikannya. Memerlukan perkhidmatan kebolehcapaian CarLink.</string>
+    <string name="carlink_cs75_nav_back">Kembali</string>
+    <string name="carlink_cs75_nav_home">Laman utama</string>
+    <string name="carlink_cs75_nav_apps">Apl dipasang</string>
+    <string name="carlink_cs75_nav_settings">Tetapan Android</string>
+    <string name="carlink_cs75_nav_apps_unavailable">Tidak dapat membuka apl.</string>
+</resources>

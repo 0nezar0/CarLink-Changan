@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Portuguese (pt) translation of carlink_core_strings.xml. -->
+<resources>
+    <string name="carlink_core_ipad_no_carplay">Os iPad e os iPod não conseguem usar CarPlay. Ligue um iPhone.</string>
+    <string name="carlink_core_lite_mode_engaged">A imagem estava com dificuldades, por isso o modo Lite liga-se na ligação seguinte: 30 fotogramas por segundo, a mesma resolução.</string>
+</resources>

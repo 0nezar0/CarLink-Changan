@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for home_layout_strings.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_force_full_settings">Vollständiges Einstellungs-Layout erzwingen</string>
+    <string name="settings_force_full_settings_hint">Verwendet das vollständige Einstellungs-Layout mit Kategorien-Seitenleiste im Querformat und automatischem Layout im Hochformat. Ändert weder den Startbildschirm noch CarPlay.</string>
+</resources>

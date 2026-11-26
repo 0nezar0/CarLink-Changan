@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for hotspot_join.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="hotspot_join_title">Automatikus hotspotcsatlakozás (kísérleti)</string>
+    <string name="hotspot_join_description">Opcionális javítás a támogatott, Android 13+ firmware-hez és egy csak 5 GHz-es autóhotspothoz. Az ellenőrzés privát visszavonási biztonsági mentést készít a hotspot módosítása nélkül. Engedélyezett helyi ADB szükséges a localhost:5555-ön; a TLS vezeték nélküli hibakeresési párosítás nem támogatott.</string>
+    <string name="hotspot_join_check">Hotspotjavítás ellenőrzése</string>
+    <string name="hotspot_join_apply">Automatikus csatlakozási információ hozzáadása</string>
+    <string name="hotspot_join_restore">Mentett hotspot visszaállítása</string>
+    <string name="hotspot_join_working">Ellenőrzés vagy frissítés… A megszakítás újabb ellenőrzést tehet szükségessé az eredmény megerősítéséhez.</string>
+    <string name="hotspot_join_confirm">Álló autónál először bontsa a CarPlayt, és kapcsolja ki a hotspotot az autó beállításaiban. Ez a művelet csak a mentett hotspotkonfigurációt módosítja, és ellenőrzi a visszaolvasást. Ezután maga kapcsolja vissza a hotspotot a szórások frissítéséhez. A meglévő kliensek leválnak, amikor kikapcsolja. Tartsa meg a privát biztonsági mentést a visszavonáshoz.</string>
+    <string name="hotspot_join_disconnect">Bontsa a CarPlayt a hotspot módosítása előtt.</string>
+    <string name="hotspot_join_ready">Támogatott 5 GHz-es konfiguráció. Privát teljes biztonsági mentés előkészítve; a hotspot még nem változott.</string>
+    <string name="hotspot_join_present">A tesztelt információ már jelen van. Nem került hozzá duplikátum; a DiPlaynek nincs visszavonási joga egy már meglévő elemhez.</string>
+    <string name="hotspot_join_applied">A mentett konfiguráció ellenőrizve. Kapcsolja be a hotspotot az autó beállításaiban a szórások frissítéséhez, majd tesztelje az automatikus csatlakozást. A szórás és a CarPlay sikere továbbra is eszköztesztet igényel.</string>
+    <string name="hotspot_join_restored">A teljes mentett konfiguráció visszaállítva és ellenőrizve. Kapcsolja be a hotspotot az autó beállításaiban.</string>
+    <string name="hotspot_join_unsupported">Nem támogatott API, firmware, sáv vagy ütköző gyártói információ. Nem történt javítás. Használjon támogatott, csak 5 GHz-es konfigurációt; a többi sáv nincs ellenőrizve.</string>
+    <string name="hotspot_join_off_required">A hotspotnak megerősítetten ki kell lennie kapcsolva. Válassza le a klienseket, kapcsolja ki az autó beállításaiban, majd próbálja újra. A DiPlay nem indítja újra automatikusan.</string>
+    <string name="hotspot_join_drift">A konfiguráció megváltozott a biztonsági mentés óta. Semmi sem lett felülírva. Ellenőrizze újra; a függőben lévő visszavonási mentés megmarad.</string>
+    <string name="hotspot_join_firmware_changed">A firmware megváltozott. A privát biztonsági mentés megmarad, de ezen a firmware-en nem állítható vissza biztonságosan.</string>
+    <string name="hotspot_join_cancelled">Írás előtt megszakítva. Ellenőrizze újra a megtartott visszavonási állapotot.</string>
+    <string name="hotspot_join_failed_restored">A javítás sikertelen volt, vagy írás után megszakították. A korábbi konfiguráció vissza lett állítva, és a visszaolvasás ellenőrizve.</string>
+    <string name="hotspot_join_busy">Egy másik hotspotművelet még fut. Várjon, majd ellenőrizze újra.</string>
+    <string name="hotspot_join_adb_required">Jóváhagyott, sima helyi ADB szükséges a localhost:5555-ön. Engedélyezze és hitelesítse a támogatott autóbeállítással. Önmagában az Android TLS vezeték nélküli hibakeresési párosítás nem elég.</string>
+    <string name="hotspot_join_recovery">Az eredmény vagy a mentés ellenőrzése bizonytalan. Kapcsolja ki a hotspotot, és ellenőrizze újra, mielőtt folytatná. A meglévő privát biztonsági mentés megmarad; a visszaállítás csak akkor engedélyezett, ha a konfiguráció még egyezik.</string>
+</resources>

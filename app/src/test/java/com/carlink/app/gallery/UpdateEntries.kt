@@ -18,8 +18,8 @@ private val updateConfigs = setOf("tablet", "car-landscape", "car-split-third", 
 
 private object GalleryUpdateActions : UpdateDialogActions
 
-private val galleryRelease = AppVersion(1, 1, 0).let { version ->
-    ReleaseInfo("v1.1.0", version, "CarLink 1.1.0",
+private val galleryRelease = AppVersion(1, 2).let { version ->
+    ReleaseInfo("v1.2", version, "CarLink CS75 Plus 2023 v1.2",
         """
         ## What's new
 
@@ -32,8 +32,8 @@ private val galleryRelease = AppVersion(1, 1, 0).let { version ->
         - The picture no longer stays black on some 1024×600 head units.
         - Switching phones over USB asks only once.
         """.trimIndent(),
-        "${ReleaseRepo.DOWNLOAD_PREFIX}v1.1.0/${ReleaseRepo.apkName(version)}", 48_234_567L,
-        "${ReleaseRepo.DOWNLOAD_PREFIX}v1.1.0/${ReleaseRepo.checksumName(version)}")
+        "${ReleaseRepo.DOWNLOAD_PREFIX}v1.2/${ReleaseRepo.apkName(version)}", 48_234_567L,
+        "${ReleaseRepo.DOWNLOAD_PREFIX}v1.2/${ReleaseRepo.checksumName(version)}")
 }
 
 internal fun updateEntries(): List<GalleryEntry> = with(HomeFakes) {

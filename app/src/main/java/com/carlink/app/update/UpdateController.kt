@@ -21,7 +21,7 @@ sealed interface UpdateState {
     data object Checking : UpdateState
     /** The answer to a check the driver asked for. */
     data object UpToDate : UpdateState
-    data class CheckFailed(val rateLimited: Boolean) : UpdateState
+    data class CheckFailed(val rateLimited: Boolean, val notFound: Boolean = false) : UpdateState
 
     data class Available(val release: ReleaseInfo) : UpdateState
     data class Downloading(val release: ReleaseInfo, val bytes: Long, val total: Long?) : UpdateState
@@ -59,8 +59,9 @@ private fun VerifyFailure.toError(): UpdateError = when (this) {
 }
 
 /**
- * The updater: check GitHub, offer a newer release, download it into [downloadDir], verify it
- * ([UpdateVerifier]) and hand it to [installer]. UI-free; call it on the main thread. Every
+ * The updater: check GitHub, offer a newer release, download it into [downloadDir] (Downloads/CarLink,
+ * [UpdateFiles]), verify it ([UpdateVerifier]) and hand it to [installer]. A verified APK stays in
+ * that folder after it is installed; a file that fails verification is deleted. UI-free; call it on the main thread. Every
  * dependency is an interface, so a launcher can reuse it and tests can drive it.
  *
  * Automatic checks ([maybeAutoCheck]) run at most every 6 hours, only when [supported] (the
@@ -79,7 +80,8 @@ class UpdateController(
     val current: AppVersion,
     /** Release build signed with the release key: the only build that checks and installs. */
     val supported: Boolean,
-    private val downloadDir: File,
+    /** Resolved at each download: storage access can be granted between two downloads. */
+    private val downloadDir: () -> File,
     private val clock: () -> Long = System::currentTimeMillis,
     private val log: (String) -> Unit = {},
     /**
@@ -99,12 +101,16 @@ class UpdateController(
     /** Wall-clock time of the last check, 0 for never. */
     val lastCheck: StateFlow<Long> = _lastCheck.asStateFlow()
 
+    private val _newer = MutableStateFlow<ReleaseInfo?>(null)
+    /** The newest release a check found above [current], even one the driver chose Later or Ignore for (the report sheet names it). */
+    val newer: StateFlow<ReleaseInfo?> = _newer.asStateFlow()
+
     private var job: Job? = null
     private var verifiedFile: File? = null
 
     init {
-        // An APK left from an earlier run (the update installed, or the app was closed mid-way).
-        downloadDir.listFiles()?.forEach { it.delete() }
+        // Update APKs older than this version (installed long ago); never the reports in the same folder.
+        runCatching { UpdateFiles.stale(downloadDir(), current).forEach { it.delete() } }
     }
 
     fun setAutoCheck(enabled: Boolean) {
@@ -150,6 +156,7 @@ class UpdateController(
         job = scope.launch {
             val outcome = withContext(io) { source.latest() }
             log("check (${if (manual) "manual" else "automatic"}): $outcome")
+            if (outcome is CheckOutcome.Newer) _newer.value = outcome.release
             _state.value = when (outcome) {
                 is CheckOutcome.Newer ->
                     if (UpdatePolicy.shouldOffer(outcome.release, current, prefs.ignoredUpdateTag, manual)) UpdateState.Available(outcome.release)
@@ -157,8 +164,29 @@ class UpdateController(
                 CheckOutcome.UpToDate -> if (manual) UpdateState.UpToDate else UpdateState.Idle
                 CheckOutcome.RateLimited -> if (manual) UpdateState.CheckFailed(rateLimited = true) else UpdateState.Idle
                 is CheckOutcome.Failed -> if (manual) UpdateState.CheckFailed(rateLimited = false) else UpdateState.Idle
+                CheckOutcome.NotFound -> if (manual) UpdateState.CheckFailed(rateLimited = false, notFound = true) else UpdateState.Idle
             }
         }
+    }
+
+    /**
+     * The report sheet opened: find out quietly whether a newer release exists (fills [newer], never
+     * opens the dialog), unless one is known already. Old versions sent reports fixed long before (#78-#80).
+     */
+    fun refreshNewer() {
+        if (!supported || _newer.value != null || job?.isActive == true) return
+        job = scope.launch {
+            val outcome = withContext(io) { source.latest() }
+            log("check (report): $outcome")
+            if (outcome is CheckOutcome.Newer) _newer.value = outcome.release
+        }
+    }
+
+    /** "Update first" on the report sheet: offer [newer] in the update dialog, even when its tag was ignored. */
+    fun offerNewer() {
+        val release = _newer.value ?: return
+        if (job?.isActive == true || _state.value.showsDialog) return
+        _state.value = UpdateState.Available(release)
     }
 
     /** "Later": close until the next check window. */
@@ -192,7 +220,7 @@ class UpdateController(
             else -> null
         } ?: return
         if (job?.isActive == true) return
-        val file = File(downloadDir, ReleaseRepo.apkName(release.version))
+        val file = File(downloadDir(), ReleaseRepo.apkName(release.version))
         _state.value = UpdateState.Downloading(release, 0L, release.apkSize.takeIf { it > 0 })
         job = scope.launch {
             try {
@@ -269,11 +297,13 @@ class UpdateController(
         _state.value = UpdateState.Installing(release)
         try {
             withContext(io) { installer.install(file) }
-            // The session holds its own copy now.
-            deleteVerified()
+            // The session holds its own copy now; the verified APK stays in Downloads/CarLink.
+            verifiedFile = null
         } catch (e: IOException) {
             log("install failed: ${e.message}")
-            fail(release, UpdateError.INSTALL, file, e.message)
+            // The file passed every check: keep it, so it can be installed by hand.
+            verifiedFile = null
+            fail(release, UpdateError.INSTALL, null, e.message)
         }
     }
 
@@ -281,16 +311,17 @@ class UpdateController(
     fun onInstallStatus(status: InstallStatus) {
         val installing = _state.value as? UpdateState.Installing ?: run {
             // The dialog was closed while Android's install screen was up: only tidy up.
-            if (status !is InstallStatus.WaitingForUser) deleteVerified()
+            if (status !is InstallStatus.WaitingForUser) verifiedFile = null
             return
         }
         log("install: $status")
         when (status) {
             InstallStatus.WaitingForUser -> Unit
             // Usually not seen: Android stops CarLink to replace it.
-            InstallStatus.Success -> { deleteVerified(); _state.value = UpdateState.Idle }
-            InstallStatus.Aborted -> fail(installing.release, UpdateError.INSTALL_CANCELLED, verifiedFile)
-            is InstallStatus.Failure -> fail(installing.release, UpdateError.INSTALL, verifiedFile, status.message)
+            InstallStatus.Success -> { verifiedFile = null; _state.value = UpdateState.Idle }
+            // A verified APK is kept in Downloads/CarLink when Android's install did not finish.
+            InstallStatus.Aborted -> { verifiedFile = null; fail(installing.release, UpdateError.INSTALL_CANCELLED, null) }
+            is InstallStatus.Failure -> { verifiedFile = null; fail(installing.release, UpdateError.INSTALL, null, status.message) }
         }
     }
 

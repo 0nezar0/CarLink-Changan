@@ -12,6 +12,7 @@
     <string name="carlink_switcher_switching">جارٍ التبديل…</string>
     <string name="carlink_switcher_home">رئيسية CarLink</string>
     <string name="carlink_switcher_size_reconnects">تغييره يعيد الاتصال لعدة ثوانٍ</string>
+    <string name="carlink_switcher_size_upright">والجهاز عمودي، يتوقف Android Auto عند %1$s</string>
     <string name="carlink_switcher_next_connection">تبقى الجلسة الحالية متصلة.</string>
     <string name="carlink_switcher_close">إغلاق</string>
     <string name="carlink_switcher_back">رجوع</string>

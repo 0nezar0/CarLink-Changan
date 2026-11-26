@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings_platform21.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="platform21_cluster_mode">Platform-21-Kombiinstrument-Aufgabe (experimentell)</string>
+    <string name="platform21_cluster_description">Für die Anpassung des Tang DM-i 2023 mit Controller 21. Standardmäßig aus. Verwendet nur die geprüfte Projektionsanzeige, behält eine zentrierte halbbreite Karte und ändert weder die werkseitigen Kombiinstrument-Modi noch schaltet es die werkseitige Karte aus. Erfordert zuvor autorisiertes lokales ADB. Das Übernehmen dieser Einstellung verbindet CarPlay erneut. Diese Upstream-Integration benötigt einen Test im Stand.</string>
+</resources>

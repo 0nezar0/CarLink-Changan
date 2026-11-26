@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) translation of carlink_core_strings.xml. -->
+<resources>
+    <string name="carlink_core_ipad_no_carplay">Az iPadek és iPodek nem futtatják a CarPlayt. Csatlakoztasson egy iPhone-t.</string>
+    <string name="carlink_core_lite_mode_engaged">A kép akadozott, ezért a Lite mód a következő csatlakozástól bekapcsol: másodpercenként 30 képkocka, ugyanaz a felbontás.</string>
+</resources>

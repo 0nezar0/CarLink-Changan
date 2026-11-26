@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat
 import com.carlink.core.settings.WirelessPath
 import android.util.Log
 import com.carlink.core.core.Engine
+import com.carlink.core.diagnostics.InterfaceIpv6
+import com.shilapi.xcertplay.network.WirelessHotspotBackend
 import com.carlink.core.core.Transport
 import com.carlink.core.settings.VehicleProfile
 import com.shilapi.xcertplay.AirPlayPersistence
@@ -75,9 +77,15 @@ class CarPlayAdapter internal constructor(
     private val clientsListener: (Int, Int) -> Unit = { clients, leased ->
         main.post { if (watching) linkWatch.onClients(clients, leased, SystemClock.uptimeMillis()) }
     }
+    /** Read and cleared by DiPlay's iAP2 thread (WirelessStartupTimeline.startSessionAgain). */
+    private val startAgainWanted = java.util.concurrent.atomic.AtomicBoolean(false)
     private val linkPoll = object : Runnable {
         override fun run() {
             if (!watching) return
+            if (linkWatch.startAgain(SystemClock.uptimeMillis())) {
+                com.carlink.core.diagnostics.EventLog.add("CarLink", "the iPhone joined the car's Wi-Fi but opened no CarPlay connection; asking it to start once more")
+                startAgainWanted.set(true)
+            }
             linkWatch.verdict(SystemClock.uptimeMillis())?.let(::onLinkVerdict)
             if (watching) main.postDelayed(this, CarPlayLinkWatch.POLL_MILLIS)
         }
@@ -113,6 +121,8 @@ class CarPlayAdapter internal constructor(
             linkWatch.reset()
             watching = true
             hooks.watchClients(clientsListener)
+            startAgainWanted.set(false)
+            hooks.setStartSessionAgain { startAgainWanted.getAndSet(false) }
             main.postDelayed(linkPoll, CarPlayLinkWatch.POLL_MILLIS)
         }
         deliver(listOf(tracker.started()))
@@ -155,7 +165,20 @@ class CarPlayAdapter internal constructor(
     private fun onStatus(status: CarPlayStatus?) {
         val tracker = tracker ?: return
         if (listener == null) return
+        if (status is CarPlayStatus.HotspotReady) logApIpv6(status)
         deliver(tracker.onStatus(status))
+    }
+
+    /** #93: on the car hotspot (or local-only AP) the log says whether its interface carries IPv6 at all. */
+    private fun logApIpv6(status: CarPlayStatus.HotspotReady) {
+        if (status.backend != WirelessHotspotBackend.MANUAL_HOTSPOT.label &&
+            status.backend != WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT.label) return
+        Thread({
+            val iface = runCatching {
+                java.net.NetworkInterface.getByInetAddress(java.net.InetAddress.getByName(status.address))?.name
+            }.getOrNull() ?: return@Thread
+            com.carlink.core.diagnostics.EventLog.add("CarLink", "car hotspot ${InterfaceIpv6.describe(iface)}")
+        }, "carlink-ap-ipv6").apply { isDaemon = true }.start()
     }
 
     private fun onMilestone(phase: WirelessStartupTimeline.Phase) {
@@ -171,7 +194,7 @@ class CarPlayAdapter internal constructor(
         Log.i(TAG, "host state $state")
         when (state) {
             is HostState.Retrying -> linkWatch.reset() // DiPlay brings the link up again
-            HostState.FirstFrame -> linkWatch.onConnected()
+            HostState.FirstFrame -> { linkWatch.onConnected(); hooks.setStartSessionAgain(null) }
             else -> Unit
         }
         deliver(tracker.onHostState(state))
@@ -214,6 +237,7 @@ class CarPlayAdapter internal constructor(
             watching = false
             main.removeCallbacks(linkPoll)
             hooks.watchClients(null)
+            hooks.setStartSessionAgain(null)
         }
         hooks.holdWifi(false)
         hooks.removeStatusListener(statusListener)
@@ -245,6 +269,11 @@ class CarPlayAdapter internal constructor(
                 marks.edit().putBoolean("forget_ipv6_guess", true).apply()
             }
             CarPlayHostIntegration.vehicleIntegrations = profile == VehicleProfile.BYD_DILINK
+            // v1.6.6: the car hotspot picks IPv4 or IPv4 + IPv6 by itself (CarHotspotIpFamily). The
+            // CS75 Plus 2023 SoftAP is IPv4-only, so that profile stays on the v1.6.5 IPv4-only path.
+            com.shilapi.xcertplay.network.CarHotspotIpFamily.knownIpv4OnlyUnit = {
+                com.carlink.core.settings.CarBrandStore(app).chosen()?.isChanganCs75Plus == true
+            }
             CarPlayHostIntegration.onHostState = HostStates::dispatch
             // The default-grant wait counts from the iPhone's attach (UsbAttachTimes).
             com.shilapi.xcertplay.orchestration.CarPlayController.usbAttachAgeMillis =
@@ -264,8 +293,7 @@ class CarPlayAdapter internal constructor(
             // DiPlay's dial waits for CarLink's own page of the iPhone instead of racing its SDP.
             WirelessStartupTimeline.beforeBluetoothDial = BluetoothWarmup::awaitPage
             CarPlayWaitingView.install()
-            // Each session also declares the larger interface sizes as smaller areas, so the switcher changes size live.
-            CarPlayHostIntegration.liveSizeWidthsMm = com.carlink.core.settings.InterfaceSize.entries.mapNotNull(CarPlaySettingsPolicy::widthMm)
+            // The live interface-size areas are declared per session (CarPlaySettingsPolicy.apply).
             // A screen that turns (phone, tablet) gets DiPlay's square canvas with a landscape and a
             // portrait area: turning switches area instead of rebuilding the session (10-50 s, 2026-11-10).
             // A head unit stays on the plain canvas, which is sharper and never turns.
@@ -293,6 +321,9 @@ interface CarPlayEngineHooks {
 
     /** DiPlay's wireless `WIRELESS_TIMING` milestones (any thread); null stops them. */
     fun setMilestoneListener(listener: ((WirelessStartupTimeline.Phase) -> Unit)?) {}
+
+    /** DiPlay's iAP2 thread asks it whether to send StartSession once more; null: never. */
+    fun setStartSessionAgain(hook: (() -> Boolean)?) {}
 
     /** The Wi-Fi Direct group's (clients, clients with a DHCP lease) on every change (any thread); null stops. */
     fun watchClients(listener: ((Int, Int) -> Unit)?) {}
@@ -345,6 +376,10 @@ internal class DiPlayEngineHooks(private val app: Context) : CarPlayEngineHooks 
 
     override fun setMilestoneListener(listener: ((WirelessStartupTimeline.Phase) -> Unit)?) {
         WirelessStartupTimeline.milestoneListener = listener
+    }
+
+    override fun setStartSessionAgain(hook: (() -> Boolean)?) {
+        WirelessStartupTimeline.startSessionAgain = hook
     }
 
     private var clientsReceiver: BroadcastReceiver? = null

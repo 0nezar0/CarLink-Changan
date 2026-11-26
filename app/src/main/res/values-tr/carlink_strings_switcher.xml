@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Turkish (tr) translation of carlink_strings_switcher.xml. -->
+<resources>
+    <string name="carlink_switcher_bubble">CarLink değiştirici</string>
+    <string name="carlink_switcher_bubble_action">Telefon değiştiriciyi aç</string>
+    <string name="carlink_switcher_panel_window">CarLink değiştirici paneli</string>
+    <string name="carlink_switcher_dimmer_window">CarLink karartıcı</string>
+    <string name="carlink_switcher_connected_for">Bağlı · %1$s</string>
+    <string name="carlink_switcher_switch_title">Telefon değiştir</string>
+    <string name="carlink_switcher_no_phones">Eşleştirilmiş başka telefon yok</string>
+    <string name="carlink_switcher_no_phones_hint">Buradan geçiş yapmak için Bluetooth ayarlarında başka bir telefon eşleştirin.</string>
+    <string name="carlink_switcher_switching">Değiştiriliyor…</string>
+    <string name="carlink_switcher_home">CarLink ana ekranı</string>
+    <string name="carlink_switcher_size_reconnects">Değiştirmek birkaç saniyeliğine yeniden bağlar</string>
+    <string name="carlink_switcher_size_upright">Dikey tutunca Android Auto %1$s konumunda durur</string>
+    <string name="carlink_switcher_next_connection">Geçerli oturum bağlantısını korur.</string>
+    <string name="carlink_switcher_close">Kapat</string>
+    <string name="carlink_switcher_back">Geri</string>
+    <string name="carlink_switcher_not_now">Şimdi değil</string>
+    <string name="carlink_switcher_phone_fallback">yeni telefon</string>
+    <string name="carlink_switcher_night">Gece modu</string>
+    <string name="carlink_switcher_dimmer">Karartıcı</string>
+    <string name="carlink_switcher_dimmer_off">Kapalı</string>
+    <string name="carlink_switcher_dimmer_level">Düzey %1$d</string>
+    <string name="carlink_switcher_stereo_home">Stereo</string>
+    <string name="carlink_switcher_stereo_home_value">Başlatıcı</string>
+    <string name="carlink_switcher_night_next">Gece modu sonraki bağlantıda uygulanır; karartıcı hemen.</string>
+</resources>

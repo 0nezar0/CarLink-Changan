@@ -107,7 +107,11 @@ class ManualHotspotManager(
             configuredInterface = preferredInterface,
         ).await(timeoutMillis)
         confirmed = selected
-        onDiagnostic("hotspot interface confirmed iface=${selected.name} index=${selected.index} atNs=${System.nanoTime()}")
+        onDiagnostic(
+            "hotspot interface confirmed iface=${selected.name} index=${selected.index} " +
+                "ipv4=${(selected.address as? java.net.Inet4Address)?.hostAddress ?: "none"} " +
+                "atNs=${System.nanoTime()}",
+        )
         val network = NetworkInterface.getByName(selected.name)
         val localInterface = LocalHotspotInterface(selected.name, selected.address,
             runCatching { network?.hardwareAddress?.toMacAddressString() }.getOrNull()

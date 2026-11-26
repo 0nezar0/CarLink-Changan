@@ -150,6 +150,51 @@ Gallery: `docs/screenshots/*/*_headunit-1024x600_dark.webp` (full) and
 `*_headunit-1024x600-lite_{dark,light}.webp` (lite), for Ready, the Same Wi-Fi password card, Connecting,
 Connected, a failure, the Phones sheet, Settings › General and the Visual effects sheet.
 
+## Lite mode (private CS75 Plus build, 2026-11-19)
+
+Settings › Display › Lite mode (`settings/LiteMode.kt`): Off (default), Auto (from the session
+after a decoder strain report, `LiteModeMonitor`), Always. It never lowers sharpness: resolution,
+codec and bitrate stay as Automatic picked them.
+
+**What it does** (only with Picture = Automatic):
+
+| Lever | How | Why it cannot hurt the picture |
+|---|---|---|
+| 30 fps on both engines | negotiated with the phone (DiAuto `fps-limit` in service discovery, DiPlay `fps`) | the phone encodes fewer frames; nothing is dropped before the decoder, so no reference frame is lost |
+| CarPlay Direct video output, Android Auto SurfaceView | DiPlay `direct_video_output`, DiAuto `view-mode` 0 | no GPU composition pass per frame; DiAuto's `FrameReleasePacer` (timestamped release, late decoded frames dropped) only runs on SurfaceView |
+| CarLink's own layers simple | Visual effects Automatic resolves to Simple while Lite mode is in effect (`RenderingPolicy`) | the floating switcher and waiting view drop gradients and per-vsync animation; Full stays Full |
+
+**Precedence**, in `Connection.automaticPicture` order: PicturePolicy (decoder) → StereoQuirks →
+ChanganPicture (CarPlay 30 fps) → Lite mode. Lite only lowers a frame rate and only turns a
+surface on where no earlier rule turned it off (a quirk's `false` wins). Presets and Custom are
+the driver's: Lite does nothing there and the Settings row says "needs Picture: Automatic".
+Lab › Video surface (Android Auto) is now a Picture override like Direct video output (CarPlay):
+editing either sets Picture to Custom.
+
+**Undo** (`VideoSurfaceMemory`): both surface switches live in the engines' own settings and
+outlived the session, so turning Lite mode off used to leave them on. CarLink now remembers what it
+turned on and, under Automatic or a preset, turns it back (DiPlay off, DiAuto key removed so its
+own default applies) once nothing asks for it. Under Custom it forgets and leaves the driver's
+value. Switches written by builds before this change are not known and stay as they are.
+
+**Evaluated and not done**
+
+- Decoder low-latency keys in Lite mode (DiAuto `debugVideoLowLatency` ladder, DiPlay MTK modes):
+  they cut output delay, not decoding work, and the vendor modes are documented by their authors as
+  able to show artifacts; this project ships none without a device log. Left to Lab.
+- `KEY_PRIORITY` / `KEY_OPERATING_RATE`: DiPlay already sets realtime priority and the operating
+  rate per configure (with fallback); DiAuto deliberately sets none (rejected with err -1010 on the
+  units they were meant for). Nothing to add without an engine change.
+- Dropping frames before the decoder: would corrupt reference frames (artifacts). The engines
+  already shed only decoded frames at the renderer.
+- Lite on presets (fps + surface only): Best means 60 fps by the driver's choice; overriding it
+  silently would fight the preset. The Settings note was chosen instead.
+- Software decoding / forcing the hardware decoder: already Automatic's job (hardware decoder
+  probe, software held to 720p); the Advanced switch stays the driver's.
+- Audio buffers: they delay music, not the picture; not a load on the decoder.
+
+**Not verified on a device**: the emulator cannot carry a CarPlay or Android Auto session.
+
 ## Start-up
 
 - **The Android Auto engine process starts after the first frame.** `CarLinkApplication` used to
@@ -183,7 +228,7 @@ asks for more than before; it only steps down.
 
 | Rule | Android Auto (DiAuto) | CarPlay (DiPlay) |
 |---|---|---|
-| Codec | `video-codec` = H.264 when there is no hardware HEVC decoder; otherwise untouched | `hevc_enabled` = false when there is no hardware HEVC decoder; otherwise untouched |
+| Codec | `video-codec` = H.264 when there is no hardware HEVC decoder; otherwise untouched | `hevc_enabled` = false when there is no hardware HEVC decoder; true when it carries CarPlay's size and fps on a device neither low-end nor constrained, until HEVC once gave no picture on this screen (`CarPlayHevcMemory`); otherwise untouched |
 | Size | DiAuto's own panel class (800×480 → 480p, up to 1280×720 → 720p, larger → 1080p; portrait 720×1280 / 1080×1920), then down the ladder 1080p → 720p → 480p to the first the H.264 decoder carries at 30 fps. The panel class itself is written as `resolutionId` 0 (DiAuto's Automatic) | The panel at 100 %, 75 % or 50 % (`display_scale_percent`), the first the decoder carries at 30 fps; on slow hardware (the [lite signals](#lite-rendering)) also at most 1600×900 pixels |
 | Frame rate | 60 when the decoder carries 60 at that size and the device is not low-end ([lite signals](#lite-rendering)); otherwise 30 | 30 (DiPlay's default; Automatic never asked for 60) |
 | Software-only H.264 | at most 720p, 30 fps | at most 1280×720 pixels |
@@ -200,6 +245,22 @@ Examples:
 | The same unit with a 2000×1200 panel | 1080p (Automatic) or less, 30 fps, H.264 | **75 %** (1500×900), 30 fps, HEVC off, direct video output |
 | 1920×720 head unit whose decoder tops out at 720p30 | **720p**, **30 fps**, H.264 | **75 %** (1440×540), 30 fps |
 | 1920×1080 unit with only a software decoder | **720p**, **30 fps** | **50 %** (960×540) |
+
+**Compared with commercial head-unit apps (2026-11-22, static reading of their APKs;
+`re-headunit-apps/reports/speedplay.md` §5, `zlink.md` §4).** Neither gives a reason to change
+Automatic:
+
+- SpeedPlay's Android Auto density table is 215 dpi for an ordinary landscape panel (180 portrait,
+  150–180 for small panels). CarLink's Automatic density on a 160 dpi head unit at the default
+  Interface size (Medium, 135 %) is 216 dpi, capped so the canvas stays at least 748×450 dp
+  (`AaSessionSettings.automaticDensityDpi`); Small (100 %) gives 160 dpi for drivers who want more
+  on screen. The two agree on the common case, and CarLink's floor keeps Android Auto's full layout
+  on panels the table's small-panel rows would shrink below it.
+- ZLink forces 1280×720 on a fixed list of platforms (bengal, i.e. QCM6125, and some Unisoc/MTK
+  boards). CarLink already steps down by what the decoder reports carrying (Size row above), and
+  those stereos usually have 1280×720 panels, whose panel class is 720p anyway. A name list would
+  also hold a strong board with a 1080p panel at 720p. Kept as is; a stereo that proves otherwise
+  gets a `StereoQuirks` profile.
 
 Each session logs the decision to CarLink's event log ("Automatic picture: Android Auto 720p
 (panel) 30 fps H.264; CarPlay 100% of 1024x600 30 fps H.264; decoder …; low-end: 1981 MB RAM, 2

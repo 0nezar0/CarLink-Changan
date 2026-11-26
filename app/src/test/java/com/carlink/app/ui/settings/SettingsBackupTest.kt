@@ -4,6 +4,7 @@ import android.app.Application
 import com.carlink.app.ui.UiPreferences
 import com.carlink.app.ui.theme.ThemeMode
 import com.carlink.core.settings.AdvancedSettings
+import com.carlink.core.settings.AppLanguage
 import com.carlink.core.settings.CarBrand
 import com.carlink.core.settings.CarLinkPreferences
 import com.carlink.core.settings.Control
@@ -32,7 +33,8 @@ class SettingsBackupTest {
     private val custom = UnifiedSettings(
         carHotspot = WifiDetails("Car", "hotspot-pass"), homeWifi = WifiDetails("Home", "home-pass"),
         interfaceSize = InterfaceSize.LARGE, dayNight = DayNight.SCHEDULE, nightStartMinute = 20 * 60, rightHandDrive = true,
-        sendCarLocation = false, showAdvanced = true, wheelKeys = mapOf(WheelAction.VOICE to 231),
+        sendCarLocation = false, showAdvanced = true, appLanguage = "fr",
+        wheelKeys = mapOf(WheelAction.VOICE to 231),
     )
 
     private fun setUp() {
@@ -53,6 +55,7 @@ class SettingsBackupTest {
         assertEquals(mapOf(toggle.id to "true"), backup.advanced)
         SettingsBackup.applyPreferences(app, backup)
         assertEquals(custom, UnifiedSettingsStore(app).load())
+        assertEquals("fr", AppLanguage.current(app))
         UiPreferences(app).apply {
             assertEquals(ThemeMode.LIGHT, themeMode)
             assertEquals(1.3f, interfaceScale)
@@ -75,9 +78,9 @@ class SettingsBackupTest {
 
     @Test fun aRestoreResetsValuesTheBackupDoesNotHold() {
         val text = SettingsBackup.export(app, null, null, withPasswords = false) // all defaults: nothing stored
-        UiPreferences(app).themeMode = ThemeMode.DARK
+        UiPreferences(app).themeMode = ThemeMode.LIGHT
         SettingsBackup.applyPreferences(app, SettingsBackup.parse(text))
-        assertEquals(ThemeMode.FOLLOW_SYSTEM, UiPreferences(app).themeMode)
+        assertEquals(ThemeMode.DARK, UiPreferences(app).themeMode)
     }
 
     @Test fun badFilesAreRefusedBeforeAnythingIsWritten() {

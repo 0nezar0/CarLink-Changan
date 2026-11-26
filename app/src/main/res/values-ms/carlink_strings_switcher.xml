@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) translation of carlink_strings_switcher.xml. -->
+<resources>
+    <string name="carlink_switcher_bubble">Penukar CarLink</string>
+    <string name="carlink_switcher_bubble_action">Buka penukar telefon</string>
+    <string name="carlink_switcher_panel_window">Panel penukar CarLink</string>
+    <string name="carlink_switcher_dimmer_window">Redup CarLink</string>
+    <string name="carlink_switcher_connected_for">Disambungkan · %1$s</string>
+    <string name="carlink_switcher_switch_title">Tukar telefon</string>
+    <string name="carlink_switcher_no_phones">Tiada telefon berpasangan yang lain</string>
+    <string name="carlink_switcher_no_phones_hint">Pasangkan telefon lain dalam tetapan Bluetooth untuk bertukar kepadanya di sini.</string>
+    <string name="carlink_switcher_switching">Menaik taraf…</string>
+    <string name="carlink_switcher_home">Laman utama CarLink</string>
+    <string name="carlink_switcher_size_reconnects">Mengubahnya menyambung semula selama beberapa saat</string>
+    <string name="carlink_switcher_size_upright">Dalam orientasi tegak, Android Auto berhenti di %1$s</string>
+    <string name="carlink_switcher_next_connection">Sesi semasa mengekalkan sambungannya.</string>
+    <string name="carlink_switcher_close">Tutup</string>
+    <string name="carlink_switcher_back">Kembali</string>
+    <string name="carlink_switcher_not_now">Bukan sekarang</string>
+    <string name="carlink_switcher_phone_fallback">telefon baharu</string>
+    <string name="carlink_switcher_night">Mod malam</string>
+    <string name="carlink_switcher_dimmer">Redup</string>
+    <string name="carlink_switcher_dimmer_off">Mati</string>
+    <string name="carlink_switcher_dimmer_level">Tahap %1$d</string>
+    <string name="carlink_switcher_stereo_home">Stereo</string>
+    <string name="carlink_switcher_stereo_home_value">Pelancar</string>
+    <string name="carlink_switcher_night_next">Mod malam digunakan dari sambungan seterusnya; redup serta-merta.</string>
+</resources>

@@ -112,7 +112,8 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
     val u = ui.unified
     val select: ((com.carlink.core.settings.UnifiedSettings) -> com.carlink.core.settings.UnifiedSettings) -> Unit =
         { change -> actions.update(change); onDismiss() }
-    when (SheetKey.essential(key)) {
+    val essential = SheetKey.essential(key)
+    when (essential) {
         null -> Unit
         EssentialSheet.CONNECTION_METHOD -> ChoiceSheet(
             stringResource(R.string.carlink_settings_method), stringResource(R.string.carlink_settings_method_sheet_body), true,
@@ -151,11 +152,13 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
             stringResource(R.string.carlink_settings_interface_size), stringResource(R.string.carlink_settings_interface_size_detail), true,
             listOf(
                 Preset(InterfaceSize.SMALL, interfaceSizeLabel(InterfaceSize.SMALL), stringResource(R.string.carlink_settings_size_small_detail),
-                    preview = { ScalePreview(0.8f) }),
-                Preset(InterfaceSize.MEDIUM, interfaceSizeLabel(InterfaceSize.MEDIUM), stringResource(R.string.carlink_settings_size_medium_detail),
                     preview = { ScalePreview(1f) }),
-                Preset(InterfaceSize.LARGE, interfaceSizeLabel(InterfaceSize.LARGE), stringResource(R.string.carlink_settings_size_large_detail),
+                Preset(InterfaceSize.MEDIUM, interfaceSizeLabel(InterfaceSize.MEDIUM), stringResource(R.string.carlink_settings_size_medium_detail),
                     preview = { ScalePreview(1.25f) }),
+                Preset(InterfaceSize.LARGE, interfaceSizeLabel(InterfaceSize.LARGE), stringResource(R.string.carlink_settings_size_large_detail),
+                    preview = { ScalePreview(1.55f) }),
+                Preset(InterfaceSize.EXTRA_LARGE, interfaceSizeLabel(InterfaceSize.EXTRA_LARGE),
+                    stringResource(R.string.carlink_settings_size_extra_large_detail), preview = { ScalePreview(1.85f) }),
             ) + customPreset(u.interfaceSize == InterfaceSize.CUSTOM, InterfaceSize.CUSTOM),
             u.interfaceSize, onSelect = { s -> select { it.copy(interfaceSize = s) } }, onDismiss = onDismiss,
         )
@@ -177,25 +180,6 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
         EssentialSheet.NIGHT_END -> TimeSheet(stringResource(R.string.carlink_settings_night_end), u.nightEndMinute,
             presets = listOf(5, 6, 7, 8).map { it * 60 }, onChange = { m -> actions.update { it.copy(nightEndMinute = m) } },
             onDismiss = onDismiss)
-        EssentialSheet.MARGIN_TOP -> ChoiceSheet(stringResource(R.string.carlink_settings_margin_app),
-            stringResource(R.string.carlink_settings_margin_app_detail), true,
-            SCREEN_MARGIN_PX.map { Preset(it, marginLabel(it)) }, u.marginTopPx,
-            onSelect = { px -> select { it.copy(marginTopPx = px) } }, onDismiss = onDismiss)
-        EssentialSheet.CP_MARGIN_TOP, EssentialSheet.CP_MARGIN_BOTTOM, EssentialSheet.CP_MARGIN_LEFT, EssentialSheet.CP_MARGIN_RIGHT,
-        EssentialSheet.AA_MARGIN_TOP, EssentialSheet.AA_MARGIN_BOTTOM, EssentialSheet.AA_MARGIN_LEFT, EssentialSheet.AA_MARGIN_RIGHT -> {
-            val (carPlay, edge) = projectionMargin(SheetKey.essential(key)!!)!!
-            val (title, body) = edge.texts()
-            val engine = stringResource(if (carPlay) R.string.carlink_engine_carplay else R.string.carlink_engine_android_auto)
-            val margins = if (carPlay) u.carPlayMargins else u.androidAutoMargins
-            ChoiceSheet("$engine · ${stringResource(title)}", stringResource(body), true,
-                SCREEN_MARGIN_PX.map { Preset(it, marginLabel(it)) }, margins.get(edge),
-                onSelect = { px ->
-                    select {
-                        if (carPlay) it.copy(carPlayMargins = it.carPlayMargins.with(edge, px))
-                        else it.copy(androidAutoMargins = it.androidAutoMargins.with(edge, px))
-                    }
-                }, onDismiss = onDismiss)
-        }
         EssentialSheet.DRIVING_SIDE -> ChoiceSheet(
             stringResource(R.string.carlink_settings_driving_side), stringResource(R.string.carlink_settings_driving_side_detail), true,
             listOf(
@@ -251,7 +235,11 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
                 EssentialSheet.CALL_LEVEL -> Triple(R.string.carlink_settings_level_calls, R.string.carlink_settings_level_sheet_body, u.callLevelDb)
                 else -> Triple(R.string.carlink_settings_mic_gain, R.string.carlink_settings_mic_gain_sheet_body, u.micGainDb)
             }
-            val choices = if (sheet == EssentialSheet.MIC_GAIN) AudioLevels.MIC_DB else AudioLevels.PLAYBACK_DB
+            val choices = when (sheet) {
+                EssentialSheet.MIC_GAIN -> AudioLevels.MIC_DB
+                EssentialSheet.NAVIGATION_LEVEL -> AudioLevels.NAVIGATION_DB
+                else -> AudioLevels.PLAYBACK_DB
+            }
             ChoiceSheet(stringResource(title), stringResource(body), true,
                 choices.map { Preset(it, levelLabel(it)) }, current,
                 onSelect = { db ->
@@ -348,9 +336,8 @@ internal fun SettingsSheetHost(key: String?, ui: SettingsUi, actions: SettingsAc
 }
 
 /**
- * The car brand as a grid of large text tiles: Changan first (this build's car, the only tile
- * with its logo; see [brandLogo]), the makes popular in India by sales, then luxury makes, then
- * "Other / not listed". Below it, what the choice does
+ * The car brand as a grid of large text tiles: Changan first, then the makes popular in India
+ * by sales, then luxury makes, then "Other / not listed". Every tile is the name only. Below it, what the choice does
  * (only BYD changes anything) and what this screen was detected as. Settings › Car › Car brand and
  * the setup's car step. Both hosts scroll, so the grid is a plain column of rows, not a lazy grid.
  */
@@ -409,7 +396,11 @@ internal fun CarBrandNote(selected: CarBrand?, detected: CarBrand?, showChoice: 
         Icon(painterResource(if (byd) R.drawable.carlink_ic_info_filled else R.drawable.carlink_ic_info), null,
             Modifier.padding(top = 2.dp).size(dimens.iconTertiary + 4.dp), tint = if (byd) scheme.primary else scheme.onSurfaceVariant)
         Spacer(Modifier.width(if (isCar) 14.dp else 10.dp))
-        Text(stringResource(if (byd) R.string.carlink_settings_car_explain_byd else R.string.carlink_settings_car_explain_other),
+        Text(stringResource(when {
+                byd -> R.string.carlink_settings_car_explain_byd
+                (selected ?: detected)?.isChanganCs75Plus == true -> R.string.carlink_settings_car_explain_changan
+                else -> R.string.carlink_settings_car_explain_other
+            }),
             style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
     }
     // BYD chosen on a screen that is not a BYD DiLink unit (a phone or tablet, issue #18): its
@@ -455,18 +446,6 @@ private fun BrandTile(brand: CarBrand, selected: Boolean, narrow: Boolean, onCli
         Row(Modifier.fillMaxSize().padding(horizontal = if (car) 18.dp else 14.dp, vertical = if (car) 12.dp else 8.dp),
             verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                brandLogo(brand)?.let { logo ->
-                    // Above the name, so a narrow tile never breaks "Changan" mid-word. Same footprint
-                    // as the settings rows' icon tiles (RowGlyph: 56dp in a car, 40dp elsewhere), in dp
-                    // so it scales with the panel's density; the mark keeps its aspect (Fit), on a
-                    // white chip so the dark blue reads on the graphite glass too.
-                    val chip = if (car) 56.dp else 40.dp
-                    Box(Modifier.size(chip).clip(CircleShape).background(Color.White), contentAlignment = Alignment.Center) {
-                        androidx.compose.foundation.Image(painterResource(logo), null, Modifier.size(chip * 0.64f),
-                            contentScale = androidx.compose.ui.layout.ContentScale.Fit)
-                    }
-                    Spacer(Modifier.height(if (car) 8.dp else 6.dp))
-                }
                 // "Mercedes-Benz" may wrap after its hyphen, never inside a word.
                 Text(carBrandLabel(brand).replace("-", "-\u200B"),
                     style = if (narrow) MaterialTheme.typography.titleSmall else MaterialTheme.typography.titleMedium,
@@ -859,11 +838,12 @@ private tailrec fun android.content.Context.findActivity(): android.app.Activity
 }
 
 /**
- * A make's logo, where this build ships one: Changan only (Wikimedia Commons, CC BY-SA 4.0; a
- * trademark of Changan Automobile, used to identify the car in a private build).
+ * A make's logo beside the chosen brand in Settings, not in the brand list. Changan only
+ * (Wikimedia Commons, CC BY-SA 4.0; a trademark of Changan Automobile, used to identify the car
+ * in a private build). The list itself is the name alone.
  */
 @androidx.annotation.DrawableRes
 internal fun brandLogo(brand: CarBrand?): Int? = when (brand) {
-    CarBrand.CHANGAN -> R.drawable.carlink_logo_changan
+    CarBrand.CHANGAN_CS75_PLUS -> R.drawable.carlink_logo_changan
     else -> null
 }

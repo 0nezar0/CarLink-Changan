@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings_call_popup.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_hide_byd_call_popup">BYD híváselőugró elrejtése (kísérleti)</string>
+    <string name="settings_hide_byd_call_popup_description">Csak Android 10 vagy újabb BYD fejegységeken. Jóváhagyott helyi ADB-t igényel. Elrejti a natív híváselőugrót, amíg a csatlakoztatott CarPlay előtérben van; a háttérben visszaállítja. Nem változtatja a Bluetooth-hangot, és nem rejti el a teljes telefonalkalmazást.</string>
+</resources>

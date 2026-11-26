@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings_call_popup.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_hide_byd_call_popup">BYD-Anruf-Popup ausblenden (experimentell)</string>
+    <string name="settings_hide_byd_call_popup_description">Nur BYD-Hauptgeräte mit Android 10 oder neuer. Erfordert genehmigtes lokales ADB. Blendet das systemeigene Anruf-Popup aus, während verbundenes CarPlay im Vordergrund ist; stellt es im Hintergrund wieder her. Ändert weder Bluetooth-Audio noch blendet es die vollständige Telefon-App aus.</string>
+</resources>

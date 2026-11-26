@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Changan Automobile logo ("Changan icon.svg", Wikimedia Commons, by 292Jacob, CC BY-SA 4.0:
      https://commons.wikimedia.org/wiki/File:Changan_icon.svg), converted to a vector drawable.
-     The logo and name are trademarks of Changan Automobile, used here only to identify the car
-     in a private build; no affiliation. -->
+     The logo and name are trademarks of Changan Automobile, used here only to identify the car;
+     CarLink has no official connection with the company. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="28dp"
     android:height="24dp"

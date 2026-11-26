@@ -18,6 +18,7 @@ import java.nio.ByteBuffer
 import java.util.Locale
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicLong
 
 interface VideoDimensionsListener {
     fun onVideoDimensionsChanged(width: Int, height: Int)
@@ -230,6 +231,7 @@ class VideoDecoder(
     private var requestedMaxInputSize = 0
     private var loggedInputBufferCapacity = false
     private var loggedDecoderCapability = false
+    private var lastCodecChoiceLogged: String? = null
 
     /**
      * What the component claimed at configure time, kept so the backpressure line can quote it.
@@ -278,6 +280,9 @@ class VideoDecoder(
     // never sent; high means frames are arriving faster than the codec drains them, which on a
     // healthy link is the signature of a burst after the link went quiet.
     @Volatile private var inputWaitMs = 0L
+    // CarLink: incoming totals for Connection status.
+    private val liveBytes = AtomicLong()
+    private val liveReceived = AtomicLong()
     private var lastThroughputLogMs = 0L
     private var lastLoggedFramesFed = 0L
     private var lastLoggedFramesDropped = 0L
@@ -670,6 +675,7 @@ class VideoDecoder(
             loggedFirstHardwareFrame = false
             loggedInputBufferCapacity = false
             loggedDecoderCapability = false
+            lastCodecChoiceLogged = null
             decoderCapability = null
             backpressureWindows = 0
             reportedBackpressure = false
@@ -710,6 +716,9 @@ class VideoDecoder(
         synchronized(this) {
             // Input-side liveness: bytes are arriving from the phone right now.
             lastInputBytesReceivedMs = SystemClock.elapsedRealtime()
+            liveBytes.addAndGet(size.toLong()) // CarLink
+            liveReceived.incrementAndGet() // CarLink
+            publishConnectionStatus() // CarLink
 
             // Check if a restart was requested by output thread
             if (decoderNeedsRestart) {
@@ -799,11 +808,16 @@ class VideoDecoder(
                         hevcUsable = hevcUsable,
                     )
                     if (selected != requestedType) {
-                        AppLog.i(
-                            "Building a $selected decoder although the setting asks for " +
-                                "$requestedType (stream says ${detectedType ?: "nothing yet"}, " +
-                                "HEVC detectable=$hevcDetectable usable=$hevcUsable)"
-                        )
+                        val choice = "Building a $selected decoder although the setting asks for " +
+                            "$requestedType (stream says ${detectedType ?: "nothing yet"}, " +
+                            "HEVC detectable=$hevcDetectable usable=$hevcUsable)"
+                        // Once per choice, not once per frame: with no surface to start on, this
+                        // runs for every frame fed, and one dashboard session without a window put
+                        // 3,791 copies in a 6,000-line report (#64).
+                        if (choice != lastCodecChoiceLogged) {
+                            lastCodecChoiceLogged = choice
+                            AppLog.i(choice)
+                        }
                     }
                     selected
                 }
@@ -928,12 +942,29 @@ class VideoDecoder(
      */
     private fun notifyFrameDropped() {
         framesDropped++
+        publishConnectionStatus() // CarLink
         val now = SystemClock.elapsedRealtime()
         if (VideoRecoveryPolicy.shouldRequestOnDroppedFrame(lastFrameRenderedMs != 0L, now, lastDropKeyframeRequestMs)) {
             lastDropKeyframeRequestMs = now
             AppLog.w("VideoDecoder: dropped a reference frame, requesting keyframe")
             onFrameDropped?.invoke()
         }
+    }
+
+    // CarLink: the main process reads this file for Settings › Diagnostics › Connection status.
+    private fun publishConnectionStatus() {
+        com.andrerinas.openheadunit.HostMediaSnapshot.write(
+            width = mWidth,
+            height = mHeight,
+            configuredFps = settings.fpsLimit,
+            codec = currentCodecType.name,
+            decoderName = currentCodecName,
+            received = liveReceived.get(),
+            rendered = framesRendered,
+            dropped = framesDropped,
+            late = framesSkippedAtRender,
+            bytes = liveBytes.get(),
+        )
     }
 
     /**
@@ -1932,6 +1963,7 @@ class VideoDecoder(
                         frameCount = 0
                         lastFpsLogTime = now
                     }
+                    publishConnectionStatus() // CarLink
                 } else if (outputIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
                     handleOutputFormatChange(currentCodec.outputFormat)
                 }

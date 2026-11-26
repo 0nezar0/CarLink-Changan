@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for picture.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="picture_done">Fertig</string>
+    <string name="picture_adjustments">Bildanpassungen</string>
+    <string name="picture_live_hint">Direkt im Haupt-CarPlay-Video. Änderungen werden sofort gespeichert. Das unveränderte Bild dient nur zum kurzzeitigen Vergleich.</string>
+    <string name="picture_show_original">Unverändert anzeigen</string>
+    <string name="picture_brightness">Helligkeit</string>
+    <string name="picture_contrast">Kontrast</string>
+    <string name="picture_saturation">Sättigung</string>
+    <string name="picture_warmth">Wärmeton</string>
+    <string name="picture_reset">Bild zurücksetzen</string>
+</resources>

@@ -6,8 +6,13 @@ plugins {
 
 // Optional local-only CarPlay accessory identity (see vendor/diplay docs). Ordinary builds
 // contain no credentials; CarPlay then reports that authentication assets are missing.
-val localAuthenticationAssets = providers.environmentVariable("DIPLAY_AUTH_ASSETS_DIR")
-    .orNull?.let { file(it).canonicalFile }
+// Private repo: the environment variable DIPLAY_AUTH_ASSETS_DIR wins; otherwise the project's own
+// setting DIPLAY_AUTH_ASSETS_DIR in gradle.properties (relative to the repo root, default mfi).
+val localAuthenticationAssets = (providers.environmentVariable("DIPLAY_AUTH_ASSETS_DIR").orNull
+    ?.let { file(it).canonicalFile }
+    ?: providers.gradleProperty("DIPLAY_AUTH_ASSETS_DIR").orNull
+        ?.let { rootProject.file(it).canonicalFile })
+    ?.takeIf { it.resolve("offline-mfi").isDirectory }
 
 // About shows the CarPlay engine's own version. DiPlay keeps it in its (unbuilt) :mobile module,
 // so read it from there; a subtree pull then updates About without a CarLink change.
@@ -61,12 +66,15 @@ android {
         applicationId = providers.gradleProperty("carlink.applicationId").get()
         minSdk = 25
         targetSdk = 37
-        // CarLink CS75 Plus 2023 (this build): its own name and counter, so it is never mistaken for
-        // upstream CarLink's 1.0.x. versionCode carries on from upstream's scheme and rises by one
-        // with every release (10030 = CS75 Plus 2023 v1.0). The in-app updater runs only in
-        // upstream's signed release build, so a name it cannot parse changes nothing here.
-        versionName = "CS75 Plus 2023 v1.0"
-        versionCode = 10030
+        // Releases: change versionName only. versionCode = major * 10000 + minor * 100 + patch
+        // (1.0.0 → 10000, 1.2.3 → 10203), so minor and patch stay below 100. The in-app updater
+        // (update/AppVersion.kt) and scripts/release.sh rely on it; docs/RELEASING.md.
+        // Private build: its own version name, so it is never mistaken for upstream CarLink 1.0.x.
+        // This tree includes upstream 1.0.18 (b7a0973d). Overrides stay available for local APKs.
+        versionName = providers.gradleProperty("carlink.versionName").getOrElse("CS75 Plus 2023 v1.6")
+        versionCode = providers.gradleProperty("carlink.versionCode")
+            .map { it.toInt() }
+            .getOrElse(10036)
         buildConfigField("String", "DIPLAY_VERSION_NAME", "\"$diPlayVersionName\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -98,15 +106,20 @@ android {
     // units. 32-bit x86 is for the Intel head units (Spreadtrum SC9853i, FYT/SYU; j0hann3sk's fork),
     // and an x86_64 device runs it too. x86_64 itself is only for the emulator: debug builds carry
     // it, release builds only with -Pcarlink.emulatorAbi=true (docs/LOW_END_PERFORMANCE.md).
-    val deviceAbis = listOf("arm64-v8a", "armeabi-v7a", "x86")
+    val deviceAbis = providers.gradleProperty("carlink.abis").orNull
+        ?.split(",")
+        ?.map { it.trim() }
+        ?.filter { it.isNotEmpty() }
+        ?: listOf("arm64-v8a", "armeabi-v7a", "x86")
     val releaseEmulatorAbi = providers.gradleProperty("carlink.emulatorAbi").orNull == "true"
     buildTypes {
         debug {
             applicationIdSuffix = providers.gradleProperty("carlink.debugApplicationIdSuffix").get()
-            versionNameSuffix = "-hud-test2"
+            versionNameSuffix = providers.gradleProperty("carlink.versionNameSuffix").orNull ?: "-hud-test2"
             ndk { abiFilters += deviceAbis + "x86_64" }
         }
         release {
+            providers.gradleProperty("carlink.versionNameSuffix").orNull?.let { versionNameSuffix = it }
             ndk { abiFilters += if (releaseEmulatorAbi) deviceAbis + "x86_64" else deviceAbis }
             // R8 shrinks and optimizes code and resources, without renaming (-dontobfuscate):
             // app rules in src/main/keepRules/carlink.keep, engine rules in the engines'
@@ -133,7 +146,7 @@ android {
     // language falls back to English everywhere, including engine screens. Extend
     // xml/locales_config.xml and AppLanguage.SUPPORTED when adding a language.
     androidResources {
-        localeFilters += listOf("en", "ar")
+        localeFilters += listOf("en", "ar", "es", "pt", "fr", "it", "de", "ms", "tr", "zh-rCN", "hu")
     }
 
     packaging {
@@ -146,7 +159,7 @@ android {
                 // Bouncy Castle's Picnic (post-quantum signature) tables, 1.2 MB: neither engine
                 // uses Picnic, and only Picnic's own classes read them.
                 "org/bouncycastle/pqc/crypto/picnic/*.properties",
-                // Its German certificate-path messages (CarLink ships English and Arabic only).
+                // Bouncy Castle's German certificate-path messages (not CarLink UI).
                 "org/bouncycastle/x509/CertPathReviewerMessages_de.properties",
                 // kotlinx-coroutines' debug-agent probes; only read by an attached debug agent.
                 "DebugProbesKt.bin",

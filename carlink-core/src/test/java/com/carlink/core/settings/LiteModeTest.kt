@@ -28,6 +28,30 @@ class LiteModeTest {
         assertTrue(LitePicture.lowers(PicturePolicy.ENGINE_DEFAULTS))
     }
 
+    @Test fun aStereoQuirkThatTurnsASurfaceOffWins() {
+        val quirk = sharp.copy(carPlayDirectVideo = false, aaSurfaceView = false)
+        val lite = LitePicture.apply(quirk)
+        assertEquals(false, lite.carPlayDirectVideo)
+        assertEquals(false, lite.aaSurfaceView)
+        assertEquals(30, lite.aaFps)
+    }
+
+    @Test fun liteNeverRaisesWhatChanganOrThePolicyLowered() {
+        val changan = ChanganPicture.apply(CarBrand.CHANGAN_CS75_PLUS, sharp)
+        val lite = LitePicture.apply(changan)
+        assertEquals(changan.carPlayFps, lite.carPlayFps)
+        assertEquals(changan.carPlayScalePercent, lite.carPlayScalePercent)
+    }
+
+    @Test fun inEffectOnlyUnderAutomaticPicture() {
+        assertTrue(LitePicture.inEffect(LiteMode.ALWAYS, engaged = false, picture = Picture.AUTOMATIC))
+        assertTrue(LitePicture.inEffect(LiteMode.AUTO, engaged = true, picture = Picture.AUTOMATIC))
+        for (p in listOf(Picture.BEST, Picture.BALANCED, Picture.LIGHT, Picture.CUSTOM)) {
+            assertFalse("$p is the driver's", LitePicture.inEffect(LiteMode.ALWAYS, engaged = true, picture = p))
+        }
+        assertFalse(LitePicture.inEffect(LiteMode.OFF, engaged = true, picture = Picture.AUTOMATIC))
+    }
+
     @Test fun eachModeSaysWhenItApplies() {
         assertFalse(LitePicture.active(LiteMode.OFF, engaged = true))
         assertTrue(LitePicture.active(LiteMode.ALWAYS, engaged = false))

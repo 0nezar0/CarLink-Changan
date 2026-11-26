@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carlink_cs75_nav_title">Navigationsleiste</string>
+    <string name="carlink_cs75_nav_description">Vom linken oder rechten Rand nach innen wischen, um die Leiste anzuzeigen. Erneut vom selben Rand wischen, um sie auszublenden. Benötigt den Bedienungshilfen-Dienst von CarLink.</string>
+    <string name="carlink_cs75_nav_back">Zurück</string>
+    <string name="carlink_cs75_nav_home">Startseite</string>
+    <string name="carlink_cs75_nav_apps">Installierte Apps</string>
+    <string name="carlink_cs75_nav_settings">Android-Einstellungen</string>
+    <string name="carlink_cs75_nav_apps_unavailable">Die App konnte nicht geöffnet werden.</string>
+</resources>

@@ -63,15 +63,15 @@
     <string name="carlink_diag_stereo_bt_ok_body">Built in. Wireless CarPlay and Android Auto can use it.</string>
     <string name="carlink_diag_stereo_bt_external">Car stereo Bluetooth is a separate module</string>
     <!-- %1$s: the evidence, e.g. "a Bluetooth module service is running, the module's serial port". -->
-    <string name="carlink_diag_stereo_bt_external_body">Found: %1$s. Apps can\'t use this module, so wireless CarPlay and Android Auto can\'t start on this stereo yet. A USB cable works.</string>
+    <string name="carlink_diag_stereo_bt_external_body">Found: %1$s. Apps can’t use this module, so wireless CarPlay and Android Auto can’t start on this stereo yet. A USB cable works.</string>
     <string name="carlink_diag_stereo_bt_maybe">Car stereo Bluetooth may be a separate module</string>
-    <string name="carlink_diag_stereo_bt_maybe_body">Found: %1$s. Your phone is paired with this stereo\'s Android Bluetooth, so wireless may still work. If it doesn\'t, a USB cable works.</string>
-    <string name="carlink_diag_stereo_bt_override_note">“Wireless through the stereo\'s Bluetooth module (experimental)” is on in Settings.</string>
+    <string name="carlink_diag_stereo_bt_maybe_body">Found: %1$s. Your phone is paired with this stereo’s Android Bluetooth, so wireless may still work. If it doesn’t, a USB cable works.</string>
+    <string name="carlink_diag_stereo_bt_override_note">“Wireless through the stereo’s Bluetooth module (experimental)” is on in Settings.</string>
     <string name="carlink_diag_stereo_signal_service">a Bluetooth module service is running</string>
-    <string name="carlink_diag_stereo_signal_fyt_setting">the stereo\'s settings name an external Bluetooth module</string>
-    <string name="carlink_diag_stereo_signal_fyt_port">the FYT module\'s serial port</string>
-    <string name="carlink_diag_stereo_signal_module_port">a Bluetooth module\'s serial port</string>
-    <string name="carlink_diag_stereo_signal_module_setting">the stereo\'s settings mark its Bluetooth as external</string>
+    <string name="carlink_diag_stereo_signal_fyt_setting">the stereo’s settings name an external Bluetooth module</string>
+    <string name="carlink_diag_stereo_signal_fyt_port">the FYT module’s serial port</string>
+    <string name="carlink_diag_stereo_signal_module_port">a Bluetooth module’s serial port</string>
+    <string name="carlink_diag_stereo_signal_module_setting">the stereo’s settings mark its Bluetooth as external</string>
     <string name="carlink_diag_stereo_signal_separator">",\u0020"</string>
     <string name="carlink_diag_bt_absent">This device has no Bluetooth</string>
     <string name="carlink_diag_bt_absent_body">Connect phones by USB.</string>
@@ -188,28 +188,32 @@
         <item quantity="other">%1$d more lines are only in Share log.</item>
     </plurals>
     <string name="carlink_report_public">This opens a public issue that anyone can read. Addresses and passwords are removed.</string>
+    <string name="carlink_report_email">You can also write to %1$s.</string>
     <string name="carlink_report_sign_in">The browser must be signed in to GitHub. Sign in once; it stays signed in.</string>
     <string name="carlink_report_full_log">The issue holds a short part of the log. Tap Copy full log, then paste it into the issue, or attach the file from Share log.</string>
+    <string name="carlink_report_update_first">CarLink %1$s is out (you have %2$s). Please update first: it may already fix this. If the problem stays, report it from the new version.</string>
+    <string name="carlink_report_update_action">Update to %1$s</string>
+    <string name="carlink_report_already_sent">You already sent this report at %1$s. Each report opens a new issue: send it again only if something changed, or add to the issue you opened.</string>
+    <string name="carlink_report_open_again">Send again</string>
     <string name="carlink_report_open">Open GitHub</string>
-    <string name="carlink_report_cancel">Cancel</string>
     <string name="carlink_report_qr_title">Report from your phone</string>
-    <string name="carlink_diag_hotspot_ok">Not on a phone\'s hotspot</string>
-    <string name="carlink_diag_hotspot_on_phone">This screen is on a phone\'s hotspot</string>
-    <string name="carlink_diag_hotspot_body">Its Wi-Fi is joined to %1$s. Wireless CarPlay and Android Auto turn that hotspot off and the connection drops in a loop. Forget that network here, or use the car\'s Wi-Fi.</string>
+    <string name="carlink_diag_hotspot_ok">Not on a phone’s hotspot</string>
+    <string name="carlink_diag_hotspot_on_phone">This screen is on a phone’s hotspot</string>
+    <string name="carlink_diag_hotspot_body">Its Wi-Fi is joined to %1$s. Wireless CarPlay and Android Auto turn that hotspot off and the connection drops in a loop. Forget that network here, or use the car’s Wi-Fi.</string>
     <string name="carlink_diag_unisoc_usb">Unisoc UMS512 chip</string>
-    <string name="carlink_diag_unisoc_usb_body">On some screens with this chip, wired CarPlay connects but the iPhone\'s data never arrives over USB. If the cable never gets past connecting, use wireless CarPlay instead.</string>
+    <string name="carlink_diag_unisoc_usb_body">On some screens with this chip, wired CarPlay connects but the iPhone’s data never arrives over USB. If the cable never gets past connecting, use wireless CarPlay instead.</string>
     <string name="carlink_diag_clock_ok">Clock is set</string>
-    <string name="carlink_diag_clock_wrong">The stereo\'s clock is wrong</string>
+    <string name="carlink_diag_clock_wrong">The stereo’s clock is wrong</string>
     <string name="carlink_diag_clock_body">The date is far in the past, as after a start without network time. Updates and some connections can fail; set the date or let the stereo get network time.</string>
     <string name="carlink_diag_storage_ok">Enough free storage</string>
     <string name="carlink_diag_storage_low">Storage almost full</string>
-    <string name="carlink_diag_storage_body">Less than 100 MB is free. CarLink may fail to save settings, logs or CarPlay\'s setup files.</string>
+    <string name="carlink_diag_storage_body">Less than 100 MB is free. CarLink may fail to save settings, logs or CarPlay’s setup files.</string>
     <string name="carlink_diag_vpn_ok">No other VPN</string>
     <string name="carlink_diag_vpn_other">Another VPN is on</string>
-    <string name="carlink_diag_vpn_body">Wired CarPlay needs Android\'s VPN slot. Turn off the other VPN, or its Always-on, while driving.</string>
+    <string name="carlink_diag_vpn_body">Wired CarPlay needs Android’s VPN slot. Turn off the other VPN, or its Always-on, while driving.</string>
     <string name="carlink_diag_competing_ok">No other phone-projection app</string>
     <string name="carlink_diag_competing_found">Another phone-projection app is installed</string>
-    <string name="carlink_diag_competing_body">%1$s can take your phone\'s Bluetooth, USB or the Wi-Fi Direct link before CarLink. If CarLink cannot connect, disable or force-stop it.</string>
+    <string name="carlink_diag_competing_body">%1$s can take your phone’s Bluetooth, USB or the Wi-Fi Direct link before CarLink. If CarLink cannot connect, disable or force-stop it.</string>
     <string name="carlink_home_report_expand">Show the code larger</string>
     <string name="carlink_report_qr_with_log">Details as text</string>
     <string name="carlink_report_qr_simple">Link to the issue page</string>
@@ -222,6 +226,7 @@
     <!-- ===== About ===== -->
     <string name="carlink_about_title">About</string>
     <string name="carlink_about_tagline">CarPlay and Android Auto in one app.</string>
+    <string name="carlink_about_contact">Contact</string>
     <!-- The version as a tag under the name, e.g. "Version 0.1.0 (1)". -->
     <string name="carlink_about_version_tag">Version %1$s</string>
     <string name="carlink_about_engines">Engines</string>
@@ -268,7 +273,7 @@
     <string name="carlink_about_lic_diauto_name" translatable="false">DiAuto</string>
     <string name="carlink_about_lic_diauto">GNU AGPL v3. Keeps the Open Headunit and Michael A. Reid copyright notices.</string>
     <string name="carlink_about_lic_bydmate_name">BYD HUD maneuver icons</string>
-    <string name="carlink_about_lic_bydmate">Copyright AndyShaman (BYDMate, github.com/AndyShaman/BYDMate). PolyForm Noncommercial License 1.0.0. These images are not covered by CarLink’s license. Upstream describes them as donor assets; their original source is not independently established.</string>
+    <string name="carlink_about_lic_bydmate">Copyright AndyShaman (BYDMate, github.com/AndyShaman/BYDMate). PolyForm Noncommercial License 1.0.0. These images are not covered by CarLink’s license. The source describes them as donor assets; where they came from is not independently established.</string>
     <string name="carlink_about_lic_ffmpeg_name" translatable="false">FFmpeg 7.1.1</string>
     <string name="carlink_about_lic_ffmpeg">GNU LGPL v2.1 or later. Software HEVC decoding on 64-bit ARM.</string>
     <string name="carlink_about_lic_libusb_name" translatable="false">libusb</string>
@@ -285,7 +290,7 @@
     <string name="carlink_about_lic_slf4j">MIT license.</string>
     <string name="carlink_about_lic_apache_name">Apache License 2.0</string>
     <string name="carlink_about_lic_apache">Material Symbols, AndroidX, Jetpack Compose, Material Components, Kotlin, Conscrypt, ZXing, JmDNS, DexMaker, Shizuku API and libsu.</string>
-    <string name="carlink_about_lic_others">Each library keeps its original notices. The full list of dependencies is in the build files of the source code.</string>
+    <string name="carlink_about_lic_others">Each library keeps its own notices. The full list of dependencies is in the build files of the source code.</string>
 
     <!-- Credits sheet -->
     <string name="carlink_about_credit_diplay">The CarPlay engine, by shihabal3amri. Based on xcertplay by shilapi, which credits LIVI and Showcase for protocol research.</string>
@@ -293,7 +298,7 @@
     <string name="carlink_about_credit_openheadunit_name" translatable="false">Open Headunit</string>
     <string name="carlink_about_credit_openheadunit">Formerly Headunit Revived. © 2025 André Rinas and contributors.</string>
     <string name="carlink_about_credit_headunit_name" translatable="false">headunit</string>
-    <string name="carlink_about_credit_headunit">The original software head unit for Android Auto. © 2011–2015 Michael A. Reid. GNU AGPL v3.</string>
+    <string name="carlink_about_credit_headunit">The software head unit for Android Auto. © 2011–2015 Michael A. Reid. GNU AGPL v3.</string>
     <string name="carlink_about_credit_bydmate_name" translatable="false">BYDMate</string>
     <string name="carlink_about_credit_bydmate">BYD HUD maneuver icons. Copyright AndyShaman.</string>
     <string name="carlink_about_credit_symbols_name" translatable="false">Material Symbols</string>
@@ -344,12 +349,74 @@
     <string name="carlink_diag_call_test_failed">The microphone could not be opened.</string>
     <string name="carlink_diag_call_test_permission">CarLink needs the microphone permission (Readiness checks above).</string>
     <string name="carlink_diag_call_test_busy">Not during a session: the phone is using the microphone.</string>
-    <!-- About › Thanks to the original developer -->
+    <!-- About › Thanks to the developer -->
     <string name="carlink_about_thanks">Special thanks</string>
-    <string name="carlink_about_thanks_body">Special thanks to %1$s, the original developer of CarLink, for this wonderful work.</string>
+    <string name="carlink_about_thanks_body">Special thanks to %1$s, the developer of CarLink, for this wonderful work.</string>
     <string name="carlink_about_thanks_builds_on">Thanks also to DiPlay and DiAuto / Open Headunit, the projects CarLink builds on.</string>
-    <string name="carlink_about_thanks_qr">Original CarLink</string>
-    <string name="carlink_about_changan_notice">Notice: the Changan name and logo are trademarks of Changan Automobile, used here only to identify the car in a private build that is not for distribution. There is no official connection with the company.</string>
+    <string name="carlink_about_edition_credit">Changan CS75 Plus edition: Nezar Alhazmi.</string>
+    <string name="carlink_about_thanks_qr">CarLink · F-e-n-y-x</string>
+    <string name="carlink_about_changan_notice">Notice: the Changan name and logo are trademarks of Changan Automobile, used here only to identify the car. CarLink has no official connection with the company.</string>
     <string name="carlink_about_credit_carlink_name" translatable="false">CarLink</string>
-    <string name="carlink_about_credit_carlink">The original CarLink app, by %1$s. %2$s</string>
+    <string name="carlink_about_credit_carlink">The CarLink app, by %1$s. %2$s</string>
+    <string name="carlink_status_title">Connection status</string>
+    <string name="carlink_status_unavailable">—</string>
+    <string name="carlink_status_resolution">Resolution</string>
+    <string name="carlink_status_fps">Frame rate</string>
+    <string name="carlink_status_incoming_fps">Incoming frame rate</string>
+    <string name="carlink_status_codec">Codec</string>
+    <string name="carlink_status_decoder">Decoder</string>
+    <string name="carlink_status_decoder_hardware">%1$s · hardware</string>
+    <string name="carlink_status_decoder_software">%1$s · software</string>
+    <string name="carlink_status_dropped">Dropped frames</string>
+    <string name="carlink_status_late">Late frames</string>
+    <string name="carlink_status_decode_latency">Decode latency</string>
+    <string name="carlink_status_bitrate">Bitrate</string>
+    <string name="carlink_status_audio">Audio streams</string>
+    <string name="carlink_status_sample_rate">Sample rate</string>
+    <string name="carlink_status_audio_buffer">Audio buffer</string>
+    <string name="carlink_status_wifi_band">Wi-Fi band</string>
+    <string name="carlink_status_wifi_speed">Link speed</string>
+    <string name="carlink_status_wifi_rssi">Signal</string>
+    <string name="carlink_status_reconnects">Reconnects</string>
+    <string name="carlink_status_band_24">2.4 GHz</string>
+    <string name="carlink_status_band_5">5 GHz</string>
+    <string name="carlink_status_audio_media">Media</string>
+    <string name="carlink_status_audio_nav">Navigation</string>
+    <string name="carlink_status_audio_voice">Voice</string>
+    <string name="carlink_status_audio_call">Call</string>
+    <string name="carlink_status_fps_value">%1$d fps</string>
+    <string name="carlink_status_latency_value">%1$d ms</string>
+    <string name="carlink_status_bitrate_value">%1$d kbps</string>
+    <string name="carlink_status_sample_rate_value">%1$d Hz</string>
+    <string name="carlink_status_buffer_value">%1$d ms</string>
+    <string name="carlink_status_speed_value">%1$d Mbps</string>
+    <string name="carlink_status_rssi_value">%1$d dBm</string>
+    <string name="carlink_status_list_separator">, </string>
+
+    <!-- CarLink v1.6.6: car-hotspot IP family (automatic IPv4 / IPv4 + IPv6) -->
+    <string name="carlink_ipfamily_title">IP family (car hotspot)</string>
+    <string name="carlink_ipfamily_empty_title">No car-hotspot connection yet</string>
+    <string name="carlink_ipfamily_empty_body">CarLink checks the car hotspot and picks IPv4 or IPv4 + IPv6 by itself on the first wireless CarPlay connection.</string>
+    <string name="carlink_ipfamily_in_use">In use</string>
+    <string name="carlink_ipfamily_v4">IPv4 only</string>
+    <string name="carlink_ipfamily_dual">IPv4 + IPv6</string>
+    <string name="carlink_ipfamily_supports">Screen supports IPv6</string>
+    <string name="carlink_ipfamily_yes">Yes</string>
+    <string name="carlink_ipfamily_no">No</string>
+    <string name="carlink_ipfamily_reason">Reason</string>
+    <string name="carlink_ipfamily_decided">Decided</string>
+    <string name="carlink_ipfamily_r_known">This screen (CS75 Plus 2023) is known to work with IPv4 only</string>
+    <string name="carlink_ipfamily_r_rem_v4">Remembered for this screen: IPv4 only</string>
+    <string name="carlink_ipfamily_r_rem_dual">Remembered for this screen: IPv4 + IPv6 worked before</string>
+    <string name="carlink_ipfamily_r_no_v4">The car hotspot has no IPv4 address</string>
+    <string name="carlink_ipfamily_r_v6_off">IPv6 is turned off on the car hotspot</string>
+    <string name="carlink_ipfamily_r_no_v6">No IPv6 address on the car hotspot</string>
+    <string name="carlink_ipfamily_r_v6_not_usable">The car hotspot\'s IPv6 address is not usable yet</string>
+    <string name="carlink_ipfamily_r_link_local">Only a local IPv6 address on the car hotspot, which is not enough</string>
+    <string name="carlink_ipfamily_r_no_route">No IPv6 route on the car hotspot</string>
+    <string name="carlink_ipfamily_r_usable">The car hotspot supports IPv6</string>
+    <string name="carlink_ipfamily_r_fb_tcp">Switched to IPv4 because the iPhone did not connect over IPv6; remembered for this screen</string>
+    <string name="carlink_ipfamily_r_fb_picture">Switched to IPv4 after a stall at Picture; remembered for this screen</string>
+    <string name="carlink_ipfamily_r_unknown">Not known</string>
+    <string name="carlink_ipfamily_auto_note">Chosen automatically. Nothing to set.</string>
 </resources>

@@ -7,12 +7,15 @@ import com.carlink.app.ui.UiPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.MainScope
-import java.io.File
 
 /** The app's one [UpdateController], wired to Android (network, PackageManager, PackageInstaller). */
 object Updates {
-    /** The release package; the debug build (`.hudtest`) never checks or installs. */
-    const val RELEASE_PACKAGE = "com.carlink.app"
+    /**
+     * The package of the APK installed in the car: the release build from the "Build CarLink"
+     * workflow (`-Pcarlink.applicationId=com.carlink.app.hudtest`). The local debug build has the
+     * same package but never checks or installs (BuildConfig.DEBUG).
+     */
+    const val RELEASE_PACKAGE = "com.carlink.app.hudtest"
     private const val TAG = "CarLink-Update"
 
     @Volatile private var instance: UpdateController? = null
@@ -22,8 +25,8 @@ object Updates {
     }
 
     /**
-     * Only the official release updates itself: a release build of [RELEASE_PACKAGE] signed with
-     * the release key. A build signed with another key could not install the update anyway.
+     * Only the car's release build updates itself: a release build of [RELEASE_PACKAGE] signed with
+     * this build's key ([ReleaseKey]). A build signed with another key could not install the update anyway.
      */
     fun isSupported(context: Context): Boolean =
         !BuildConfig.DEBUG && context.packageName == RELEASE_PACKAGE &&
@@ -45,7 +48,7 @@ object Updates {
             prefs = prefs,
             current = current,
             supported = supported,
-            downloadDir = File(app.cacheDir, "updates"),
+            downloadDir = { UpdateFiles.folder(app) },
             log = { Log.i(TAG, it) },
             awaitSessionQuiet = {
                 val connection = com.carlink.core.connection.Connection.get(app)

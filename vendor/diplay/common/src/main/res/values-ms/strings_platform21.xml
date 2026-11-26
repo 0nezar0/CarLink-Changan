@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for strings_platform21.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="platform21_cluster_mode">Tugas kluster Platform 21 (uji kaji)</string>
+    <string name="platform21_cluster_description">Untuk penyesuaian Tang DM-i 2023 pengawal-21. Dimatikan secara lalai. Hanya menggunakan paparan unjuran yang disahkan, mengekalkan peta separuh lebar yang berpusat dan tidak mengubah mod kluster kilang atau mematikan peta kilang. Memerlukan ADB setempat yang telah dibenarkan. Menggunakan tetapan ini menyambung semula CarPlay. Integrasi hulu ini memerlukan ujian semasa kereta letak.</string>
+</resources>

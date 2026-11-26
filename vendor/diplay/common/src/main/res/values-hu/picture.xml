@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for picture.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="picture_done">Kész</string>
+    <string name="picture_adjustments">Képbeállítások</string>
+    <string name="picture_live_hint">Élőben a fő CarPlay-videón. A változtatások azonnal mentődnek. A módosítatlan kép csak ideiglenes összehasonlítás.</string>
+    <string name="picture_show_original">Módosítatlan megjelenítése</string>
+    <string name="picture_brightness">Fényerő</string>
+    <string name="picture_contrast">Kontraszt</string>
+    <string name="picture_saturation">Telítettség</string>
+    <string name="picture_warmth">Melegség</string>
+    <string name="picture_reset">Kép visszaállítása</string>
+</resources>

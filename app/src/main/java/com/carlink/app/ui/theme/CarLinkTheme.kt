@@ -41,7 +41,7 @@ val LocalWindowLayout = staticCompositionLocalOf {
 val LocalReduceMotion = staticCompositionLocalOf { false }
 
 /**
- * Root of every CarLink screen: colors (following the car or system day/night by default),
+ * Root of every CarLink screen: colors (dark mode by default from v1.6.5),
  * profile-specific typography and sizes, the window size class, and, for [UiProfile.CAR], the
  * density that maps the screen's short side to an 810dp canvas (DESIGN_SPEC §5.0).
  *
@@ -51,7 +51,7 @@ val LocalReduceMotion = staticCompositionLocalOf { false }
 @Composable
 fun CarLinkTheme(
     profile: UiProfile,
-    themeMode: ThemeMode = ThemeMode.FOLLOW_SYSTEM,
+    themeMode: ThemeMode = ThemeMode.DARK,
     interfaceScale: Float = 1f,
     liteRendering: Boolean = false,
     content: @Composable () -> Unit,

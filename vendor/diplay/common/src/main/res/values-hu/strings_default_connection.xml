@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings_default_connection.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="default_connection_wireless">Vezeték nélkül</string>
+    <string name="default_connection_usb">USB</string>
+    <string name="default_connection_mode">Alapértelmezett kapcsolati mód</string>
+    <string name="default_connection_last_used">Utoljára használt</string>
+    <string name="default_connection_description">A DiPlay megnyitásakor az alapértelmezett kapcsolati módot és a kiválasztott iPhone-t használja. A kézi csatlakozás gombjai az Ön által választott módot használják.</string>
+</resources>

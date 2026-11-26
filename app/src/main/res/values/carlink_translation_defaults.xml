@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carlink_home_open_settings">Open settings</string>
+    <string name="carlink_home_phone_connected">Connected to the car</string>
+    <string name="carlink_home_phone_not_nearby">Paired</string>
+    <string name="carlink_report_cancel">Cancel</string>
+    <string name="carlink_settings_close">Close</string>
+    <string name="carlink_setup_step_welcome">Welcome</string>
+    <string name="carlink_setup_step_permissions">Access</string>
+    <string name="carlink_setup_step_car">Car</string>
+    <string name="carlink_setup_step_pair">Phone</string>
+</resources>

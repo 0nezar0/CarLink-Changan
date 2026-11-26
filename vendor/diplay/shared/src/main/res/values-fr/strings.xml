@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French (fr) vendor strings for strings.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="carapp_hw_status_title">État du matériel de xcertplay</string>
+    <string name="carapp_hw_not_configured">Le transport matériel n’est pas configuré. L’I2C de la carte nécessite un chemin /dev/i2c-N et l’autorisation de l’OS/SELinux ; CH341 nécessite une configuration VID/PID déployée.</string>
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French (fr) vendor strings for strings_settings_layout.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_overview">Vue d’ensemble</string>
+    <string name="settings_overview_subtitle">L’essentiel pour une conduite confortable et fiable.</string>
+    <string name="settings_your_setup">Votre configuration</string>
+    <string name="settings_quick_settings">Réglages rapides</string>
+    <string name="settings_display">Affichage</string>
+    <string name="settings_navigation">Navigation</string>
+    <string name="settings_vehicle">Véhicule</string>
+    <string name="settings_advanced">Avancé</string>
+    <string name="settings_more">Plus</string>
+    <string name="settings_swipe_advanced">Avancé (expérimental)</string>
+    <string name="settings_advanced_subtitle">Commandes expérimentales et propres à certains véhicules, pour utilisateurs expérimentés</string>
+    <string name="settings_advanced_caution_title">À modifier avec précaution</string>
+    <string name="settings_advanced_caution_description">Ces fonctions peuvent dépendre du micrologiciel du véhicule, de l’accès ADB ou du comportement expérimental de CarPlay. Les réglages courants sont organisés dans les catégories ci-dessus.</string>
+    <string name="settings_search">Rechercher</string>
+    <string name="settings_open_category">Ouvrir les paramètres %1$s</string>
+    <string name="settings_ready_connected">CarPlay est actif. Les modifications qui nécessitent une reconnexion le signaleront.</string>
+    <string name="settings_connection_summary">Téléphone, câble, sans fil et connexion automatique</string>
+    <string name="settings_display_summary">Apparence, plein écran, résolution et fréquence d’images</string>
+    <string name="settings_audio_summary">Routage des haut-parleurs et tampon musique</string>
+    <string name="settings_navigation_summary">Transmission de la position et guidage compatible sur le tableau de bord</string>
+    <string name="settings_vehicle_summary">Côté de conduite, touches du volant, bouton de la voiture et gestes CarPlay</string>
+    <string name="settings_advanced_media">Vidéo et audio</string>
+    <string name="settings_wheel_keys">Touches du volant</string>
+    <string name="settings_experimental_display">Affichage (expérimental)</string>
+    <string name="settings_diagnostics_summary">Enregistrer un rapport local pour dépanner une connexion</string>
+    <string name="settings_full_screen_description">Masquer les barres d’état et de navigation dans DiPlay et CarPlay.</string>
+    <string name="settings_vehicle_description">Les fonctions du véhicule et du tableau de bord varient selon le modèle et le micrologiciel. Consultez-les dans les paramètres avancés avant d’activer des commandes expérimentales.</string>
+    <string name="settings_open_advanced">Ouvrir les paramètres avancés</string>
+    <string name="settings_reconnect_pending">Enregistré. Certaines modifications s’appliquent à la reconnexion de CarPlay.</string>
+    <string name="settings_reconnect_now">Reconnecter maintenant</string>
+    <string name="settings_byd_navigation_unavailable">Le guidage sur le tableau de bord et le HUD BYD n’est pas disponible sur cet autoradio.</string>
+    <string name="settings_search_hint">Rechercher dans les paramètres</string>
+    <string name="settings_search_empty">Aucun réglage ne correspond. Essayez un autre mot.</string>
+    <string name="settings_ready_wireless">CarPlay sans fil se connectera à %1$s.</string>
+    <string name="settings_ready_usb">Connectez votre iPhone avec un câble USB pour démarrer CarPlay.</string>
+    <string name="settings_connecting_description">DiPlay démarre CarPlay avec votre iPhone.</string>
+    <string name="settings_choose_iphone_title">Choisissez votre iPhone</string>
+    <string name="settings_choose_iphone_description">CarPlay sans fil nécessite un iPhone associé pour pouvoir se connecter.</string>
+    <string name="settings_choose_iphone_action">Choisir l’iPhone</string>
+</resources>

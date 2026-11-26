@@ -6,6 +6,7 @@ import com.carlink.app.ui.theme.RenderingMode
 import com.carlink.app.ui.theme.ThemeMode
 import com.carlink.app.ui.theme.UiProfileMode
 import com.carlink.core.settings.AdvancedSettings
+import com.carlink.core.settings.AppLanguage
 import com.carlink.core.settings.CarBrand
 import com.carlink.core.settings.ConnectionMethod
 import com.carlink.core.settings.Control
@@ -53,9 +54,16 @@ object SettingsBackup {
         Field(UNIFIED, "sound_car_bluetooth", Type.BOOL),
         Field(UNIFIED, "send_location", Type.BOOL),
         Field(UNIFIED, "byd_directions", Type.BOOL),
+        Field(UNIFIED, "duck_music_directions", Type.BOOL),
+        Field(UNIFIED, "same_wifi_wired", Type.BOOL),
         Field(UNIFIED, "show_advanced", Type.BOOL),
         Field(UNIFIED, "lab_unlocked", Type.BOOL),
+        Field(UNIFIED, "hide_car_status_bar", Type.BOOL),
+        Field(UNIFIED, "hide_car_status_bar_mode", Type.STRING, names<com.carlink.core.settings.HideCarStatusBarMode>()),
+        Field(UNIFIED, "hide_car_status_bar_packages", Type.STRING),
+        Field(UNIFIED, "app_language", Type.STRING, AppLanguage.SUPPORTED.toSet()),
         Field(UNIFIED, "wheel_keys", Type.STRING),
+        Field(UNIFIED, "android_auto_back", Type.BOOL),
         Field(CARLINK, "auto_connect_usb", Type.BOOL),
         Field(CARLINK, "auto_connect_bluetooth", Type.BOOL),
         Field(CARLINK, "start_on_boot", Type.BOOL),
@@ -160,6 +168,15 @@ object SettingsBackup {
                 }
             }
             edit.commit()
+            if (file == UNIFIED) {
+                AppLanguage.mirror(
+                    context,
+                    AppLanguage.sanitize(
+                        context.getSharedPreferences(file, Context.MODE_PRIVATE)
+                            .getString("app_language", AppLanguage.SYSTEM),
+                    ),
+                )
+            }
         }
     }
 }

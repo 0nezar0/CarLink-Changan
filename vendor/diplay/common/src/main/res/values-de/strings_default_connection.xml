@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings_default_connection.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="default_connection_wireless">Kabellos</string>
+    <string name="default_connection_usb">USB</string>
+    <string name="default_connection_mode">Standard-Verbindungsmodus</string>
+    <string name="default_connection_last_used">Zuletzt verwendet</string>
+    <string name="default_connection_description">Verwenden Sie den Standard-Verbindungsmodus und das gewählte iPhone, wenn DiPlay geöffnet wird. Die Schaltflächen für die manuelle Verbindung verwenden den von Ihnen gewählten Modus.</string>
+</resources>

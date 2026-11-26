@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for strings_contrib_audio.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="contrib_audio_home_choice_summary">%1$s · %2$s</string>
+    <string name="contrib_audio_home_channel_preview_unavailable">Tidak dapat pratonton strim audio Android %1$d pada peranti ini.</string>
+    <string name="contrib_audio_home_media_channel_label">Strim audio media</string>
+    <string name="contrib_audio_home_nav_channel_label">Strim audio navigasi</string>
+    <string name="contrib_audio_home_nav_channel_note">0 = penghalaan automatik. Nilai 1–20 memilih ID strim audio lama, termasuk output khusus vendor jika unit kepala menyokongnya. Ketik nilai untuk pratonton. Perubahan digunakan semasa menyambung semula.</string>
+    <string name="contrib_audio_home_toggle_audio_focus_desc">Media CarPlay menuntut fokus audio. Jika bunyi hilang semasa dihidupkan (sesetengah unit kepala mengendalikan fokus dengan teruk), matikannya. Perubahan digunakan semasa menyambung semula.</string>
+    <string name="audio_focus_auto_yield">Senyapkan media apabila fokus hilang buat sementara</string>
+    <string name="audio_focus_auto_yield_desc">Apabila fokus audio dihidupkan, senyapkan media semasa gangguan audio Android, termasuk panggilan. Pulihkan audio apabila fokus kembali. Matikan jika unit kepala anda tidak mengembalikan fokus. Perubahan digunakan semasa menyambung semula.</string>
+    <string name="contrib_audio_home_toggle_audio_focus">Fokus audio</string>
+</resources>

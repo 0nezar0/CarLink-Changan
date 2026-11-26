@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Portuguese (pt) vendor strings for strings_settings_layout.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_overview">Visão geral</string>
+    <string name="settings_overview_subtitle">O essencial para uma viagem confortável e confiável.</string>
+    <string name="settings_your_setup">A sua configuração</string>
+    <string name="settings_quick_settings">Definições rápidas</string>
+    <string name="settings_display">Ecrã</string>
+    <string name="settings_navigation">Navegação</string>
+    <string name="settings_vehicle">Veículo</string>
+    <string name="settings_advanced">Avançado</string>
+    <string name="settings_more">Mais</string>
+    <string name="settings_swipe_advanced">Avançado (experimental)</string>
+    <string name="settings_advanced_subtitle">Controles experimentais e específicos do veículo para utilizadores experientes</string>
+    <string name="settings_advanced_caution_title">Altere com cuidado</string>
+    <string name="settings_advanced_caution_description">Estes recursos podem depender do firmware do veículo, do acesso por ADB ou de comportamento experimental do CarPlay. As definições do dia a dia estão organizadas nas categorias acima.</string>
+    <string name="settings_search">Buscar</string>
+    <string name="settings_open_category">Abrir as definições de %1$s</string>
+    <string name="settings_ready_connected">O CarPlay está ativo. As mudanças que precisam de reconexão avisam.</string>
+    <string name="settings_connection_summary">Telefone, cabo, ligação sem fio e automática</string>
+    <string name="settings_display_summary">Aparência, ecrã cheia, resolução e taxa de quadros</string>
+    <string name="settings_audio_summary">Roteamento de alto-falantes e buffer de música</string>
+    <string name="settings_navigation_summary">Relato de localização e orientação no painel suportada</string>
+    <string name="settings_vehicle_summary">Lado de direção, teclas do volante, botão do carro e gestos do CarPlay</string>
+    <string name="settings_advanced_media">Vídeo e áudio</string>
+    <string name="settings_wheel_keys">Teclas do volante</string>
+    <string name="settings_experimental_display">Ecrã (experimental)</string>
+    <string name="settings_diagnostics_summary">Salve um relatório local ao resolver problemas de ligação</string>
+    <string name="settings_full_screen_description">Oculta as barras de status e de navegação no DiPlay e no CarPlay.</string>
+    <string name="settings_vehicle_description">Os recursos do veículo e do painel variam conforme o modelo e o firmware. Revise-os nas definições Avançadas antes de ativar controles experimentais.</string>
+    <string name="settings_open_advanced">Abrir as definições Avançadas</string>
+    <string name="settings_reconnect_pending">Salvo. Algumas mudanças valem quando o CarPlay reconecta.</string>
+    <string name="settings_reconnect_now">Reconectar agora</string>
+    <string name="settings_byd_navigation_unavailable">A orientação no painel e no HUD da BYD não está disponível nesta central.</string>
+    <string name="settings_search_hint">Pesquisar definições</string>
+    <string name="settings_search_empty">Nenhuma configuração corresponde. Tente outra palavra.</string>
+    <string name="settings_ready_wireless">O CarPlay sem fio vai se ligar a %1$s.</string>
+    <string name="settings_ready_usb">Ligue o seu iPhone com um cabo USB para iniciar o CarPlay.</string>
+    <string name="settings_connecting_description">O DiPlay está iniciando o CarPlay com o seu iPhone.</string>
+    <string name="settings_choose_iphone_title">Escolha o seu iPhone</string>
+    <string name="settings_choose_iphone_description">O CarPlay sem fio precisa de um iPhone pareado antes de ligar.</string>
+    <string name="settings_choose_iphone_action">Escolher iPhone</string>
+</resources>

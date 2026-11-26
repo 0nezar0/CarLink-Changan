@@ -3,10 +3,13 @@ package com.carlink.app.update
 import java.io.File
 import java.security.MessageDigest
 
-/** CarLink's release signing key. An update is installed only when its APK is signed by it. */
+/** This build's signing key. An update is installed only when its APK is signed by it. */
 object ReleaseKey {
-    /** SHA-256 of the release certificate (`apksigner verify --print-certs`, scripts/release.sh). */
-    const val CERT_SHA256 = "03:74:68:CA:5B:EB:70:EA:5F:68:54:33:29:B0:33:68:24:7D:FB:39:3D:3F:62:6A:6B:47:2D:10:E5:65:7D:21"
+    /**
+     * SHA-256 of the certificate every CS75 Plus 2023 release is signed with (the workflow secret
+     * CARLINK_DEBUG_KEYSTORE_B64; `apksigner verify --print-certs CarLink-CS75Plus2023-v1.1.apk`).
+     */
+    const val CERT_SHA256 = "4B:19:4C:0C:5D:3F:25:BB:65:92:77:71:C3:0E:5A:78:BB:57:A4:AC:A1:E8:5B:AB:D7:63:B0:3D:D9:55:4A:6B"
 
     /** Lower-case hex without separators, so `03:74:…` and `0374…` compare equal. */
     fun normalize(fingerprint: String): String = fingerprint.filter { it.isLetterOrDigit() }.lowercase()
