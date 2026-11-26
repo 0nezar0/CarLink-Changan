@@ -33,7 +33,6 @@ import com.carlink.app.R
 import com.carlink.app.switcher.FceBarAccessibilityService
 import com.carlink.app.ui.premium.IonButton
 import com.carlink.app.ui.theme.CarLinkTokens
-import com.carlink.core.settings.CarBrand
 import com.carlink.core.settings.HideCarStatusBarMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

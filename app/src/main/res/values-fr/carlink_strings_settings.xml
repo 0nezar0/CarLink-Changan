@@ -263,6 +263,10 @@
     <string name="carlink_settings_car_brand_detail">BYD : ajoute ses extras DiLink. Les autres marques ne font qu’identifier cette voiture, sauf Changan.</string>
     <string name="carlink_settings_car_brand_changan_note">Changan : son logo sur le bouton de retour à la voiture de CarPlay (les autres voitures reçoivent l’icône par défaut). L’entrée CS75 Plus masque la barre de notifications par défaut — dans toutes les applis sauf l’écran d’accueil, ou dans celles que vous choisissez dans une liste complète dans Réglages. Le son passe par le Bluetooth de la voiture par défaut. CarPlay reste à 400 mm et HEVC, et Android Auto à 200 DPI. Vous pouvez tout modifier dans Réglages.</string>
     <string name="carlink_settings_car_brand_sheet_body">Choisissez la marque de cette voiture. CarPlay et Android Auto fonctionnent de la même manière dans toutes les voitures.</string>
+    <string name="carlink_settings_cat_cs75_summary">Masquer la barre d’état et accessibilité</string>
+    <string name="carlink_cs75_first_launch_title">Votre voiture est-elle une Changan / CS75 Plus 2022-2023 ?</string>
+    <string name="carlink_cs75_first_launch_yes">Oui</string>
+    <string name="carlink_cs75_first_launch_no">Non</string>
     <string name="carlink_hevc_prompt_title">Utiliser la vidéo HEVC ?</string>
     <string name="carlink_hevc_prompt_body">Activer la vidéo HEVC pour une image CarPlay plus nette ? Cela nécessite un décodeur HEVC matériel sur cet écran.\n\nSi l’écran devient noir, désactivez HEVC : Réglages › Afficher les options avancées (activé) › Affichage › Efficient video (HEVC).</string>
     <string name="carlink_hevc_prompt_yes">Oui</string>

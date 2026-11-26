@@ -263,6 +263,10 @@
     <string name="carlink_settings_car_brand_detail">比亚迪：添加其 DiLink 附加功能。其他品牌仅用于标识本车，长安除外。</string>
     <string name="carlink_settings_car_brand_changan_note">长安：在 CarPlay 的返回车辆按钮上显示其标志（其他车辆使用默认图标）。CS75 Plus 条目默认隐藏通知栏——可在除主屏幕外的所有应用中隐藏，或在设置中从完整列表选择应用。声音默认通过车辆蓝牙播放。CarPlay 仍默认 400 mm 和 HEVC，Android Auto 仍默认 200 DPI。均可在设置中更改。</string>
     <string name="carlink_settings_car_brand_sheet_body">选择本车品牌。CarPlay 和 Android Auto 在所有车辆上的工作方式相同。</string>
+    <string name="carlink_settings_cat_cs75_summary">隐藏状态栏和无障碍权限</string>
+    <string name="carlink_cs75_first_launch_title">您的车是长安 / CS75 Plus 2022-2023 吗？</string>
+    <string name="carlink_cs75_first_launch_yes">是</string>
+    <string name="carlink_cs75_first_launch_no">否</string>
     <string name="carlink_hevc_prompt_title">使用 HEVC 视频？</string>
     <string name="carlink_hevc_prompt_body">开启 HEVC 视频以获得更清晰的 CarPlay 画面？此屏幕需要硬件 HEVC 解码器。\n\n如果屏幕变黑，请关闭 HEVC：设置 › 显示高级选项（开启）› 显示 › Efficient video (HEVC)。</string>
     <string name="carlink_hevc_prompt_yes">是</string>

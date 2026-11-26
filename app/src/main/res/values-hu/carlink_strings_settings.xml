@@ -263,6 +263,10 @@
     <string name="carlink_settings_car_brand_detail">BYD: hozzáadja a DiLink-extrákat. A többi márka csak ezt az autót jelöli, a Changan kivételével.</string>
     <string name="carlink_settings_car_brand_changan_note">Changan: a logója a CarPlay autóba-vissza gombján (más autók az alapértelmezett ikont kapják). A CS75 Plus bejegyzés alapból elrejti az értesítési sávot — minden alkalmazásban a kezdőképernyő kivételével, vagy a Beállításokban a teljes listából kiválasztott alkalmazásokban. A hang alapból az autó Bluetoothján szól. A CarPlay továbbra is 400 mm-t és HEVC-t, az Android Auto 200 DPI-t használ. Mindez a Beállításokban módosítható.</string>
     <string name="carlink_settings_car_brand_sheet_body">Válassza ki ennek az autónak a márkáját. A CarPlay és az Android Auto minden autóban ugyanúgy működik.</string>
+    <string name="carlink_settings_cat_cs75_summary">Állapotsor elrejtése és kisegítő lehetőségek</string>
+    <string name="carlink_cs75_first_launch_title">Az Ön autója Changan / CS75 Plus 2022-2023?</string>
+    <string name="carlink_cs75_first_launch_yes">Igen</string>
+    <string name="carlink_cs75_first_launch_no">Nem</string>
     <string name="carlink_hevc_prompt_title">Használod a HEVC videót?</string>
     <string name="carlink_hevc_prompt_body">Bekapcsolod a HEVC videót az élesebb CarPlay-képért? Ehhez hardveres HEVC-dekóder kell ezen a képernyőn.\n\nHa a képernyő elsötétül, kapcsolja ki a HEVC-t: Beállítások › Haladó megjelenítése (be) › Kijelző › Efficient video (HEVC).</string>
     <string name="carlink_hevc_prompt_yes">Igen</string>

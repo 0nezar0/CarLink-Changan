@@ -263,6 +263,10 @@
     <string name="carlink_settings_car_brand_detail">BYD: menambah tambahan DiLinknya. Jenama lain hanya melabel kereta ini, kecuali Changan.</string>
     <string name="carlink_settings_car_brand_changan_note">Changan: logonya pada butang kembali ke kereta CarPlay (kereta lain mendapat ikon lalai). Entri CS75 Plus menyembunyikan bar pemberitahuan secara lalai — dalam semua apl kecuali skrin utama, atau dalam apl yang anda pilih daripada senarai penuh dalam Tetapan. Bunyi dimainkan melalui Bluetooth kereta secara lalai. CarPlay kekal pada 400 mm dan HEVC, dan Android Auto pada 200 DPI. Anda boleh mengubah semua ini dalam Tetapan.</string>
     <string name="carlink_settings_car_brand_sheet_body">Pilih jenama kereta ini. CarPlay dan Android Auto berfungsi sama dalam setiap kereta.</string>
+    <string name="carlink_settings_cat_cs75_summary">Sembunyi bar status dan kebolehcapaian</string>
+    <string name="carlink_cs75_first_launch_title">Adakah kereta anda Changan / CS75 Plus 2022-2023?</string>
+    <string name="carlink_cs75_first_launch_yes">Ya</string>
+    <string name="carlink_cs75_first_launch_no">Tidak</string>
     <string name="carlink_hevc_prompt_title">Guna video HEVC?</string>
     <string name="carlink_hevc_prompt_body">Hidupkan video HEVC untuk gambar CarPlay yang lebih tajam? Ia memerlukan penyahkod HEVC perkakasan pada skrin ini.\n\nJika skrin menjadi hitam, matikan HEVC: Tetapan › Tunjukkan lanjutan (hidup) › Paparan › Efficient video (HEVC).</string>
     <string name="carlink_hevc_prompt_yes">Ya</string>
