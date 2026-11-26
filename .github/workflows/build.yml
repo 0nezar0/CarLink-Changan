@@ -127,7 +127,7 @@ jobs:
           set -euo pipefail
           names=$(unzip -Z1 "$APK")
           for f in identity.pk8 certificate.p7b; do
-            printf '%s\n' "$names" | grep -qx "assets/offline-mfi/$f" \
+            grep -qx "assets/offline-mfi/$f" <<< "$names" \
               || { echo "::error::assets/offline-mfi/$f is missing from the APK"; exit 1; }
             unzip -p "$APK" "assets/offline-mfi/$f" | cmp -s - "mfi/offline-mfi/$f" \
               || { echo "::error::assets/offline-mfi/$f differs from the secret"; exit 1; }
