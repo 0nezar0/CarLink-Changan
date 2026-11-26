@@ -58,4 +58,15 @@ class AppVersionTest {
             assertTrue(it, it.contains(ReleaseRepo.OWNER_REPO) && !it.contains("F-e-n-y-x"))
         }
     }
+
+    @Test fun trial167IsNewerThanInstalled166() {
+        val installed = AppVersion.parseVersionName("CS75 Plus 2023 v1.6.6")!!
+        val trial = AppVersion.parseTag("v1.6.7")!!
+        assertTrue(trial > installed)
+        assertEquals(trial, AppVersion.parseVersionName("CS75 Plus 2023 v1.6.7"))
+        assertEquals("CarLink-CS75Plus2023-v1.6.7.apk", ReleaseRepo.apkName(trial))
+        assertEquals(trial, ReleaseRepo.apkVersion("CarLink-CS75Plus2023-v1.6.7.apk"))
+        // a trial tag with a suffix is never offered, so the prerelease carries the plain tag
+        assertNull(AppVersion.parseTag("v1.6.7-test1"))
+    }
 }
