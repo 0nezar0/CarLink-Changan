@@ -25,4 +25,10 @@
     <string name="carlink_switcher_stereo_home">车机</string>
     <string name="carlink_switcher_stereo_home_value">启动器</string>
     <string name="carlink_switcher_night_next">夜间模式从下次连接起生效；调光立即生效。</string>
+    <!-- Quick toggle in the switcher panel: CarPlay HEVC (Settings > Display > Efficient video (HEVC)); applies from the next connection. -->
+    <string name="carlink_switcher_hevc">HEVC</string>
+    <string name="carlink_switcher_hevc_on">开</string>
+    <string name="carlink_switcher_hevc_off">关</string>
+    <string name="carlink_switcher_hevc_toast_on">已为 CarPlay 开启 HEVC。下次连接时生效。</string>
+    <string name="carlink_switcher_hevc_toast_off">已为 CarPlay 关闭 HEVC。下次连接时生效。</string>
 </resources>

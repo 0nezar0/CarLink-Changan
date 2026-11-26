@@ -120,6 +120,8 @@ data class SwitcherUi(
     val dayNight: DayNight = DayNight.AUTOMATIC,
     /** The screen dimmer's step (0 = off), an index into switcher/ScreenDimmer.ALPHAS. */
     val dimmer: Int = 0,
+    /** CarPlay's "Efficient video (HEVC)" (Settings › Display); a change applies from the next connection. */
+    val hevc: Boolean = false,
     val page: SwitcherPage = SwitcherPage.MAIN,
     /** The edge the bubble rests on; the panel opens on the same side. */
     val edge: Edge = Edge.RIGHT,
@@ -144,6 +146,8 @@ interface SwitcherActions {
     fun cycleDayNight() {}
     /** Quick toggles: the screen dimmer, off → darker steps → off. */
     fun cycleDimmer() {}
+    /** Quick toggles: CarPlay HEVC on/off, the same setting as Settings › Display › Efficient video (HEVC). */
+    fun toggleHevc() {}
     /** Quick toggles: the stereo's own launcher (Android's Home), the projection keeps running. */
     fun openStereoLauncher() {}
 }
@@ -383,8 +387,9 @@ private fun MainPage(ui: SwitcherUi, actions: SwitcherActions) {
 }
 
 /**
- * One compact row of three tiles: night mode (cycles, from the next connection), the screen
- * dimmer (cycles, at once) and the stereo's own launcher.
+ * One compact row of tiles: night mode (cycles, from the next connection), the screen dimmer
+ * (cycles, at once), CarPlay HEVC (on/off, from the next connection) and the stereo's own launcher.
+ * To add a quick toggle, add a [QuickTile] here and an action in [SwitcherActions].
  */
 @Composable
 private fun QuickToggles(ui: SwitcherUi, actions: SwitcherActions, enabled: Boolean) {
@@ -398,6 +403,9 @@ private fun QuickToggles(ui: SwitcherUi, actions: SwitcherActions, enabled: Bool
             if (ui.dimmer == 0) stringResource(R.string.carlink_switcher_dimmer_off)
             else stringResource(R.string.carlink_switcher_dimmer_level, ui.dimmer), active = ui.dimmer > 0,
             { if (enabled) actions.cycleDimmer() }, Modifier.weight(1f))
+        QuickTile(R.drawable.carlink_ic_hd, stringResource(R.string.carlink_switcher_hevc),
+            stringResource(if (ui.hevc) R.string.carlink_switcher_hevc_on else R.string.carlink_switcher_hevc_off),
+            active = ui.hevc, { if (enabled) actions.toggleHevc() }, Modifier.weight(1f))
         QuickTile(R.drawable.carlink_ic_home, stringResource(R.string.carlink_switcher_stereo_home),
             stringResource(R.string.carlink_switcher_stereo_home_value), active = false,
             { if (enabled) actions.openStereoLauncher() }, Modifier.weight(1f))

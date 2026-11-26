@@ -25,4 +25,10 @@
     <string name="carlink_switcher_stereo_home">Stereo</string>
     <string name="carlink_switcher_stereo_home_value">Pelancar</string>
     <string name="carlink_switcher_night_next">Mod malam digunakan dari sambungan seterusnya; redup serta-merta.</string>
+    <!-- Quick toggle in the switcher panel: CarPlay HEVC (Settings > Display > Efficient video (HEVC)); applies from the next connection. -->
+    <string name="carlink_switcher_hevc">HEVC</string>
+    <string name="carlink_switcher_hevc_on">Hidup</string>
+    <string name="carlink_switcher_hevc_off">Mati</string>
+    <string name="carlink_switcher_hevc_toast_on">HEVC dihidupkan untuk CarPlay. Berkuat kuasa pada sambungan seterusnya.</string>
+    <string name="carlink_switcher_hevc_toast_off">HEVC dimatikan untuk CarPlay. Berkuat kuasa pada sambungan seterusnya.</string>
 </resources>
