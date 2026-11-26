@@ -670,7 +670,8 @@ private fun PairActions(ui: SetupUi, actions: SetupActions) {
             ui.pairing is PairingSession.State.BluetoothOff && ui.phone == null ->
                 IonButton(stringResource(R.string.carlink_setup_pair_bt_on), actions::turnOnBluetooth, icon = R.drawable.carlink_ic_bluetooth)
             ui.phone != null && ui.phone.kind == PhoneKind.UNKNOWN -> {
-                IonButton(stringResource(R.string.carlink_home_kind_iphone), { actions.setKind(PhoneKind.IPHONE) },
+                // CarLink: neither answer is the default; the question only comes when nothing told them apart.
+                GlassButton(stringResource(R.string.carlink_home_kind_iphone), { actions.setKind(PhoneKind.IPHONE) },
                     icon = R.drawable.carlink_ic_phone_iphone)
                 GlassButton(stringResource(R.string.carlink_home_kind_android), { actions.setKind(PhoneKind.ANDROID) },
                     icon = R.drawable.carlink_ic_phone_android)

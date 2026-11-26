@@ -64,6 +64,7 @@ class PhonesRepository(
                 BluetoothDevice.ACTION_ACL_CONNECTED -> address(intent)?.let { connected += KnownPhones.normalize(it) }
                 BluetoothDevice.ACTION_ACL_DISCONNECTED -> address(intent)?.let { connected -= KnownPhones.normalize(it) }
                 BluetoothAdapter.ACTION_STATE_CHANGED -> if (adapter?.isEnabled == true) queryConnected() else connected.clear()
+                BluetoothDevice.ACTION_UUID -> rememberFromRecords(intent) // CarLink: a phone paired outside the setup
             }
             refresh()
         }
@@ -90,6 +91,7 @@ class PhonesRepository(
             addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
             addAction(BluetoothDevice.ACTION_NAME_CHANGED)
             addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
+            addAction(BluetoothDevice.ACTION_UUID)
         }
         ContextCompat.registerReceiver(app, receiver, filter, ContextCompat.RECEIVER_EXPORTED)
         if (hasPermission()) {
@@ -129,6 +131,30 @@ class PhonesRepository(
         }.getOrDefault(false)
         refresh()
         return unpaired
+    }
+
+    /**
+     * CarLink: a fresh SDP answer for a paired phone. When its records decide the kind
+     * ([PhoneClassifier.classifyBluetooth]), it is remembered, so the list does not fall back to
+     * "unknown" when Android's cache is thinner later.
+     */
+    @SuppressLint("MissingPermission")
+    private fun rememberFromRecords(intent: Intent) {
+        if (!hasPermission()) return
+        val device = runCatching {
+            if (Build.VERSION.SDK_INT >= 33) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE, BluetoothDevice::class.java)
+            else @Suppress("DEPRECATION") intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+        }.getOrNull() ?: return
+        if (runCatching { device.bondState }.getOrNull() != BluetoothDevice.BOND_BONDED || !isPhone(device)) return
+        val records = runCatching {
+            @Suppress("DEPRECATION") intent.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID)
+                ?.filterIsInstance<android.os.ParcelUuid>()?.map { it.uuid }
+        }.getOrNull().orEmpty().toSet()
+        val address = KnownPhones.normalize(device.address)
+        val info = PhoneClassifier.BluetoothDeviceInfo(address, runCatching { device.name }.getOrNull(), records,
+            runCatching { device.bluetoothClass?.majorDeviceClass }.getOrNull())
+        val kind = PhoneClassifier.classifyBluetooth(info, knownPhones.kindOf(address))
+        if (PhoneClassifier.isProof(info, kind) && knownPhones.kindOf(address) != kind) knownPhones.remember(address, kind)
     }
 
     /** The driver corrected the detected type (Phone detail). */
