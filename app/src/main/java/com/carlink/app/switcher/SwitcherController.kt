@@ -523,7 +523,7 @@ object SwitcherController {
 
         override fun toggleHevc() {
             val next = !com.shilapi.xcertplay.AirPlayPersistence.loadHevcEnabled(app)
-            com.shilapi.xcertplay.AirPlayPersistence.saveHevcEnabled(app, next)
+            com.carlink.core.settings.HevcChoice.setByUser(app, next)
             panelUi = panelUi?.copy(hevc = next)
             android.widget.Toast.makeText(
                 app,

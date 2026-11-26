@@ -130,7 +130,7 @@ object AdvancedSettings {
             carPlayToggle(AirPlayPersistence::loadHideBottomBar, AirPlayPersistence::saveHideBottomBar)),
         AdvancedSetting("cp_hevc", Engine.CARPLAY, SettingsCategory.DISPLAY, Tier.ADVANCED,
             "Efficient video (HEVC)", "Sharper picture for the same Wi-Fi bandwidth. Needs a hardware HEVC decoder.",
-            Applies.NEXT_CONNECTION, carPlayToggle(AirPlayPersistence::loadHevcEnabled, AirPlayPersistence::saveHevcEnabled)),
+            Applies.NEXT_CONNECTION, carPlayToggle(AirPlayPersistence::loadHevcEnabled, HevcChoice::setByUser)),
         AdvancedSetting("cp_adapt_pip", Engine.CARPLAY, SettingsCategory.DISPLAY, Tier.ADVANCED,
             "Re-negotiate size in split screen", "Off scales the picture; on asks the iPhone for the new size.",
             Applies.NOW, carPlayToggle(AirPlayPersistence::loadAdaptPipResolution, AirPlayPersistence::saveAdaptPipResolution)),

@@ -261,12 +261,12 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
         )
     }
 
-    /** Yes turns on CarPlay HEVC (nothing else). No changes nothing. */
+    /** Yes turns CarPlay HEVC on, No turns it off; both are remembered as the driver's choice. */
     fun answerHevcPrompt(enable: Boolean) {
         _hevcPrompt.value = false
         uiPreferences.hevcPromptDone = true
-        if (!enable) return
-        com.shilapi.xcertplay.AirPlayPersistence.saveHevcEnabled(app, true)
+        // Either answer is the driver's choice, so the picture policy never undoes it (HevcChoice).
+        com.carlink.core.settings.HevcChoice.setByUser(app, enable)
     }
 
     private val _cs75FirstLaunchPrompt = MutableStateFlow(

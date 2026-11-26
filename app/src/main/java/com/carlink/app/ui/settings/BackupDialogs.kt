@@ -54,7 +54,7 @@ internal fun RestoreConfirmDialog(backup: SettingsBackup.Backup, onConfirm: () -
 
 /**
  * Asked once, for every car except the Changan CS75 Plus (which has HEVC on by default): turn on
- * CarPlay HEVC. Yes enables it; No (or Back) leaves it as it is. The text says where to turn it off
+ * CarPlay HEVC. Yes turns it on and No (or Back) turns it off; either is kept as the driver's choice. The text says where to turn it off
  * if the screen goes black. The status-bar hide is not part of this question (its broadcast is Changan-specific).
  */
 @Composable

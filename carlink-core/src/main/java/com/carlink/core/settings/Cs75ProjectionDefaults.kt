@@ -78,12 +78,14 @@ object Cs75ProjectionDefaults {
     }
 
     /**
-     * When Automatic picture wants to turn HEVC on, keep a stored off value for CS75
-     * (the driver already chose, or a previous policy write is already in prefs).
+     * When Automatic picture wants to turn HEVC on, keep it off if the driver chose Off ([HevcChoice], any
+     * car), and keep a stored off value for CS75 (a previous policy write is already in prefs).
      * Incoming `false` is still written, so [com.carlink.core.connection.CarPlayHevcMemory]
      * can fall back to H.264 after a failed attempt.
      */
     fun shouldSuppressHevcWrite(context: Context, incoming: Boolean): Boolean {
+        // The driver's explicit Off wins on every car; only a safety "off" from the policy is written then.
+        if (HevcChoice.blocksPolicyWrite(HevcChoice.userChoice(context), incoming)) return true
         if (!incoming || !isCs75Selected(context)) return false
         val prefs = airplayPrefs(context)
         return prefs.contains(KEY_HEVC_ENABLED) && !AirPlayPersistence.loadHevcEnabled(context)
