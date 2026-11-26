@@ -11,6 +11,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.andrerinas.openheadunit.aap.AapService
 import com.andrerinas.openheadunit.aap.BluetoothWakePolicy
+import com.andrerinas.openheadunit.aap.HandsFreeRestorePolicy
 import com.andrerinas.openheadunit.aap.HandsFreeWakeEscalationPolicy
 import com.andrerinas.openheadunit.aap.NativeAaWakeDamagePolicy
 import com.andrerinas.openheadunit.aap.NativeCredentialsPolicy
@@ -1119,6 +1120,8 @@ class NativeAaHandshakeManager(
         pokeAttemptInFlight = true
         val acceptedBefore = aaAcceptCount
         var slotTaken = false
+        var touched: UUID? = null // CarLink: the record the poke reached, for HandsFreeRestorePolicy
+        val standingInAtPoke = standingInForHfp // CarLink: stop() clears it mid-poke
         try {
             for (uuid in BluetoothWakePolicy.POKE_TARGETS) {
                 val profile = BluetoothWakePolicy.profileName(uuid)
@@ -1136,6 +1139,7 @@ class NativeAaHandshakeManager(
                     // the phone answered, which is the whole point of the count.
                     pokesSinceLastAccept++
                     slotTaken = true
+                    touched = uuid // CarLink
                     holdPoke(socket, device, profile, uuid, holdMs, handsFreeLink) // CarLink (c86332be)
                     return BluetoothWakePolicy.WakeOutcome.ANSWERED
                 } catch (e: CancellationException) {
@@ -1161,8 +1165,74 @@ class NativeAaHandshakeManager(
             // connected: one that reached nothing took nothing, so there is nothing to give back
             // and a link still up afterwards would be read as "it came back".
             if (escalated && slotTaken) armWakeProbe(device, acceptedBefore)
+            // CarLink: the poke socket is closed by now; give the phone's hands-free link back to
+            // this unit's own stack, which the poke pushed off the phone's single slot.
+            if (HandsFreeRestorePolicy.shouldRestore(slotTaken, touched, standingInAtPoke, apple = false)) {
+                restoreHandsFreeLink(device)
+            }
         }
     }
+
+    // CarLink: one restore per phone; a newer poke to the same phone replaces the pending one.
+    private val handsFreeRestoreJobs = java.util.concurrent.ConcurrentHashMap<String, Job>()
+
+    /**
+     * CarLink: after a poke let go of [device], asks this unit's own hands-free client to connect to
+     * it again, unless it already has ([HandsFreeRestorePolicy]). Without this the phone keeps this
+     * unit as media only ("no phone") until its Bluetooth is turned off and on. Waits out a
+     * handshake, a handoff, another poke or a call before asking, so the radio is never shared with
+     * the Wi-Fi credential exchange. Not tied to the manager's run: a session that ends must not
+     * leave the link down either.
+     */
+    private fun restoreHandsFreeLink(device: BluetoothDevice) {
+        val address = device.address ?: return
+        handsFreeRestoreJobs.remove(address)?.cancel()
+        val job = scope.launch(Dispatchers.IO + CoroutineName("NativeAa-HfpRestore-$address")) {
+            var elapsed = 0L
+            for ((attempt, at) in HandsFreeRestorePolicy.ATTEMPT_DELAYS_MS.withIndex()) {
+                if (at > elapsed) delay(at - elapsed)
+                elapsed = at
+                var waited = 0L
+                while (restoreBusy() && waited < HandsFreeRestorePolicy.BUSY_WAIT_MS) {
+                    delay(HandsFreeRestorePolicy.BUSY_POLL_MS)
+                    waited += HandsFreeRestorePolicy.BUSY_POLL_MS
+                }
+                val state = BluetoothHelper.handsFreeClientState(context, device)
+                val link = HandsFreeRestorePolicy.ClientLink.of(state)
+                val action = HandsFreeRestorePolicy.next(
+                    attempt, link, busy = restoreBusy(),
+                    callActive = HandsFreeWakeEscalationPolicy.callMayBeActive(currentAudioMode()),
+                )
+                when (action) {
+                    HandsFreeRestorePolicy.Action.DONE -> {
+                        AppLog.i("NativeAA: this unit's hands-free link to ${device.name ?: "unnamed"} ($address) is up after the poke" +
+                            (if (attempt == 0) "." else " (attempt $attempt)."))
+                        return@launch
+                    }
+                    HandsFreeRestorePolicy.Action.GIVE_UP -> {
+                        AppLog.w("NativeAA: could not give the hands-free link back to this unit after the poke " +
+                            "(client link=$link). If the phone shows this unit as media only, turn the phone's " +
+                            "Bluetooth off and on.")
+                        return@launch
+                    }
+                    HandsFreeRestorePolicy.Action.WAIT, HandsFreeRestorePolicy.Action.DEFER ->
+                        AppLog.i("NativeAA: hands-free link to $address not back yet (link=$link, $action); looking again.")
+                    HandsFreeRestorePolicy.Action.CONNECT -> {
+                        val asked = BluetoothHelper.connectHandsFreeClient(context, device)
+                        AppLog.i("NativeAA: asked this unit's hands-free client to reconnect ${device.name ?: "unnamed"} " +
+                            "($address) after the poke (link=$link, answer=$asked).")
+                    }
+                }
+            }
+            val last = HandsFreeRestorePolicy.ClientLink.of(BluetoothHelper.handsFreeClientState(context, device))
+            AppLog.i("NativeAA: hands-free restore for $address finished (link=$last).")
+        }
+        handsFreeRestoreJobs[address] = job
+        job.invokeOnCompletion { handsFreeRestoreJobs.remove(address, job) }
+    }
+
+    /** CarLink: the radio is in use for something a hands-free connect must not interrupt. */
+    private fun restoreBusy(): Boolean = isHandshakeInFlight() || isHandoffSettling() || pokeAttemptInFlight
 
     /**
      * CarLink: ported from open-headunit c86332be. Holds a connected poke for [holdMs], speaking
