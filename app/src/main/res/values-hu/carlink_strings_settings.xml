@@ -261,13 +261,12 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Az Androidnak erre van szüksége, mielőtt a CarLink megjeleníthetné a gombot</string>
     <string name="carlink_settings_car_brand">Autómárka</string>
     <string name="carlink_settings_car_brand_detail">BYD: hozzáadja a DiLink-extrákat. A többi márka csak ezt az autót jelöli, a Changan kivételével.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan: a logója a CarPlay autóba-vissza gombján (más autók az alapértelmezett ikont kapják). A CS75 Plus választásakor rákérdez az értesítési sáv elrejtésére — minden alkalmazásban a kezdőképernyő kivételével, vagy a teljes listából kiválasztott alkalmazásokban. A hang alapból az autó Bluetoothján szól. A CarPlay továbbra is 400 mm-t és HEVC-t, az Android Auto 200 DPI-t használ. Mindez a Beállításokban módosítható.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: a logója a CarPlay autóba-vissza gombján (más autók az alapértelmezett ikont kapják). A CS75 Plus bejegyzés alapból elrejti az értesítési sávot — minden alkalmazásban a kezdőképernyő kivételével, vagy a Beállításokban a teljes listából kiválasztott alkalmazásokban. A hang alapból az autó Bluetoothján szól. A CarPlay továbbra is 400 mm-t és HEVC-t, az Android Auto 200 DPI-t használ. Mindez a Beállításokban módosítható.</string>
     <string name="carlink_settings_car_brand_sheet_body">Válassza ki ennek az autónak a márkáját. A CarPlay és az Android Auto minden autóban ugyanúgy működik.</string>
-    <string name="carlink_projection_prompt_title">Elrejted az állapotsort és használod a HEVC-t?</string>
-    <string name="carlink_projection_prompt_body">Elrejted az autó lebegő állapotsorát CarPlay és Android Auto közben, és HEVC videót használsz az élesebb képért?</string>
-    <string name="carlink_projection_prompt_yes">Igen</string>
-    <string name="carlink_projection_prompt_no">Nem</string>
-    <string name="carlink_projection_prompt_hint">A beállításokban bármikor módosíthatja vagy kikapcsolhatja. A rejtéshez a CarLinknek akadálymentesítési engedélyre is szüksége van.</string>
+    <string name="carlink_hevc_prompt_title">Használod a HEVC videót?</string>
+    <string name="carlink_hevc_prompt_body">Bekapcsolod a HEVC videót az élesebb CarPlay-képért? Ehhez hardveres HEVC-dekóder kell ezen a képernyőn.\n\nHa a képernyő elsötétül, kapcsolja ki a HEVC-t: Beállítások › Haladó megjelenítése (be) › Kijelző › Efficient video (HEVC).</string>
+    <string name="carlink_hevc_prompt_yes">Igen</string>
+    <string name="carlink_hevc_prompt_no">Nem</string>
     <string name="carlink_settings_car_generic">Általános</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">Felismerve: %1$s</string>
@@ -280,7 +279,7 @@
     <string name="carlink_settings_car_byd_not_dilink">Ez a képernyő nem BYD DiLink egység, ezért a BYD-extrák itt nem működhetnek. Válassza az autója márkáját, vagy az Egyebet.</string>
     <string name="carlink_settings_car_explain_byd">A BYD hozzáadja a DiLink-extrákat: útvonal a HUD-on és a műszeregységen, valamint BYD kormánygombok.</string>
     <string name="carlink_settings_car_explain_other">A CarPlay és az Android Auto ugyanúgy működik, mint bármely autóban. A márka csak ezt az autót jelöli a CarLinkben.</string>
-    <string name="carlink_settings_car_explain_changan">A CarPlay és az Android Auto úgy működik, mint bármely autóban. A Changan a logóját is megjeleníti a CarPlay autóba-vissza gombján. A választáskor rákérdez az értesítési sáv elrejtésére, teljes alkalmazáslistával, ha csak kiválasztott appokban rejti el. A hang alapból az autó Bluetoothján szól. A CarPlay 400 mm-t és HEVC-t, az Android Auto 200 DPI-t használ.</string>
+    <string name="carlink_settings_car_explain_changan">A CarPlay és az Android Auto úgy működik, mint bármely autóban. A Changan a logóját is megjeleníti a CarPlay autóba-vissza gombján. A választáskor az értesítési sáv alapból el van rejtve, a Beállításokban teljes alkalmazáslista van, ha csak kiválasztott appokban rejti el. A hang alapból az autó Bluetoothján szól. A CarPlay 400 mm-t és HEVC-t, az Android Auto 200 DPI-t használ.</string>
     <string name="carlink_wheel_keys">Kormánygombok</string>
     <string name="carlink_wheel_keys_detail">Tanítsa meg a CarLinknek a kormánya gombjait hanghoz, hívásokhoz és zenéhez a CarPlayben és az Android Autóban</string>
     <plurals name="carlink_wheel_keys_value">

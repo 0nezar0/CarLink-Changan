@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.map
 import com.carlink.core.settings.CarLinkPreferences
 import com.carlink.core.settings.ConnectionMethod
 import com.carlink.core.settings.WifiEnvironmentReader
-import com.carlink.core.settings.HideCarStatusBarMode
 import com.carlink.core.settings.UnifiedSettings
 import com.carlink.core.settings.UnifiedSettingsStore
 import com.carlink.core.settings.WirelessPath
@@ -247,27 +246,26 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
         setCarBrand(brand)
     }
 
-    private val _projectionPrompt = MutableStateFlow(false)
+    private val _hevcPrompt = MutableStateFlow(false)
     /**
-     * True while the Yes/No "hide the status bar and use HEVC?" question is on screen. It is for
-     * every car except the CS75 Plus, and is shown once ([ProjectionPrompt]).
+     * True while the Yes/No "use HEVC?" question is on screen. It is for
+     * every car except the CS75 Plus, and is shown once ([HevcPrompt]).
      */
-    val projectionPrompt: StateFlow<Boolean> = _projectionPrompt.asStateFlow()
+    val hevcPrompt: StateFlow<Boolean> = _hevcPrompt.asStateFlow()
 
-    private fun refreshProjectionPrompt() {
-        _projectionPrompt.value = ProjectionPrompt.shouldShow(
+    private fun refreshHevcPrompt() {
+        _hevcPrompt.value = HevcPrompt.shouldShow(
             brand = Connection.carBrand(app),
-            alreadyAnswered = uiPreferences.projectionPromptDone,
+            alreadyAnswered = uiPreferences.hevcPromptDone,
             firstLaunchQuestionShowing = _cs75FirstLaunchPrompt.value,
         )
     }
 
-    /** Yes turns on the car status-bar hide (all apps except the car's home screen) and CarPlay HEVC. No changes nothing. */
-    fun answerProjectionPrompt(enable: Boolean) {
-        _projectionPrompt.value = false
-        uiPreferences.projectionPromptDone = true
+    /** Yes turns on CarPlay HEVC (nothing else). No changes nothing. */
+    fun answerHevcPrompt(enable: Boolean) {
+        _hevcPrompt.value = false
+        uiPreferences.hevcPromptDone = true
         if (!enable) return
-        updateSettings { it.copy(hideCarStatusBarMode = HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER) }
         com.shilapi.xcertplay.AirPlayPersistence.saveHevcEnabled(app, true)
     }
 
@@ -284,15 +282,15 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
     /**
      * Yes selects [com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS] and applies its
      * projection defaults (CarPlay 400 mm, HEVC, Android Auto 200 DPI, status-bar hide on),
-     * and the Yes/No status-bar and HEVC question is never shown for it.
-     * No dismisses the dialog; the status-bar and HEVC question follows ([answerProjectionPrompt]).
+     * and the Yes/No HEVC question is never shown for it.
+     * No dismisses the dialog; the HEVC question follows ([answerHevcPrompt]).
      * Either way the car question is not shown again.
      */
     fun answerCs75FirstLaunch(isCs75: Boolean) {
         _cs75FirstLaunchPrompt.value = false
         uiPreferences.cs75FirstLaunchPromptDone = true
         if (isCs75) setCarBrand(com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS)
-        refreshProjectionPrompt()
+        refreshHevcPrompt()
     }
 
     private fun readVehicle() = VehicleChoice(Connection.carBrand(app), com.carlink.core.settings.CarBrand.detect(app))
@@ -343,7 +341,7 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
     val permissionsNeeded: StateFlow<Boolean> = _permissionsNeeded.asStateFlow()
 
     init {
-        refreshProjectionPrompt()
+        refreshHevcPrompt()
         // Root mode re-applies its grants once per run (an update or a reinstall resets some of them).
         if (preferences.rootMode) viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             com.carlink.core.settings.RootMode.grant(app, com.carlink.app.ui.setup.SetupPermissions.runtimePermissions())

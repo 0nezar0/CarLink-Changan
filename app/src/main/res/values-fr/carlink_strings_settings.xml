@@ -261,13 +261,12 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android en a besoin avant que CarLink puisse afficher le bouton</string>
     <string name="carlink_settings_car_brand">Marque de la voiture</string>
     <string name="carlink_settings_car_brand_detail">BYD : ajoute ses extras DiLink. Les autres marques ne font qu’identifier cette voiture, sauf Changan.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan : son logo sur le bouton de retour à la voiture de CarPlay (les autres voitures reçoivent l’icône par défaut). Lorsque vous choisissez l’entrée CS75 Plus, on vous demande si la barre de notifications doit être masquée — dans toutes les applis sauf l’écran d’accueil, ou dans celles que vous choisissez dans une liste complète. Le son passe par le Bluetooth de la voiture par défaut. CarPlay reste à 400 mm et HEVC, et Android Auto à 200 DPI. Vous pouvez tout modifier dans Réglages.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan : son logo sur le bouton de retour à la voiture de CarPlay (les autres voitures reçoivent l’icône par défaut). L’entrée CS75 Plus masque la barre de notifications par défaut — dans toutes les applis sauf l’écran d’accueil, ou dans celles que vous choisissez dans une liste complète dans Réglages. Le son passe par le Bluetooth de la voiture par défaut. CarPlay reste à 400 mm et HEVC, et Android Auto à 200 DPI. Vous pouvez tout modifier dans Réglages.</string>
     <string name="carlink_settings_car_brand_sheet_body">Choisissez la marque de cette voiture. CarPlay et Android Auto fonctionnent de la même manière dans toutes les voitures.</string>
-    <string name="carlink_projection_prompt_title">Masquer la barre d’état et utiliser HEVC ?</string>
-    <string name="carlink_projection_prompt_body">Masquer la barre d’état flottante de la voiture pendant CarPlay et Android Auto et utiliser la vidéo HEVC pour une image plus nette ?</string>
-    <string name="carlink_projection_prompt_yes">Oui</string>
-    <string name="carlink_projection_prompt_no">Non</string>
-    <string name="carlink_projection_prompt_hint">Vous pouvez la modifier ou la désactiver à tout moment dans les Réglages. CarLink a aussi besoin de l’autorisation d’accessibilité pour que le masquage fonctionne.</string>
+    <string name="carlink_hevc_prompt_title">Utiliser la vidéo HEVC ?</string>
+    <string name="carlink_hevc_prompt_body">Activer la vidéo HEVC pour une image CarPlay plus nette ? Cela nécessite un décodeur HEVC matériel sur cet écran.\n\nSi l’écran devient noir, désactivez HEVC : Réglages › Afficher les options avancées (activé) › Affichage › Efficient video (HEVC).</string>
+    <string name="carlink_hevc_prompt_yes">Oui</string>
+    <string name="carlink_hevc_prompt_no">Non</string>
     <string name="carlink_settings_car_generic">Générique</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">Détecté : %1$s</string>
@@ -280,7 +279,7 @@
     <string name="carlink_settings_car_byd_not_dilink">Cet écran n’est pas une unité BYD DiLink, les extras BYD ne peuvent donc pas fonctionner ici. Choisissez la marque de votre voiture, ou Autre.</string>
     <string name="carlink_settings_car_explain_byd">BYD ajoute les extras DiLink : indications sur le HUD et le combiné d’instruments, et les touches au volant BYD.</string>
     <string name="carlink_settings_car_explain_other">CarPlay et Android Auto fonctionnent comme dans n’importe quelle voiture. La marque ne fait qu’identifier cette voiture dans CarLink.</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay et Android Auto fonctionnent comme dans n’importe quelle voiture. Changan affiche aussi son logo sur le bouton de retour à la voiture de CarPlay. Le choix de cette entrée demande si la barre de notifications doit être masquée, avec une liste complète d’applis si vous la masquez seulement dans certaines. Le son passe par le Bluetooth de la voiture par défaut. CarPlay utilise 400 mm et HEVC, Android Auto 200 DPI.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay et Android Auto fonctionnent comme dans n’importe quelle voiture. Changan affiche aussi son logo sur le bouton de retour à la voiture de CarPlay. Le choix de cette entrée masque la barre de notifications par défaut, avec une liste complète d’applis dans Réglages si vous la masquez seulement dans certaines. Le son passe par le Bluetooth de la voiture par défaut. CarPlay utilise 400 mm et HEVC, Android Auto 200 DPI.</string>
     <string name="carlink_wheel_keys">Boutons au volant</string>
     <string name="carlink_wheel_keys_detail">Apprenez à CarLink les boutons de votre volant pour la voix, les appels et la musique dans CarPlay et Android Auto</string>
     <plurals name="carlink_wheel_keys_value">

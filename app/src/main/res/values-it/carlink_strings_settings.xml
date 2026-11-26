@@ -261,13 +261,12 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android lo richiede prima che CarLink possa mostrare il pulsante</string>
     <string name="carlink_settings_car_brand">Marca dell’auto</string>
     <string name="carlink_settings_car_brand_detail">BYD: aggiunge i suoi extra DiLink. Le altre marche etichettano soltanto questa auto, tranne Changan.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan: il suo logo sul pulsante di ritorno all’auto di CarPlay (le altre auto ricevono l’icona predefinita). Quando scegli la voce CS75 Plus ti viene chiesto se nascondere la barra delle notifiche — in tutte le app tranne la schermata Home, o in quelle che scegli da un elenco completo. L’audio passa tramite il Bluetooth dell’auto per impostazione predefinita. CarPlay resta a 400 mm e HEVC, Android Auto a 200 DPI. Puoi cambiare tutto in Impostazioni.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: il suo logo sul pulsante di ritorno all’auto di CarPlay (le altre auto ricevono l’icona predefinita). La voce CS75 Plus nasconde la barra delle notifiche per impostazione predefinita — in tutte le app tranne la schermata Home, o in quelle che scegli da un elenco completo in Impostazioni. L’audio passa tramite il Bluetooth dell’auto per impostazione predefinita. CarPlay resta a 400 mm e HEVC, Android Auto a 200 DPI. Puoi cambiare tutto in Impostazioni.</string>
     <string name="carlink_settings_car_brand_sheet_body">Scegli la marca di quest’auto. CarPlay e Android Auto funzionano allo stesso modo in ogni auto.</string>
-    <string name="carlink_projection_prompt_title">Nascondere la barra di stato e usare HEVC?</string>
-    <string name="carlink_projection_prompt_body">Nascondere la barra di stato flottante dell’auto durante CarPlay e Android Auto e usare il video HEVC per un’immagine più nitida?</string>
-    <string name="carlink_projection_prompt_yes">Sì</string>
-    <string name="carlink_projection_prompt_no">No</string>
-    <string name="carlink_projection_prompt_hint">Puoi cambiarla o disattivarla in qualsiasi momento in Impostazioni. CarLink richiede anche l’autorizzazione Accessibilità perché la funzione funzioni.</string>
+    <string name="carlink_hevc_prompt_title">Usare il video HEVC?</string>
+    <string name="carlink_hevc_prompt_body">Attivare il video HEVC per un’immagine CarPlay più nitida? Richiede un decoder HEVC hardware su questo schermo.\n\nSe lo schermo diventa nero, disattiva HEVC: Impostazioni › Mostra avanzate (attivo) › Schermo › Efficient video (HEVC).</string>
+    <string name="carlink_hevc_prompt_yes">Sì</string>
+    <string name="carlink_hevc_prompt_no">No</string>
     <string name="carlink_settings_car_generic">Generico</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">Rilevato: %1$s</string>
@@ -280,7 +279,7 @@
     <string name="carlink_settings_car_byd_not_dilink">Questo schermo non è un’unità BYD DiLink, quindi gli extra BYD non possono funzionare qui. Scegli la marca della tua auto, oppure Altro.</string>
     <string name="carlink_settings_car_explain_byd">BYD aggiunge gli extra DiLink: indicazioni su HUD e quadro strumenti, e i tasti del volante BYD.</string>
     <string name="carlink_settings_car_explain_other">CarPlay e Android Auto funzionano come in qualsiasi auto. La marca etichetta soltanto questa auto in CarLink.</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay e Android Auto funzionano come in qualsiasi auto. Changan mostra anche il suo logo sul pulsante di ritorno all’auto di CarPlay. Scegliendo questa voce ti viene chiesto se nascondere la barra delle notifiche, con un elenco completo di app se la nascondi solo in quelle che scegli. L’audio passa tramite il Bluetooth dell’auto per impostazione predefinita. CarPlay usa 400 mm e HEVC, Android Auto 200 DPI.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay e Android Auto funzionano come in qualsiasi auto. Changan mostra anche il suo logo sul pulsante di ritorno all’auto di CarPlay. Scegliendo questa voce la barra delle notifiche viene nascosta per impostazione predefinita, con un elenco completo di app in Impostazioni se la nascondi solo in quelle che scegli. L’audio passa tramite il Bluetooth dell’auto per impostazione predefinita. CarPlay usa 400 mm e HEVC, Android Auto 200 DPI.</string>
     <string name="carlink_wheel_keys">Pulsanti del volante</string>
     <string name="carlink_wheel_keys_detail">Insegna a CarLink i pulsanti del volante per voce, chiamate e musica in CarPlay e Android Auto</string>
     <plurals name="carlink_wheel_keys_value">

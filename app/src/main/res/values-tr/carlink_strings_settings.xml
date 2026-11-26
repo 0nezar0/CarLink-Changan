@@ -261,13 +261,12 @@
     <string name="carlink_settings_floating_switcher_permission_detail">CarLink düğmeyi gösterebilmeden önce Android buna ihtiyaç duyar</string>
     <string name="carlink_settings_car_brand">Araç markası</string>
     <string name="carlink_settings_car_brand_detail">BYD: DiLink ekstralarını ekler. Diğer markalar, Changan hariç, yalnızca bu arabayı etiketler.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan: logosu CarPlay’in arabaya dön düğmesinde (diğer arabalar varsayılan simgeyi alır). CS75 Plus kaydını seçtiğinizde bildirim çubuğunun gizlenip gizlenmeyeceği sorulur — ana ekran dışındaki tüm uygulamalarda veya tam listeden seçtiğiniz uygulamalarda. Ses varsayılan olarak arabanın Bluetooth’undan çalar. CarPlay 400 mm ve HEVC, Android Auto 200 DPI olarak kalır. Tümünü Ayarlar’dan değiştirebilirsiniz.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: logosu CarPlay’in arabaya dön düğmesinde (diğer arabalar varsayılan simgeyi alır). CS75 Plus kaydı bildirim çubuğunu varsayılan olarak gizler — ana ekran dışındaki tüm uygulamalarda veya Ayarlar’daki tam listeden seçtiğiniz uygulamalarda. Ses varsayılan olarak arabanın Bluetooth’undan çalar. CarPlay 400 mm ve HEVC, Android Auto 200 DPI olarak kalır. Tümünü Ayarlar’dan değiştirebilirsiniz.</string>
     <string name="carlink_settings_car_brand_sheet_body">Bu arabanın markasını seçin. CarPlay ve Android Auto her arabada aynı şekilde çalışır.</string>
-    <string name="carlink_projection_prompt_title">Durum çubuğu gizlensin ve HEVC kullanılsın mı?</string>
-    <string name="carlink_projection_prompt_body">CarPlay ve Android Auto sırasında arabanın kayan durum çubuğu gizlensin ve daha net görüntü için HEVC video kullanılsın mı?</string>
-    <string name="carlink_projection_prompt_yes">Evet</string>
-    <string name="carlink_projection_prompt_no">Hayır</string>
-    <string name="carlink_projection_prompt_hint">Ayarlar’dan istediğiniz zaman değiştirebilir veya kapatabilirsiniz. Gizlemenin çalışması için CarLink’in erişilebilirlik iznine de ihtiyacı vardır.</string>
+    <string name="carlink_hevc_prompt_title">HEVC video kullanılsın mı?</string>
+    <string name="carlink_hevc_prompt_body">Daha net bir CarPlay görüntüsü için HEVC video açılsın mı? Bu ekranda donanım HEVC çözücüsü gerekir.\n\nEkran kararırsa HEVC’yi kapatın: Ayarlar › Gelişmişi göster (açık) › Ekran › Efficient video (HEVC).</string>
+    <string name="carlink_hevc_prompt_yes">Evet</string>
+    <string name="carlink_hevc_prompt_no">Hayır</string>
     <string name="carlink_settings_car_generic">Genel</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">Algılandı: %1$s</string>
@@ -280,7 +279,7 @@
     <string name="carlink_settings_car_byd_not_dilink">Bu ekran bir BYD DiLink ünitesi değil, bu yüzden BYD ekstraları burada çalışamaz. Arabanızın markasını veya Diğer’i seçin.</string>
     <string name="carlink_settings_car_explain_byd">BYD, DiLink ekstralarını ekler: HUD ve gösterge grubunda yol tarifi ve BYD direksiyon düğmeleri.</string>
     <string name="carlink_settings_car_explain_other">CarPlay ve Android Auto herhangi bir arabada olduğu gibi çalışır. Marka yalnızca bu arabayı CarLink’te etiketler.</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay ve Android Auto herhangi bir arabada olduğu gibi çalışır. Changan ayrıca logosunu CarPlay’in arabaya dön düğmesinde gösterir. Bu kaydı seçmek, bildirim çubuğunun gizlenip gizlenmeyeceğini sorar; yalnızca seçtiğiniz uygulamalarda gizleyecekseniz tam bir uygulama listesi sunar. Ses varsayılan olarak arabanın Bluetooth’undan çalar. CarPlay 400 mm ve HEVC, Android Auto 200 DPI kullanır.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay ve Android Auto herhangi bir arabada olduğu gibi çalışır. Changan ayrıca logosunu CarPlay’in arabaya dön düğmesinde gösterir. Bu kaydı seçmek bildirim çubuğunu varsayılan olarak gizler; yalnızca seçtiğiniz uygulamalarda gizleyecekseniz Ayarlar’da tam bir uygulama listesi bulunur. Ses varsayılan olarak arabanın Bluetooth’undan çalar. CarPlay 400 mm ve HEVC, Android Auto 200 DPI kullanır.</string>
     <string name="carlink_wheel_keys">Direksiyon düğmeleri</string>
     <string name="carlink_wheel_keys_detail">CarLink’e ses, aramalar ve müzik için direksiyon düğmelerinizi CarPlay ve Android Auto’da öğretin</string>
     <plurals name="carlink_wheel_keys_value">

@@ -132,11 +132,10 @@
     <string name="carlink_cs75_first_launch_title">هل سيارتك شانجان /\u2068CS75 Plus 2023-2022\u2069؟</string>
     <string name="carlink_cs75_first_launch_yes">نعم</string>
     <string name="carlink_cs75_first_launch_no">لا</string>
-    <string name="carlink_projection_prompt_title">إخفاء شريط الإشعارات وتفعيل \u2068HEVC\u2069؟</string>
-    <string name="carlink_projection_prompt_body">تبي نخفي شريط الإشعارات العائم حق السيارة أثناء \u2068CarPlay\u2069 و\u2068Android Auto\u2069، ونفعّل \u2068HEVC\u2069 عشان صورة أوضح؟</string>
-    <string name="carlink_projection_prompt_yes">نعم</string>
-    <string name="carlink_projection_prompt_no">لا</string>
-    <string name="carlink_projection_prompt_hint">تقدر تغيّره أو تطفيه أي وقت من الإعدادات. وحتحتاج تفعّل إذن إمكانية الوصول لـ \u2068CarLink\u2069 عشان يشتغل الإخفاء.</string>
+    <string name="carlink_hevc_prompt_title">تفعيل \u2068HEVC\u2069؟</string>
+    <string name="carlink_hevc_prompt_body">تبي نفعّل فيديو \u2068HEVC\u2069 عشان صورة \u2068CarPlay\u2069 أوضح؟ يحتاج الشاشة تدعم فك \u2068HEVC\u2069 بالعتاد.\n\nإذا سوّدت الشاشة، اطفِ \u2068HEVC\u2069 من: الإعدادات › شغّل «إظهار المتقدم» › الشاشة › \u2068Efficient video (HEVC)\u2069.</string>
+    <string name="carlink_hevc_prompt_yes">نعم</string>
+    <string name="carlink_hevc_prompt_no">لا</string>
     <string name="carlink_settings_hide_bar_off">إيقاف</string>
     <string name="carlink_settings_hide_bar_off_detail">شريط حالة السيارة يبقى ظاهر.</string>
     <string name="carlink_settings_hide_bar_all">إخفاء الشريط في كل التطبيقات ما عدا الشاشة الرئيسية</string>

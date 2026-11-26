@@ -145,11 +145,10 @@
     <string name="carlink_cs75_first_launch_title">Is your car a Changan / CS75 Plus 2022-2023?</string>
     <string name="carlink_cs75_first_launch_yes">Yes</string>
     <string name="carlink_cs75_first_launch_no">No</string>
-    <string name="carlink_projection_prompt_title">Hide the status bar and use HEVC?</string>
-    <string name="carlink_projection_prompt_body">Hide the car\'s floating status bar during CarPlay and Android Auto, and use HEVC video for a sharper picture?</string>
-    <string name="carlink_projection_prompt_yes">Yes</string>
-    <string name="carlink_projection_prompt_no">No</string>
-    <string name="carlink_projection_prompt_hint">You can change or turn it off any time in Settings. CarLink also needs the Accessibility permission for the hide to work.</string>
+    <string name="carlink_hevc_prompt_title">Use HEVC video?</string>
+    <string name="carlink_hevc_prompt_body">Turn on HEVC video for a sharper CarPlay picture? It needs a hardware HEVC decoder on this screen.\n\nIf the screen goes black, turn HEVC off: Settings › Show advanced (on) › Display › Efficient video (HEVC).</string>
+    <string name="carlink_hevc_prompt_yes">Yes</string>
+    <string name="carlink_hevc_prompt_no">No</string>
     <string name="carlink_settings_hide_bar_off">Off</string>
     <string name="carlink_settings_hide_bar_off_detail">The car\'s status bar stays visible.</string>
     <string name="carlink_settings_hide_bar_all">Hide the status bar in all apps except the home screen</string>

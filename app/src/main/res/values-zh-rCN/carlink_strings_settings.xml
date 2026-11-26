@@ -261,13 +261,12 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android 需要此权限后，CarLink 才能显示该按钮</string>
     <string name="carlink_settings_car_brand">车辆品牌</string>
     <string name="carlink_settings_car_brand_detail">比亚迪：添加其 DiLink 附加功能。其他品牌仅用于标识本车，长安除外。</string>
-    <string name="carlink_settings_car_brand_changan_note">长安：在 CarPlay 的返回车辆按钮上显示其标志（其他车辆使用默认图标）。选择 CS75 Plus 条目时会询问是否隐藏通知栏——可在除主屏幕外的所有应用中隐藏，或从完整列表中选择应用。声音默认通过车辆蓝牙播放。CarPlay 仍默认 400 mm 和 HEVC，Android Auto 仍默认 200 DPI。均可在设置中更改。</string>
+    <string name="carlink_settings_car_brand_changan_note">长安：在 CarPlay 的返回车辆按钮上显示其标志（其他车辆使用默认图标）。CS75 Plus 条目默认隐藏通知栏——可在除主屏幕外的所有应用中隐藏，或在设置中从完整列表选择应用。声音默认通过车辆蓝牙播放。CarPlay 仍默认 400 mm 和 HEVC，Android Auto 仍默认 200 DPI。均可在设置中更改。</string>
     <string name="carlink_settings_car_brand_sheet_body">选择本车品牌。CarPlay 和 Android Auto 在所有车辆上的工作方式相同。</string>
-    <string name="carlink_projection_prompt_title">隐藏状态栏并使用 HEVC？</string>
-    <string name="carlink_projection_prompt_body">在 CarPlay 和 Android Auto 期间隐藏车辆悬浮状态栏，并使用 HEVC 视频获得更清晰的画面？</string>
-    <string name="carlink_projection_prompt_yes">是</string>
-    <string name="carlink_projection_prompt_no">否</string>
-    <string name="carlink_projection_prompt_hint">可随时在设置中更改或关闭。隐藏功能还需要为 CarLink 开启无障碍权限。</string>
+    <string name="carlink_hevc_prompt_title">使用 HEVC 视频？</string>
+    <string name="carlink_hevc_prompt_body">开启 HEVC 视频以获得更清晰的 CarPlay 画面？此屏幕需要硬件 HEVC 解码器。\n\n如果屏幕变黑，请关闭 HEVC：设置 › 显示高级选项（开启）› 显示 › Efficient video (HEVC)。</string>
+    <string name="carlink_hevc_prompt_yes">是</string>
+    <string name="carlink_hevc_prompt_no">否</string>
     <string name="carlink_settings_car_generic">通用</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">已检测到：%1$s</string>
@@ -280,7 +279,7 @@
     <string name="carlink_settings_car_byd_not_dilink">此屏幕不是比亚迪 DiLink 主机，因此比亚迪附加功能无法在此使用。请选择您的车辆品牌，或选择“其他”。</string>
     <string name="carlink_settings_car_explain_byd">比亚迪会添加 DiLink 附加功能：在抬头显示和仪表盘上显示导航，以及比亚迪方向盘按键。</string>
     <string name="carlink_settings_car_explain_other">CarPlay 和 Android Auto 的工作方式与任何车辆相同。品牌仅用于在 CarLink 中标识本车。</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay 和 Android Auto 的工作方式与任何车辆相同。长安还会在 CarPlay 的返回车辆按钮上显示其标志。选择此条目时会询问是否隐藏通知栏；若只在所选应用中隐藏，会提供完整应用列表。声音默认通过车辆蓝牙播放。CarPlay 使用 400 mm 和 HEVC，Android Auto 使用 200 DPI。</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay 和 Android Auto 的工作方式与任何车辆相同。长安还会在 CarPlay 的返回车辆按钮上显示其标志。选择此条目时默认隐藏通知栏；若只在所选应用中隐藏，可在设置中使用完整应用列表。声音默认通过车辆蓝牙播放。CarPlay 使用 400 mm 和 HEVC，Android Auto 使用 200 DPI。</string>
     <string name="carlink_wheel_keys">方向盘按键</string>
     <string name="carlink_wheel_keys_detail">让 CarLink 学习方向盘上用于语音、通话和音乐的按键，以便在 CarPlay 和 Android Auto 中使用</string>
     <plurals name="carlink_wheel_keys_value">

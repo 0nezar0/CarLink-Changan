@@ -261,13 +261,12 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android memerlukannya sebelum CarLink dapat menunjukkan butang</string>
     <string name="carlink_settings_car_brand">Jenama kereta</string>
     <string name="carlink_settings_car_brand_detail">BYD: menambah tambahan DiLinknya. Jenama lain hanya melabel kereta ini, kecuali Changan.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan: logonya pada butang kembali ke kereta CarPlay (kereta lain mendapat ikon lalai). Apabila anda memilih entri CS75 Plus, anda ditanya tentang menyembunyikan bar pemberitahuan — dalam semua apl kecuali skrin utama, atau dalam apl yang anda pilih daripada senarai penuh. Bunyi dimainkan melalui Bluetooth kereta secara lalai. CarPlay kekal pada 400 mm dan HEVC, dan Android Auto pada 200 DPI. Anda boleh mengubah semua ini dalam Tetapan.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: logonya pada butang kembali ke kereta CarPlay (kereta lain mendapat ikon lalai). Entri CS75 Plus menyembunyikan bar pemberitahuan secara lalai — dalam semua apl kecuali skrin utama, atau dalam apl yang anda pilih daripada senarai penuh dalam Tetapan. Bunyi dimainkan melalui Bluetooth kereta secara lalai. CarPlay kekal pada 400 mm dan HEVC, dan Android Auto pada 200 DPI. Anda boleh mengubah semua ini dalam Tetapan.</string>
     <string name="carlink_settings_car_brand_sheet_body">Pilih jenama kereta ini. CarPlay dan Android Auto berfungsi sama dalam setiap kereta.</string>
-    <string name="carlink_projection_prompt_title">Sembunyikan bar status dan guna HEVC?</string>
-    <string name="carlink_projection_prompt_body">Sembunyikan bar status terapung kereta semasa CarPlay dan Android Auto, dan guna video HEVC untuk gambar yang lebih tajam?</string>
-    <string name="carlink_projection_prompt_yes">Ya</string>
-    <string name="carlink_projection_prompt_no">Tidak</string>
-    <string name="carlink_projection_prompt_hint">Anda boleh mengubah atau mematikannya pada bila-bila masa dalam Tetapan. CarLink juga memerlukan keizinan Kebolehcapaian supaya penyembunyian berfungsi.</string>
+    <string name="carlink_hevc_prompt_title">Guna video HEVC?</string>
+    <string name="carlink_hevc_prompt_body">Hidupkan video HEVC untuk gambar CarPlay yang lebih tajam? Ia memerlukan penyahkod HEVC perkakasan pada skrin ini.\n\nJika skrin menjadi hitam, matikan HEVC: Tetapan › Tunjukkan lanjutan (hidup) › Paparan › Efficient video (HEVC).</string>
+    <string name="carlink_hevc_prompt_yes">Ya</string>
+    <string name="carlink_hevc_prompt_no">Tidak</string>
     <string name="carlink_settings_car_generic">Umum</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">Dikesan: %1$s</string>
@@ -280,7 +279,7 @@
     <string name="carlink_settings_car_byd_not_dilink">Skrin ini bukan unit BYD DiLink, jadi tambahan BYD tidak dapat berfungsi di sini. Pilih jenama kereta anda, atau Lain.</string>
     <string name="carlink_settings_car_explain_byd">BYD menambah tambahan DiLink: arah pada HUD dan kluster instrumen, serta kekunci stereng BYD.</string>
     <string name="carlink_settings_car_explain_other">CarPlay dan Android Auto berfungsi sama seperti dalam mana-mana kereta. Jenama hanya melabel kereta ini dalam CarLink.</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay dan Android Auto berfungsi seperti dalam mana-mana kereta. Changan juga menunjukkan logonya pada butang kembali ke kereta CarPlay. Memilih entri ini menanya tentang menyembunyikan bar pemberitahuan, dengan senarai apl penuh jika anda menyembunyikannya hanya dalam apl yang dipilih. Bunyi melalui Bluetooth kereta secara lalai. CarPlay menggunakan 400 mm dan HEVC, Android Auto 200 DPI.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay dan Android Auto berfungsi seperti dalam mana-mana kereta. Changan juga menunjukkan logonya pada butang kembali ke kereta CarPlay. Memilih entri ini menyembunyikan bar pemberitahuan secara lalai, dengan senarai apl penuh dalam Tetapan jika anda menyembunyikannya hanya dalam apl yang dipilih. Bunyi melalui Bluetooth kereta secara lalai. CarPlay menggunakan 400 mm dan HEVC, Android Auto 200 DPI.</string>
     <string name="carlink_wheel_keys">Butang stereng</string>
     <string name="carlink_wheel_keys_detail">Ajar CarLink butang stereng anda untuk suara, panggilan dan muzik dalam CarPlay dan Android Auto</string>
     <plurals name="carlink_wheel_keys_value">

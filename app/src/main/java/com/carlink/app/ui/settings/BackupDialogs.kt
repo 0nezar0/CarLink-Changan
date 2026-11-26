@@ -1,7 +1,5 @@
 package com.carlink.app.ui.settings
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -55,25 +53,19 @@ internal fun RestoreConfirmDialog(backup: SettingsBackup.Backup, onConfirm: () -
 }
 
 /**
- * Asked once, for every car except the Changan CS75 Plus (which hides the bar by default): hide
- * the car's status bar and turn on HEVC. Yes enables both; No (or Back) leaves them as they are.
- * Both stay in Settings.
+ * Asked once, for every car except the Changan CS75 Plus (which has HEVC on by default): turn on
+ * CarPlay HEVC. Yes enables it; No (or Back) leaves it as it is. The text says where to turn it off
+ * if the screen goes black. The status-bar hide is not part of this question (its broadcast is Changan-specific).
  */
 @Composable
-internal fun ProjectionPromptDialog(onAnswer: (Boolean) -> Unit) {
+internal fun HevcPromptDialog(onAnswer: (Boolean) -> Unit) {
     val scheme = MaterialTheme.colorScheme
     AlertDialog(
         onDismissRequest = { onAnswer(false) },
-        title = { Text(stringResource(R.string.carlink_projection_prompt_title)) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(R.string.carlink_projection_prompt_body), color = scheme.onSurface)
-                Text(stringResource(R.string.carlink_projection_prompt_hint), color = scheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodySmall)
-            }
-        },
-        confirmButton = { IonButton(stringResource(R.string.carlink_projection_prompt_yes), { onAnswer(true) }) },
-        dismissButton = { GlassButton(stringResource(R.string.carlink_projection_prompt_no), { onAnswer(false) }) },
+        title = { Text(stringResource(R.string.carlink_hevc_prompt_title)) },
+        text = { Text(stringResource(R.string.carlink_hevc_prompt_body), color = scheme.onSurface) },
+        confirmButton = { IonButton(stringResource(R.string.carlink_hevc_prompt_yes), { onAnswer(true) }) },
+        dismissButton = { GlassButton(stringResource(R.string.carlink_hevc_prompt_no), { onAnswer(false) }) },
         containerColor = scheme.surfaceContainerHigh,
     )
 }
@@ -93,7 +85,7 @@ internal fun RestoreErrorDialog(reason: String?, onDismiss: () -> Unit) {
 
 /**
  * First launch after a fresh install only. Yes selects the CS75 Plus brand and applies its
- * projection defaults, with the status-bar hide on. No leaves the normal flow, then the status-bar and HEVC question follows.
+ * projection defaults and the status-bar hide on. No leaves the normal flow, then the HEVC question follows.
  * Back counts as No. Shown once.
  */
 @Composable
