@@ -22,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.carlink.app.R
 import com.carlink.app.ui.settings.LaunchableApps
 import kotlinx.coroutines.Dispatchers
@@ -40,13 +42,13 @@ class InstalledAppsActivity : ComponentActivity() {
             }
             MaterialTheme(colorScheme = darkColorScheme()) {
                 Surface(Modifier.fillMaxSize()) {
-                    Column(Modifier.systemBarsPadding().padding(16.dp)) {
+                    Column(Modifier.systemBarsPadding().padding(InstalledAppsLayout.ScreenPadding)) {
                         Text(stringResource(R.string.carlink_cs75_nav_apps), style = MaterialTheme.typography.titleLarge)
                         val loaded = apps
                         if (loaded == null) {
                             CircularProgressIndicator()
                         } else {
-                            LazyVerticalGrid(columns = GridCells.Adaptive(112.dp)) {
+                            LazyVerticalGrid(columns = GridCells.Adaptive(InstalledAppsLayout.MinCellSize)) {
                                 items(loaded, key = { it.packageName }) { app ->
                                     Column(
                                         Modifier.fillMaxWidth()
@@ -54,11 +56,20 @@ class InstalledAppsActivity : ComponentActivity() {
                                                 onClick = { openApp(app.packageName) },
                                                 onLongClick = { openAppInfo(app.packageName) },
                                             )
-                                            .padding(12.dp),
+                                            .padding(InstalledAppsLayout.CellPadding),
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                     ) {
-                                        app.icon?.let { Image(it.asImageBitmap(), null, Modifier.size(48.dp)) }
-                                        Text(app.label, textAlign = TextAlign.Center)
+                                        app.icon?.let {
+                                            Image(it.asImageBitmap(), null, Modifier.size(InstalledAppsLayout.IconSize))
+                                        }
+                                        Spacer(Modifier.height(8.dp))
+                                        Text(
+                                            app.label,
+                                            textAlign = TextAlign.Center,
+                                            style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
+                                            maxLines = 2,
+                                            overflow = TextOverflow.Ellipsis,
+                                        )
                                     }
                                 }
                             }
@@ -94,5 +105,25 @@ class InstalledAppsActivity : ComponentActivity() {
             // Some system activities restrict access to their own launcher.
         }
         Toast.makeText(this, R.string.carlink_cs75_nav_apps_unavailable, Toast.LENGTH_SHORT).show()
+    }
+}
+
+/**
+ * Sizes for the Installed apps grid opened from the navigation bar. Tuned for a wide car
+ * screen (~1920×720): icons are large enough to tap while driving, and the adaptive
+ * column width still leaves several columns on a typical head-unit landscape width.
+ */
+internal object InstalledAppsLayout {
+    /** Was 48 dp; about twice that, in the 96–112 dp range. */
+    val IconSize = 104.dp
+    /** Was 112 dp; wide enough for [IconSize] plus cell padding and a readable label. */
+    val MinCellSize = 200.dp
+    val ScreenPadding = 16.dp
+    val CellPadding = 16.dp
+
+    /** How many columns [GridCells.Adaptive] would use for a screen [widthDp] dp wide. */
+    fun columnsForWidth(widthDp: Int): Int {
+        val available = (widthDp - ScreenPadding.value.toInt() * 2).coerceAtLeast(0)
+        return maxOf(1, available / MinCellSize.value.toInt())
     }
 }
