@@ -21,6 +21,12 @@ apksigner verify --print-certs CarLink-X.Y.Z.apk
 (the README's colon-separated fingerprint, written without colons). An APK signed with any other
 key is not CarLink's release: Android refuses to install it over the release, and the updater ignores it.
 
+For the Changan CS75 Plus 2022/2023, this illustrated guide shows the install through ES File
+Explorer (code `*#518300#`), Remote Manager (FTP) and the `/oem/app` folder, then a 10-second
+long-press on volume down to restart. · دليل مصوّر لتثبيت CarLink على شانجان CS75 Plus 2022 و2023.
+
+[![Install guide for the Changan CS75 Plus 2022/2023 | دليل تثبيت CarLink على شانجان CS75 Plus](images/install-guide-cs75.png)](images/install-guide-cs75.png)
+
 ## First-time setup
 
 The first time CarLink opens, **Set up CarLink** walks through five steps (about two minutes;
@@ -77,6 +83,14 @@ over Bluetooth SDP first; nothing starts until CarLink is sure.
   while connecting is not mistaken for an unplug.
 - **One engine at a time.** A new session starts only after the previous one has fully stopped,
   so the two engines never share the Wi-Fi Direct group, VPN slot, audio focus or media session.
+
+### Car hotspot
+
+To set up the car hotspot, open Settings › Show advanced › Connection › Car hotspot, enter its
+name (SSID) and password, then turn on **Start car hotspot**. · لإعداد نقطة اتصال السيارة:
+الإعدادات › إظهار الإعدادات المتقدمة › الاتصال › نقطة اتصال السيارة، أدخل الاسم وكلمة المرور ثم فعّل «تشغيل نقطة اتصال السيارة».
+
+[![CarLink car hotspot setup guide | دليل إعداد نقطة اتصال السيارة](images/car-hotspot-guide.png)](images/car-hotspot-guide.png)
 
 ## Updates
 
