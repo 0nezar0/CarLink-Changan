@@ -83,9 +83,13 @@ class PhoneClassifierTest {
         assertEquals(PhoneKind.IPHONE, PhoneClassifier.classifyBluetooth(bt("IPAD"), null))
     }
 
-    /** Hands-free and media without iAP2 is no proof: iOS 27 iPhones with a custom name look like this (#89, #90). */
-    @Test fun phoneWithSdpRecordsButNoIap2IsAsked() {
-        assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Sam's phone", setOf(handsFree, a2dpSource)), null))
+    /** CarLink: v1.6.5's reading is back: a phone's records beyond media streaming without iAP2 are Android. */
+    @Test fun phoneWithSdpRecordsButNoIap2IsAndroid() {
+        assertEquals(PhoneKind.ANDROID, PhoneClassifier.classifyBluetooth(bt("Sam's phone", setOf(handsFree, a2dpSource)), null))
+        // ...but that reading alone is not remembered.
+        assertEquals(false, PhoneClassifier.isProof(bt("Sam's phone", setOf(handsFree, a2dpSource)), PhoneKind.ANDROID))
+        assertEquals(true, PhoneClassifier.isProof(bt("Xiaomi 14T Pro"), PhoneKind.ANDROID))
+        assertEquals(true, PhoneClassifier.isProof(bt("Sam's phone", setOf(PhoneClassifier.OBEX_OBJECT_PUSH_UUID)), PhoneKind.ANDROID))
         // Only media streaming seen (an iPhone paired through a stereo's module, 2026-11-08): no guess.
         assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Car phone", setOf(a2dpSource)), null))
         assertEquals(PhoneKind.ANDROID,

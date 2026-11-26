@@ -135,15 +135,13 @@ class PairingSession(context: Context) {
     @SuppressLint("MissingPermission")
     private fun classify(device: BluetoothDevice, uuids: Set<java.util.UUID>) {
         val name = runCatching { device.name }.getOrNull()
-        val kind = PhoneClassifier.classifyBluetooth(
-            PhoneClassifier.BluetoothDeviceInfo(device.address, name, uuids,
-                runCatching { device.bluetoothClass?.majorDeviceClass }.getOrNull()),
-            remembered = null,
-        )
-        // Only positive evidence decides (PhoneClassifier: iAP2 or an iPhone name; Android Auto's record,
-        // Object Push or an Android phone's name), so whatever it found is remembered. "Has SDP records
-        // but no iAP2" is never used: an iPhone whose iAP2 record was not cached yet looks the same.
-        if (kind != PhoneKind.UNKNOWN) knownPhones.remember(device.address, kind)
+        val info = PhoneClassifier.BluetoothDeviceInfo(device.address, name, uuids,
+            runCatching { device.bluetoothClass?.majorDeviceClass }.getOrNull())
+        val kind = PhoneClassifier.classifyBluetooth(info, remembered = null)
+        // Only proof is remembered (PhoneClassifier.isProof). The v1.6.5 "records without iAP2" reading
+        // is shown but re-made from fresh records each time: an iPhone whose iAP2 record was not cached
+        // yet looks the same.
+        if (PhoneClassifier.isProof(info, kind)) knownPhones.remember(device.address, kind)
         // A later, thinner answer (cached records only) never undoes a kind already found.
         val previous = (_state.value as? State.Paired)?.takeIf { it.address.equals(device.address, ignoreCase = true) }?.kind
         val shown = if (kind == PhoneKind.UNKNOWN && previous != null && previous != PhoneKind.UNKNOWN) previous else kind

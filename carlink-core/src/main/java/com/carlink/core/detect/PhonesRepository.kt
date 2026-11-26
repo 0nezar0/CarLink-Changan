@@ -151,12 +151,10 @@ class PhonesRepository(
                 ?.filterIsInstance<android.os.ParcelUuid>()?.map { it.uuid }
         }.getOrNull().orEmpty().toSet()
         val address = KnownPhones.normalize(device.address)
-        val kind = PhoneClassifier.classifyBluetooth(
-            PhoneClassifier.BluetoothDeviceInfo(address, runCatching { device.name }.getOrNull(), records,
-                runCatching { device.bluetoothClass?.majorDeviceClass }.getOrNull()),
-            knownPhones.kindOf(address),
-        )
-        if (kind != PhoneKind.UNKNOWN && knownPhones.kindOf(address) != kind) knownPhones.remember(address, kind)
+        val info = PhoneClassifier.BluetoothDeviceInfo(address, runCatching { device.name }.getOrNull(), records,
+            runCatching { device.bluetoothClass?.majorDeviceClass }.getOrNull())
+        val kind = PhoneClassifier.classifyBluetooth(info, knownPhones.kindOf(address))
+        if (PhoneClassifier.isProof(info, kind) && knownPhones.kindOf(address) != kind) knownPhones.remember(address, kind)
     }
 
     /** The driver corrected the detected type (Phone detail). */

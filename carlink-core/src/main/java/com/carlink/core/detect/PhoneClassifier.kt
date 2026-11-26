@@ -138,7 +138,8 @@ object PhoneClassifier {
      * 3. an "iPhone"/"iPad" device name (the default name, and DiPlay's own picker rule);
      * 4. the Android Auto service UUID, which wireless Android Auto itself needs;
      * 5. (CarLink) OBEX Object Push, which every Android phone publishes and no iPhone does;
-     * 6. (CarLink) an Android phone's default name (Xiaomi, Galaxy, Pixel, SM-…).
+     * 6. (CarLink) an Android phone's default name (Xiaomi, Galaxy, Pixel, SM-…);
+     * 7. (CarLink, as v1.6.5) a phone's records with more than media streaming and no iAP2.
      * Anything else stays UNKNOWN and Home asks the driver once: hands-free, contacts and messages are
      * on iPhones too, and iOS 27 iPhones with a custom name sent no iAP2 record (GitHub #89, #90).
      */
@@ -156,6 +157,30 @@ object PhoneClassifier {
             device.majorClass == BLUETOOTH_MAJOR_UNCATEGORIZED
         if (phoneClass && OBEX_OBJECT_PUSH_UUID in device.uuids) return PhoneKind.ANDROID
         if (phoneClass && looksLikeAndroidName(device.name)) return PhoneKind.ANDROID
+        // CarLink: restored from v1.6.5 (removed upstream in 1.0.18, 0b89bd22): a phone whose records
+        // hold more than media streaming and no iAP2 is taken as Android. Upstream dropped it because
+        // an iOS 27 iPhone with a custom name sent no iAP2 record (#89, #90); here the driver's own
+        // phones are Android, iAP2 and an iPhone name still decide first, and the kind can be changed
+        // in the phone's details. Media streaming alone still tells nothing (2026-11-08).
+        if (device.majorClass == null || device.majorClass == BLUETOOTH_MAJOR_PHONE) {
+            if (device.uuids.any { it !in MEDIA_ONLY_UUIDS }) return PhoneKind.ANDROID
+        }
         return PhoneKind.UNKNOWN
+    }
+
+    /** A2DP source/sink/advanced audio and AVRCP (0x110A-0x110F): every phone has them. */
+    private val MEDIA_ONLY_UUIDS: Set<UUID> = (0x110A..0x110F)
+        .map { UUID.fromString("0000%04x-0000-1000-8000-00805f9b34fb".format(it)) }.toSet()
+
+    /**
+     * Whether a kind is backed by proof worth remembering (an iPhone's iAP2 or name; Android Auto's
+     * record, Object Push or an Android default name), as opposed to the v1.6.5 "records without
+     * iAP2" reading, which is re-made from fresh records each time instead of being stored.
+     */
+    fun isProof(device: BluetoothDeviceInfo, kind: PhoneKind): Boolean = when (kind) {
+        PhoneKind.IPHONE -> true
+        PhoneKind.ANDROID -> ANDROID_AUTO_BLUETOOTH_UUID in device.uuids || OBEX_OBJECT_PUSH_UUID in device.uuids ||
+            looksLikeAndroidName(device.name)
+        else -> false
     }
 }
