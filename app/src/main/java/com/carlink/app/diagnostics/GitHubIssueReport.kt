@@ -13,21 +13,24 @@ import java.util.Locale
 import java.util.TimeZone
 
 /**
- * "Report a problem on GitHub": a prefilled new-issue link for the repository's bug form
- * (`.github/ISSUE_TEMPLATE/bug_report.yml`). There is no GitHub sign-in in CarLink: the stereo's
- * browser opens the form and the driver taps Submit (the browser must be signed in once).
+ * "Report a problem on GitHub": a prefilled new-issue link for this build's issues
+ * ([NEW_ISSUE], 0nezar0/carlink-releases). The releases repository may not have GitHub issue
+ * forms, so the link uses the classic `title` and `body` query parameters (the same facts the
+ * old F-e-n-y-x form collected). There is no GitHub sign-in in CarLink: the stereo's browser
+ * opens the form and the driver taps Submit (the browser must be signed in once).
  *
  * Pure: everything comes in through [Facts], so the link is unit-tested
  * (GitHubIssueReportTest). [IssueReporter] gathers the facts on a device.
  *
  * Each query parameter is a form field's `id`; GitHub uses the `id` as "the canonical identifier
  * for the field in URL query parameter prefills" (docs.github.com, "Syntax for GitHub's form
- * schema"). Dropdowns only take a value that is exactly one of their option labels, otherwise
- * they stay empty, so the labels below must match the form word for word (a test reads the form).
+ * schema"). "CarPlay or Android Auto" and "Connection type" are text inputs, not dropdowns: reports
+ * sent as dropdowns arrived with values that contradicted their own session (#74/#75: the digest
+ * said WIFI_DIRECT, the form "car hotspot" and "same Wi-Fi"; #78-#80: Android Auto sent as CarPlay),
+ * while the text inputs always kept what CarLink filled in.
  */
 object GitHubIssueReport {
-    const val NEW_ISSUE = "https://github.com/F-e-n-y-x/CarLink/issues/new"
-    const val TEMPLATE = "bug_report.yml"
+    const val NEW_ISSUE = "https://github.com/0nezar0/carlink-releases/issues/new"
 
     /**
      * The whole link, after percent-encoding, stays at or under this many characters. GitHub does
@@ -67,13 +70,14 @@ object GitHubIssueReport {
     /** A single log line longer than this is cut (the full line is in Share log). */
     const val MAX_LINE_CHARS = 220
 
-    // Option labels of the form's dropdowns, word for word.
+    // The values CarLink writes into the form's "CarPlay or Android Auto" and "Connection type" fields.
     const val PROJECTION_CARPLAY = "CarPlay"
     const val PROJECTION_ANDROID_AUTO = "Android Auto"
     const val CONNECTION_USB = "USB cable"
     const val CONNECTION_WIFI_DIRECT = "Wireless, Wi-Fi Direct (Automatic)"
     const val CONNECTION_CAR_HOTSPOT = "Wireless, car hotspot"
     const val CONNECTION_SAME_WIFI = "Wireless, same Wi-Fi network"
+    const val CONNECTION_HEADUNIT_SERVER = "Wireless, head unit server (Android Auto)"
     const val CONNECTION_NOT_SURE = "Not sure"
 
     /** The screen CarLink runs on. [widthDp]/[heightDp] use the panel's real density ([densityDpi]). */
@@ -121,7 +125,7 @@ object GitHubIssueReport {
         val versionName: String,
         val versionCode: Int,
         val device: Device,
-        /** The last session of each engine, newest first; the first fills the form's dropdowns. */
+        /** The last session of each engine, newest first; the first fills the form's fields and leads "What happened". */
         val sessions: List<Session>,
         /** Home's message in the driver's words: its headline and sentence, when something failed. */
         val problemTitle: String?,
@@ -183,6 +187,16 @@ object GitHubIssueReport {
 
     fun route(browserAvailable: Boolean): Route = if (browserAvailable) Route.BROWSER else Route.QR_CODE
 
+    /** The same report opened again within this time was most likely sent already (#73-#75 over 2 h, #78-#80 in seconds). */
+    const val RESEND_WINDOW_MILLIS = 12 * 60 * 60_000L
+
+    /** What makes two reports the same: the version, the title (engine, transport, Home's message) and the connection. */
+    fun sameReportKey(report: Report): String = listOf("version", "title", "connection").joinToString("|") { report.fields[it].orEmpty() }
+
+    /** [key] was sent at [sentAtMillis] (as [sentKey]) less than [RESEND_WINDOW_MILLIS] ago; a clock that went back does not count. */
+    fun sentRecently(key: String, sentKey: String?, sentAtMillis: Long, nowMillis: Long): Boolean =
+        key == sentKey && nowMillis - sentAtMillis in 0 until RESEND_WINDOW_MILLIS
+
     fun build(facts: Facts): Report {
         val title = title(facts)
         val head = linkedMapOf("title" to title, "version" to version(facts), "screen" to screen(facts.device))
@@ -198,17 +212,31 @@ object GitHubIssueReport {
         // reports arrive through the quick code, so it must carry the failure and the stop point.
         val digest = clean(digest(facts), facts.secrets)
         val qrWhat = digest + "\n\n" + clean(whatHappened(facts, short = true), facts.secrets)
-        fun trimWhat(fields: LinkedHashMap<String, String>, limit: Int): String {
-            var link = qrUrl(fields)
+        fun trimTo(fields: LinkedHashMap<String, String>, limit: Int, qr: Boolean): String {
+            fun current() = if (qr) qrUrl(fields) else url(fields)
+            var link = current()
+            if (link.length > limit && "log" in fields) {
+                fields.remove("log")
+                link = current()
+            }
             while (link.length > limit) {
-                val what = fields.getValue("what_happened")
+                val what = fields["what_happened"] ?: break
                 val cut = maxOf(digest.length + 40, what.length * 3 / 4)
                 if (cut >= what.length - 1) break
                 fields["what_happened"] = what.take(cut) + "…"
-                link = qrUrl(fields)
+                link = current()
             }
-            return link
+            // Markdown headings make the body slightly larger than the old form-field query.
+            if (link.length > limit) {
+                for (key in listOf("car_brand", "phone", "screen", "connection", "projection", "version")) {
+                    if (link.length <= limit) break
+                    fields.remove(key)
+                    link = current()
+                }
+            }
+            return current()
         }
+        fun trimWhat(fields: LinkedHashMap<String, String>, limit: Int): String = trimTo(fields, limit, qr = true)
         // The quick link: no log lines and a short error, so the QR code stays coarse enough to scan off a
         // screen; its log field tells the reporter how to attach the log file.
         val quickFields = LinkedHashMap(head)
@@ -244,9 +272,13 @@ object GitHubIssueReport {
         var what = clean(whatHappened(facts, short = false, budget = URL_BUDGET / 2), facts.secrets)
         while (encode(what).length > URL_BUDGET / 2) what = what.take(what.length * 3 / 4) + "…"
         fields["what_happened"] = what
-        val room = URL_BUDGET - url(fields).length - "&log=".length
-        val excerpt = logExcerpt(facts, room)
+        val logHeading = "\n\n### Log excerpt\n"
+        val room = URL_BUDGET - url(fields).length - encode(logHeading).length - 64
+        val excerpt = logExcerpt(facts, room.coerceAtLeast(0))
         fields["log"] = excerpt.text
+        while (url(fields).length > URL_BUDGET && fields.getValue("log").length > 40) {
+            fields["log"] = fields.getValue("log").let { it.take(maxOf(40, it.length * 9 / 10)) }
+        }
         val textHead = buildString {
             append(title).append('\n')
             head.filterKeys { it != "title" }.forEach { (k, v) -> append(k.replace('_', ' ')).append(": ").append(v).append('\n') }
@@ -325,14 +357,14 @@ object GitHubIssueReport {
         return n.takeIf { it.isNotEmpty() }
     }
 
-    /** A dropdown label of the form, or null to leave the dropdown for the reporter. */
+    /** The form's "CarPlay or Android Auto" value, or null to leave it for the reporter. */
     fun projection(s: Session?): String? = when (s?.engine) {
         Engine.CARPLAY -> PROJECTION_CARPLAY
         Engine.ANDROID_AUTO -> PROJECTION_ANDROID_AUTO
         null -> null
     }
 
-    /** A dropdown label of the form, or null when there was no session. */
+    /** The form's "Connection type" value, or null when there was no session. */
     fun connection(s: Session?): String? = when {
         s?.transport == null -> null
         s.transport == Transport.USB -> CONNECTION_USB
@@ -340,13 +372,14 @@ object GitHubIssueReport {
             WirelessPath.WIFI_DIRECT -> CONNECTION_WIFI_DIRECT
             WirelessPath.CAR_HOTSPOT -> CONNECTION_CAR_HOTSPOT
             WirelessPath.SAME_WIFI -> CONNECTION_SAME_WIFI
-            WirelessPath.HEADUNIT_SERVER, null -> CONNECTION_NOT_SURE
+            WirelessPath.HEADUNIT_SERVER -> CONNECTION_HEADUNIT_SERVER
+            null -> CONNECTION_NOT_SURE
         }
     }
 
     /**
      * What happened: Home's message, then each session labelled with its engine, transport and time
-     * (the form's dropdowns describe the first), its timeline, the settings, the stereo's Bluetooth and
+     * (the form's fields describe the first), its timeline, the settings, the stereo's Bluetooth and
      * a performance block. Blocks are dropped least important first to stay within [budget] (encoded).
      */
     fun whatHappened(facts: Facts, short: Boolean, budget: Int = Int.MAX_VALUE): String {
@@ -397,7 +430,7 @@ object GitHubIssueReport {
             listOfNotNull(s.transport?.name, s.path?.name).joinToString(" ").takeIf { it.isNotEmpty() },
             if (s.failed) "failed" else "no failure",
             time,
-        ).joinToString(" · ") + if (labelled) " (the form's dropdowns describe this one)" else ""
+        ).joinToString(" · ") + if (labelled) " (the form's fields above describe this one)" else ""
         val lines = listOfNotNull(
             (s.phoneModel ?: s.phoneOs)?.let { "Phone: " + listOfNotNull(s.phoneModel, s.phoneOs?.let { v -> "OS $v" }).joinToString(", ") },
             s.problem?.let { "LinkProblem: $it" },
@@ -628,9 +661,22 @@ object GitHubIssueReport {
     fun qrUrl(fields: Map<String, String>): String =
         "https://github.com/login?return_to=" + encode(url(fields).removePrefix("https://github.com"))
 
+    /**
+     * Markdown body for a blank GitHub issue, so prefills work without a `bug_report.yml` form
+     * on the releases repository. [fields] still uses the old form ids for the in-app sheet.
+     */
+    fun issueBody(fields: Map<String, String>): String = buildString {
+        for ((key, label) in BODY_LABELS) {
+            val value = fields[key] ?: continue
+            if (isNotEmpty()) append("\n\n")
+            append("### ").append(label).append('\n').append(value)
+        }
+    }
+
     fun url(fields: Map<String, String>): String = buildString {
-        append(NEW_ISSUE).append("?template=").append(encode(TEMPLATE))
-        fields.forEach { (key, value) -> append('&').append(key).append('=').append(encode(value)) }
+        append(NEW_ISSUE).append("?title=").append(encode(fields["title"].orEmpty()))
+        val body = issueBody(fields)
+        if (body.isNotEmpty()) append("&body=").append(encode(body))
     }
 
     /**
@@ -657,6 +703,16 @@ object GitHubIssueReport {
 
     private fun engineName(engine: Engine) = when (engine) { Engine.CARPLAY -> "CarPlay"; Engine.ANDROID_AUTO -> "Android Auto" }
 
+    private val BODY_LABELS = linkedMapOf(
+        "version" to "CarLink version",
+        "screen" to "Screen",
+        "phone" to "Phone",
+        "projection" to "CarPlay or Android Auto",
+        "connection" to "Connection",
+        "car_brand" to "Car brand",
+        "what_happened" to "What happened",
+        "log" to "Log excerpt",
+    )
     private const val HEX = "0123456789ABCDEF"
     private val SESSION_TAG = Regex("#s(\\d+)\\b")
     private val TIMING = Regex("\\b(WIRED|WIRELESS)_TIMING\\b")

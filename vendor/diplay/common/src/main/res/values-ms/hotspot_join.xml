@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for hotspot_join.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="hotspot_join_title">Penyertaan hotspot automatik (uji kaji)</string>
+    <string name="hotspot_join_description">Pembaikan pilihan untuk perisian tegar disokong dengan Android 13+ dan hotspot kereta 5 GHz sahaja. Semak menyediakan sandaran undur peribadi tanpa mengubah hotspot. Memerlukan ADB setempat yang dibenarkan pada localhost:5555; gandingan nyahpepijat wayarles TLS tidak disokong.</string>
+    <string name="hotspot_join_check">Semak pembaikan hotspot</string>
+    <string name="hotspot_join_apply">Tambah maklumat sertai automatik</string>
+    <string name="hotspot_join_restore">Pulihkan hotspot yang disimpan</string>
+    <string name="hotspot_join_working">Menyemak atau mengemas kini… Pembatalan mungkin memerlukan semakan baharu untuk mengesahkan hasil.</string>
+    <string name="hotspot_join_confirm">Semasa letak, putuskan CarPlay dan matikan hotspot dalam tetapan kereta dahulu. Tindakan ini hanya mengubah konfigurasi hotspot yang disimpan dan mengesahkan bacaan semula. Hidupkan semula hotspot sendiri kemudian untuk mengemas kini siarannya. Klien sedia ada akan terputus apabila anda mematikannya. Kekalkan sandaran peribadi untuk undur.</string>
+    <string name="hotspot_join_disconnect">Putuskan CarPlay sebelum mengubah hotspot.</string>
+    <string name="hotspot_join_ready">Konfigurasi 5 GHz disokong. Sandaran penuh peribadi disediakan; tiada perubahan hotspot lagi.</string>
+    <string name="hotspot_join_present">Maklumat yang diuji sudah ada. Tiada pendua ditambah; DiPlay tiada pemilikan undur bagi unsur sedia ada.</string>
+    <string name="hotspot_join_applied">Konfigurasi disimpan disahkan. Hidupkan hotspot dalam tetapan kereta untuk mengemas kini siaran, kemudian uji penyertaan automatik. Kejayaan siaran dan CarPlay masih memerlukan ujian peranti.</string>
+    <string name="hotspot_join_restored">Konfigurasi penuh yang disimpan dipulihkan dan disahkan. Hidupkan hotspot dalam tetapan kereta.</string>
+    <string name="hotspot_join_unsupported">API, perisian tegar, jalur atau maklumat vendor bercanggah tidak disokong. Tiada pembaikan dikenakan. Gunakan konfigurasi 5 GHz sahaja yang disokong; jalur lain belum disahkan.</string>
+    <string name="hotspot_join_off_required">Hotspot mesti disahkan dimatikan. Putuskan klien dan matikannya dalam tetapan kereta, kemudian cuba lagi. DiPlay tidak akan memulakannya semula secara automatik.</string>
+    <string name="hotspot_join_drift">Konfigurasi berubah sejak sandaran. Tiada apa yang ditulis ganti. Semak lagi; sandaran undur tertunggak dikekalkan.</string>
+    <string name="hotspot_join_firmware_changed">Perisian tegar berubah. Sandaran peribadi dikekalkan tetapi tidak dapat dipulihkan dengan selamat pada perisian tegar ini.</string>
+    <string name="hotspot_join_cancelled">Dibatalkan sebelum menulis. Semak lagi untuk memeriksa sebarang keadaan undur yang dikekalkan.</string>
+    <string name="hotspot_join_failed_restored">Pembaikan gagal atau dibatalkan selepas menulis. Konfigurasi sedia ada dipulihkan dan bacaan semula disahkan.</string>
+    <string name="hotspot_join_busy">Operasi hotspot lain masih berjalan. Tunggu, kemudian semak lagi.</string>
+    <string name="hotspot_join_adb_required">Memerlukan ADB setempat biasa yang diluluskan pada localhost:5555. Hidupkan dan benarkannya menggunakan persediaan kereta yang disokong. Gandingan nyahpepijat wayarles TLS Android sahaja tidak akan berfungsi.</string>
+    <string name="hotspot_join_recovery">Hasil atau pengesahan sandaran tidak pasti. Matikan hotspot dan semak lagi sebelum meneruskan. Sandaran peribadi sedia ada dikekalkan; pemulihan hanya dibenarkan apabila konfigurasi masih sepadan.</string>
+</resources>

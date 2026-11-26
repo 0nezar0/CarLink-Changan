@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Turkish (tr) translation of carlink_strings_update.xml. -->
+<resources>
+    <string name="carlink_update_available_title">Güncelleme var</string>
+    <string name="carlink_update_version">CarLink %1$s</string>
+    <string name="carlink_update_installed">Sürümünüz: %1$s</string>
+    <string name="carlink_update_whats_new">Yenilikler</string>
+    <string name="carlink_update_no_notes">Bu sürüm için yayın notu yok.</string>
+    <string name="carlink_update_ignore">Bu sürümü yok say</string>
+    <string name="carlink_update_later">Sonra</string>
+    <string name="carlink_update_download">İndir ve yükle</string>
+    <string name="carlink_update_downloading_title">CarLink %1$s indiriliyor</string>
+    <string name="carlink_update_progress">%1$s / %2$s</string>
+    <string name="carlink_update_progress_unknown">%1$s indirildi</string>
+    <string name="carlink_update_download_body">CarLink’i kullanmaya devam edebilirsiniz. İndirme kontrol edilene kadar hiçbir şey yüklenmez.</string>
+    <string name="carlink_update_cancel">İptal</string>
+    <string name="carlink_update_verifying_title">İndirme kontrol ediliyor</string>
+    <string name="carlink_update_verifying_body">Dosyanın eksiksiz ve CarLink tarafından imzalı olduğu doğrulanıyor.</string>
+    <string name="carlink_update_permission_title">CarLink’in güncellemeyi yüklemesine izin verin</string>
+    <string name="carlink_update_permission_body">Android bir kez izin ister. Sonraki ekranda “Bu kaynaktan izin ver”i açın ve CarLink’e dönün. Güncelleme kendiliğinden devam eder.</string>
+    <string name="carlink_update_open_settings">Ayarları aç</string>
+    <string name="carlink_update_installing_title">CarLink %1$s yükleniyor</string>
+    <string name="carlink_update_installing_body">Android’in yükleme ekranında onaylayın. Güncelleme sırasında CarLink kapanır; bitince yeniden açın.</string>
+    <string name="carlink_update_failed_title">Güncelleme yüklenmedi</string>
+    <string name="carlink_update_error_download">İndirme tamamlanmadı. İnternet bağlantısını kontrol edip yeniden deneyin.</string>
+    <string name="carlink_update_error_checksum_missing">Bu sürümün sağlama dosyası yok, bu yüzden indirme kontrol edilemiyor. Daha sonra deneyin.</string>
+    <string name="carlink_update_error_checksum">İndirilen dosya sağlama toplamıyla eşleşmiyor, bozulmuş olabilir. Silindi.</string>
+    <string name="carlink_update_error_unreadable">İndirilen dosya geçerli bir uygulama değil. Silindi.</string>
+    <string name="carlink_update_error_package">İndirilen dosya CarLink değil. Silindi.</string>
+    <string name="carlink_update_error_not_newer">İndirilen dosya mevcut sürümünüzden daha yeni değil. Silindi.</string>
+    <string name="carlink_update_error_signer">İndirilen dosya CarLink’in yayın anahtarıyla imzalanmadığı için yüklenmedi. Silindi.</string>
+    <string name="carlink_update_error_install">Android güncellemeyi yüklemedi. Yeniden deneyin.</string>
+    <string name="carlink_update_error_install_detail">Android güncellemeyi yüklemedi (%1$s). Yeniden deneyin.</string>
+    <string name="carlink_update_error_install_cancelled">Yükleme iptal edildi.</string>
+    <string name="carlink_update_try_again">Yeniden dene</string>
+    <string name="carlink_update_close">Kapat</string>
+    <string name="carlink_about_updates">Güncellemeler</string>
+    <string name="carlink_about_check_updates">Güncellemeleri denetle</string>
+    <string name="carlink_about_updates_last_checked">Sürüm %1$s · son kontrol %2$s</string>
+    <string name="carlink_about_updates_never">Sürüm %1$s · henüz denetlenmedi</string>
+    <string name="carlink_about_updates_checking">Denetleniyor…</string>
+    <string name="carlink_about_updates_just_now">az önce</string>
+    <string name="carlink_about_updates_up_to_date">Güncelsiniz</string>
+    <string name="carlink_about_updates_available">CarLink %1$s kullanılabilir</string>
+    <string name="carlink_about_updates_failed">GitHub’a ulaşılamadı. İnternet bağlantısını kontrol edip yeniden deneyin.</string>
+    <string name="carlink_about_updates_rate_limited">GitHub şu anda meşgul. Biraz sonra yeniden deneyin.</string>
+    <string name="carlink_about_updates_not_found">Bu yapının güncellemeleri GitHub’da bulunamadı. Sürüm sayfası özel olabilir veya henüz sürüm yoktur. Yeni bir sürümü elle yine yükleyebilirsiniz.</string>
+    <string name="carlink_about_updates_unsupported">Bu yapı kendini güncellemez. Güncellemeler için sürümü GitHub’dan yükleyin.</string>
+    <string name="carlink_about_auto_updates">Güncellemeleri otomatik denetle</string>
+    <string name="carlink_about_auto_updates_body">CarLink açıkken ve telefon bağlı değilken her 6 saatte bir. Sormadan hiçbir şey indirilmez.</string>
+    <string name="carlink_about_test_versions">Test sürümlerini al</string>
+    <string name="carlink_about_test_versions_body">Bir sürümden önce yayımlanan test sürümlerini de sunar. Yeni sorunları olabilir; lütfen bildirin. Her biri bir sürüm gibi kontrol edilip imzalanır.</string>
+</resources>

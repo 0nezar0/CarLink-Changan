@@ -53,12 +53,20 @@ class CarPlaySettingsTest {
 
     @Test fun pictureSizeAndNightKeepTheVerifiedMapping() {
         val best = map(UnifiedSettings(picture = Picture.BEST, interfaceSize = InterfaceSize.SMALL, dayNight = DayNight.SCHEDULE))
-        assertEquals(100, best.displayScalePercent); assertEquals(60, best.fps); assertEquals(350, best.widthPhysicalMm)
+        assertEquals(100, best.displayScalePercent); assertEquals(60, best.fps); assertEquals(220, best.widthPhysicalMm)
         assertEquals("schedule", best.nightModeKey)
         val custom = map(UnifiedSettings(picture = Picture.CUSTOM, interfaceSize = InterfaceSize.CUSTOM))
         assertNull(custom.displayScalePercent); assertNull(custom.fps); assertNull(custom.widthPhysicalMm)
         assertEquals(75, map(UnifiedSettings(picture = Picture.LIGHT)).displayScalePercent)
         assertEquals("system", map().nightModeKey)
+    }
+
+    /** Every preset width is one the Advanced list offers, so choosing Advanced never shows an unknown value (#83). */
+    @Test fun presetWidthsAreOnTheAdvancedList() {
+        assertEquals(120, map(UnifiedSettings(interfaceSize = InterfaceSize.EXTRA_LARGE)).widthPhysicalMm)
+        val offered = (com.carlink.core.settings.AdvancedSettings.all.first { it.id == "cp_width" }.control
+            as com.carlink.core.settings.Control.Choice).options.map { it.value.toInt() }
+        InterfaceSize.entries.mapNotNull(CarPlaySettingsPolicy::widthMm).forEach { assertTrue("$it mm", it in offered) }
     }
 
     @Test fun audioDelayMapsToDiPlaysMusicBuffers() {
@@ -82,12 +90,52 @@ class CarPlaySettingsTest {
         assertNotNull(HostAudio.microphonePcm)
         assertTrue(HostAudio.callsAsMedia)
         assertTrue(CarPlaySettingsPolicy.resumeMusic)
+        assertTrue(HostAudio.duckMediaForPrompts) // on by default (#83)
+        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(duckMusicForDirections = false)))
+        assertFalse(HostAudio.duckMediaForPrompts)
         // Back to Normal: DiPlay's own audio path, untouched.
         CarPlaySettingsPolicy.apply(app, map())
         assertNull(HostAudio.playbackPcm)
         assertNull(HostAudio.microphonePcm)
         assertFalse(HostAudio.callsAsMedia)
         assertFalse(CarPlaySettingsPolicy.resumeMusic)
+    }
+
+    /** The live size areas: every preset, the saved width and its neighbours 5 and 10 % either way. */
+    @Test fun liveSizeAreasIncludeTheSavedWidth() {
+        AirPlayPersistence.saveWidthPhysicalMm(app, 165)
+        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(interfaceSize = InterfaceSize.CUSTOM)))
+        assertEquals(listOf(220, 180, 150, 120, 165, 179, 172, 159, 154), CarPlayHostIntegration.liveSizeWidthsMm)
+    }
+
+    @Test fun customSizePercentRoundTrips() {
+        assertEquals(100, CarPlaySettingsPolicy.percentForWidth(220))
+        assertEquals(220, CarPlaySettingsPolicy.widthForPercent(100))
+        assertEquals(55..220, CarPlaySettingsPolicy.CUSTOM_PERCENT_RANGE)
+        assertEquals(400, CarPlaySettingsPolicy.widthForPercent(40))
+        for (p in CarPlaySettingsPolicy.CUSTOM_PERCENT_RANGE) {
+            // Whole millimetres: near the top a percent comes back at most one off.
+            assertTrue(kotlin.math.abs(p - CarPlaySettingsPolicy.percentForWidth(CarPlaySettingsPolicy.widthForPercent(p))) <= 1)
+        }
+    }
+
+    /** Joying: CarPlay's channels on the streams CarService sorts sources by; other stereos keep DiPlay's routing. */
+    @Test fun stereoStreamTypesReachDiPlay() {
+        val streams = mapOf("NAVIGATION" to 4, "ASSISTANT" to 7, "PHONE" to 2)
+        CarPlaySettingsPolicy.apply(app, CarPlaySettingsPolicy.map(UnifiedSettings(), null, VehicleProfile.GENERIC, true, audioStreams = streams))
+        assertEquals(streams, HostAudio.legacyStreamTypes)
+        CarPlaySettingsPolicy.apply(app, map())
+        assertEquals(emptyMap<String, Int>(), HostAudio.legacyStreamTypes)
+    }
+
+    /** #83: directions over USB came at 8 kHz; CarLink turns DiPlay's wider offer on once and then leaves the driver's choice. */
+    @Test fun clearNavigationVoiceIsOnByDefaultButCanBeTurnedOff() {
+        assertFalse(AirPlayPersistence.loadSpeechWithout8And16Khz(app))
+        CarPlaySettingsPolicy.apply(app, map())
+        assertTrue(AirPlayPersistence.loadSpeechWithout8And16Khz(app))
+        AirPlayPersistence.saveSpeechWithout8And16Khz(app, false)
+        CarPlaySettingsPolicy.apply(app, map())
+        assertFalse(AirPlayPersistence.loadSpeechWithout8And16Khz(app))
     }
 
     @Test fun locationOnlyWithThePermission() {
@@ -131,21 +179,18 @@ class CarPlaySettingsTest {
         assertFalse(BydOutputSettings.batteryToIphone(app))
         assertFalse(AirPlayPersistence.loadClusterMapEnabled(app))
         assertFalse(CarPlayHostIntegration.vehicleIntegrations)
-        // The Changan default: 48 px clear of the notification bar.
-        assertEquals(CarPlayHostIntegration.DisplayMargins(top = 48), CarPlayHostIntegration.displayMargins)
+        // A fresh settings object has no margins. The 48 px Top margin is written only after the driver turns it on.
+        assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
         assertEquals("CarLink", AirPlayPersistence.loadOemLabel(app))
     }
 
-    @Test fun screenMarginsReachTheHostSafeAreaHook() {
-        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(marginTopPx = 96,
-            carPlayMargins = com.carlink.core.settings.ScreenMargins(left = 8, top = 48, right = 16, bottom = 24),
-            androidAutoMargins = com.carlink.core.settings.ScreenMargins(1, 2, 3, 4))))
-        assertEquals(CarPlayHostIntegration.DisplayMargins(left = 8, top = 48, right = 16, bottom = 24),
-            CarPlayHostIntegration.displayMargins)
-        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(carPlayMargins = com.carlink.core.settings.ScreenMargins())))
+    @Test fun theTopMarginReachesTheHostSafeAreaHook() {
+        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(topMargin = true)))
+        assertEquals(CarPlayHostIntegration.DisplayMargins(top = 48), CarPlayHostIntegration.displayMargins)
+        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(topMargin = false)))
         assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
         CarPlaySettingsPolicy.apply(app, map(UnifiedSettings()))
-        assertEquals(CarPlayHostIntegration.DisplayMargins(top = 48), CarPlayHostIntegration.displayMargins)
+        assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
     }
 
     @Test fun clearedSameWifiDetailsAreClearedInDiPlay() {

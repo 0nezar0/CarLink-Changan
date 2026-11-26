@@ -45,6 +45,33 @@ class ManualHotspotMobileDataTest {
         assertNull(select(ap, rmnetData0, wlan0))
     }
 
+
+    @Test fun wronglyListedMobileDataDoesNotBeatWlan0() {
+        // #991: 0.2.21 took rmnet_data0 as the AP while wlan0 held the hotspot IPv4.
+        val selected = select(setOf("rmnet_data0", "rmnet_data2"), rmnetData0, rRmnetData4, wlan0)
+        assertEquals("wlan0", selected)
+        val logs = mutableListOf<String>()
+        val choice = selectHotspotInterface(
+            HotspotNetworkSnapshot(
+                listOf(rmnetData0, rRmnetData4, wlan0),
+                setOf("rmnet_data0", "rmnet_data2"),
+                emptySet(),
+                "rmnet_data2",
+                consistent = true,
+                apEnabled = true,
+            ),
+            logs::add,
+        )
+        assertEquals("wlan0", choice?.name)
+        assertEquals("192.168.43.1", choice?.address?.hostAddress)
+        assertTrue(logs.any { it.contains("hotspot interface selected iface=wlan0 ipv4=192.168.43.1") })
+        assertTrue(logs.any { it.contains("evidence=mobile_data") && it.contains("iface=rmnet_data0") })
+    }
+
+    @Test fun aMobileDataOnlyOwnershipSetStillPrefersWlan0Ipv4() {
+        assertEquals("wlan0", select(setOf("rmnet_data0"), rmnetData0, wlan0))
+    }
+
     private fun select(ap: Set<String>?, vararg interfaces: HotspotInterfaceSnapshot) = selectHotspotInterface(
         HotspotNetworkSnapshot(interfaces.toList(), ap, emptySet(), "rmnet_data2", consistent = true, apEnabled = true)) {}?.name
 

@@ -261,7 +261,10 @@ private fun Identity(facts: AboutFacts, stacked: Boolean) {
     }
 }
 
-/** A thank-you to F-e-n-y-x, who wrote the original CarLink, with a code for its source. */
+/**
+ * Credits: F-e-n-y-x, who wrote CarLink, with a code for its source; the projects it builds on;
+ * and the Changan CS75 Plus edition. The version is the tag under the name ([Identity]).
+ */
 @Composable
 private fun ThanksCard() {
     val context = LocalContext.current
@@ -279,6 +282,9 @@ private fun ThanksCard() {
             QrPanel(stringResource(R.string.carlink_about_thanks_qr), AppInfo.ORIGINAL_CARLINK_SOURCE, qrSize,
                 Modifier.semantics(mergeDescendants = true) {}.then(
                     Modifier.clickable { openLink(context, AppInfo.ORIGINAL_CARLINK_SOURCE) }))
+            Spacer(Modifier.height(if (isCar) 20.dp else 14.dp))
+            Text(stringResource(R.string.carlink_about_edition_credit), style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.fillMaxWidth())
             Spacer(Modifier.height(if (isCar) 16.dp else 12.dp))
             Text(stringResource(R.string.carlink_about_changan_notice), style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.fillMaxWidth())
@@ -346,7 +352,11 @@ private fun UpdatesCard(facts: AboutFacts, updates: AboutUpdatesUi, actions: Abo
         !updates.supported -> stringResource(R.string.carlink_about_updates_unsupported)
         state is UpdateState.Checking -> stringResource(R.string.carlink_about_updates_checking)
         state is UpdateState.CheckFailed -> stringResource(
-            if (state.rateLimited) R.string.carlink_about_updates_rate_limited else R.string.carlink_about_updates_failed)
+            when {
+                state.notFound -> R.string.carlink_about_updates_not_found
+                state.rateLimited -> R.string.carlink_about_updates_rate_limited
+                else -> R.string.carlink_about_updates_failed
+            })
         else -> lastChecked
     }
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_about_updates), icon = R.drawable.carlink_ic_system_update) }) {
@@ -404,6 +414,12 @@ private fun InfoCards(facts: AboutFacts, onLicenses: () -> Unit, onCredits: () -
         SettingsRow(stringResource(R.string.carlink_about_device_name, ltr(facts.manufacturer), ltr(facts.model)),
             icon = R.drawable.carlink_ic_devices,
             description = stringResource(R.string.carlink_about_device_system, ltr(facts.androidRelease), ltr(facts.screen)))
+    }
+    val context = LocalContext.current
+    GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_about_contact), icon = R.drawable.carlink_ic_info) }) {
+        LinkRow(stringResource(R.string.carlink_about_contact),
+            { openLink(context, "mailto:${AppInfo.CONTACT_EMAIL}") },
+            ltr(AppInfo.CONTACT_EMAIL), R.drawable.carlink_ic_info)
     }
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_about_open_source)) }) {
         LinkRow(stringResource(R.string.carlink_about_licenses), onLicenses, stringResource(R.string.carlink_about_licenses_body),

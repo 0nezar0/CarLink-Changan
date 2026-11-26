@@ -1,5 +1,7 @@
 package com.shilapi.xcertplay
 
+import com.shilapi.xcertplay.media.LiveMediaSnapshot
+
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -261,8 +263,25 @@ object CarPlayHostIntegration {
      * live host): the caller reconnects. Main thread.
      */
     fun setInterfaceSizeLive(widthMm: Int): Boolean = HostSessions.setInterfaceSizeLive(widthMm)
+
+    /** CarLink: live picture and sound figures of the running session, or null when none. */
+    fun liveMediaSnapshot(): LiveMediaSnapshot? = HostSessions.liveMediaSnapshot()
     /** CarLink: whether the running session's iPhone reports music playing; null without a session. */
     fun phonePlaying(): Boolean? = CarPlayBackgroundSession.snapshot()?.controller?.nowPlayingSnapshot()?.playing
+
+    /**
+     * CarLink: the stereo's own day/night (its headlight signal), used in place of Android's day/night
+     * under the "system" night mode; null where the stereo gives none. Any thread; a change reaches
+     * an open host at once.
+     */
+    @Volatile
+    var stereoNight: Boolean? = null
+        set(value) { field = value; stereoNightChanged?.invoke() }
+    @Volatile
+    internal var stereoNightChanged: (() -> Unit)? = null
+
+    /** CarLink: opens Siri on the running session's iPhone (the stereo's voice key); false without one. */
+    fun requestSiri(): Boolean = CarPlayBackgroundSession.snapshot()?.controller?.requestSiri() == true
 
     /** CarLink: an explicit play press (not the toggle) on the running session; false without one. */
     fun pressPlay(): Boolean = CarPlayBackgroundSession.snapshot()?.controller
@@ -287,6 +306,8 @@ internal object HostSessions {
         fun end(done: () -> Unit)
         fun retryNow(): Boolean
         fun setInterfaceSizeLive(widthMm: Int): Boolean = false // CarLink
+        /** CarLink: Connection status figures from this host's media sink. */
+        fun liveMediaSnapshot(): LiveMediaSnapshot? = null
     }
 
     private const val MAX_ROUNDS = 8
@@ -340,6 +361,8 @@ internal object HostSessions {
     fun retryNow(): Boolean = liveHosts().lastOrNull()?.retryNow() == true
 
     fun setInterfaceSizeLive(widthMm: Int): Boolean = liveHosts().lastOrNull()?.setInterfaceSizeLive(widthMm) == true
+
+    fun liveMediaSnapshot(): LiveMediaSnapshot? = liveHosts().lastOrNull()?.liveMediaSnapshot() // CarLink
 
     /** Guards [step] against a stop action that completes without clearing its session. */
     private var rounds = 0

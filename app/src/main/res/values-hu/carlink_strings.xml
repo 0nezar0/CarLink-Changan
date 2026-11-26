@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) translation of carlink_strings.xml. -->
+<resources>
+    <string name="app_name">CarLink</string>
+    <string name="notification_channel_launch">CarLink megnyitása</string>
+    <string name="notification_phone_ready">%1$s a közelben van. Koppintson a csatlakozáshoz.</string>
+    <string name="notification_open">Koppintson a CarLink megnyitásához.</string>
+    <string name="carlink_notification_channel_android_auto">Android Auto-kapcsolat</string>
+    <string name="carlink_back">Vissza</string>
+    <string name="carlink_engine_carplay">CarPlay</string>
+    <string name="carlink_engine_android_auto">Android Auto</string>
+    <string name="carlink_transport_usb">USB</string>
+    <string name="carlink_transport_wireless">Vezeték nélküli</string>
+    <string name="carlink_transport_cable">Kábel</string>
+    <string name="carlink_transport_usb_cable">USB-kábel</string>
+    <string name="carlink_transport_plugged_in">Csatlakoztatva (USB)</string>
+    <string name="carlink_transport_with_path">%1$s · %2$s</string>
+    <string name="carlink_transport_connected_cable">Kábellel csatlakozva</string>
+    <string name="carlink_transport_connected_wireless">Vezeték nélkül csatlakozva</string>
+    <string name="carlink_transport_connecting_cable">Csatlakozás kábellel</string>
+    <string name="carlink_transport_connecting_wireless">Csatlakozás vezeték nélkül</string>
+    <string name="carlink_state_on">Be</string>
+    <string name="carlink_state_off">Ki</string>
+    <string name="carlink_state_selected">Kiválasztva</string>
+</resources>

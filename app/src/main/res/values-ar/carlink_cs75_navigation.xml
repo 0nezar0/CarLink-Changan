@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carlink_cs75_nav_title">شريط التنقّل</string>
+    <string name="carlink_cs75_nav_description">اسحب للداخل من الحافة اليمنى أو اليسرى لإظهار الشريط، وكرّر السحبة من نفس الجهة لإخفائه. يتطلب تفعيل خدمة CarLink في إمكانية الوصول.</string>
+    <string name="carlink_cs75_nav_back">رجوع</string>
+    <string name="carlink_cs75_nav_home">الرئيسية</string>
+    <string name="carlink_cs75_nav_apps">التطبيقات المثبّتة</string>
+    <string name="carlink_cs75_nav_settings">إعدادات أندرويد</string>
+    <string name="carlink_cs75_nav_apps_unavailable">تعذّر فتح التطبيق.</string>
+</resources>

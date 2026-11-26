@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for strings_default_connection.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="default_connection_wireless">Wayarles</string>
+    <string name="default_connection_usb">USB</string>
+    <string name="default_connection_mode">Mod sambungan lalai</string>
+    <string name="default_connection_last_used">Terakhir digunakan</string>
+    <string name="default_connection_description">Gunakan mod sambungan lalai dan iPhone yang dipilih apabila DiPlay dibuka. Butang sambungan manual menggunakan mod yang anda pilih.</string>
+</resources>

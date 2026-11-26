@@ -6,6 +6,7 @@ import com.shilapi.xcertplay.iap2.message.Iap2WirelessSessionParameters
 import com.shilapi.xcertplay.iap2.session.Iap2Session
 import com.shilapi.xcertplay.iap2.wire.Iap2Frame
 import com.shilapi.xcertplay.mfi.Iap2MfiAuthenticationClient
+import com.shilapi.xcertplay.orchestration.WirelessStartupTimeline // CarLink
 import kotlin.math.min
 
 /**
@@ -93,7 +94,15 @@ class Iap2WirelessControlClient(
                 }
                 location.tick(::sendControl)
                 vehicleStatus.tick(::sendControl)
+                val again = WirelessStartupTimeline.startSessionAgain // CarLink
+                    ?.takeIf { carPlayStartSessionsSent in 1 until MAX_CARPLAY_START_SESSION_SENDS } // CarLink
+                if (again?.invoke() == true) { // CarLink
+                    sendStartSession(endpoint, ::sendControl) {} // CarLink: the first one's watchdog stays
+                    carPlayStartSessionsSent++ // CarLink
+                    onProgress(START_SESSION_AGAIN_PROGRESS) // CarLink
+                } // CarLink
                 val pollTimeout = vehicleStatus.pollTimeout(location.pollTimeout(remaining))
+                    .let { if (again != null) min(it, START_AGAIN_POLL_MILLIS) else it } // CarLink
                 val incoming = session.recv(pollTimeout)
                 if (incoming == null) {
                     if (session.isClosed) {
@@ -183,14 +192,9 @@ class Iap2WirelessControlClient(
 
                     DEVICE_TRANSPORT_IDENTIFIER_NOTIFICATION -> {
                         transportNotificationSeen = true
-                        val identifiers = Iap2WirelessMessages.deviceTransportIdentifier(incoming)
+                        val diagnostic = deviceTransportIdentifierDiagnostic(incoming)
                         stage = later(stage, Iap2WirelessControlStage.TRANSPORT_NOTIFIED)
-                        onProgress(
-                            "iap2 rx=0x4e0e device-transport-identifier " +
-                                "bluetooth=${identifiers.bluetoothMac ?: "none"} " +
-                                "usb=${identifiers.usbTransportIdentifier ?: "none"}; " +
-                                "resending 0x5703",
-                        )
+                        onProgress("$diagnostic; resending 0x5703")
                         if (
                             postTransportWiFiConfigurationsSent >=
                             MAX_POST_TRANSPORT_WIFI_CONFIGURATION_SENDS
@@ -247,6 +251,10 @@ class Iap2WirelessControlClient(
         private const val MAX_PRE_TRANSPORT_WIFI_CONFIGURATION_SENDS = 5
         private const val MAX_POST_TRANSPORT_WIFI_CONFIGURATION_SENDS = 2
         internal const val MAX_CARPLAY_START_SESSION_SENDS = 3
+        // CarLink: WirelessStartupTimeline.startSessionAgain
+        const val START_SESSION_AGAIN_PROGRESS =
+            "iap2 tx=0x4301 carplay-start-session again: the iPhone joined but opened no AirPlay connection" // CarLink
+        private const val START_AGAIN_POLL_MILLIS = 500L // CarLink
 
         /** Malformed optional availability metadata must not change existing control behavior. */
         internal fun carPlayAvailabilityDiagnostic(frame: Iap2Frame): String = try {
@@ -256,6 +264,17 @@ class Iap2WirelessControlClient(
                 "themeAssets=${value.themeAssets?.available ?: "unknown"}"
         } catch (error: Exception) {
             "iap2 availability decode=failed failureClass=${error.javaClass.simpleName}"
+        }
+
+        /** A malformed identifier is only logged; it must not end the control loop before 0x5703. */
+        internal fun deviceTransportIdentifierDiagnostic(frame: Iap2Frame): String = try {
+            val identifiers = Iap2WirelessMessages.deviceTransportIdentifier(frame)
+            "iap2 rx=0x4e0e device-transport-identifier " +
+                "bluetooth=${identifiers.bluetoothMac ?: "none"} " +
+                "usb=${identifiers.usbTransportIdentifier ?: "none"}"
+        } catch (error: Exception) {
+            "iap2 rx=0x4e0e device-transport-identifier decode=failed " +
+                "failureClass=${error.javaClass.simpleName}"
         }
 
         /** Optional AP hint is independent of the AirPlay receiver identity. */

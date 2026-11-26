@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for cluster_card_preview.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="card_preview_title">Pratonton peletakan kad pusingan</string>
+    <string name="card_preview_note">Kedudukan berkadar pada panel kluster penuh. Tepi sebenar tetingkap kecil berbeza mengikut kereta.</string>
+    <string name="card_preview_full">Skrin penuh</string>
+    <string name="card_preview_small">Tetingkap kecil</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for cluster_card_preview.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="card_preview_title">Kanyarkártya-elhelyezés előnézete</string>
+    <string name="card_preview_note">Arányos helyzet a teljes műszeregység-panelen. A kis ablak tényleges széle autónként eltér.</string>
+    <string name="card_preview_full">Teljes képernyő</string>
+    <string name="card_preview_small">Kis ablak</string>
+</resources>

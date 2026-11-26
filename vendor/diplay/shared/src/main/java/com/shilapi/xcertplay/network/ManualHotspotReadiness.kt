@@ -22,7 +22,7 @@ internal data class HotspotNetworkSnapshot(
     val consistent: Boolean = true,
     val apEnabled: Boolean? = true,
     /** The Wi-Fi interfaces the platform itself reports as tethered, or null when it cannot be read. */
-    val platformAp: Set<String>? = null, // CarLink: upstream PR #1218
+    val platformAp: Set<String>? = null,
 )
 
 internal data class HotspotSelection(val name: String, val index: Int, val address: InetAddress) {
@@ -36,8 +36,16 @@ internal fun selectHotspotInterface(snapshot: HotspotNetworkSnapshot, log: (Stri
         log("hotspot sample rejected: network_changed=${!snapshot.consistent} apEnabled=${snapshot.apEnabled}")
         return null
     }
-    return snapshot.interfaces.mapNotNull { iface ->
-        val owned = snapshot.apInterfaces?.contains(iface.name) == true
+    // CarLink: never treat a mobile-data iface (rmnet*, r_rmnet*, ccmni*) as the AP, even if a
+    // stale ownership set listed it (#991 / upstream #936). If that set was *only* mobile-data,
+    // treat ownership as unobservable so a wireless iface with a hotspot IPv4 (wlan0, ap0, …)
+    // can still be chosen.
+    val rawAp = snapshot.apInterfaces
+    val apEvidence = rawAp?.filterNot { mobileDataInterfaceName(it) }?.let { filtered ->
+        if (filtered.isEmpty() && rawAp.any(::mobileDataInterfaceName)) null else filtered
+    }
+    val selected = snapshot.interfaces.mapNotNull { iface ->
+        val owned = apEvidence?.contains(iface.name) == true
         val upstream = snapshot.wifiUpstreams?.contains(iface.name) == true
         val hotspotAddress = wirelessHostAddress(iface.addresses.filter {
             it is Inet6Address && it.isLinkLocalAddress || publishesHotspotAddress(it)
@@ -52,27 +60,39 @@ internal fun selectHotspotInterface(snapshot: HotspotNetworkSnapshot, log: (Stri
         // A Unisoc UMS512 head unit (#1187) read isUp() false for the wlan0 that the platform listed as its
         // tethered hotspot and that held the hotspot address, so the car hotspot never became ready. The
         // platform's own tether list outweighs that flag; a configured or inferred interface still has to be up.
-        val reportedDown = !iface.up && !(snapshot.platformAp?.contains(iface.name) == true && address != null) // CarLink: upstream PR #1218
+        val reportedDown = !iface.up && !(snapshot.platformAp?.contains(iface.name) == true && address != null)
         val reason = when {
+            mobileDataInterfaceName(iface.name) -> "mobile_data" // CarLink
             reportedDown || iface.index <= 0 -> "interface_down" // CarLink: upstream PR #1218
             address == null -> "address_unavailable"
             owned -> "platform_ap"
-            snapshot.apInterfaces != null -> "not_platform_ap"
+            apEvidence != null -> "not_platform_ap"
             upstream -> "wifi_upstream"
             snapshot.defaultInterface == iface.name -> "default_network_without_ap_evidence"
             snapshot.wifiUpstreams == null -> "upstream_unobservable"
             !iface.wireless -> "no_ap_evidence"
             else -> "wireless_non_upstream"
         }
+        val ipv4Text = (address as? Inet4Address)?.hostAddress ?: "none"
         log("hotspot candidate iface=${iface.name} index=${iface.index} " +
             "family=${if (address is Inet6Address) "IPv6" else if (address != null) "IPv4" else "none"} " +
+            "ipv4=$ipv4Text " +
             "scope=${(address as? Inet6Address)?.scopeId ?: 0} evidence=$reason " +
-            "ap=${snapshot.apInterfaces?.let { if (owned) "yes" else "no" } ?: "unobservable"} " +
+            "ap=${apEvidence?.let { if (owned) "yes" else "no" } ?: "unobservable"} " +
             "defaultConflict=${owned && (upstream || snapshot.defaultInterface == iface.name)} up=${iface.up}")
         if (reason != "platform_ap" && reason != "wireless_non_upstream") null
         else (if (owned) 100 else 0) to HotspotSelection(iface.name, iface.index, address!!)
-    }.sortedWith(compareByDescending<Pair<Int, HotspotSelection>> { it.first }.thenBy { it.second.name })
-        .firstOrNull()?.second
+    }.sortedWith(
+        // CarLink: when scores tie, prefer a usable IPv4 (the car hotspot path is IPv4-only).
+        compareByDescending<Pair<Int, HotspotSelection>> { it.first }
+            .thenByDescending { it.second.address is Inet4Address }
+            .thenBy { it.second.name },
+    ).firstOrNull()?.second
+    if (selected != null) {
+        val ipv4Text = (selected.address as? Inet4Address)?.hostAddress ?: "none"
+        log("hotspot interface selected iface=${selected.name} ipv4=$ipv4Text index=${selected.index}")
+    }
+    return selected
 }
 
 internal class ManualHotspotReadiness(

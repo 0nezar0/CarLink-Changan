@@ -30,7 +30,6 @@
     <string name="carlink_settings_loading">Loading…</string>
     <string name="carlink_settings_not_set">Not set</string>
     <string name="carlink_settings_done">Done</string>
-    <string name="carlink_settings_close">Close</string>
 
     <!-- Connection -->
     <string name="carlink_settings_group_start">Start</string>
@@ -63,9 +62,9 @@
     <string name="carlink_settings_method_same_wifi_detail">Phone and car on one router, the fastest path. Needs the Wi-Fi password once.</string>
     <string name="carlink_settings_method_hotspot_detail">The phone joins the Wi-Fi hotspot the car creates. Works with every phone.</string>
     <string name="carlink_settings_method_direct_detail">A direct link between phone and car. No network needed.</string>
-    <string name="carlink_settings_method_headunit_server">Head unit server (developer)</string>
-    <string name="carlink_settings_method_headunit_server_detail">Android Auto only. First, on the phone: Android Auto settings › tap Version until developer settings unlock › ⋮ › Start head unit server (again after every phone restart). The car must be on the phone’s hotspot or the same Wi-Fi as the phone. Automatic, Car hotspot and Same Wi-Fi try it too; pick this to use it alone.</string>
-    <string name="carlink_settings_method_sheet_body">Bluetooth always starts the connection; the picture and sound then travel over Wi-Fi.</string>
+    <string name="carlink_settings_method_headunit_server">Head unit server</string>
+    <string name="carlink_settings_method_headunit_server_detail">Android Auto backup: this screen joins the phone\'s hotspot. Turn on Start head unit server on the phone.</string>
+    <string name="carlink_settings_method_sheet_body">Bluetooth starts the connection (not with Head unit server); the picture and sound then travel over Wi-Fi.</string>
 
     <string name="carlink_settings_hotspot">Car hotspot</string>
     <string name="carlink_settings_hotspot_detail">Name and password of the car’s own hotspot</string>
@@ -77,11 +76,13 @@
     <string name="carlink_settings_hotspot_not_applied">Saved in CarLink. This stereo does not let CarLink change its hotspot: set the same name and password in the car’s hotspot settings.</string>
     <string name="carlink_settings_same_wifi">Same Wi-Fi network</string>
     <string name="carlink_settings_same_wifi_detail">The router both the car and your iPhone join</string>
+    <string name="carlink_settings_same_wifi_wired">Over a wired network (Ethernet)</string>
+    <string name="carlink_settings_same_wifi_wired_detail">CarPlay only. This screen is on the router by cable (a USB Ethernet adapter); the iPhone still joins the Wi-Fi above.</string>
     <string name="carlink_settings_same_wifi_sheet_body">The car must already be on this Wi-Fi. CarLink tells your iPhone to join it over Bluetooth.</string>
     <string name="carlink_settings_headunit_server_address">Phone address</string>
     <string name="carlink_settings_headunit_server_address_detail">Optional. CarLink finds the phone by itself: first the phone’s hotspot, then the rest of the network.</string>
     <string name="carlink_settings_headunit_server_address_auto">Find automatically</string>
-    <string name="carlink_settings_headunit_server_sheet_body">Before connecting, turn on Start head unit server on the phone: Android Auto settings › tap Version until developer settings unlock › ⋮ › Start head unit server. Do it again after every phone restart. Leave the address empty to find the phone automatically, or type the phone’s Wi-Fi address (for example 192.168.43.1).</string>
+    <string name="carlink_settings_headunit_server_sheet_body">On the phone, open Android Auto\'s settings, tap Version until developer settings unlock, then choose Start head unit server from the menu. It turns off when the phone restarts. Leave the address empty to find the phone automatically, or type the phone\'s Wi-Fi address (for example 192.168.43.1).</string>
     <string name="carlink_settings_headunit_server_address_field">Phone’s IP address</string>
     <string name="carlink_settings_headunit_server_address_error">Enter an IPv4 address such as 192.168.1.20</string>
     <string name="carlink_settings_wifi_name">Network name</string>
@@ -107,7 +108,7 @@
     <string name="carlink_settings_picture_auto">Automatic</string>
     <string name="carlink_settings_picture_best">Best</string>
     <string name="carlink_settings_picture_balanced">Balanced</string>
-    <string name="carlink_settings_picture_light">Light</string>
+    <string name="carlink_settings_picture_light">Low resolution</string>
     <string name="carlink_settings_picture_auto_detail">Recommended for this head unit</string>
     <string name="carlink_settings_picture_best_detail">Sharpest, at 60 frames a second. Needs a fast head unit.</string>
     <string name="carlink_settings_picture_balanced_detail">Sharp at 30 frames a second. Kind to older head units.</string>
@@ -122,6 +123,7 @@
     <string name="carlink_settings_size_small_detail">More fits on the screen</string>
     <string name="carlink_settings_size_medium_detail">Recommended</string>
     <string name="carlink_settings_size_large_detail">Easier to read and tap</string>
+    <string name="carlink_settings_size_extra_large_detail">For a screen far from the driver</string>
     <string name="carlink_settings_daynight">Day and night</string>
     <string name="carlink_settings_daynight_detail">When maps and screens turn dark</string>
     <string name="carlink_settings_daynight_auto">Automatic</string>
@@ -137,24 +139,37 @@
     <string name="carlink_settings_time_earlier">15 min earlier</string>
     <string name="carlink_settings_time_later">15 min later</string>
     <string name="carlink_settings_group_margins">Screen margins</string>
-    <string name="carlink_settings_margins_detail">Move CarPlay and Android Auto away from the car’s status or navigation bar, so the buttons stay easy to press. The top value also pads Settings and Home straight away. CarPlay and Android Auto pick it up from the next connection.</string>
-    <string name="carlink_settings_margin_top">Top</string>
-    <string name="carlink_settings_margin_top_detail">Leave space below the car’s notification bar</string>
-    <string name="carlink_settings_margin_app">CarLink screens (top)</string>
-    <string name="carlink_settings_margin_app_detail">Leave space below the car’s notification bar on Home and Settings. Applies at once.</string>
-    <string name="carlink_settings_margin_reset_changan">Reset to Changan margins</string>
-    <string name="carlink_settings_margin_reset_changan_detail">48 px at the top of CarLink, CarPlay and Android Auto, nothing on the other edges: the Changan CS75 Plus defaults</string>
-    <string name="carlink_settings_margin_reset_changan_done">In use</string>
-    <string name="carlink_settings_group_margins_carplay">CarPlay margins</string>
-    <string name="carlink_settings_group_margins_aa">Android Auto margins</string>
-    <string name="carlink_settings_margin_bottom">Bottom</string>
-    <string name="carlink_settings_margin_bottom_detail">Leave space above the car’s navigation or home bar</string>
-    <string name="carlink_settings_margin_left">Left</string>
-    <string name="carlink_settings_margin_left_detail">Leave space at the left edge</string>
-    <string name="carlink_settings_margin_right">Right</string>
-    <string name="carlink_settings_margin_right_detail">Leave space at the right edge</string>
-    <string name="carlink_settings_margin_none">None</string>
-    <string name="carlink_settings_margin_px">%d px</string>
+    <string name="carlink_settings_group_changan">Changan / CS75 Plus 2022-2023 only settings</string>
+    <string name="carlink_settings_car_brand_cs75">Changan / CS75 Plus 2022-2023 only</string>
+    <string name="carlink_settings_cat_cs75_summary">Status-bar hide, accessibility, and the top margin</string>
+
+    <string name="carlink_cs75_first_launch_title">Is your car a Changan / CS75 Plus 2022-2023?</string>
+    <string name="carlink_cs75_first_launch_yes">Yes</string>
+    <string name="carlink_cs75_first_launch_no">No</string>
+    <string name="carlink_cs75_hide_bar_prompt_title">Hide the notification bar</string>
+    <string name="carlink_cs75_hide_bar_prompt_body">Hides the car\'s floating notification bar during CarPlay and Android Auto, so it does not cover the picture. Turn it on?</string>
+    <string name="carlink_cs75_hide_bar_prompt_hint">You can change or turn it off any time in Settings. CarLink also needs the Accessibility permission for the hide to work.</string>
+    <string name="carlink_cs75_hide_bar_prompt_enable">Turn on</string>
+    <string name="carlink_cs75_hide_bar_prompt_skip">Skip</string>
+    <string name="carlink_settings_hide_bar_off">Off</string>
+    <string name="carlink_settings_hide_bar_off_detail">The car\'s status bar stays visible.</string>
+    <string name="carlink_settings_hide_bar_all">Hide the status bar in all apps except the home screen</string>
+    <string name="carlink_settings_hide_bar_all_detail">The bar stays visible on the car\'s home/launcher. CarPlay and Android Auto are always hidden in this mode.</string>
+    <string name="carlink_settings_hide_bar_selected">Hide the status bar only in apps I pick</string>
+    <string name="carlink_settings_hide_bar_selected_detail">Tick apps with ✔. CarPlay and Android Auto are always hidden in this mode, even if CarLink is not ticked.</string>
+    <string name="carlink_settings_hide_bar_accessibility_notice">Notice: You need to turn on the Accessibility permission for CarLink so it can tell which app is open and hide the status bar.</string>
+    <string name="carlink_settings_hide_bar_accessibility_on">Accessibility is on</string>
+    <string name="carlink_settings_hide_bar_accessibility_off">Accessibility is off</string>
+    <string name="carlink_settings_hide_bar_accessibility_button">Open Accessibility settings</string>
+    <string name="carlink_settings_hide_bar_apps_heading">Apps where the bar is hidden</string>
+    <string name="carlink_settings_hide_bar_apps_search">Search apps</string>
+    <string name="carlink_settings_hide_bar_apps_carlink">CarLink (always included)</string>
+    <string name="carlink_fce_accessibility_label">CarLink status bar hide</string>
+    <string name="carlink_fce_accessibility_description">Lets CarLink see which app is in front so it can hide or show the car\'s status bar, as set in Settings for Changan CS75 Plus.</string>
+    <string name="carlink_settings_top_margin">Top margin</string>
+    <string name="carlink_settings_top_margin_detail">A 48 px space at the top of CarLink, CarPlay and Android Auto, so nothing hides under the car’s status bar. CarLink changes at once, CarPlay and Android Auto from the next connection. Off: no margins.</string>
+    <string name="carlink_settings_hide_car_status_bar">Hide the car\'s status bar</string>
+    <string name="carlink_settings_hide_car_status_bar_detail">Hides the car\'s floating status bar while CarPlay or Android Auto is on screen, so it does not sit on top of the projection. Applies at once. Off: the car\'s bar stays visible. This test setting is for the Changan CS75 Plus only.</string>
     <string name="carlink_settings_save_log">Save full report</string>
     <string name="carlink_settings_save_log_detail">Saves the app version, device, settings, phone sessions and the full log in one text file: on a USB flash drive if one is in, else Downloads/CarLink. Saved passwords are left out. Works offline.</string>
     <string name="carlink_settings_share_log">Share error log</string>
@@ -170,19 +185,21 @@
     <string name="carlink_settings_sound_bluetooth_detail">Music goes through the car’s own Bluetooth audio instead.</string>
     <string name="carlink_settings_lite_mode">Lite mode</string>
     <string name="carlink_settings_lite_mode_detail">Smoother picture on a slow screen, with the same sharpness</string>
-    <string name="carlink_settings_lite_mode_sheet_body">30 frames per second instead of 60, and the picture drawn straight to the screen. The resolution and quality stay the same, so nothing turns pixelated or blurry. Applies only when Picture is Automatic.</string>
+    <string name="carlink_settings_lite_mode_sheet_body">30 frames per second instead of 60, the picture drawn straight to the screen, and CarLink’s own effects kept simple (when Visual effects is Automatic). The resolution and quality stay the same, so nothing turns pixelated or blurry. Works only when Picture is Automatic.</string>
     <string name="carlink_settings_lite_mode_always">Always</string>
     <string name="carlink_settings_lite_mode_off_detail">Default. The picture stays as Picture sets it.</string>
     <string name="carlink_settings_lite_mode_auto_detail">Turns on by itself from the next connection when the picture struggles, and says so. Choose again to reset it.</string>
-    <string name="carlink_settings_lite_mode_always_detail">Lite from every connection.</string>
+    <string name="carlink_settings_lite_mode_always_detail">On from every connection.</string>
+    <string name="carlink_settings_lite_mode_engaged">on now</string>
+    <string name="carlink_settings_lite_mode_needs_automatic">needs Picture: Automatic</string>
     <string name="carlink_settings_audio_delay">CarPlay audio delay</string>
     <string name="carlink_settings_audio_delay_detail">How far music and video sound is buffered behind the picture</string>
     <string name="carlink_settings_audio_delay_low">Low</string>
     <string name="carlink_settings_audio_delay_normal">Normal</string>
     <string name="carlink_settings_audio_delay_high">High</string>
-    <string name="carlink_settings_audio_delay_low_detail">Sound closest to the picture: about 0.1 s over USB. Wireless stays at 0.3 s. Try Normal if music stutters.</string>
-    <string name="carlink_settings_audio_delay_normal_detail">About 0.3 s over USB and wireless. Recommended.</string>
-    <string name="carlink_settings_audio_delay_high_detail">Steadiest music on a weak link: about 0.5 s over USB, 1 s wireless.</string>
+    <string name="carlink_settings_audio_delay_low_detail">Sound closest to the picture: about 0.1\u00A0s over USB. Wireless stays at 0.3\u00A0s. Try Normal if music stutters.</string>
+    <string name="carlink_settings_audio_delay_normal_detail">About 0.3\u00A0s over USB and wireless. Recommended.</string>
+    <string name="carlink_settings_audio_delay_high_detail">Steadiest music on a weak link: about 0.5\u00A0s over USB, 1\u00A0s wireless.</string>
     <string name="carlink_settings_group_levels">Levels</string>
     <string name="carlink_settings_level_media">Media</string>
     <string name="carlink_settings_level_media_detail">Music, podcasts and other media</string>
@@ -190,7 +207,7 @@
     <string name="carlink_settings_level_navigation_detail">Spoken directions and the voice assistant</string>
     <string name="carlink_settings_level_calls">Calls</string>
     <string name="carlink_settings_level_calls_detail">CarPlay calls. Android Auto calls go through the car’s Bluetooth hands-free.</string>
-    <string name="carlink_settings_level_sheet_body">Louder or quieter than the phone sends it, for both CarPlay and Android Auto. Above Normal, very loud passages can distort.</string>
+    <string name="carlink_settings_level_sheet_body">Louder or quieter than the phone sends it, for both CarPlay and Android Auto. Above Normal, the loudest peaks are softened so they do not crackle.</string>
     <string name="carlink_settings_level_normal">Normal</string>
     <string name="carlink_settings_level_db">%1$s dB</string>
     <string name="carlink_settings_call_stream">Call audio plays as</string>
@@ -201,6 +218,10 @@
     <string name="carlink_settings_call_stream_media_detail">For head units that play calls too quietly or not at all. The other person may hear an echo: if so, turn on Call echo cancellation under Show advanced, or go back to Phone call.</string>
     <string name="carlink_settings_resume_music">Resume music after reconnecting</string>
     <string name="carlink_settings_resume_music_detail">If music was playing when the phone disconnected, press play once it is back</string>
+    <string name="carlink_settings_aa_back">Back button goes back in Android Auto</string>
+    <string name="carlink_settings_aa_back_detail">Off: Back opens the menu to leave Android Auto. Either way, swipe in from the left edge with two fingers for that menu.</string>
+    <string name="carlink_settings_duck_directions">Lower music during directions</string>
+    <string name="carlink_settings_duck_directions_detail">CarPlay turns its music down while a navigation prompt speaks</string>
     <string name="carlink_settings_group_microphone">Microphone</string>
     <string name="carlink_settings_mic_gain">Microphone level</string>
     <string name="carlink_settings_mic_gain_detail">How loud your voice reaches calls and the voice assistant</string>
@@ -244,9 +265,9 @@
     <string name="carlink_settings_rendering_detail">Light, glow and animation on CarLink’s screens</string>
     <string name="carlink_settings_rendering_auto">Automatic</string>
     <string name="carlink_settings_rendering_full">Full</string>
-    <string name="carlink_settings_rendering_lite">Lite</string>
+    <string name="carlink_settings_rendering_lite">Simple</string>
     <string name="carlink_settings_rendering_auto_value">Automatic · %1$s</string>
-    <string name="carlink_settings_rendering_auto_detail_lite">Lite on this device, which has little memory or processor power</string>
+    <string name="carlink_settings_rendering_auto_detail_lite">Simple on this device: little memory or processor power, or Lite mode is on</string>
     <string name="carlink_settings_rendering_auto_detail_full">Full on this device</string>
     <string name="carlink_settings_rendering_full_detail">Soft light, glow, grain and smooth animation</string>
     <string name="carlink_settings_rendering_lite_detail">Plain fills and fewer redraws, for slower head units. Same layout and colours</string>
@@ -255,6 +276,8 @@
     <string name="carlink_settings_group_help">Help</string>
     <string name="carlink_settings_diagnostics">Diagnostics</string>
     <string name="carlink_settings_diagnostics_detail">Checks and live connection details</string>
+    <string name="carlink_settings_connection_status">Connection status</string>
+    <string name="carlink_settings_connection_status_detail">Live picture, sound and link figures for the current session</string>
     <string name="carlink_settings_group_about">About</string>
     <string name="carlink_settings_version">Version</string>
     <plurals name="carlink_settings_lab_taps">
@@ -276,8 +299,14 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android needs this before CarLink can show the button</string>
     <!-- Settings › Car › Car brand (core settings/CarBrand), also the setup's car step. Brand names come from CarBrand.displayName. -->
     <string name="carlink_settings_car_brand">Car brand</string>
-    <string name="carlink_settings_car_brand_detail">BYD adds its DiLink extras; other brands only label this car</string>
+    <string name="carlink_settings_car_brand_detail">BYD: adds its DiLink extras. Other brands only label this car, except Changan.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: its logo on CarPlay’s back-to-car button (other cars get the default icon). When you pick the CS75 Plus entry you’re asked about hiding the notification bar — in every app except the home screen, or in apps you choose from a full list. The 48 px top-margin test is off by default, and sound plays through the car’s Bluetooth by default. CarPlay still defaults to a 400 mm width and HEVC, and Android Auto to 200 DPI. You can change all of this in Settings.</string>
     <string name="carlink_settings_car_brand_sheet_body">Pick the make of this car. CarPlay and Android Auto work the same in every car.</string>
+    <string name="carlink_changan_margins_title">Top margin</string>
+    <string name="carlink_changan_margins_body">Adds a 48 px space at the top of CarPlay, Android Auto and CarLink, so nothing hides under the car’s status bar. Turn it on?</string>
+    <string name="carlink_changan_margins_hint">You can turn it off any time in Settings › Display › Top margin.</string>
+    <string name="carlink_changan_margins_yes">Yes</string>
+    <string name="carlink_changan_margins_no">No</string>
     <!-- What the detection found: a generic screen, or a BYD DiLink unit. -->
     <string name="carlink_settings_car_generic">Generic</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
@@ -292,6 +321,7 @@
     <string name="carlink_settings_car_byd_not_dilink">This screen is not a BYD DiLink unit, so the BYD extras cannot work here. Choose your car\'s make, or Other.</string>
     <string name="carlink_settings_car_explain_byd">BYD adds the DiLink extras: directions on the HUD and the instrument cluster, and BYD steering-wheel keys.</string>
     <string name="carlink_settings_car_explain_other">CarPlay and Android Auto work the same as in any car. The brand only labels this car in CarLink.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay and Android Auto work as in any car. Changan also shows its logo on CarPlay\'s back-to-car button. Choosing this entry asks about hiding the notification bar, with a full app list if you hide it only in apps you pick. The 48 px top-margin test is off by default, and sound plays through the car’s Bluetooth by default. CarPlay defaults to 400 mm and HEVC, and Android Auto to 200 DPI.</string>
     <!-- Settings › Car › Steering-wheel buttons (core settings/WheelKeys). -->
     <string name="carlink_wheel_keys">Steering-wheel buttons</string>
     <string name="carlink_wheel_keys_detail">Teach CarLink your wheel\'s buttons for voice, calls and music in CarPlay and Android Auto</string>
@@ -355,4 +385,7 @@
     <string name="carlink_settings_language_detail">The language of CarLink and its CarPlay and Android Auto screens</string>
     <string name="carlink_settings_language_system">System default</string>
     <string name="carlink_settings_language_system_detail">Follows the head unit\'s language, or English if CarLink has no translation for it</string>
+    <string name="carlink_settings_car_hotspot_button">Hotspot settings</string>
+    <string name="carlink_settings_hotspot_notice">Turn on the hotspot in the car settings, then connect your phone to it. If the main settings screen opens, look for the hotspot under network settings.</string>
+    <string name="carlink_settings_hotspot_unavailable">Could not open settings. Open hotspot settings from the car screen.</string>
 </resources>

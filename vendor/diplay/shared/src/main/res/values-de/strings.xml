@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="carapp_hw_status_title">xcertplay Hardware-Status</string>
+    <string name="carapp_hw_not_configured">Der Hardware-Transport ist nicht konfiguriert. Board-I2C braucht einen Pfad /dev/i2c-N und eine OS-/SELinux-Berechtigung; CH341 braucht eine hinterlegte VID/PID-Konfiguration.</string>
+</resources>

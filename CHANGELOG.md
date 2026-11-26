@@ -1,8 +1,298 @@
 # Changelog
 
 CarLink's releases, newest first. Versions follow `major.minor.patch`; each one is a release on
-[GitHub](https://github.com/F-e-n-y-x/CarLink/releases) with its APK. The text under each version
+[GitHub](https://github.com/0nezar0/carlink-releases/releases) with its APK. The text under each version
 is what the in-app update popup shows.
+
+## [Unreleased]
+
+## [CS75 Plus 2023 v1.6.6] - 2026-11-26 (test)
+
+Private test build from branch `release/1.6.6-clean`, versionCode 10049. It installs over every earlier build, including the private trials up to 10048 and the public v1.6.5 (10041). Based on upstream CarLink 1.0.18.
+
+- Wireless CarPlay on the car's own hotspot now picks the address family by itself, with no setting. Before anything is advertised, CarLink probes the access-point interface. IPv6 is used only when it is clearly usable: a non-tentative, non-deprecated global/ULA address that binds and answers a local connect, IPv6 not disabled on the interface, and (when readable) a non-link-local IPv6 route on it. A link-local address alone never counts. Otherwise the path is exactly v1.6.5's IPv4-only path (A records only, listeners on the AP IPv4, 0x4301 IPv4 only).
+- When IPv6 is usable: dual stack with IPv4 first and one separate listener per IPv6 address (never a `::` listener). Bonjour and 0x4301 list the addresses that really have a listener (upstream 1.0.18 rules).
+- Automatic fallback: a dual-stack session that gets no AirPlay TCP, or no first picture within 25 s, remembers the screen as IPv4-only and restarts at once on IPv4 only.
+- The CS75 Plus 2023 car profile stays on the IPv4-only path whatever the probe sees.
+- Diagnostics has a new section «IP family (car hotspot)».
+- Navigation bar (Back, Home, Installed apps, CarLink, Android settings) and an optional 48 px top margin, both in Settings › Car for every brand (each car keeps its own choice). The bar opens by swiping inward from the left or right edge. The thin edge strips let taps through and only take a horizontal swipe; they switch off while CarPlay or Android Auto is on screen. The Changan section also shows the top margin switch, using the same CS75 Plus value.
+- Installed apps: lists the apps that can be opened; a tap opens the app, a long press opens its Android app info.
+- Connection settings: a car hotspot notice and a button that opens Android's hotspot settings.
+- About: one card credits CarLink by F-e-n-y-x, the CS75 Plus edition by Nezar Alhazmi, and shows the version; all texts are translated.
+- Includes everything from v1.6.5.
+
+
+## [CS75 Plus 2023 v1.6.5] - 2026-11-21
+
+Public release, versionCode 10041. It installs over CS75 Plus 2023 v1.6.
+Settings › About › Check for updates offers this version on the stable channel.
+
+- The CS75 Plus 48 px top-margin switch (اختبار الهوامش / الهامش العلوي) is now off by default when that car is selected. A one-shot migration (keyed on versionCode 10041) turns it off for existing CS75 users if the stored on-value only came from the old first-launch default (top margin on together with hide-in-all-apps-except-launcher). An explicit Yes on the old margins dialog, or a custom hide mode, is left as it was. You can still turn the margin on in Settings.
+- When you select the CS75 Plus entry (first launch Yes, the brand list, or setup), the follow-up dialog is no longer the top-margin question. It now explains hiding the car's notification/status bar, with Turn on or Skip, and writes the existing CS75 bar-hide setting (all apps except the home screen, or off). The first-launch question «Is your car a Changan / CS75 Plus?» is unchanged. First-launch Yes no longer turns the top margin or bar hide on by itself.
+- The «hide in apps I pick» list was only showing a few apps on the car (Settings, FceLauncher, Radio, plus CarLink) because it queried launchers with MATCH_DEFAULT_ONLY — activities that declare MAIN/LAUNCHER but not CATEGORY_DEFAULT were dropped. It now lists all launchable user and system apps (MAIN+LAUNCHER union packages with a launch intent), with labels, icons, and a search box when the list is long. Foreground detection for that mode also watches window changes, not only window-state events.
+- CarLink's own screens now use dark mode by default, for every user and every car. Fresh installs start in dark. A one-shot migration (keyed on versionCode 10041) switches existing users only when the theme was still the untouched old default (Follow the car, never saved). An explicit Light — or an explicit Follow the car / Dark choice — is left as it was.
+- Settings › Sound plays (تشغيل الصوت) now defaults to the car's Bluetooth, for every user and every car, for both CarPlay and Android Auto. Fresh installs start on Bluetooth. A one-shot migration (keyed on versionCode 10041) switches existing users only when the setting was never saved. An explicit "Through CarLink" (or an already saved Bluetooth) choice is left as it was.
+- The notice under Settings › Car brand (ماركة السيارة) for the CS75 Plus entry now matches this behaviour: the margin test is off by default, choosing the car asks about hiding the notification bar, the per-app list is complete, sound defaults to Bluetooth, and CarPlay 400 mm / HEVC and Android Auto 200 DPI still apply.
+- The error/bug report screen (QR code and links) now opens a new issue on this build's repository (https://github.com/0nezar0/carlink-releases/issues/new), with the version, screen, error and log excerpt prefilled, instead of the upstream CarLink issues. The Android Auto engine's support QR/link is pointed there too. Diagnostics are not sent automatically. The in-app contact/support address on About and the report screen is now alhazmi.n.car@gmail.com.
+- Includes everything from v1.6.4: IPv4-only CarPlay on the car hotspot, and the rest of the CS75 work.
+
+## [CS75 Plus 2023 v1.6.4] - 2026-11-21
+
+Pre-release (test version), versionCode 10040. It installs over CS75 Plus 2023 v1.6 and v1.6.3.
+Turn on Settings › About › Get test versions (الحصول على نسخ تجريبية) to be offered this update from inside the app.
+
+- Fix: on the car's own hotspot, an IPv6 (link-local) address on the access-point interface could conflict with AirPlay and Bonjour, so the iPhone received the Wi-Fi credentials but never opened CarPlay over Wi-Fi. This path is now IPv4-only: Bonjour advertises A records only (no AAAA), every AirPlay listener binds the AP IPv4 address (never `::` or IPv6), iAP2 0x4301 lists only that IPv4, IPv6 addresses on the AP are ignored, and a remembered or flipped address family is not used. Interface selection never takes a mobile-data iface (`rmnet*`, `ccmni*`) and prefers the AP IPv4 on `wlan0` / `softap` / `ap0`. Shared Wi-Fi is unchanged. Logs include `family=IPv4 forced` and `hotspot interface selected iface=… ipv4=…`.
+- Includes everything from v1.6.3: attaching the car hotspot with the shared-network path and the saved AirPlay identity; the CS75 Settings category; RTL title isolates; the CS75 Plus brand, hide modes, defaults, Picture bind fix, and first-launch question.
+
+## [CS75 Plus 2023 v1.6.3] - 2026-11-21
+
+Pre-release (test version), versionCode 10039. It installs over CS75 Plus 2023 v1.6, v1.6.1 and v1.6.2.
+Turn on Settings › About › Get test versions (الحصول على نسخ تجريبية) to be offered this update from inside the app.
+
+- Fix: wireless CarPlay over the car's own hotspot could pass Bluetooth and then stall at Linking (الربط) — the iPhone received the Wi-Fi credentials but never opened AirPlay TCP — while the same phone on a shared Wi-Fi network worked. After the car hotspot is up, CarPlay now attaches to that access-point interface with the same shared-network path: the same address listing, Bonjour/mDNS, listeners, and the saved AirPlay receiver identity (not the AP MAC). The car hotspot also always publishes IPv4 first, so a family remembered from a previous shared-Wi-Fi session cannot advertise IPv6 on an IPv4 SoftAP.
+- Includes everything from v1.6.2: the CS75 Settings category (first, above Connection) and RTL title isolates; the CS75 Plus brand entry and migration; hide modes and the Accessibility notice; CS75-only 48 px top margin and defaults (CarPlay 400 mm, HEVC, Android Auto 200 DPI); the car-hotspot Picture bind fix; and the one-time first-launch question after a fresh install.
+
+## [CS75 Plus 2023 v1.6.2] - 2026-11-21
+
+Pre-release (test version), versionCode 10038. It installs over CS75 Plus 2023 v1.6 and v1.6.1.
+Turn on Settings › About › Get test versions (الحصول على نسخ تجريبية) to be offered this update from inside the app.
+
+- Settings layout: the CS75 block is no longer a full-width card pinned above the two-pane Settings screen (that card blocked scrolling). It is now a normal category in the left list, first, above Connection (الاتصال), shown only when the CS75 Plus brand is selected. Its content — hide modes, accessibility notice, app picker, and top margin — appears in the same scrollable right pane as the other categories, on phone portrait and head-unit landscape.
+- Arabic titles that mix in «CS75 Plus 2023-2022» now wrap the Latin part in Unicode isolates (FSI/PDI) so the order stays correct in RTL. This applies to the category title, the car-list entry, and the first-launch question.
+- Includes everything from v1.6.1: the CS75 Plus brand entry and the one-time migration from generic Changan; hide modes and the Accessibility notice; CS75-only 48 px top margin and defaults (CarPlay 400 mm, HEVC, Android Auto 200 DPI); the car-hotspot CarPlay Picture bind fix; and the one-time first-launch question after a fresh install.
+
+## [CS75 Plus 2023 v1.6.1] - 2026-11-21
+
+Pre-release (test version), versionCode 10037. It installs over CS75 Plus 2023 v1.6.
+Turn on Settings › About › Get test versions (الحصول على نسخ تجريبية) to be offered this update from inside the app.
+
+- New entry in the car brand list: **Changan / CS75 Plus 2022-2023 only** (شانجان /CS75 Plus 2023-2022 فقط). All CS75-specific behaviour — the top margin, CarPlay logo, 30 fps Automatic cap, and status-bar hide — applies only to this entry. Generic Changan now behaves like any other brand.
+- If you already had Changan selected, this update moves that choice once to the new CS75 Plus entry, so your current setup keeps its CS75 behaviour.
+- A dedicated section at the top of Settings, titled **اعدادات خاصة لشانجان /CS75 Plus 2023-2022 فقط**, appears only when that CS75 entry is selected.
+- Status-bar hide has three options: Off; hide in all apps except the car's home screen; or hide only in apps you tick (✔). CarPlay and Android Auto are always hidden in both on modes.
+- A visible notice and a button to turn on the Accessibility permission for CarLink, and a status showing whether it is on, because both hide modes need it to see the open app.
+- When the CS75 Plus entry is selected (and once on the Changan → CS75 migration), CarPlay defaults to a 400 mm reported width (`cp_width` / mm400), HEVC on (`cp_hevc`), and Android Auto defaults to 200 DPI (`aa_dpi`). Values you already set are not overwritten. Other brands, including generic Changan, keep their usual defaults. The existing 48 px top margin remains available only on this entry.
+- A full Arabic notes file of this work is in `docs/CS75_PLUS_CHANGES.md`.
+- Fix: on the car's own Wi-Fi hotspot, wireless CarPlay could reach the last connection step (Picture) and never show the iPhone's screen, while Android Auto on the same hotspot worked. The AirPlay screen, timing, event, keep-alive and audio ports were bound only to IPv6 (`::`). Android treats that as IPv6-only, but a car hotspot session is usually IPv4, so the picture socket never accepted the phone. Those ports now bind the same address as the control session.
+- On the first launch after a fresh install, a one-time dialog asks in Arabic: «هل سيارتك شانجان /CS75 Plus 2023-2022؟» (نعم / لا). Yes selects the CS75 Plus entry and applies its defaults (48 px top margin, status-bar hide except the car's home screen, CarPlay 400 mm, HEVC, Android Auto 200 DPI). No closes it and leaves the normal setup. It is not shown again, and not shown when updating from an earlier build (including a migrated generic Changan choice).
+
+
+## [CS75 Plus 2023 v1.6] - 2026-11-20
+
+versionCode 10036. It installs over CS75 Plus 2023 v1.5, v1.4 and v1.2.
+
+- The Changan trademark notice in Settings › About no longer describes the app as a private
+  build that is not for distribution. It still says the name and logo are used only to identify
+  the car, and that CarLink has no official connection with the company.
+
+## [CS75 Plus 2023 v1.5] - 2026-11-20
+
+Pre-release (test version), versionCode 10035. It installs over CS75 Plus 2023 v1.4 and v1.2.
+Turn on Settings › About › Get test versions to be offered this update from inside the app.
+
+- Silent install (ADB) is removed. Updates install only through Android's PackageInstaller
+  (Settings › About › Check for updates). The "Silent install (ADB)" switch and "Test connection"
+  row in Settings › About are gone.
+
+## [CS75 Plus 2023 v1.4] - 2026-11-20
+
+Pre-release (test version), versionCode 10034. It installs over CS75 Plus 2023 v1.2 and v1.3.
+Turn on Settings › About › Get test versions to be offered this update from inside the app.
+
+- Settings › Connection › Connection status (and Settings › Diagnostics) shows live figures for
+  the current session, refreshed about once a second while connected: connection type and wireless
+  method, phone name, video (resolution, frame rate, codec, decoder, incoming fps, dropped and late
+  frames, decode latency, bitrate), audio streams and buffer, Wi-Fi band, link speed and signal
+  when wireless, session uptime and reconnect count. Anything the engines do not expose is shown
+  as unavailable.
+
+- Settings › General › Language also offers Spanish, Portuguese, French, Italian, German, Malay,
+  Turkish, Simplified Chinese and Hungarian, each shown in its own name, with System default
+  still following the head unit. The choice is included in Settings › General › Back up / Restore.
+
+## [CS75 Plus 2023 v1.3] - 2026-11-19
+
+- Silent install (ADB): Settings › About › "Silent install (ADB)", on by default. A checked update
+  installs with no install screen through the head unit's own adb on 127.0.0.1:5555 (never another
+  host), using the adb key CarLink already has for CarPlay's VPN consent, and CarLink opens again by
+  itself. The APK is copied to /data/local/tmp, its SHA-256 checked again there, then
+  `pm install -r` (never a downgrade). Needs USB debugging and adb on port 5555, and approving
+  "Allow USB debugging" once with "Always allow"; "Test connection" asks for that approval and
+  shows the adb port properties. If adb is off, not approved or the install fails, Android's
+  installer is used and the popup says why. Every check before installing is unchanged.
+
+## [CS75 Plus 2023 v1.2] - 2026-11-19
+
+Test release, versionCode 10032, to try the in-app update from v1.1 (Settings › About › Check
+for updates). Same features as v1.1.
+
+## [CS75 Plus 2023 v1.1] - 2026-11-19
+
+Private Changan build, versionCode 10031. It installs over CS75 Plus 2023 v1.0 and keeps the
+settings.
+
+- Updates work for this build: Settings › About › Check for updates (and the automatic check)
+  look at this build's own releases (`0nezar0/carlink-releases`, a public repo with only the release notes and APKs, tags `vX.Y`, asset
+  `CarLink-CS75Plus2023-vX.Y.apk` with its `.sha256`), never at upstream CarLink. The download
+  is installed only when its checksum matches, its package is `com.carlink.app.hudtest`, its
+  versionCode is higher and it is signed with this build's key.
+- The update APK is saved in Downloads/CarLink (next to the full reports) as
+  `CarLink-CS75Plus2023-vX.Y.apk` and installed from there; CarLink asks for storage access once
+  on Android 9 (without it, CarLink's own Downloads/CarLink). The checked APK stays there after
+  installing; older update APKs are removed, reports are never touched.
+- If the releases can't be read (a private repository answers "not found"), the check says so
+  instead of "You're up to date".
+- Updated from CarLink **1.0.17** by F-e-n-y-x (`1d37e9ac`, 2026-11-18; the previous base was
+  1.0.16, `0be1cdee`): Connection method › Head unit server, lower music during CarPlay
+  directions, bigger interface sizes with Extra large, HEVC for CarPlay with Picture on
+  Automatic, the CarPlay engine's hardening against malformed data from the phone, and the
+  fixes listed under 1.0.17 below. Every Changan addition is kept.
+- Screen margins are now one switch, Settings › Display › **Top margin** (الهامش العلوي), still
+  Changan only. On: 48 px at the top of CarPlay, Android Auto and CarLink's own screens
+  together; the other edges stay at zero. Off: no margins anywhere. CarLink's screens change at
+  once, CarPlay and Android Auto from the next connection.
+- Choosing Changan still asks whether to turn it on (Yes / No), with shorter, clearer text.
+- The separate CarPlay, Android Auto and CarLink-screen margin rows and the "Reset to Changan
+  margins" button are gone. An update turns the switch on when any top margin was on before,
+  otherwise off; left, right and bottom margins are dropped.
+- CarPlay's back-to-car button no longer shows a car brand's logo: every car, and no brand,
+  gets the default car icon (CarLink's icon), a BYD head unit included, which showed the BYD
+  logo before. Only Changan keeps the Changan logo.
+- Changan appears as a name only in the car brand list; its logo stays on CarPlay's
+  back-to-car button and in Settings › Car.
+- Android Auto developer settings use CarLink 1.0.17's wording, with Arabic.
+- A fresh install starts with no car brand and no margins until you choose.
+  Upgrades keep their saved settings.
+- Lite mode: turning it off now turns its video surfaces back off; while it is on, CarLink's
+  own effects stay simple (Visual effects on Automatic); Settings says when it needs Picture on
+  Automatic and when Auto has turned it on. The picture's resolution and quality are never
+  lowered.
+- Clearer names: Picture › Light is now "Low resolution" (دقة منخفضة) and Visual effects ›
+  Lite is now "Simple" (بسيط), so only Lite mode is called "خفيف". Changing Lab › Video
+  surface for Android Auto now sets Picture to Custom, like CarPlay's Direct video output.
+## [1.0.18] - 2026-11-23
+
+- UI polish from a full-app check: the floating ball's "Wireless · Wi-Fi Direct" badge has its own row
+  and no longer wraps, and "Extra large" is no longer cut to "Extra" on a phone; the long failure screens
+  fit a car screen; Report a problem gives its details more room (the header's close button replaces
+  Cancel); the paused card in Settings › Connection stacks on a phone; setup no longer shows the
+  plugged-in phone twice; "0.3 s" and "Phone · CarPlay" no longer break mid-value.
+- Fixed: wireless CarPlay started again right after a stop could sit on "Linking over Wi-Fi" for
+  10 s and fail once before connecting. When the iPhone joins the car's Wi-Fi but does not open
+  CarPlay within 3 s, CarLink now asks it to start once more.
+- The floating ball no longer reconnects by itself when a size cannot change live (a CarPlay width wider than
+  the one the session started with): it saves the size and offers **Reconnect with the new size**.
+- New Lab option for CarPlay calls over USB, "Calls at phone-call rate": calls and their microphone
+  use 8-32 kHz audio as stock CarPlay stereos do, for stereos where the other person hears you
+  choppy or robotic.
+- The floating switcher has a Custom size, in percent for both CarPlay and Android Auto (100% is
+  Small), with −10, −5, +5 and +10 steps and no 250 mm limit. It is saved as Settings' Custom size
+  and applies live where the session can (#83).
+- Joying (QZD) stereos: CarPlay and Android Auto directions and the voice assistant now play on the
+  streams the stereo treats as navigation and voice, so they mix over music instead of being muted
+  with it; CarPlay calls use the stereo's call stream when its settings name one.
+- Fixed: CarPlay directions over USB sounded like a phone call (#83). The iPhone picked 8 kHz audio
+  for them; CarLink now asks for a higher rate. If directions go silent on your stereo, turn off
+  Settings › Sound & voice › Show advanced › Clear navigation voice over USB.
+- CarPlay's "Screen width reported to iPhone" (Advanced) now has 10 mm steps from 120 to 200 mm,
+  so a size between the Large and Medium presets can be picked (#83).
+- Navigation volume now goes up to +12 dB (Settings › Sound & voice), for CarPlay and Android Auto;
+  boosted sound has its loudest peaks softened instead of clipped (#83).
+- Fixed: on a phone, Home's dial no longer cuts off the connection step ("Reaching phone",
+  "Phone answered") under the CarPlay or Android Auto name while connecting.
+- Fixed: the delete button next to each phone in Home's Phones list is as large as the other car
+  buttons (76 dp on a head unit), so it is easier to hit while parked.
+- The head unit's Back button now goes back inside Android Auto instead of opening the menu to
+  leave it (#72), also on Android 13 and later. Turn it off in Settings › Car › Back button goes back in Android Auto; the
+  two-finger swipe from the left edge still opens the menu. Home stays the system's.
+- Android Auto's audio buffer and audio queue can be set under Settings › Sound & voice › Show
+  advanced (smaller = less music delay, larger = less stutter; from the next connection). Defaults
+  are unchanged (#86).
+- FYT and Joying stereos: with Day and night on Automatic, CarPlay and Android Auto turn dark when
+  the car's lights come on, following the stereo's own light signal.
+- The stereo's voice key can open Siri or Google Assistant during a session: CarLink now answers the
+  voice-command request Joying stereos send (pick CarLink when the stereo asks which app to use).
+  With no session it passes the press on to the screen's own assistant.
+- FYT and Joying stereos: when the car is switched on, CarLink connects the last phone as soon as
+  Bluetooth is back, even if the previous drive ended only minutes ago (the stop rules still apply).
+- FYT and Joying stereos: Driving side starts from the side the stereo reports, until you choose one.
+- Fixed: steering-wheel media buttons can be learned during Android Auto (Settings › Car ›
+  Steering-wheel buttons › Learn), and keys the stereo sends as media buttons are learned too (#81,
+  thanks @dorsi90).
+- Updated the Android Auto engine (DiAuto, upstream a5340bb39). Fixed: wireless Android Auto stopped
+  answering the phone after the car's Bluetooth dropped its listeners (for example after a phone was
+  unpaired) until the app was restarted.
+- Fixed: wireless Android Auto could stay waiting when the phone was already on this screen's
+  Bluetooth hands-free link before Android Auto started listening; the phone is now woken over it.
+- Fixed: on a BYD split screen, a wireless Android Auto picture that no longer fits its window is
+  reconnected for the new window instead of staying stretched.
+- Fixed: the Android Auto picture after returning from another app recovers on a real keyframe
+  (upstream's version of the earlier fix), and the system bar margin is kept on the first
+  connection after the app starts.
+- Fixed: BYD head-up display, cluster guidance and turn card no longer go blank during a merge
+  without a side (upstream DiAuto PR #88).
+
+- FYT stereos: an iPhone plugged in while CarLink is open is now found (the firmware sends the
+  plug-in only to its own Car Link app). When a session starts, CarLink asks FYT's Car Link app to
+  let go of the phone, becomes the stereo's audio source so the steering-wheel media buttons and
+  the knob reach CarPlay or Android Auto, and hides FYT's floating button until the session ends.
+- Joying/QZD stereos (com.car.service, e.g. QCM6125): CarLink takes the stereo's audio source while
+  a session runs, so the radio stops and the steering-wheel media buttons reach CarPlay or Android
+  Auto, and hands the previous source back when the session ends.
+- Fixed: wireless CarPlay over the car's own hotspot stalled at "Picture" on head units whose hotspot
+  has no IPv6 (#93, thanks @0nezar0). On the car hotspot CarLink now offers and listens on IPv4 only,
+  and the log says whether the hotspot interface carries IPv6.
+
+- Updated the CarPlay engine (DiPlay, 2026-11-22): wireless CarPlay keeps working when one of the
+  screen's addresses cannot take a connection, a screen without Wi-Fi Direct no longer retries it,
+  silent Bluetooth links are retried on adapters that already carried data, and fixes for music
+  skips and the wired music clock.
+
+- Fixed: an iPhone with a custom Bluetooth name could be taken for an Android phone and get Android
+  Auto instead of CarPlay (#89, #90). CarLink now treats a phone as Android only when it offers
+  Android Auto's own Bluetooth service, and asks otherwise.
+- Fixed: wireless CarPlay could restart every 10 to 20 s during navigation, when the iPhone sent a
+  burst of route updates at once (upstream DiPlay fix).
+- Fixed: a late close from a replaced CarPlay video stream no longer ends the running session
+  (thanks @buckydajunior).
+- New: CarPlay's Same Wi-Fi can reach the router over a wired network (a USB Ethernet adapter) instead
+  of this screen's Wi-Fi (#87). Settings › Connection, with Same Wi-Fi chosen and Show advanced on:
+  Over a wired network (Ethernet). The iPhone still joins the Wi-Fi.
+- Fixed: wireless CarPlay music no longer gets extra silence after a Wi-Fi hiccup that already
+  stalled it; lost music is filled in only while the sound is still playing.
+- Fixed: wireless CarPlay over some car hotspots timed out on every attempt because the iPhone
+  chose an address the car could not answer; CarLink now offers the hotspot's IPv4 address instead.
+
+## [1.0.17] - 2026-11-18
+
+- New: Connection method › Head unit server, a backup for wireless Android Auto when Bluetooth or
+  Wi-Fi Direct fails (#70). This screen joins the phone's hotspot; turn on "Start head unit server"
+  in Android Auto's developer settings first (again after every phone restart). If the server gets
+  stuck, Home says how to restart it.
+- New: music turns down while a CarPlay direction speaks, CarPlay's own music and other apps on the
+  screen alike (#83). Settings › Sound & voice › Lower music during directions, on by default.
+- New: Interface size › Extra large, and all sizes are bigger: the old Small was too small to use
+  (#83). On a phone or tablet held upright, Android Auto stops at the largest size that keeps its
+  full layout, and the floating switcher says so.
+- New: Ford in the car brand list (#33).
+- Better: with Picture on Automatic, CarPlay uses HEVC (sharper at the same data rate) where the
+  screen's decoder handles it, and falls back to H.264 on a screen where HEVC shows no picture.
+- Better: Report a problem says when the same report was already sent, and offers the update first
+  when a newer CarLink is out.
+- Fixed: Android Auto on a phone or tablet held upright: the map could be tapped but not dragged at
+  the larger sizes.
+- Fixed: a phone or tablet set to the BYD brand kept Android Auto's music on the phone.
+- Fixed: a wired Android Auto phone whose USB link blinked ended in "unplug and plug in again";
+  CarLink now restarts the link itself. Changing the size no longer reconnects after such a blink.
+- Fixed: wireless was refused on a stereo whose Bluetooth module started after CarLink, until
+  CarLink was restarted (thanks @pphan93). With only iPhones known, CarPlay no longer waits for
+  Android Auto's engine to warm up (thanks @pphan93).
+- Fixed: wireless Android Auto stopped listening for the phone after a Bluetooth error.
+- Fixed: a stereo's wake signal no longer covers a running CarPlay or Android Auto picture with
+  Home; Autochips quick-boot stereos start CarLink on wake; the Android Auto exit menu no longer
+  crashes when the session ends (thanks @0nezar0, #84).
+- Security: the CarPlay engine is hardened against malformed data from the phone (DiPlay
+  fixes), and Android Auto's message parser is updated (CVE-2024-7254, thanks @0nezar0).
 
 ## [1.0.16] - 2026-11-12
 
@@ -139,7 +429,7 @@ is what the in-app update popup shows.
 - Diagnostics names more problems: another projection or mirroring app, the stereo's clock, low
   storage, another VPN, the stereo joined to the phone's own hotspot, and Unisoc UMS512 chips.
 - A phone that is no longer paired no longer blocks every automatic start.
-- Faster CarPlay encryption on Android 7.1-8.1, CarPlay and Android Auto engine fixes from upstream.
+- Faster CarPlay encryption on Android 7.1-8.1, CarPlay and Android Auto engine fixes.
 
 ## [1.0.7] - 2026-10-27
 

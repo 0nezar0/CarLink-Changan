@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carlink_cs75_nav_title">Barra di navigazione</string>
+    <string name="carlink_cs75_nav_description">Scorri verso l\'interno dal bordo sinistro o destro per mostrare la barra. Scorri di nuovo dallo stesso bordo per nasconderla. Richiede il servizio di accessibilità di CarLink.</string>
+    <string name="carlink_cs75_nav_back">Indietro</string>
+    <string name="carlink_cs75_nav_home">Home</string>
+    <string name="carlink_cs75_nav_apps">App installate</string>
+    <string name="carlink_cs75_nav_settings">Impostazioni Android</string>
+    <string name="carlink_cs75_nav_apps_unavailable">Impossibile aprire l\'app.</string>
+</resources>

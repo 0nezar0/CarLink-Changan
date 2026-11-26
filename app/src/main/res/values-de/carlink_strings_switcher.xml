@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) translation of carlink_strings_switcher.xml. -->
+<resources>
+    <string name="carlink_switcher_bubble">CarLink-Wechsler</string>
+    <string name="carlink_switcher_bubble_action">Telefonwechsler öffnen</string>
+    <string name="carlink_switcher_panel_window">CarLink-Wechsler-Fenster</string>
+    <string name="carlink_switcher_dimmer_window">CarLink-Dimmer</string>
+    <string name="carlink_switcher_connected_for">Verbunden · %1$s</string>
+    <string name="carlink_switcher_switch_title">Telefon wechseln</string>
+    <string name="carlink_switcher_no_phones">Keine anderen gekoppelten Telefone</string>
+    <string name="carlink_switcher_no_phones_hint">Koppeln Sie in den Bluetooth-Einstellungen ein weiteres Telefon, um hier zu wechseln.</string>
+    <string name="carlink_switcher_switching">Wechseln…</string>
+    <string name="carlink_switcher_home">CarLink-Startseite</string>
+    <string name="carlink_switcher_size_reconnects">Eine Änderung verbindet für ein paar Sekunden neu</string>
+    <string name="carlink_switcher_size_upright">Im Hochformat bleibt Android Auto bei %1$s</string>
+    <string name="carlink_switcher_next_connection">Die aktuelle Sitzung behält ihre Verbindung.</string>
+    <string name="carlink_switcher_close">Schließen</string>
+    <string name="carlink_switcher_back">Zurück</string>
+    <string name="carlink_switcher_not_now">Jetzt nicht</string>
+    <string name="carlink_switcher_phone_fallback">das neue Telefon</string>
+    <string name="carlink_switcher_night">Nachtmodus</string>
+    <string name="carlink_switcher_dimmer">Dimmer</string>
+    <string name="carlink_switcher_dimmer_off">Aus</string>
+    <string name="carlink_switcher_dimmer_level">Stufe %1$d</string>
+    <string name="carlink_switcher_stereo_home">Stereo</string>
+    <string name="carlink_switcher_stereo_home_value">Launcher</string>
+    <string name="carlink_switcher_night_next">Der Nachtmodus gilt ab der nächsten Verbindung; der Dimmer sofort.</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings_ambient_threshold.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="ambient_light_threshold_title">Fényerőküszöb</string>
+    <string name="ambient_light_threshold_summary">%1$d lux</string>
+    <string name="ambient_light_threshold_value">Váltási küszöb (lux)</string>
+    <string name="ambient_light_threshold_hint">A küszöb (lux) alatt éjszakát választ; elérésekor vagy felette nappalt. Az értékeknek a kiválasztott késleltetés idejéig az új oldalon kell maradniuk. Adjon meg egy egész számot 1 és 200000 között.</string>
+    <string name="ambient_light_threshold_error">Adjon meg egy egész számot 1 és 200000 között.</string>
+    <string name="ambient_light_reset_defaults">Alapértelmezett visszaállítása</string>
+</resources>

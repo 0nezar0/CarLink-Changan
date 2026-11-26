@@ -99,7 +99,7 @@ object Connection {
     private fun logPrewarmSkipped() {
         if (prewarmSkipLogged.compareAndSet(false, true)) {
             com.carlink.core.diagnostics.EventLog.add("CarLink",
-                "Android Auto engine not prewarmed: little memory and no Android phone known (it starts when one connects)")
+                "Android Auto engine not prewarmed: no Android phone known (it starts when one connects)")
         }
     }
 
@@ -107,16 +107,53 @@ object Connection {
     @android.annotation.SuppressLint("MissingPermission") // The name is read only when the permission allows.
     fun onHomeShown(context: Context) {
         val app = context.applicationContext
-        // Before the stereo-Bluetooth probe finishes, a module stereo looks "wireless unavailable"
-        // and the first start of the drive was dropped: decide once the probe is in (≤ ~0.5 s).
-        if (com.carlink.core.detect.ExternalBluetoothProbe.cached() == null) {
-            Thread({
-                runCatching { com.carlink.core.detect.ExternalBluetoothProbe.await(app) }
-                android.os.Handler(android.os.Looper.getMainLooper()).post { homeShown(app) }
-            }, "carlink-home-probe").start()
-            return
-        }
-        homeShown(app)
+        afterProbe(app) { homeShown(app) }
+    }
+
+    /**
+     * The stereo reported ACC on ([HeadUnitSignals]): Home's automatic start, as if Home were shown,
+     * once Bluetooth is back (FYT turns it off at ACC off and on again at ACC on), at most 15 s later.
+     */
+    fun onCarStarted(context: Context) {
+        val app = context.applicationContext
+        val main = Handler(Looper.getMainLooper())
+        val deadline = android.os.SystemClock.uptimeMillis() + CAR_START_BLUETOOTH_WAIT_MILLIS
+        main.post(object : Runnable {
+            override fun run() {
+                val on = runCatching {
+                    app.getSystemService(android.bluetooth.BluetoothManager::class.java)?.adapter?.isEnabled == true
+                }.getOrDefault(false)
+                if (!on && android.os.SystemClock.uptimeMillis() < deadline) {
+                    main.postDelayed(this, 1_000)
+                    return
+                }
+                afterProbe(app) {
+                    get(app).onCarStarted()
+                    homeShown(app)
+                }
+            }
+        })
+    }
+
+    private const val CAR_START_BLUETOOTH_WAIT_MILLIS = 15_000L
+
+    /** A known phone's Bluetooth connected and Home is in front ([SessionManager.onBluetoothPhone]). */
+    fun onBluetoothPhone(context: Context, address: String, kind: com.carlink.core.core.PhoneKind, name: String?) {
+        val app = context.applicationContext
+        afterProbe(app) { get(app).onBluetoothPhone(address, kind, name) }
+    }
+
+    /**
+     * Before the stereo-Bluetooth probe is final, a module stereo looks "wireless unavailable" and
+     * the first start of the drive was dropped (a probe taken while the stereo was still starting
+     * blocked it until the app restarted, 2026-11-10): decide once a fresh probe is in (≤ 2 s).
+     */
+    private fun afterProbe(app: Context, then: () -> Unit) {
+        if (com.carlink.core.detect.ExternalBluetoothProbe.settled()) return then()
+        Thread({
+            runCatching { com.carlink.core.detect.ExternalBluetoothProbe.await(app) }
+            android.os.Handler(android.os.Looper.getMainLooper()).post(then)
+        }, "carlink-home-probe").start()
     }
 
     private fun homeShown(app: Context) {
@@ -216,9 +253,11 @@ object Connection {
     private fun writeSession(app: Context, plan: SessionPlan) {
         val stored = UnifiedSettingsStore(app).load()
         val wifi = WifiEnvironmentReader.read(app, stored)
-        val settings = effectiveSettings(stored, wifi)
+        // Margins are the Changan setting: any other brand, or none, writes zeros.
+        val settings = effectiveSettings(stored, wifi).marginsFor(carBrand(app))
         val profile = vehicleProfile(app)
-        val picture = automaticPicture(app, settings)
+        // Every start, so the HEVC fallback knows whether this attempt sends HEVC (presets: never).
+        val picture = VideoSurfaceMemory.reconcile(app, CarPlayHevcMemory(app).apply(automaticPicture(app, settings)), settings.picture)
         when (plan.engine) {
             Engine.CARPLAY -> {
                 // CarLink: wireless CarPlay's iAP2 link through the stereo's module (opt-in).
@@ -236,12 +275,12 @@ object Connection {
                     com.carlink.core.diagnostics.EventLog.add("CarLink", "CarPlay Bluetooth through the stereo's module: $kind (experimental)" +
                         (route.refusal?.let { "; refused: $it" } ?: ""))
                 }
-                // The car button in CarPlay shows the Changan logo in a Changan.
-                com.shilapi.xcertplay.CarPlayHostIntegration.carButtonIcon =
-                    if (carBrand(app) == CarBrand.CHANGAN) com.carlink.core.R.raw.carlink_changan_home else null
+                // The car button in CarPlay: the Changan logo in a Changan, the default car icon in every other car.
+                com.shilapi.xcertplay.CarPlayHostIntegration.carButtonIcon = CarPlayCarButton.icon(carBrand(app))
                 val fineLocation = app.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 CarPlaySettingsPolicy.apply(app, CarPlaySettingsPolicy.map(settings, plan.path, profile, fineLocation,
-                    brandName = CarLinkCore.config.accessoryName, picture = picture))
+                    brandName = CarLinkCore.config.accessoryName, picture = picture, audioStreams = QzdHeadUnit.audioStreams(app)))
+                VideoSurfaceMemory.written(app, Engine.CARPLAY, picture, settings.picture)
             }
             Engine.ANDROID_AUTO -> {
                 val moduleRoute = DeviceEnvironment.moduleRoute(DeviceEnvironment.effectiveStereo(app),
@@ -251,9 +290,12 @@ object Connection {
                 }
                 val values = AaSessionSettings.values(settings, plan.transport, plan.path, profile,
                     carName = CarLinkCore.config.accessoryName, panelDensityDpi = app.resources.displayMetrics.densityDpi, wifi = wifi,
-                    picture = picture, moduleRoute = moduleRoute)
+                    picture = picture, moduleRoute = moduleRoute,
+                    bydHeadUnit = VehicleProfile.detect(app) == VehicleProfile.BYD_DILINK,
+                    stereoLights = HeadUnitSignals.lightsNight(app) != null, audioStreams = QzdHeadUnit.audioStreams(app))
                 values.problem?.let { Log.w(TAG, "Android Auto settings: $it") }
                 AaSessionSettings.apply(app, values)
+                VideoSurfaceMemory.written(app, Engine.ANDROID_AUTO, picture, settings.picture)
             }
         }
     }

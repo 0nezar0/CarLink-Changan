@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings_platform21.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="platform21_cluster_mode">Platform 21 műszeregység-feladat (kísérleti)</string>
+    <string name="platform21_cluster_description">A 2023-as Tang DM-i 21-es vezérlős adaptációjához. Alapértelmezés szerint ki van kapcsolva. Csak az ellenőrzött vetítési kijelzőt használja, középre igazított fél szélességű térképet tart, és nem változtatja a gyári műszeregység-módokat, illetve nem kapcsolja ki a gyári térképet. Korábban engedélyezett helyi ADB-t igényel. A beállítás alkalmazása újracsatlakoztatja a CarPlayt. Ennek a felvízi integrációnak álló autónál kell tesztet végezni.</string>
+</resources>

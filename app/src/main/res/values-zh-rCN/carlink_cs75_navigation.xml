@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carlink_cs75_nav_title">导航栏</string>
+    <string name="carlink_cs75_nav_description">从左侧或右侧边缘向内滑动以显示导航栏，从同一边缘再次滑动即可隐藏。需要开启 CarLink 无障碍服务。</string>
+    <string name="carlink_cs75_nav_back">返回</string>
+    <string name="carlink_cs75_nav_home">主页</string>
+    <string name="carlink_cs75_nav_apps">已安装的应用</string>
+    <string name="carlink_cs75_nav_settings">Android 设置</string>
+    <string name="carlink_cs75_nav_apps_unavailable">无法打开该应用。</string>
+</resources>

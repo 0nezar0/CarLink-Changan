@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) translation of carlink_strings_update.xml. -->
+<resources>
+    <string name="carlink_update_available_title">Kemas kini tersedia</string>
+    <string name="carlink_update_version">CarLink %1$s</string>
+    <string name="carlink_update_installed">Anda mempunyai %1$s</string>
+    <string name="carlink_update_whats_new">Yang baharu</string>
+    <string name="carlink_update_no_notes">Tiada nota keluaran untuk versi ini.</string>
+    <string name="carlink_update_ignore">Abaikan versi ini</string>
+    <string name="carlink_update_later">Kemudian</string>
+    <string name="carlink_update_download">Muat turun dan pasang</string>
+    <string name="carlink_update_downloading_title">Memuat turun CarLink %1$s</string>
+    <string name="carlink_update_progress">%1$s daripada %2$s</string>
+    <string name="carlink_update_progress_unknown">%1$s dimuat turun</string>
+    <string name="carlink_update_download_body">Anda boleh terus menggunakan CarLink. Tiada apa yang dipasang sehingga muat turun disemak.</string>
+    <string name="carlink_update_cancel">Batal</string>
+    <string name="carlink_update_verifying_title">Menyemak muat turun</string>
+    <string name="carlink_update_verifying_body">Memastikan fail lengkap dan ditandatangani oleh CarLink.</string>
+    <string name="carlink_update_permission_title">Benarkan CarLink memasang kemas kini</string>
+    <string name="carlink_update_permission_body">Android memerlukan kebenaran anda sekali. Pada skrin seterusnya, hidupkan “Benarkan daripada sumber ini”, kemudian kembali ke CarLink. Kemas kini diteruskan sendiri.</string>
+    <string name="carlink_update_open_settings">Buka tetapan</string>
+    <string name="carlink_update_installing_title">Memasang CarLink %1$s</string>
+    <string name="carlink_update_installing_body">Sahkan pada skrin pemasangan Android. CarLink ditutup semasa kemas kini; buka semula apabila selesai.</string>
+    <string name="carlink_update_failed_title">Kemas kini tidak dipasang</string>
+    <string name="carlink_update_error_download">Muat turun tidak selesai. Semak sambungan internet dan cuba lagi.</string>
+    <string name="carlink_update_error_checksum_missing">Keluaran ini tiada fail checksum, jadi muat turun tidak dapat disemak. Cuba lagi nanti.</string>
+    <string name="carlink_update_error_checksum">Fail yang dimuat turun tidak sepadan dengan checksumnya, jadi mungkin rosak. Fail itu telah dipadamkan.</string>
+    <string name="carlink_update_error_unreadable">Fail yang dimuat turun bukan aplikasi yang sah. Fail itu telah dipadamkan.</string>
+    <string name="carlink_update_error_package">Fail yang dimuat turun bukan CarLink. Fail itu telah dipadamkan.</string>
+    <string name="carlink_update_error_not_newer">Fail yang dimuat turun tidak lebih baharu daripada versi yang anda ada. Fail itu telah dipadamkan.</string>
+    <string name="carlink_update_error_signer">Fail yang dimuat turun tidak ditandatangani dengan kunci keluaran CarLink, jadi ia tidak dipasang. Fail itu telah dipadamkan.</string>
+    <string name="carlink_update_error_install">Android tidak memasang kemas kini. Cuba lagi.</string>
+    <string name="carlink_update_error_install_detail">Android tidak memasang kemas kini (%1$s). Cuba lagi.</string>
+    <string name="carlink_update_error_install_cancelled">Pemasangan dibatalkan.</string>
+    <string name="carlink_update_try_again">Cuba lagi</string>
+    <string name="carlink_update_close">Tutup</string>
+    <string name="carlink_about_updates">Kemas kini</string>
+    <string name="carlink_about_check_updates">Cari kemas kini</string>
+    <string name="carlink_about_updates_last_checked">Versi %1$s · terakhir disemak %2$s</string>
+    <string name="carlink_about_updates_never">Versi %1$s · belum disemak</string>
+    <string name="carlink_about_updates_checking">Menyemak…</string>
+    <string name="carlink_about_updates_just_now">sebentar tadi</string>
+    <string name="carlink_about_updates_up_to_date">Anda sudah dikemas kini</string>
+    <string name="carlink_about_updates_available">CarLink %1$s tersedia</string>
+    <string name="carlink_about_updates_failed">Tidak dapat menghubungi GitHub. Semak sambungan internet dan cuba lagi.</string>
+    <string name="carlink_about_updates_rate_limited">GitHub sedang sibuk sekarang. Cuba lagi sebentar lagi.</string>
+    <string name="carlink_about_updates_not_found">Tidak dapat mencari kemas kini binaan ini di GitHub. Halaman keluaran mungkin peribadi atau belum ada keluaran. Anda masih boleh memasang versi baharu secara manual.</string>
+    <string name="carlink_about_updates_unsupported">Binaan ini tidak mengemas kini sendiri. Pasang keluaran dari GitHub untuk mendapat kemas kini.</string>
+    <string name="carlink_about_auto_updates">Cari kemas kini secara automatik</string>
+    <string name="carlink_about_auto_updates_body">Setiap 6 jam semasa CarLink dibuka dan tiada telefon disambungkan. Tiada apa yang dimuat turun tanpa bertanya.</string>
+    <string name="carlink_about_test_versions">Dapatkan versi ujian</string>
+    <string name="carlink_about_test_versions_body">Turut menawarkan versi ujian yang diterbitkan sebelum keluaran. Ia mungkin ada masalah baharu; sila laporkannya. Setiap satu disemak dan ditandatangani seperti keluaran rasmi.</string>
+</resources>

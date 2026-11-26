@@ -1,0 +1,21 @@
+{
+  "tag_name": "v1.1",
+  "name": "CarLink CS75 Plus 2023 v1.1",
+  "draft": false,
+  "prerelease": false,
+  "body": "<div dir=\"rtl\">\n\n## CarLink CS75 Plus 2023 v1.1 — نسخة خاصة لشاشة شانجان CS75 Plus\n\n**تحديث من CarLink 1.0.17 للمطوّر F-e-n-y-x:**\n- **طريقة اتصال جديدة «خادم الوحدة الرئيسية»** لـ Android Auto، احتياط إذا البلوتوث أو Wi-Fi Direct ما نفع. شغّل «Start head unit server» في إعدادات المطوّر حق Android Auto في الجوال (ومن جديد بعد كل إعادة تشغيل للجوال).\n- **الموسيقى توطى وقت إرشادات CarPlay**، ومفعّلة",
+  "assets": [
+    {
+      "name": "CarLink-CS75Plus2023-v1.1.apk",
+      "size": 17002395,
+      "content_type": "application/vnd.android.package-archive",
+      "browser_download_url": "https://github.com/0nezar0/carlink-releases/releases/download/v1.1/CarLink-CS75Plus2023-v1.1.apk"
+    },
+    {
+      "name": "CarLink-CS75Plus2023-v1.1.apk.sha256",
+      "size": 96,
+      "content_type": "application/octet-stream",
+      "browser_download_url": "https://github.com/0nezar0/carlink-releases/releases/download/v1.1/CarLink-CS75Plus2023-v1.1.apk.sha256"
+    }
+  ]
+}

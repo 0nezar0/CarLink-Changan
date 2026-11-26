@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for hotspot_join.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="hotspot_join_title">Automatisches Beitreten zum Hotspot (experimentell)</string>
+    <string name="hotspot_join_description">Optionale Reparatur für unterstützte Firmware mit Android 13+ und einem nur-5-GHz-Auto-Hotspot. Prüfen bereitet eine private Rücksicherung vor, ohne den Hotspot zu ändern. Erfordert autorisiertes lokales ADB auf localhost:5555; TLS-Paarung für kabelloses Debugging wird nicht unterstützt.</string>
+    <string name="hotspot_join_check">Hotspot-Reparatur prüfen</string>
+    <string name="hotspot_join_apply">Informationen für automatisches Beitreten hinzufügen</string>
+    <string name="hotspot_join_restore">Gespeicherten Hotspot wiederherstellen</string>
+    <string name="hotspot_join_working">Wird geprüft oder aktualisiert… Ein Abbruch kann eine erneute Prüfung erfordern, um das Ergebnis zu bestätigen.</string>
+    <string name="hotspot_join_confirm">Im Stand trennen Sie zuerst CarPlay, und schalten Sie den Hotspot in den Autoeinstellungen aus. Diese Aktion ändert nur die gespeicherte Hotspot-Konfiguration und prüft das Zurücklesen. Schalten Sie den Hotspot danach selbst wieder ein, um die Aussendungen zu aktualisieren. Vorhandene Clients trennen sich, wenn Sie ihn ausschalten. Bewahren Sie die private Sicherung für die Rücknahme auf.</string>
+    <string name="hotspot_join_disconnect">Trennen Sie CarPlay, bevor Sie den Hotspot ändern.</string>
+    <string name="hotspot_join_ready">Unterstützte 5-GHz-Konfiguration. Private vollständige Sicherung vorbereitet; noch keine Änderung am Hotspot.</string>
+    <string name="hotspot_join_present">Die geprüften Informationen sind bereits vorhanden. Es wurde kein Duplikat hinzugefügt; DiPlay hat keine Rücknahmeberechtigung für ein vorhandenes Element.</string>
+    <string name="hotspot_join_applied">Gespeicherte Konfiguration geprüft. Schalten Sie den Hotspot in den Autoeinstellungen ein, um die Aussendungen zu aktualisieren, und testen Sie dann das automatische Beitreten. Aussendung und CarPlay-Erfolg erfordern weiterhin einen Gerätetest.</string>
+    <string name="hotspot_join_restored">Vollständige gespeicherte Konfiguration wiederhergestellt und geprüft. Schalten Sie den Hotspot in den Autoeinstellungen ein.</string>
+    <string name="hotspot_join_unsupported">Nicht unterstützte API, Firmware, Band oder widersprüchliche Herstellerangaben. Es wurde keine Reparatur angewendet. Verwenden Sie eine unterstützte nur-5-GHz-Konfiguration; andere Bänder sind ungeprüft.</string>
+    <string name="hotspot_join_off_required">Der Hotspot muss als aus bestätigt sein. Trennen Sie Clients, schalten Sie ihn in den Autoeinstellungen aus, und versuchen Sie es erneut. DiPlay startet ihn nicht automatisch neu.</string>
+    <string name="hotspot_join_drift">Die Konfiguration hat sich seit der Sicherung geändert. Nichts wurde überschrieben. Prüfen Sie erneut; eine ausstehende Rücksicherung bleibt erhalten.</string>
+    <string name="hotspot_join_firmware_changed">Die Firmware hat sich geändert. Die private Sicherung bleibt erhalten, kann auf dieser Firmware aber nicht sicher wiederhergestellt werden.</string>
+    <string name="hotspot_join_cancelled">Vor dem Schreiben abgebrochen. Prüfen Sie erneut, um einen behaltenen Rücknahmezustand zu prüfen.</string>
+    <string name="hotspot_join_failed_restored">Die Reparatur ist fehlgeschlagen oder wurde nach dem Schreiben abgebrochen. Die bisherige Konfiguration wurde wiederhergestellt und das Zurücklesen geprüft.</string>
+    <string name="hotspot_join_busy">Eine andere Hotspot-Operation läuft noch. Warten Sie, und prüfen Sie dann erneut.</string>
+    <string name="hotspot_join_adb_required">Erfordert genehmigtes einfaches lokales ADB auf localhost:5555. Aktivieren und autorisieren Sie es über die unterstützte Auto-Einrichtung. Allein die TLS-Paarung für kabelloses Debugging reicht nicht.</string>
+    <string name="hotspot_join_recovery">Ergebnis oder Sicherungsprüfung ist unsicher. Schalten Sie den Hotspot aus, und prüfen Sie erneut, bevor Sie fortfahren. Eine vorhandene private Sicherung bleibt erhalten; das Wiederherstellen ist nur zulässig, wenn die Konfiguration noch übereinstimmt.</string>
+</resources>

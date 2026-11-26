@@ -71,6 +71,8 @@ sealed interface SessionState {
         val phase: Phase,
         /** Why the current phase takes long, or what the stall watchdog is doing about it; null while on time. */
         val notice: Notice? = null,
+        /** Times the picture has come back after a drop in this request; 0 on the first connect. */
+        val reconnectCount: Int = 0,
     ) : SessionState
 
     data class Failed(
@@ -172,10 +174,21 @@ class SessionManager(
          */
         fun wirelessUnavailable(engine: Engine): Boolean = false
 
+        /**
+         * The stereo-Bluetooth probe may still change its answer (taken before the module started):
+         * take it again until it is final or wireless becomes available for [engine], then call
+         * [changed] on any thread. No-op when the probe is final.
+         */
+        fun recheckStereo(engine: Engine, changed: () -> Unit) {}
+
         /** Problems that prevent [request] on [path] (pre-flight; does not open anything). */
         fun preflight(request: SessionRequest, path: WirelessPath?): List<Problem>
         /** Wireless paths to try for [request], in order (see [WirelessPolicy]). */
         fun wirelessPaths(request: SessionRequest): List<WirelessPath>
+        /** A CarPlay attempt that never showed a picture is given up in the picture step ([CarPlayHevcMemory]). */
+        fun carPlayPictureNeverCame() {}
+        /** A CarPlay attempt showed its first picture ([CarPlayHevcMemory]). */
+        fun carPlayPictureCame() {}
         /** Remembers that [path] connected for [phoneAddress]. */
         fun rememberWorkingPath(engine: Engine, phoneAddress: String, path: WirelessPath)
         /**
@@ -321,6 +334,9 @@ class SessionManager(
                 main.post {
                     if (projecting) {
                         note("kept a running ${adapter.engine} session after a restart of this process")
+                        stopping--; drainAfterStop()
+                    } else if (!adapter.hasSession()) {
+                        // Only the engine's process was alive (e.g. prewarmed): nothing to stop.
                         stopping--; drainAfterStop()
                     } else {
                         note("stopping an orphaned ${adapter.engine} session")
@@ -549,6 +565,17 @@ class SessionManager(
     private var lastSessionEndedAt = -HOME_AUTO_START_COOLDOWN_MILLIS
 
     /**
+     * The stereo reported ACC on (HeadUnitSignals): the car did start, so the next Home-shown start
+     * is not held back by the cooldowns, which only guess that (uptime stops while the stereo sleeps,
+     * so the session that ended at ACC off still looks recent). The driver's pause still holds.
+     */
+    fun onCarStarted() {
+        lastHomeAutoStart = -HOME_AUTO_START_COOLDOWN_MILLIS
+        lastSessionEndedAt = -HOME_AUTO_START_COOLDOWN_MILLIS
+        note("the stereo reported ACC on")
+    }
+
+    /**
      * The driver asked for Android Auto on this screen ([SessionRequest.selfMode]); experimental.
      * Needs no phone, Bluetooth or Wi-Fi, so pre-flight is skipped.
      */
@@ -605,6 +632,14 @@ class SessionManager(
         retry()
     }
 
+    /** The stereo-Bluetooth probe changed: a start blocked on the external module starts once wireless is available. */
+    fun onStereoProbe() {
+        val s = _state.value as? SessionState.Blocked ?: return
+        if (Problem.EXTERNAL_BLUETOOTH !in s.problems || environment.wirelessUnavailable(s.request.engine)) return
+        note("stereo Bluetooth probe changed; starting the blocked request again")
+        start(s.request)
+    }
+
     /** The driver cancelled or disconnected: stop, and pause automatic starts until they connect. */
     fun disconnect() {
         note("driver disconnect")
@@ -646,10 +681,15 @@ class SessionManager(
         recoveries.clear()
         everConnected = false
         quickRetries = 0
+        // reconnectCount lives on the next Active and starts at 0 because everConnected was cleared.
         // Before any engine, warm-up or path: a wireless start cannot work on this stereo.
         if (request.transport == Transport.WIRELESS && !request.selfMode && environment.wirelessUnavailable(request.engine)) {
             note("${request.engine} blocked: wireless is not available on this stereo (external Bluetooth module)")
             _state.value = SessionState.Blocked(request, listOf(Problem.EXTERNAL_BLUETOOTH))
+            // A probe taken while the car woke said "external module"; the next one, a second later,
+            // did not, and the start stayed blocked for 20 min (a contributor's log, 2026-11-15).
+            val blockedToken = token
+            environment.recheckStereo(request.engine) { main.post { if (blockedToken == token) onStereoProbe() } }
             return
         }
         val paths = if (request.transport == Transport.WIRELESS && !request.selfMode) {
@@ -708,7 +748,8 @@ class SessionManager(
         if (warm) warmUp(request)
         val plan = SessionPlan(request.engine, request.transport, path, request.phoneAddress, request.phoneName,
             request.usbAttach, attempt = index + 1, selfMode = request.selfMode)
-        _state.value = SessionState.Active(request, path, index + 1, phase, notice)
+        val reconnects = (_state.value as? SessionState.Active)?.reconnectCount ?: 0
+        _state.value = SessionState.Active(request, path, index + 1, phase, notice, reconnects)
         running = request.engine
         environment.onEngaged(request.engine)
         main.removeCallbacks(usbGoneCheck)
@@ -754,9 +795,11 @@ class SessionManager(
                 val took = now - a.startedAt
                 if (!a.connectedOnce) {
                     a.connectedOnce = true
+                    if (plan.engine == Engine.CARPLAY) environment.carPlayPictureCame()
                     profiles.recordStage(request, plan.path, a.stage, now - a.stageSince)
                     profiles.recordSuccess(request, plan.path, took)
                 }
+                val reconnects = if (everConnected) current.reconnectCount + 1 else current.reconnectCount
                 everConnected = true
                 note("${plan.engine} connected on ${where(plan.path, plan.selfMode)} in $took ms")
                 if (plan.path != null && request.phoneAddress != null) {
@@ -768,7 +811,7 @@ class SessionManager(
                 environment.modulePhone(plan.engine)?.let { (address, name) ->
                     if (address != request.phoneAddress) environment.rememberPhone(address, kind, name)
                 }
-                _state.value = current.copy(phase = SessionState.Phase.Connected, notice = null)
+                _state.value = current.copy(phase = SessionState.Phase.Connected, notice = null, reconnectCount = reconnects)
             }
             AdapterEvent.ViaHeadUnitServer -> {
                 if (!a.viaHeadUnitServer) note("${plan.engine}: found the phone's head unit server on ${where(plan.path, plan.selfMode)}; connecting through it")
@@ -777,8 +820,10 @@ class SessionManager(
             is AdapterEvent.Stalled -> {
                 val now = clock()
                 note("${plan.engine} stuck at ${a.stage} after ${now - a.stageSince} ms: ${event.detail}")
+                noPicture(a)
                 // A restart would drop the head unit server's only connection (it stays deaf after).
-                if (a.viaHeadUnitServer) return
+                // The dedicated path and a ride-along probe (Automatic, hotspot, same Wi-Fi) both count.
+                if (a.viaHeadUnitServer || plan.path == WirelessPath.HEADUNIT_SERVER) return
                 if (quickRetries < MAX_QUICK_RETRIES) {
                     quickRetries++
                     profiles.recordFailure(request, plan.path, event.reason.name, a.stage, event.detail)
@@ -939,7 +984,9 @@ class SessionManager(
         if (request.selfMode && stage != null) return note("stall: Android Auto on this screen, ${StallPlaybook.phaseName(stage).lowercase()} has taken $waited ms; still waiting")
         // The phone's head unit server (#70) is the same server Self Mode dials, with the same
         // weakness: a link torn down mid-handshake leaves it deaf until the driver restarts it.
-        if (a.viaHeadUnitServer && stage != null) return note("stall: head unit server, ${StallPlaybook.phaseName(stage).lowercase()} has taken $waited ms; still waiting")
+        // A ride-along probe is included, not only the dedicated Head unit server path.
+        if ((a.viaHeadUnitServer || plan.path == WirelessPath.HEADUNIT_SERVER) && stage != null)
+            return note("stall: head unit server, ${StallPlaybook.phaseName(stage).lowercase()} has taken $waited ms; still waiting")
         val key = a.index to stage
         val (action, used) = StallPlaybook.next(StallPlaybook.actions(plan.engine, plan.transport, stage),
             recoveries[key] ?: 0, a.index + 1 < a.paths.size)
@@ -948,6 +995,8 @@ class SessionManager(
         val phaseName = StallPlaybook.phaseName(stage)
         note("stall: ${plan.engine} ${phaseName.lowercase()} on ${where(plan.path, plan.selfMode)} has taken $waited ms " +
             "(deadline $deadline ms${usual?.let { ", usual $it ms" } ?: ""}); $action")
+        // Before the restart below writes the next attempt's settings.
+        if (action != RecoveryAction.NUDGE && action != RecoveryAction.RESWITCH_USB) noPicture(a)
         val kind = AttemptOutcome.stallKind(stage)
         val what = "$phaseName took ${waited / 1000} s"
         val message = "$what: ${StallPlaybook.actionText(action)}"
@@ -979,6 +1028,13 @@ class SessionManager(
                 val (reason, detail) = StallPlaybook.failure(plan.engine, plan.transport, stage, waited)
                 failSession(a, reason, detail)
             }
+        }
+    }
+
+    /** [a] is given up stalled in CarPlay's picture step, never having shown a frame. */
+    private fun noPicture(a: Attempt) {
+        if (a.plan.engine == Engine.CARPLAY && a.stage == ProgressStage.STARTING_PROJECTION && !a.connectedOnce) {
+            environment.carPlayPictureNeverCame()
         }
     }
 
@@ -1103,7 +1159,7 @@ fun FailureReason.retryText(engine: Engine): String {
 }
 
 /** Where an attempt runs, for the log: the wireless path, "USB", or "Self mode" (Android Auto on this screen). */
-internal fun where(path: Any?, selfMode: Boolean): String = when {
+internal fun where(path: WirelessPath?, selfMode: Boolean): String = when {
     selfMode -> "Self mode"
-    else -> path?.toString() ?: "USB"
+    else -> path?.name ?: "USB"
 }

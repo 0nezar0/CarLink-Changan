@@ -15,7 +15,16 @@ import com.carlink.core.connection.PictureChoice
  *
  * [OFF] (the default) never applies it, [ALWAYS] always does, [AUTO] does from the session after the decoder
  * was seen falling behind ([LiteModeMemory]). It shapes the Automatic picture only: a Picture the
- * driver chose (Best, Balanced, Light, Custom) is never changed.
+ * driver chose (Best, Balanced, Low resolution, Custom) is never changed, and Settings says so.
+ *
+ * Where it meets the other picture rules (docs/LOW_END_PERFORMANCE.md, "Lite mode"), in the order
+ * [com.carlink.core.connection.Connection] applies them: PicturePolicy (the decoder), StereoQuirks
+ * (a known stereo), ChanganPicture (Changan CarPlay at 30 fps), then Lite mode. Lite only lowers
+ * the frame rate (never raises one a rule before it lowered) and only turns a video surface on
+ * where no earlier rule turned it off: a stereo quirk that says a surface breaks the picture wins.
+ * What the engines already do on their own is not repeated here: both negotiate the frame rate
+ * with the phone (no frame is dropped before the decoder), DiPlay sets the realtime priority and
+ * operating rate, and DiAuto drops only already-decoded late frames at the renderer.
  */
 enum class LiteMode { OFF, AUTO, ALWAYS }
 
@@ -29,12 +38,26 @@ object LitePicture {
         LiteMode.AUTO -> engaged
     }
 
+    /**
+     * Whether Lite mode shapes the next session: the mode says so and Picture is Automatic (the
+     * only picture it changes). Settings and Visual effects read this too.
+     */
+    fun inEffect(mode: LiteMode, engaged: Boolean, picture: Picture): Boolean =
+        picture == Picture.AUTOMATIC && active(mode, engaged)
+
+    /** [inEffect] for this device's stored settings. Never throws. */
+    fun inEffect(context: Context): Boolean = runCatching {
+        val settings = UnifiedSettingsStore(context).load()
+        inEffect(settings.liteMode, LiteModeMemory(context).engaged, settings.picture)
+    }.getOrDefault(false)
+
     /** [choice] with the decoder's and GPU's load lowered; resolution, codec and size are untouched. */
     fun apply(choice: PictureChoice): PictureChoice = choice.copy(
         aaFps = minOf(choice.aaFps, FPS),
         carPlayFps = minOf(choice.carPlayFps, FPS),
-        carPlayDirectVideo = true,
-        aaSurfaceView = true,
+        // An explicit false is a stereo quirk's "this surface breaks the picture here": keep it.
+        carPlayDirectVideo = choice.carPlayDirectVideo ?: true,
+        aaSurfaceView = choice.aaSurfaceView ?: true,
         summary = choice.summary + "; Lite mode: $FPS fps, direct video, same resolution",
     )
 

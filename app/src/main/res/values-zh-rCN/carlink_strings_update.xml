@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Simplified Chinese (zh-CN) translation of carlink_strings_update.xml. -->
+<resources>
+    <string name="carlink_update_available_title">有可用更新</string>
+    <string name="carlink_update_version">CarLink %1$s</string>
+    <string name="carlink_update_installed">当前版本：%1$s</string>
+    <string name="carlink_update_whats_new">更新内容</string>
+    <string name="carlink_update_no_notes">此版本没有发行说明。</string>
+    <string name="carlink_update_ignore">忽略此版本</string>
+    <string name="carlink_update_later">稍后</string>
+    <string name="carlink_update_download">下载并安装</string>
+    <string name="carlink_update_downloading_title">正在下载 CarLink %1$s</string>
+    <string name="carlink_update_progress">%1$s / %2$s</string>
+    <string name="carlink_update_progress_unknown">已下载 %1$s</string>
+    <string name="carlink_update_download_body">您可以继续使用 CarLink。下载通过校验前不会安装任何内容。</string>
+    <string name="carlink_update_cancel">取消</string>
+    <string name="carlink_update_verifying_title">正在检查下载</string>
+    <string name="carlink_update_verifying_body">正在确认文件完整且由 CarLink 签名。</string>
+    <string name="carlink_update_permission_title">允许 CarLink 安装更新</string>
+    <string name="carlink_update_permission_body">Android 只需授权一次。在下一屏打开“允许来自此来源”，然后返回 CarLink。更新会自动继续。</string>
+    <string name="carlink_update_open_settings">打开设置</string>
+    <string name="carlink_update_installing_title">正在安装 CarLink %1$s</string>
+    <string name="carlink_update_installing_body">请在 Android 的安装界面上确认。更新时 CarLink 会关闭；完成后请再打开。</string>
+    <string name="carlink_update_failed_title">更新未安装</string>
+    <string name="carlink_update_error_download">下载未完成。请检查网络连接后重试。</string>
+    <string name="carlink_update_error_checksum_missing">此发行版没有校验和文件，无法验证下载。请稍后再试。</string>
+    <string name="carlink_update_error_checksum">下载的文件与校验和不符，可能已损坏。文件已删除。</string>
+    <string name="carlink_update_error_unreadable">下载的文件不是有效的应用。文件已删除。</string>
+    <string name="carlink_update_error_package">下载的文件不是 CarLink。文件已删除。</string>
+    <string name="carlink_update_error_not_newer">下载的文件不比当前版本新。文件已删除。</string>
+    <string name="carlink_update_error_signer">下载的文件未使用 CarLink 的发布密钥签名，因此未安装。文件已删除。</string>
+    <string name="carlink_update_error_install">Android 未能安装更新。请重试。</string>
+    <string name="carlink_update_error_install_detail">Android 未能安装更新（%1$s）。请重试。</string>
+    <string name="carlink_update_error_install_cancelled">安装已取消。</string>
+    <string name="carlink_update_try_again">重试</string>
+    <string name="carlink_update_close">关闭</string>
+    <string name="carlink_about_updates">更新</string>
+    <string name="carlink_about_check_updates">检查更新</string>
+    <string name="carlink_about_updates_last_checked">版本 %1$s · 上次检查 %2$s</string>
+    <string name="carlink_about_updates_never">版本 %1$s · 尚未检查</string>
+    <string name="carlink_about_updates_checking">正在检查…</string>
+    <string name="carlink_about_updates_just_now">刚刚</string>
+    <string name="carlink_about_updates_up_to_date">已是最新版本</string>
+    <string name="carlink_about_updates_available">CarLink %1$s 现已推出</string>
+    <string name="carlink_about_updates_failed">无法连接到 GitHub。请检查网络连接后重试。</string>
+    <string name="carlink_about_updates_rate_limited">GitHub 目前繁忙。请稍后再试。</string>
+    <string name="carlink_about_updates_not_found">在 GitHub 上找不到此构建的更新。发行页面可能是私有的，或尚无发行版。您仍可手动安装新版本。</string>
+    <string name="carlink_about_updates_unsupported">此构建不会自行更新。请从 GitHub 安装发行版以获取更新。</string>
+    <string name="carlink_about_auto_updates">自动检查更新</string>
+    <string name="carlink_about_auto_updates_body">在 CarLink 已打开且未连接手机时，每 6 小时检查一次。未经询问不会下载任何内容。</string>
+    <string name="carlink_about_test_versions">获取测试版</string>
+    <string name="carlink_about_test_versions_body">也会提供正式版之前发布的测试版。它们可能有新问题，请反馈。每个测试版都会像正式版一样经过校验和签名。</string>
+</resources>

@@ -30,9 +30,9 @@ class UiPreferences(context: Context) : UpdatePrefs {
         get() = prefs.getBoolean(KEY_SETUP_DONE, false)
         set(value) = prefs.edit().putBoolean(KEY_SETUP_DONE, value).apply()
 
-    /** Follow the car/system day-night mode by default (DESIGN_SPEC §5.1). */
+    /** Dark mode by default (v1.6.5). An explicit Light or Follow-the-car choice is kept. */
     var themeMode: ThemeMode
-        get() = enumOr(prefs.getString(KEY_THEME, null), ThemeMode.FOLLOW_SYSTEM)
+        get() = enumOr(prefs.getString(KEY_THEME, null), ThemeMode.DARK)
         set(value) = prefs.edit().putString(KEY_THEME, value.name).apply()
 
     /** Car-grade or phone/tablet sizing; Auto detects the device. */
@@ -72,13 +72,18 @@ class UiPreferences(context: Context) : UpdatePrefs {
         get() = prefs.getBoolean(KEY_TEST_VERSIONS, false)
         set(value) = prefs.edit().putBoolean(KEY_TEST_VERSIONS, value).apply()
 
+    /** The first-launch CS75 car question was answered (Yes or No), so it is not shown again. */
+    var cs75FirstLaunchPromptDone: Boolean
+        get() = prefs.getBoolean(KEY_CS75_FIRST_LAUNCH_PROMPT, false)
+        set(value) = prefs.edit().putBoolean(KEY_CS75_FIRST_LAUNCH_PROMPT, value).apply()
+
     private inline fun <reified T : Enum<T>> enumOr(name: String?, default: T): T =
         name?.let { runCatching { enumValueOf<T>(it) }.getOrNull() } ?: default
 
     companion object {
         val INTERFACE_SCALES = listOf(0.9f, 1f, 1.15f, 1.3f)
-        private const val PREFS = "carlink"
-        private const val KEY_THEME = "theme_mode"
+        const val PREFS = "carlink"
+        const val KEY_THEME = "theme_mode"
         private const val KEY_PROFILE = "ui_profile_mode"
         private const val KEY_SCALE = "interface_scale"
         private const val KEY_RENDERING = "rendering_mode"
@@ -88,6 +93,7 @@ class UiPreferences(context: Context) : UpdatePrefs {
         private const val KEY_IGNORED_UPDATE = "update_ignored_tag"
         private const val KEY_LAST_UPDATE_CHECK = "update_last_check"
         private const val KEY_TEST_VERSIONS = "update_test_versions"
+        private const val KEY_CS75_FIRST_LAUNCH_PROMPT = "cs75_first_launch_prompt_done"
     }
 }
 

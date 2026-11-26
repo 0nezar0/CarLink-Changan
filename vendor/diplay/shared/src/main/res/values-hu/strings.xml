@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="carapp_hw_status_title">xcertplay hardverállapot</string>
+    <string name="carapp_hw_not_configured">A hardveres átvitel nincs beállítva. A lap I2C-hez /dev/i2c-N útvonal és OS/SELinux-engedély kell; a CH341-hez telepített VID/PID-beállítás kell.</string>
+</resources>

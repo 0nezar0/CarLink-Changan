@@ -36,7 +36,9 @@ class SupportFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        val url = getString(R.string.github_issues_url)
+        // CarLink: reports go to the host's issues, not upstream DiAuto.
+        val url = com.andrerinas.openheadunit.HostIntegration.reportIssuesUrl
+            ?: getString(R.string.github_issues_url)
 
         // Clickable link that opens the system browser if the head unit has one.
         val link = view.findViewById<TextView>(R.id.support_link)

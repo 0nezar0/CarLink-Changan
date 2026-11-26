@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings_custom_resolution.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="custom_resolution_summary">%1$d%%</string>
+    <string name="custom_resolution_hint">Adjon meg 30–160 százalékot. Alkalmazza a CarPlay újracsatlakoztatásához.</string>
+    <string name="resolution_number_error">Adjon meg egy egész számot %1$d és %2$d között.</string>
+    <string name="resolution_reset_defaults">Alapértelmezett visszaállítása</string>
+    <string name="resolution_canvas_unsupported">Ez a fejegység nem tudja dekódolni a megnövelt felbontást. 100% lesz használva.</string>
+</resources>

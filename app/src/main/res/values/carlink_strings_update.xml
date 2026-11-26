@@ -59,6 +59,7 @@
     <string name="carlink_about_updates_available">CarLink %1$s is available</string>
     <string name="carlink_about_updates_failed">Couldn’t reach GitHub. Check the internet connection and try again.</string>
     <string name="carlink_about_updates_rate_limited">GitHub is busy right now. Try again in a while.</string>
+    <string name="carlink_about_updates_not_found">Couldn’t find this build’s updates on GitHub. The release page may be private or have no release yet. You can still install a new version by hand.</string>
     <string name="carlink_about_updates_unsupported">This build doesn’t update itself. Install the release from GitHub to get updates.</string>
     <string name="carlink_about_auto_updates">Automatically check for updates</string>
     <string name="carlink_about_auto_updates_body">Every 6 hours while CarLink is open and no phone is connected. Nothing downloads without asking.</string>

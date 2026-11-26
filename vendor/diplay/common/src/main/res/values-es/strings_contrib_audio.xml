@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spanish (es) vendor strings for strings_contrib_audio.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="contrib_audio_home_choice_summary">%1$s · %2$s</string>
+    <string name="contrib_audio_home_toggle_audio_focus">Enfoque de audio</string>
+    <string name="contrib_audio_home_channel_preview_unavailable">No se puede previsualizar el flujo de audio de Android %1$d en este dispositivo.</string>
+    <string name="contrib_audio_home_media_channel_label">Flujo de audio multimedia</string>
+    <string name="contrib_audio_home_nav_channel_label">Flujo de audio de navegación</string>
+    <string name="contrib_audio_home_nav_channel_note">0 = enrutado automático. Los valores 1–20 seleccionan identificadores de flujo de audio heredados, incluidas salidas propias del fabricante cuando la unidad principal las admite. Toca un valor para previsualizarlo. Los cambios se aplican al reconectar.</string>
+    <string name="contrib_audio_home_toggle_audio_focus_desc">El contenido de CarPlay reclama el foco de audio. Si el sonido desaparece al activarlo (algunas unidades principales gestionan mal el foco), desactívalo. Los cambios se aplican al reconectar.</string>
+    <string name="audio_focus_auto_yield">Silenciar el contenido al perder el foco temporalmente</string>
+    <string name="audio_focus_auto_yield_desc">Cuando el foco de audio está activado, silencia el contenido durante las interrupciones de audio de Android, incluidas las llamadas. Restaura el audio cuando vuelve el foco. Desactívalo si tu unidad principal no devuelve el foco. Los cambios se aplican al reconectar.</string>
+</resources>

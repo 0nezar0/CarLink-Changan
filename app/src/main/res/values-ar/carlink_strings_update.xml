@@ -44,6 +44,7 @@
     <string name="carlink_about_updates_available">يتوفر CarLink %1$s</string>
     <string name="carlink_about_updates_failed">تعذّر الوصول إلى GitHub. تحقق من اتصال الإنترنت وحاول مرة أخرى.</string>
     <string name="carlink_about_updates_rate_limited">GitHub مشغول الآن. حاول بعد قليل.</string>
+    <string name="carlink_about_updates_not_found">ما لقيت تحديثات هذه النسخة على GitHub. يمكن صفحة الإصدارات خاصة أو ما فيها إصدار للحين. تقدر تثبّت النسخة الجديدة يدوياً.</string>
     <string name="carlink_about_updates_unsupported">هذه النسخة لا تحدّث نفسها. ثبّت الإصدار من GitHub للحصول على التحديثات.</string>
     <string name="carlink_about_auto_updates">التحقق تلقائياً من التحديثات</string>
     <string name="carlink_about_auto_updates_body">كل 6 ساعات أثناء فتح CarLink وعدم اتصال أي جوال. لا يُنزَّل شيء دون سؤالك.</string>

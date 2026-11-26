@@ -9,6 +9,7 @@ import com.carlink.core.settings.Picture
 import com.carlink.core.settings.UnifiedSettings
 import com.carlink.core.settings.VehicleProfile
 import com.carlink.core.settings.WheelKeys
+import com.carlink.core.settings.Cs75ProjectionDefaults
 import com.carlink.core.settings.WifiDetails
 import com.carlink.core.settings.WirelessPath
 import com.shilapi.xcertplay.AirPlayPersistence
@@ -74,6 +75,12 @@ data class CarPlayEngineSettings(
     val marginTopPx: Int = 0,
     val marginRightPx: Int = 0,
     val marginBottomPx: Int = 0,
+    /** Music lowered during navigation prompts (`HostAudio.duckMediaForPrompts`, GitHub #83). */
+    val duckMusicForDirections: Boolean = true,
+    /** Same Wi-Fi over this screen's Ethernet: DiPlay attaches to that interface, not to Wi-Fi (#87). */
+    val sameWifiWired: Boolean = false,
+    /** Stream types per DiPlay audio channel for a stereo that sorts sources by stream (Joying, [QzdHeadUnit.audioStreams]). */
+    val legacyStreamTypes: Map<String, Int> = emptyMap(),
 )
 
 /** The vehicle-profile part of [CarPlayEngineSettings] (DIPLAY.md §12, F5). */
@@ -102,8 +109,6 @@ enum class CarLinkAppearance { FOLLOW_SYSTEM, DARK, LIGHT }
 
 /** Pure translation from CarLink's settings to DiPlay's, so every rule is unit tested. */
 object CarPlaySettingsPolicy {
-    /** Interface size Medium: the screen's long side told to the iPhone, in mm (Android Auto on a phone or tablet follows it). */
-    const val MEDIUM_WIDTH_MM = 300
 
     /**
      * CarLink's theme at the time of a write; the app sets it at start-up. The default, dark,
@@ -117,14 +122,50 @@ object CarPlaySettingsPolicy {
     var resumeMusic: Boolean = false
         private set
 
+    private const val DIPLAY_PREFS = "xcertplay_airplay"
+    private const val CLEAR_PROMPTS_DEFAULTED = "carlink_clear_prompts_defaulted"
+
     /** DiPlay's own default OEM label (AirPlayPersistence.DEFAULT_OEM_LABEL, DIPLAY.md §12 row 15). */
     const val DIPLAY_DEFAULT_OEM_LABEL = "BYD"
 
     /** The screen width told to the iPhone for [size]; null leaves DiPlay's own (Custom). */
+    /** The switcher's Custom size range for CarPlay (DiPlay accepts 100-400 mm in 5 mm steps). */
+    /** DiPlay's whole range (AirPlayDisplaySettings sanitizes the saved width to it). */
+    val CUSTOM_WIDTH_RANGE_MM = com.shilapi.xcertplay.airplay.AirPlayDisplaySettings.MIN_WIDTH_PHYSICAL_MM..
+        com.shilapi.xcertplay.airplay.AirPlayDisplaySettings.MAX_WIDTH_PHYSICAL_MM
+
+    /**
+     * The widths each session declares as areas, so the switcher changes size live: the presets, the saved
+     * width and its neighbours 5 and 10 % either way (the switcher's steps), so stepping around a custom size stays
+     * live. Kept short: every width is one more view area in the iPhone's display description.
+     */
+    fun liveWidthsMm(savedMm: Int): List<Int> {
+        val percent = percentForWidth(savedMm)
+        return (InterfaceSize.entries.mapNotNull(::widthMm) + savedMm +
+            listOf(-10, -5, 5, 10).map { widthForPercent(percent + it) }).distinct()
+    }
+
+    /**
+     * The switcher's Custom size for CarPlay as a percent, the unit Android Auto's uses: 100 % is Small
+     * (220 mm), and CarPlay draws larger in proportion as the width it is told shrinks.
+     */
+    fun percentForWidth(widthMm: Int): Int = Math.round(SIZE_PERCENT_BASE_MM * 100f / widthMm)
+
+    fun widthForPercent(percent: Int): Int =
+        Math.round(SIZE_PERCENT_BASE_MM * 100f / percent.coerceAtLeast(1)).coerceIn(CUSTOM_WIDTH_RANGE_MM)
+
+    private const val SIZE_PERCENT_BASE_MM = 220
+
+    /** DiPlay's whole width range (400 to 100 mm) as percents: about 55 to 220 %. */
+    val CUSTOM_PERCENT_RANGE: IntRange get() = percentForWidth(CUSTOM_WIDTH_RANGE_MM.last)..percentForWidth(CUSTOM_WIDTH_RANGE_MM.first)
+
     fun widthMm(size: InterfaceSize): Int? = when (size) {
-        InterfaceSize.SMALL -> 350
-        InterfaceSize.MEDIUM -> MEDIUM_WIDTH_MM
-        InterfaceSize.LARGE -> 220 // 250 looked too close to Medium on a tablet (2026-11-12)
+        // Shifted up two steps on 2026-11-18 (the driver's call on the tablet): 350 and 300 mm drew
+        // CarPlay too small to use, so Small starts at 220 mm. Android Auto shifted one step (AaSessionSettings).
+        InterfaceSize.SMALL -> 220
+        InterfaceSize.MEDIUM -> 180 // #83: 220 was still small on a 10" stereo
+        InterfaceSize.LARGE -> 150
+        InterfaceSize.EXTRA_LARGE -> 120
         InterfaceSize.CUSTOM -> null
     }
 
@@ -136,6 +177,7 @@ object CarPlaySettingsPolicy {
         brandName: String = "CarLink",
         picture: PictureChoice = PicturePolicy.ENGINE_DEFAULTS,
         appearance: CarLinkAppearance = runCatching { this.appearance() }.getOrDefault(CarLinkAppearance.DARK),
+        audioStreams: Map<String, Int> = emptyMap(),
     ): CarPlayEngineSettings {
         // Picture and size: v1's settings mapping (verified correct, F17); Automatic follows the
         // device's decoder ([PicturePolicy]: DiPlay's own 100 % / 30 fps unless the decoder needs less).
@@ -152,14 +194,15 @@ object CarPlaySettingsPolicy {
             wirelessMode = when (path) {
                 WirelessPath.SAME_WIFI -> WirelessHotspotMode.EXISTING_WIFI
                 WirelessPath.CAR_HOTSPOT -> WirelessHotspotMode.MANUAL
-                // HEADUNIT_SERVER is Android Auto only (WirelessPolicy never gives it to CarPlay).
-                WirelessPath.WIFI_DIRECT, WirelessPath.HEADUNIT_SERVER -> WirelessHotspotMode.WIFI_P2P
-                null -> null
+                WirelessPath.WIFI_DIRECT -> WirelessHotspotMode.WIFI_P2P
+                // HEADUNIT_SERVER is Android Auto only; WirelessPolicy never gives it to CarPlay.
+                WirelessPath.HEADUNIT_SERVER, null -> null
             },
             displayScalePercent = scale,
             fps = fps,
             hevc = if (settings.picture == Picture.AUTOMATIC) picture.carPlayHevc else null,
-            directVideoOutput = if (settings.picture == Picture.AUTOMATIC) picture.carPlayDirectVideo else null,
+            // Automatic's own choice; under a preset only the undo of one ([VideoSurfaceMemory]); Custom: the driver's.
+            directVideoOutput = if (settings.picture != Picture.CUSTOM) picture.carPlayDirectVideo else null,
             widthPhysicalMm = widthMm,
             nightModeKey = when (settings.dayNight) {
                 DayNight.AUTOMATIC -> "system"
@@ -211,10 +254,13 @@ object CarPlaySettingsPolicy {
             micGainDb = settings.micGainDb,
             callAudioAsMedia = settings.callAudioAsMedia,
             resumeMusic = settings.resumeMusic,
-            marginLeftPx = settings.carPlayMargins.left,
-            marginTopPx = settings.carPlayMargins.top,
-            marginRightPx = settings.carPlayMargins.right,
-            marginBottomPx = settings.carPlayMargins.bottom,
+            marginLeftPx = settings.screenMargins.left,
+            marginTopPx = settings.screenMargins.top,
+            marginRightPx = settings.screenMargins.right,
+            marginBottomPx = settings.screenMargins.bottom,
+            duckMusicForDirections = settings.duckMusicForDirections,
+            sameWifiWired = settings.sameWifiWired,
+            legacyStreamTypes = audioStreams,
         )
     }
 
@@ -226,9 +272,17 @@ object CarPlaySettingsPolicy {
         values.wirelessMode?.let { AirPlayPersistence.saveWirelessHotspotMode(context, it) }
         values.displayScalePercent?.let { AirPlayPersistence.saveDisplayScalePercent(context, it) }
         values.fps?.let { AirPlayPersistence.saveFps(context, it) }
-        values.hevc?.let { AirPlayPersistence.saveHevcEnabled(context, it) }
+        values.hevc?.let {
+            if (!Cs75ProjectionDefaults.shouldSuppressHevcWrite(context, it)) {
+                AirPlayPersistence.saveHevcEnabled(context, it)
+            }
+        }
         values.directVideoOutput?.let { AirPlayPersistence.saveDirectVideoOutput(context, it) }
-        values.widthPhysicalMm?.let { AirPlayPersistence.saveWidthPhysicalMm(context, it) }
+        values.widthPhysicalMm?.let {
+            if (!Cs75ProjectionDefaults.shouldPreserveWidth(context)) {
+                AirPlayPersistence.saveWidthPhysicalMm(context, it)
+            }
+        }
         AirPlayPersistence.saveCarPlayNightMode(context, CarPlayNightMode.fromKey(values.nightModeKey))
         AirPlayPersistence.saveAppAppearance(context, AppAppearance.fromKey(values.appearanceKey))
         runCatching {
@@ -247,7 +301,20 @@ object CarPlaySettingsPolicy {
         AirPlayPersistence.saveManualHotspotSecurity(context, ManualHotspotValidation.securityFor(values.carHotspot.password))
         // Same Wi-Fi: always CarLink's values, also when cleared (F17: stale details).
         AirPlayPersistence.saveExistingWifiCredentials(context, values.homeWifi.ssid, values.homeWifi.password)
+        // DiPlay's explicit interface skips its Wi-Fi checks; empty keeps its own Wi-Fi selection.
+        AirPlayPersistence.saveExistingWifiInterface(context,
+            if (values.sameWifiWired) WiredNetwork.interfaceName(context).orEmpty() else "")
 
+        // #83: over USB the iPhone chose 8 kHz phone-quality PCM for directions and Siri's replies, the lowest
+        // rate offered. DiPlay's opt-in stops offering 8 and 16 kHz there (24 kHz in a BYD, DiPlay #1186).
+        // CarLink turns it on once; the Advanced switch (cp_clear_prompts) can turn it off again.
+        val diPlayPrefs = context.getSharedPreferences(DIPLAY_PREFS, Context.MODE_PRIVATE)
+        if (!diPlayPrefs.getBoolean(CLEAR_PROMPTS_DEFAULTED, false)) {
+            AirPlayPersistence.saveSpeechWithout8And16Khz(context, true)
+            diPlayPrefs.edit().putBoolean(CLEAR_PROMPTS_DEFAULTED, true).apply()
+        }
+
+        CarPlayHostIntegration.liveSizeWidthsMm = liveWidthsMm(AirPlayPersistence.loadWidthPhysicalMm(context))
         CarPlayHostIntegration.keyRemap = values.wheelKeyRemap
         CarPlayHostIntegration.displayMargins = CarPlayHostIntegration.DisplayMargins(
             left = values.marginLeftPx.coerceAtLeast(0),
@@ -259,6 +326,8 @@ object CarPlaySettingsPolicy {
         HostAudio.playbackPcm = AudioLevels.carPlayPlayback(values.mediaLevelDb, values.navigationLevelDb, values.callLevelDb)
         HostAudio.microphonePcm = AudioLevels.pcmGain(values.micGainDb)
         HostAudio.callsAsMedia = values.callAudioAsMedia
+        HostAudio.duckMediaForPrompts = values.duckMusicForDirections
+        HostAudio.legacyStreamTypes = values.legacyStreamTypes
         resumeMusic = values.resumeMusic
         if (BydOutputSettings.carPlayCallControls(context) != values.callKeys) {
             BydOutputSettings.setCarPlayCallControls(context, values.callKeys)

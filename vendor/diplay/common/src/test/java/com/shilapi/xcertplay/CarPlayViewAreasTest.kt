@@ -6,6 +6,7 @@ import com.shilapi.xcertplay.airplay.AirPlayInfoPlist.DOCK_EDGE_DRIVER_SIDE
 import com.shilapi.xcertplay.airplay.AirPlayViewArea
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class CarPlayViewAreasTest {
@@ -15,6 +16,20 @@ class CarPlayViewAreasTest {
     @Test
     fun automaticDockWithoutSplitScreenNeedsNoAreas() {
         assertNull(CarPlayViewAreas.build(2560, 1440, CarPlayDock.AUTOMATIC, splitWindow = null))
+    }
+
+    // CarLink: a plain screen still declares its interface-size areas, or every size change reconnected.
+    @Test
+    fun plainScreenWithLiveSizesDeclaresTheSizeAreas() {
+        val areas = CarPlayViewAreas.build(2560, 1600, CarPlayDock.AUTOMATIC, splitWindow = null,
+            sizeWidthsMm = listOf(220, 180, 150, 120), sessionWidthMm = 220)!!
+        assertEquals(4, areas.areas.size)
+        assertEquals(0, areas.current)
+        val medium = areas.sizeVariant(180)!!
+        assertEquals((2560 / (220f / 180)).toInt() and 1.inv(), areas.areas[medium].width)
+        assertEquals(0, areas.sizeVariant(220))
+        assertNull(CarPlayViewAreas.build(2560, 1600, CarPlayDock.AUTOMATIC, splitWindow = null,
+            sizeWidthsMm = listOf(220, 180), sessionWidthMm = 120))
     }
 
     @Test
@@ -198,5 +213,11 @@ class CarPlayViewAreasTest {
         assertEquals(1f, portrait.first, 1e-6f)
         assertEquals(1154f / 2560, portrait.second, 1e-6f)
         assertNull(SplitScreenSettings.expectedWindow(true, 0, 0, 112, 120, 20))
+    }
+
+@Test
+    fun aScreenNarrowerThanTwoPixelsDoesNotBreakSplitScreenAreas() {
+        val areas = CarPlayViewAreas.build(1, 1, CarPlayDock.BOTTOM, 0.5f to 0.5f)!!
+        assertTrue(areas.areas.isNotEmpty())
     }
 }

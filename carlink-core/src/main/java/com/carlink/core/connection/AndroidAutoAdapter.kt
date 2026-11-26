@@ -210,7 +210,8 @@ class AndroidAutoAdapter internal constructor(
         check(!sessionOpen) { "Android Auto start while the previous session has not stopped" }
         check(plan.engine == Engine.ANDROID_AUTO) { "not an Android Auto plan: ${plan.engine}" }
         val now = clock()
-        val tracker = AaSessionTracker(plan.transport, limits, plan.selfMode)
+        val tracker = AaSessionTracker(plan.transport, limits, plan.selfMode,
+            headUnitServerPath = plan.path == WirelessPath.HEADUNIT_SERVER)
         val s = Session(plan, listener, tracker, now)
         session = s
         sessionOpen = true

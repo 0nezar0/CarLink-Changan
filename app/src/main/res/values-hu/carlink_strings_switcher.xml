@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) translation of carlink_strings_switcher.xml. -->
+<resources>
+    <string name="carlink_switcher_bubble">CarLink-váltó</string>
+    <string name="carlink_switcher_bubble_action">Telefonváltó megnyitása</string>
+    <string name="carlink_switcher_panel_window">CarLink-váltó panel</string>
+    <string name="carlink_switcher_dimmer_window">CarLink fényerőcsökkentő</string>
+    <string name="carlink_switcher_connected_for">Csatlakozva · %1$s</string>
+    <string name="carlink_switcher_switch_title">Telefonváltás</string>
+    <string name="carlink_switcher_no_phones">Nincs másik párosított telefon</string>
+    <string name="carlink_switcher_no_phones_hint">Párosítson egy másik telefont a Bluetooth-beállításokban, hogy itt válthasson rá.</string>
+    <string name="carlink_switcher_switching">Váltás…</string>
+    <string name="carlink_switcher_home">CarLink főképernyő</string>
+    <string name="carlink_switcher_size_reconnects">A módosítás néhány másodpercre újracsatlakoztat</string>
+    <string name="carlink_switcher_size_upright">Álló helyzetben az Android Auto %1$s méretnél megáll</string>
+    <string name="carlink_switcher_next_connection">A jelenlegi munkamenet megtartja a kapcsolatot.</string>
+    <string name="carlink_switcher_close">Bezárás</string>
+    <string name="carlink_switcher_back">Vissza</string>
+    <string name="carlink_switcher_not_now">Most nem</string>
+    <string name="carlink_switcher_phone_fallback">az új telefon</string>
+    <string name="carlink_switcher_night">Éjszakai mód</string>
+    <string name="carlink_switcher_dimmer">Fényerőcsökkentő</string>
+    <string name="carlink_switcher_dimmer_off">Ki</string>
+    <string name="carlink_switcher_dimmer_level">%1$d. szint</string>
+    <string name="carlink_switcher_stereo_home">Sztereó</string>
+    <string name="carlink_switcher_stereo_home_value">Indító</string>
+    <string name="carlink_switcher_night_next">Az éjszakai mód a következő csatlakozástól érvényes; a fényerőcsökkentő azonnal.</string>
+</resources>

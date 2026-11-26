@@ -1,5 +1,32 @@
 package com.shilapi.xcertplay.media
 
+/** CarLink: one sample of the running session's picture and sound, for Settings › Diagnostics › Connection status. */
+data class LiveMediaSnapshot(
+    val width: Int? = null,
+    val height: Int? = null,
+    val configuredFps: Int? = null,
+    /** "H264" or "H265". */
+    val codec: String? = null,
+    val decoderName: String? = null,
+    val received: Long = 0,
+    val rendered: Long = 0,
+    val decodeNanos: Long = 0,
+    val decodeSamples: Long = 0,
+    val dropped: Long = 0,
+    val late: Long = 0,
+    val bytes: Long = 0,
+    val audioTypes: List<String> = emptyList(),
+    val sampleRateHz: Int? = null,
+    val bufferFillMs: Int? = null,
+)
+
+/** CarLink: one active audio renderer. */
+data class AudioLiveSnapshot(
+    val audioType: String,
+    val sampleRateHz: Int?,
+    val bufferFillMs: Int?,
+)
+
 /** Running totals of one decoder: frames received and shown, and the queue-to-output time of shown frames. */
 data class LiveVideoCounters(
     val received: Long,

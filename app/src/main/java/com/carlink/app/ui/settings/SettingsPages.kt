@@ -21,11 +21,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.carlink.app.switcher.NavigationBarPreference
+import com.carlink.app.switcher.FceBarAccessibilityService
+import androidx.compose.runtime.remember
 import com.carlink.app.R
 import com.carlink.core.settings.AdvancedSetting
 import com.carlink.core.settings.Applies
@@ -64,21 +72,50 @@ internal fun CategoryPage(
             SettingsCategory.DISPLAY -> DisplayEssentials(ui, actions, openSheet)
             SettingsCategory.SOUND -> SoundEssentials(ui, actions, openSheet)
             SettingsCategory.NAVIGATION -> NavigationEssentials(ui, actions)
-            SettingsCategory.CAR -> CarEssentials(ui, openSheet)
+            SettingsCategory.CAR -> CarEssentials(ui, actions, openSheet)
             SettingsCategory.GENERAL -> GeneralEssentials(ui, actions, openSheet, versionTaps, onVersionTap)
+            SettingsCategory.CHANGAN_CS75 -> ChanganSettingsSection(ui, actions)
         }
-        if (ui.unified.showAdvanced) EngineSection(category, Tier.ADVANCED, ui, actions, openSheet)
-        if (ui.unified.labUnlocked) EngineSection(category, Tier.LAB, ui, actions, openSheet)
+        // CS75 has no Advanced/Lab engine rows; keep that pane just the CS75 card.
+        if (category != SettingsCategory.CHANGAN_CS75) {
+            if (ui.unified.showAdvanced) EngineSection(category, Tier.ADVANCED, ui, actions, openSheet)
+            if (ui.unified.labUnlocked) EngineSection(category, Tier.LAB, ui, actions, openSheet)
+        }
     }
 }
 
 // ---- Essentials -----------------------------------------------------------------------------
 
+private fun openCarHotspotSettings(context: Context) {
+    val actions = listOf(
+        "com.android.settings.WIFI_TETHER_SETTINGS",
+        "android.settings.TETHER_SETTINGS",
+        Settings.ACTION_WIRELESS_SETTINGS,
+        Settings.ACTION_SETTINGS,
+    )
+    for (action in actions) {
+        try {
+            context.startActivity(Intent(action).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            return
+        } catch (_: ActivityNotFoundException) {
+            // Try the next settings screen supported by the head unit.
+        } catch (_: SecurityException) {
+            // Some manufacturers restrict direct access to tethering settings.
+        }
+    }
+    android.widget.Toast.makeText(context, R.string.carlink_settings_hotspot_unavailable, android.widget.Toast.LENGTH_LONG).show()
+}
+
 @Composable
 private fun ConnectionEssentials(ui: SettingsUi, actions: SettingsActions, openSheet: (String) -> Unit) {
+    val context = LocalContext.current
     val c = ui.connection
     val method = ui.unified.connectionMethod
     if (c.autoConnectPaused) PausedCard(actions::resumeAutoConnect)
+    GlassGroup {
+        LinkRow(stringResource(R.string.carlink_settings_connection_status), { actions.navigate(Route.DIAGNOSTICS) },
+            stringResource(R.string.carlink_settings_connection_status_detail), R.drawable.carlink_ic_monitor_heart)
+    }
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_start)) }) {
         SwitchRow(stringResource(R.string.carlink_settings_auto_bluetooth), c.autoConnectBluetooth, actions::setAutoConnectBluetooth,
             description = stringResource(R.string.carlink_settings_auto_bluetooth_detail), icon = R.drawable.carlink_ic_bluetooth)
@@ -100,6 +137,14 @@ private fun ConnectionEssentials(ui: SettingsUi, actions: SettingsActions, openS
                 ui.unified.carHotspot.ssid.ifEmpty { stringResource(R.string.carlink_settings_not_set) },
                 { openSheet(SheetKey.of(EssentialSheet.CAR_HOTSPOT)) },
                 description = stringResource(R.string.carlink_settings_hotspot_detail), icon = R.drawable.carlink_ic_wifi_tethering)
+            GroupDivider()
+            Column(Modifier.padding(horizontal = rowPadding, vertical = if (isCar) 18.dp else 12.dp)) {
+                Text(stringResource(R.string.carlink_settings_hotspot_notice),
+                    style = MaterialTheme.typography.bodyMedium, color = CarLinkTokens.colors.warning)
+                Spacer(Modifier.height(12.dp))
+                IonButton(stringResource(R.string.carlink_settings_car_hotspot_button),
+                    { openCarHotspotSettings(context) }, icon = R.drawable.carlink_ic_open_in_new)
+            }
         }
         if (method == ConnectionMethod.AUTOMATIC || method == ConnectionMethod.SAME_WIFI) {
             GroupDivider()
@@ -107,6 +152,13 @@ private fun ConnectionEssentials(ui: SettingsUi, actions: SettingsActions, openS
                 ui.unified.homeWifi.ssid.ifEmpty { stringResource(R.string.carlink_settings_not_set) },
                 { openSheet(SheetKey.of(EssentialSheet.SAME_WIFI)) },
                 description = stringResource(R.string.carlink_settings_same_wifi_detail), icon = R.drawable.carlink_ic_wifi)
+            // #87: Automatic never picks Same Wi-Fi, so only the explicit choice shows the cable option.
+            if (ui.unified.showAdvanced && method == ConnectionMethod.SAME_WIFI) {
+                GroupDivider()
+                SwitchRow(stringResource(R.string.carlink_settings_same_wifi_wired), ui.unified.sameWifiWired,
+                    { on -> actions.update { it.copy(sameWifiWired = on) } },
+                    description = stringResource(R.string.carlink_settings_same_wifi_wired_detail), icon = R.drawable.carlink_ic_wifi)
+            }
         }
         if (method == ConnectionMethod.HEADUNIT_SERVER) {
             GroupDivider()
@@ -163,18 +215,30 @@ private fun ConnectionEssentials(ui: SettingsUi, actions: SettingsActions, openS
 private fun PausedCard(onResume: () -> Unit) {
     val colors = CarLinkTokens.colors
     GlassCard(Modifier.fillMaxWidth(), contentPadding = androidx.compose.foundation.layout.PaddingValues(rowPadding)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(if (isCar) 14.dp else 10.dp).clip(CircleShape).background(colors.warning))
-            Spacer(Modifier.width(if (isCar) 20.dp else 14.dp))
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.carlink_settings_paused_title), style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface)
-                Spacer(Modifier.height(4.dp))
-                Text(stringResource(R.string.carlink_settings_paused_body), style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+        androidx.compose.foundation.layout.BoxWithConstraints {
+            // On a narrow screen the button goes under the words; beside them the text was squeezed into a sliver.
+            val stacked = maxWidth < 480.dp
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(if (isCar) 14.dp else 10.dp).clip(CircleShape).background(colors.warning))
+                    Spacer(Modifier.width(if (isCar) 20.dp else 14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.carlink_settings_paused_title), style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface)
+                        Spacer(Modifier.height(4.dp))
+                        Text(stringResource(R.string.carlink_settings_paused_body), style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    if (!stacked) {
+                        Spacer(Modifier.width(CarLinkTokens.dimens.gutter))
+                        IonButton(stringResource(R.string.carlink_settings_resume), onResume, icon = R.drawable.carlink_ic_play_arrow_filled)
+                    }
+                }
+                if (stacked) {
+                    Spacer(Modifier.height(CarLinkTokens.dimens.gutter))
+                    IonButton(stringResource(R.string.carlink_settings_resume), onResume, icon = R.drawable.carlink_ic_play_arrow_filled)
+                }
             }
-            Spacer(Modifier.width(CarLinkTokens.dimens.gutter))
-            IonButton(stringResource(R.string.carlink_settings_resume), onResume, icon = R.drawable.carlink_ic_play_arrow_filled)
         }
     }
 }
@@ -187,8 +251,15 @@ private fun DisplayEssentials(ui: SettingsUi, actions: SettingsActions, openShee
             description = stringResource(R.string.carlink_settings_picture_detail), icon = R.drawable.carlink_ic_aspect_ratio)
         GroupDivider()
         val liteEngaged = u.liteMode == LiteMode.AUTO && LiteModeMemory(androidx.compose.ui.platform.LocalContext.current).engaged
+        // Lite mode shapes the Automatic picture only: say so instead of looking on and doing nothing.
+        val liteNote = when {
+            u.liteMode != LiteMode.OFF && u.picture != com.carlink.core.settings.Picture.AUTOMATIC ->
+                stringResource(R.string.carlink_settings_lite_mode_needs_automatic)
+            liteEngaged -> stringResource(R.string.carlink_settings_lite_mode_engaged)
+            else -> null
+        }
         ChoiceRow(stringResource(R.string.carlink_settings_lite_mode),
-            liteModeLabel(u.liteMode) + if (liteEngaged) " · " + stringResource(R.string.carlink_state_on) else "",
+            liteModeLabel(u.liteMode) + (liteNote?.let { " · $it" } ?: ""),
             { openSheet(SheetKey.of(EssentialSheet.LITE_MODE)) },
             description = stringResource(R.string.carlink_settings_lite_mode_detail), icon = R.drawable.carlink_ic_tune)
         GroupDivider()
@@ -205,39 +276,6 @@ private fun DisplayEssentials(ui: SettingsUi, actions: SettingsActions, openShee
             GroupDivider()
             ChoiceRow(stringResource(R.string.carlink_settings_night_end), clockText(u.nightEndMinute),
                 { openSheet(SheetKey.of(EssentialSheet.NIGHT_END)) }, icon = R.drawable.carlink_ic_light_mode)
-        }
-    }
-    GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_margins)) }) {
-        ChoiceRow(stringResource(R.string.carlink_settings_margin_app), marginLabel(u.marginTopPx),
-            { openSheet(SheetKey.of(EssentialSheet.MARGIN_TOP)) },
-            description = stringResource(R.string.carlink_settings_margin_app_detail),
-            icon = R.drawable.carlink_ic_aspect_ratio)
-    }
-    // Each projection keeps its own set: CarPlay and Android Auto draw their bars differently.
-    ProjectionMargins(R.string.carlink_settings_group_margins_carplay, carPlay = true, u.carPlayMargins, openSheet)
-    ProjectionMargins(R.string.carlink_settings_group_margins_aa, carPlay = false, u.androidAutoMargins, openSheet)
-    // Back to the Changan CS75 Plus defaults (48 px at the top) for all three; lit only when something differs.
-    val changan = com.carlink.core.settings.ScreenMargins.CHANGAN
-    val atChangan = u.marginTopPx == changan.top && u.carPlayMargins == changan && u.androidAutoMargins == changan
-    GlassGroup {
-        SettingsRow(stringResource(R.string.carlink_settings_margin_reset_changan),
-            description = stringResource(R.string.carlink_settings_margin_reset_changan_detail),
-            icon = R.drawable.carlink_ic_restart_alt, enabled = !atChangan, role = androidx.compose.ui.semantics.Role.Button,
-            onClick = { actions.update { it.copy(marginTopPx = changan.top, carPlayMargins = changan, androidAutoMargins = changan) } },
-            value = if (atChangan) stringResource(R.string.carlink_settings_margin_reset_changan_done) else null)
-    }
-}
-
-@Composable
-private fun ProjectionMargins(header: Int, carPlay: Boolean, margins: com.carlink.core.settings.ScreenMargins, openSheet: (String) -> Unit) {
-    GlassGroup(header = { GroupHeader(stringResource(header)) }) {
-        MarginEdge.entries.forEachIndexed { index, edge ->
-            if (index > 0) GroupDivider()
-            val (title, detail) = edge.texts()
-            ChoiceRow(stringResource(title), marginLabel(margins.get(edge)),
-                { openSheet(SheetKey.of(marginSheet(carPlay, edge))) },
-                description = stringResource(detail),
-                icon = if (index == 0) R.drawable.carlink_ic_aspect_ratio else null, tags = { NextConnectionTag() })
         }
     }
 }
@@ -259,6 +297,10 @@ private fun SoundEssentials(ui: SettingsUi, actions: SettingsActions, openSheet:
         SwitchRow(stringResource(R.string.carlink_settings_resume_music), u.resumeMusic,
             { on -> actions.update { it.copy(resumeMusic = on) } },
             description = stringResource(R.string.carlink_settings_resume_music_detail), icon = R.drawable.carlink_ic_play_arrow)
+        GroupDivider()
+        SwitchRow(stringResource(R.string.carlink_settings_duck_directions), u.duckMusicForDirections,
+            { on -> actions.update { it.copy(duckMusicForDirections = on) } },
+            description = stringResource(R.string.carlink_settings_duck_directions_detail), icon = R.drawable.carlink_ic_navigation)
     }
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_levels)) }) {
         ChoiceRow(stringResource(R.string.carlink_settings_level_media), levelLabel(u.mediaLevelDb),
@@ -309,9 +351,31 @@ private fun NavigationEssentials(ui: SettingsUi, actions: SettingsActions) {
 }
 
 @Composable
-private fun CarEssentials(ui: SettingsUi, openSheet: (String) -> Unit) {
+private fun CarEssentials(ui: SettingsUi, actions: SettingsActions, openSheet: (String) -> Unit) {
     val right = ui.unified.rightHandDrive
+    val context = LocalContext.current
+    var navigationEnabled by remember(ui.carBrand) { mutableStateOf(NavigationBarPreference.enabled(context)) }
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_car)) }) {
+        SwitchRow(
+            title = stringResource(R.string.carlink_cs75_nav_title),
+            checked = navigationEnabled,
+            onCheckedChange = { enabled ->
+                NavigationBarPreference.setEnabled(context, enabled)
+                navigationEnabled = enabled
+                if (enabled && !FceBarAccessibilityService.isEnabled(context)) {
+                    try {
+                        context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                    } catch (_: ActivityNotFoundException) {
+                        android.widget.Toast.makeText(context, R.string.carlink_settings_hide_bar_accessibility_off,
+                            android.widget.Toast.LENGTH_LONG).show()
+                    }
+                }
+            },
+            description = stringResource(R.string.carlink_cs75_nav_description),
+        )
+        GroupDivider()
+        TopMarginRow(ui, actions)
+        GroupDivider()
         ChoiceRow(stringResource(R.string.carlink_settings_driving_side),
             stringResource(if (right) R.string.carlink_settings_drive_right else R.string.carlink_settings_drive_left),
             { openSheet(SheetKey.of(EssentialSheet.DRIVING_SIDE)) },
@@ -319,7 +383,9 @@ private fun CarEssentials(ui: SettingsUi, openSheet: (String) -> Unit) {
         GroupDivider()
         ChoiceRow(stringResource(R.string.carlink_settings_car_brand), carBrandLabel(ui.carBrand ?: ui.detectedBrand),
             { openSheet(SheetKey.of(EssentialSheet.CAR_BRAND)) },
-            description = stringResource(R.string.carlink_settings_car_brand_detail) + "\n" + detectedCarLabel(ui.detectedBrand),
+            // One line each: BYD, then Changan, then what was detected.
+            description = stringResource(R.string.carlink_settings_car_brand_detail) + "\n" +
+                stringResource(R.string.carlink_settings_car_brand_changan_note) + "\n" + detectedCarLabel(ui.detectedBrand),
             icon = brandLogo(ui.carBrand ?: ui.detectedBrand) ?: R.drawable.carlink_ic_directions_car_filled, tags = { NextConnectionTag() })
         GroupDivider()
         val learned = ui.unified.wheelKeys.size
@@ -328,6 +394,11 @@ private fun CarEssentials(ui: SettingsUi, openSheet: (String) -> Unit) {
             else pluralStringResource(R.plurals.carlink_wheel_keys_value, learned, learned),
             { openSheet(SheetKey.of(EssentialSheet.WHEEL_KEYS)) },
             description = stringResource(R.string.carlink_wheel_keys_detail), icon = R.drawable.carlink_ic_search_hands_free,
+            tags = { NextConnectionTag() })
+        GroupDivider()
+        SwitchRow(stringResource(R.string.carlink_settings_aa_back), ui.unified.androidAutoBack,
+            { on -> actions.update { it.copy(androidAutoBack = on) } },
+            description = stringResource(R.string.carlink_settings_aa_back_detail), icon = R.drawable.carlink_ic_android,
             tags = { NextConnectionTag() })
     }
 }
@@ -503,3 +574,14 @@ private fun ErrorLogRows(actions: SettingsActions) {
 internal fun languageLabel(tag: String): String =
     if (tag == com.carlink.core.settings.AppLanguage.SYSTEM) stringResource(R.string.carlink_settings_language_system)
     else com.carlink.app.ui.components.ltrIfLatin(com.carlink.core.settings.AppLanguage.nativeName(tag))
+
+/** The Top margin switch: each car has its own saved choice ([com.carlink.core.settings.UnifiedSettings.withMarginFor]). */
+@Composable
+internal fun TopMarginRow(ui: SettingsUi, actions: SettingsActions) {
+    SwitchRow(
+        stringResource(R.string.carlink_settings_top_margin), ui.unified.marginsFor(ui.carBrand).topMargin,
+        { on -> actions.update { it.withMarginFor(ui.carBrand, on) } },
+        description = stringResource(R.string.carlink_settings_top_margin_detail),
+        icon = R.drawable.carlink_ic_aspect_ratio, tags = { NextConnectionTag() },
+    )
+}

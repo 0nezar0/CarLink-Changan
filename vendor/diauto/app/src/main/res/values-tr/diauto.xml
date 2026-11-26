@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Turkish (tr) vendor strings for diauto.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="da_brand">DiAuto</string>
+    <string name="da_tagline">TELEFONUNUZ. SÜRÜŞÜNÜZ.</string>
+    <string name="da_headline">Tanıdık bir sürüş deneyimi.</string>
+    <string name="da_connect">Telefonu bağla</string>
+    <string name="da_ready">Hazır olduğunuzda hazır</string>
+    <string name="da_connecting">Telefonunuza bağlanılıyor</string>
+    <string name="da_usb">USB ile bağlan</string>
+    <string name="da_settings">Ayarlar</string>
+    <string name="da_close">Araç ana ekranı</string>
+    <string name="da_pair">Telefon eşleştir</string>
+    <string name="da_system_settings">Bluetooth ayarları</string>
+    <string name="da_device">Android telefon</string>
+    <string name="da_automation">Otomatik bağlantı</string>
+    <string name="da_display">Ekran ve performans</string>
+    <string name="da_permissions">İzinler</string>
+    <string name="da_description">Haritalarınız, müziğiniz ve konuşmalarınız.
+Android Auto, tam burada arabanızın ekranında.</string>
+    <string name="da_open">Android Auto’yu aç</string>
+    <string name="da_connected">Android Auto bağlı</string>
+    <string name="da_hint">Telefonunuzu aracın Bluetooth ayarlarında eşleştirin, sonra Telefonu bağla’yı seçin. Bluetooth ve Wi-Fi’yi açık tutun.</string>
+    <string name="da_wireless">KABLOSUZ ANDROID AUTO</string>
+    <string name="da_usb_hint">Kabloyu mu tercih edersiniz? Telefonunuzu takın.</string>
+    <string name="da_settings_hint">Kendinizi evinizde gibi hissedin.</string>
+    <string name="da_no_paired">Önce Android telefonunuzu arabayla eşleştirin. Eşleştirme tamamlandığında buraya dönün.</string>
+    <string name="da_bluetooth_off">Telefonunuzu bağlamak için aracın ayarlarında Bluetooth’u açın.</string>
+    <string name="da_preferences">Sürüşünüz, sizin tarzınız.</string>
+    <string name="da_preferences_hint">Bağlantı, ekran ve ses — hepsi bir yerde.</string>
+    <string name="da_automation_hint">Aracınızla başlayın ve telefonunuza yeniden bağlanın.</string>
+    <string name="da_display_hint">Görüntü boyutu, kare hızı ve ses ayarları.</string>
+    <string name="da_permissions_hint">Bluetooth, mikrofon ve konum erişimini kontrol edin.</string>
+    <string name="da_about">DiAuto hakkında</string>
+    <string name="da_about_hint">Sürüm, lisanslar ve açık kaynak katkıları.</string>
+    <string name="da_saved_hint">Video ayarlarındaki değişiklikler sonraki bağlantıda uygulanır.</string>
+    <string name="da_settings_subtitle">Ekranınızı, sesinizi ve bağlantınızı ayarlayın.</string>
+    <string name="da_bluetooth_music">Aracın Bluetooth’u üzerinden müzik</string>
+    <string name="da_bluetooth_music_hint">Müziği aracın Bluetooth oynatıcısında tutun. DiAuto onun ses odağına dokunmaz; navigasyon ve asistan sesi kullanılabilir kalır. Bunu değiştirdikten sonra Android Auto’yu yeniden bağlayın.</string>
+</resources>

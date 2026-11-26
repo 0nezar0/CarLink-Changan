@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Portuguese (pt) vendor strings for diauto.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="da_brand">DiAuto</string>
+    <string name="da_connecting">A ligar ao seu telemóvel</string>
+    <string name="da_settings">Definições</string>
+    <string name="da_pair">Emparelhar um telemóvel</string>
+    <string name="da_system_settings">Definições de Bluetooth</string>
+    <string name="da_device">Telemóvel Android</string>
+    <string name="da_permissions">Autorizações</string>
+    <string name="da_tagline">O SEU TELEMÓVEL. A SUA VIAGEM.</string>
+    <string name="da_headline">Uma condução familiar.</string>
+    <string name="da_description">Os seus mapas, a sua música e as suas conversas.
+O Android Auto, aqui no ecrã do carro.</string>
+    <string name="da_connect">Ligar telemóvel</string>
+    <string name="da_open">Abrir o Android Auto</string>
+    <string name="da_ready">Pronto quando quiser</string>
+    <string name="da_connected">O Android Auto está ligado</string>
+    <string name="da_hint">Emparelhe o telemóvel nas definições de Bluetooth do carro e, em seguida, escolha Ligar telemóvel. Mantenha o Bluetooth e o Wi-Fi ligados.</string>
+    <string name="da_wireless">ANDROID AUTO SEM FIOS</string>
+    <string name="da_usb">Ligar com USB</string>
+    <string name="da_usb_hint">Prefere um cabo? Ligue o telemóvel.</string>
+    <string name="da_settings_hint">Sinta-se em casa.</string>
+    <string name="da_close">Início do carro</string>
+    <string name="da_no_paired">Emparelhe primeiro o telemóvel Android com o carro. Volte aqui quando o emparelhamento estiver concluído.</string>
+    <string name="da_bluetooth_off">Ligue o Bluetooth nas definições do carro para ligar o telemóvel.</string>
+    <string name="da_preferences">A sua viagem, à sua maneira.</string>
+    <string name="da_preferences_hint">Ligação, ecrã e som — tudo no mesmo sítio.</string>
+    <string name="da_automation">Ligação automática</string>
+    <string name="da_automation_hint">Inicie com o seu carro e volte a ligar-se ao telemóvel.</string>
+    <string name="da_display">Ecrã e desempenho</string>
+    <string name="da_display_hint">Tamanho da imagem, taxa de fotogramas e definições de áudio.</string>
+    <string name="da_permissions_hint">Verifique o acesso ao Bluetooth, ao microfone e à localização.</string>
+    <string name="da_about">Acerca do DiAuto</string>
+    <string name="da_about_hint">Versão, licenças e créditos de código aberto.</string>
+    <string name="da_saved_hint">As alterações às definições de vídeo aplicam-se na próxima ligação.</string>
+    <string name="da_settings_subtitle">Ajuste o ecrã, o som e a ligação.</string>
+    <string name="da_bluetooth_music">Música através do Bluetooth do carro</string>
+    <string name="da_bluetooth_music_hint">Mantenha a música no leitor Bluetooth do carro. O DiAuto não interfere no respetivo foco de áudio; a navegação e o assistente continuam disponíveis. Volte a ligar o Android Auto depois de alterar isto.</string>
+</resources>

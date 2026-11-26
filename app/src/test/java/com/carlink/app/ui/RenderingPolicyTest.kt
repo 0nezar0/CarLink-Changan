@@ -44,6 +44,12 @@ class RenderingPolicyTest {
         assertFalse(RenderingPolicy.lite(RenderingMode.AUTO, uis7862With4Gb.copy(cpuMaxMhz = 1_800, gpuRenderer = "Mali-G52")))
     }
 
+    @Test fun liteModeMakesAutomaticSimpleButNotFull() {
+        assertTrue(RenderingPolicy.lite(RenderingMode.AUTO, tablet, liteModeInEffect = true))
+        assertFalse(RenderingPolicy.lite(RenderingMode.FULL, tablet, liteModeInEffect = true))
+        assertFalse(RenderingPolicy.lite(RenderingMode.AUTO, tablet, liteModeInEffect = false))
+    }
+
     @Test fun theDriversChoiceWins() {
         assertTrue(RenderingPolicy.lite(RenderingMode.LITE, tablet))
         assertFalse(RenderingPolicy.lite(RenderingMode.FULL, t3))

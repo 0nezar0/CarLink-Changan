@@ -54,6 +54,8 @@ class AaSessionTrackerTest {
         t.event(EngineEvent.FIRST_VIDEO_FRAME)
         assertEquals(listOf(AdapterEvent.Restart("the screen turned portrait")),
             t.event(EngineEvent.ORIENTATION_CHANGED, "picture=1920x1080;screen=portrait"))
+        assertEquals(listOf(AdapterEvent.Restart("the projection window changed shape")),
+            t.event(EngineEvent.ORIENTATION_CHANGED, "cause=window-shape"))
     }
 
     @Test fun aStateReportWithAFrameAlsoConnects() {
@@ -370,10 +372,12 @@ class AaSessionTrackerTest {
     }
 
     @Test fun selfModeStuckHeadUnitServerFailsAtTheFirstSilentHandshake() {
-        val failure = self().event(EngineEvent.HEAD_UNIT_SERVER_STUCK).failure()
+        val failure = self().event(EngineEvent.HEAD_UNIT_SERVER_STUCK, "endpoint=127.0.0.1:5277;count=1").failure()
         assertEquals(FailureReason.HEAD_UNIT_SERVER_STUCK, failure.reason)
         assertEquals(com.carlink.core.core.LinkProblem.HEAD_UNIT_SERVER_STUCK, failure.reason.toLinkProblem())
-        // On the network the server is only a ride-along probe: the session goes on.
+        val dedicated = AaSessionTracker(Transport.WIRELESS, limits, headUnitServerPath = true).also { it.begin(now) }
+        assertEquals(FailureReason.HEAD_UNIT_SERVER_STUCK, dedicated.event(EngineEvent.HEAD_UNIT_SERVER_STUCK).failure().reason)
+        // On Automatic / hotspot / same Wi-Fi the server is only a ride-along probe: the session goes on.
         assertEquals(emptyList<AdapterEvent>(), wireless().event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
     }
 

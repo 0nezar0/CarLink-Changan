@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French (fr) vendor strings for strings_ambient_delay.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="ambient_delay_title">Délai de transition</string>
+    <string name="ambient_delay_hint">Saisissez de 0 à 60 secondes. Zéro bascule immédiatement.</string>
+    <string name="custom_number_error">Saisissez un nombre entier de %1$d à %2$d.</string>
+    <string name="ambient_delay_summary">%1$d s</string>
+</resources>

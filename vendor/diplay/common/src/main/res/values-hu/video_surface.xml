@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for video_surface.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="picture_surface_output_unavailable">A képbeállítások nem érhetők el ennek a képernyőnek a kompatibilis videokimenetével. A mentett beállításai megmaradnak.</string>
+</resources>

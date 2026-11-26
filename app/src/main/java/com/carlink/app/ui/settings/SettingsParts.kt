@@ -324,7 +324,7 @@ internal fun SelectableGlass(
 /** A category tile of the landscape rail. */
 @Composable
 internal fun RailTile(title: String, @DrawableRes icon: Int, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier,
-                      @DrawableRes trailingIcon: Int? = null) {
+                      @DrawableRes trailingIcon: Int? = null, titleMaxLines: Int = 1) {
     val scheme = MaterialTheme.colorScheme
     val dimens = CarLinkTokens.dimens
     SelectableGlass(selected, onClick, modifier.fillMaxWidth().heightIn(min = if (isCar) 84.dp else 56.dp),
@@ -334,7 +334,7 @@ internal fun RailTile(title: String, @DrawableRes icon: Int, selected: Boolean, 
             Icon(painterResource(icon), null, Modifier.size(dimens.iconSecondary), tint = if (selected) scheme.primary else scheme.onSurfaceVariant)
             Spacer(Modifier.width(if (isCar) 20.dp else 14.dp))
             Text(title, Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, color = scheme.onSurface,
-                maxLines = 1, overflow = TextOverflow.Ellipsis)
+                maxLines = titleMaxLines, overflow = TextOverflow.Ellipsis)
             if (trailingIcon != null) {
                 Icon(painterResource(trailingIcon), null, Modifier.size(dimens.iconTertiary), tint = scheme.onSurfaceVariant)
             }
@@ -344,13 +344,14 @@ internal fun RailTile(title: String, @DrawableRes icon: Int, selected: Boolean, 
 
 /** A category tile of the portrait grid: glyph, name and what is inside. */
 @Composable
-internal fun GridTile(title: String, summary: String, @DrawableRes icon: Int, onClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun GridTile(title: String, summary: String, @DrawableRes icon: Int, onClick: () -> Unit, modifier: Modifier = Modifier,
+                      titleMaxLines: Int = 1) {
     val scheme = MaterialTheme.colorScheme
     SelectableGlass(false, onClick, modifier, shape = MaterialTheme.shapes.large) {
         Column(Modifier.fillMaxWidth().padding(if (isCar) 28.dp else 18.dp)) {
             RowGlyph(icon, tint = scheme.primary)
             Spacer(Modifier.height(if (isCar) 20.dp else 14.dp))
-            Text(title, style = MaterialTheme.typography.titleMedium, color = scheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(title, style = MaterialTheme.typography.titleMedium, color = scheme.onSurface, maxLines = titleMaxLines, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(4.dp))
             Text(summary, style = MaterialTheme.typography.bodySmall, color = scheme.onSurfaceVariant, maxLines = 2,
                 overflow = TextOverflow.Ellipsis, minLines = 2)

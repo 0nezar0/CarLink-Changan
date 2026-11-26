@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) translation of carlink_core_strings.xml. -->
+<resources>
+    <string name="carlink_core_ipad_no_carplay">iPad dan iPod tidak dapat menjalankan CarPlay. Palamkan iPhone.</string>
+    <string name="carlink_core_lite_mode_engaged">Gambar tergendala, jadi mod Lite dihidupkan dari sambungan seterusnya: 30 bingkai sesaat, resolusi yang sama.</string>
+</resources>

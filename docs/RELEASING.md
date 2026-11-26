@@ -1,13 +1,28 @@
 # Releasing CarLink
 
-CarLink releases are built, signed and uploaded **on the maintainer's computer**, never by GitHub
-Actions. Two things exist only on that computer: the release signing key and the CarPlay
-accessory identity (`offline-mfi/`). The project uses no GitHub Actions at all: tests run locally
-(`dev.sh test`, and `scripts/release.sh` runs them before every release).
+> **This private build (CS75 Plus 2023):** public releases, which the in-app updater reads from
+> `ReleaseRepo.OWNER_REPO` (`app/.../update/ReleaseInfo.kt`, today `0nezar0/carlink-releases`)
+> without signing in, are built, signed and published from the maintainer's computer with
+> `scripts/release.sh`. A published release needs the tag `vX.Y` (or `vX.Y.Z`), the assets
+> `CarLink-CS75Plus2023-vX.Y.apk` and `…apk.sha256`, a higher `carlink.versionCode` than the
+> installed app, package `com.carlink.app.hudtest`, and the signing key pinned in `ReleaseKey`
+> (`4B:19:4C:…:4A:6B`). There is also a manual GitHub Actions workflow, "Build CarLink"
+> ([`.github/workflows/build.yml`](../.github/workflows/build.yml), started from Actions › Build
+> CarLink › Run workflow), that builds a release or debug APK as a private artifact of this
+> repository; it does not publish to `carlink-releases`. The rest of this document describes the
+> `scripts/release.sh` process (and, where asset names or repository URLs still mention upstream
+> CarLink, that upstream procedure).
 
-Installed copies of CarLink find new versions through GitHub's "latest release" API and install
-them only after checking them (see "What the app checks" below). A release is therefore
-published exactly as `scripts/release.sh` produces it.
+Public releases are built, signed and uploaded **on the maintainer's computer** with
+`scripts/release.sh`. Two things for that path exist only on that computer: the release signing
+key and the CarPlay accessory identity (`offline-mfi/`). There is no automatic CI: tests run
+locally (`dev.sh test`, and `scripts/release.sh` runs them before every release). The manual
+"Build CarLink" workflow is a separate, on-demand APK build; it does not replace
+`scripts/release.sh`.
+
+Installed copies of CarLink find new versions through GitHub's "latest release" API on
+`0nezar0/carlink-releases` and install them only after checking them (see "What the app checks"
+below). A public release is therefore published exactly as `scripts/release.sh` produces it.
 
 ## Versions
 

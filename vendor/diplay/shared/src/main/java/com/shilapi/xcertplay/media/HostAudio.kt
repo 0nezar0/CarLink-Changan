@@ -23,4 +23,17 @@ object HostAudio {
     @Volatile
     @JvmStatic
     var callsAsMedia: Boolean = false
+
+    /**
+     * Legacy stream types by `AudioChannel` name, used where DiPlay's own stream choice is automatic (0).
+     * Joying/QZD CarService sorts sources by stream type (CarLink).
+     */
+    @Volatile
+    @JvmStatic
+    var legacyStreamTypes: Map<String, Int> = emptyMap()
+
+    /** Lowers CarPlay's own music while the iPhone ducks audio for a navigation prompt (CarLink #83). */
+    @Volatile
+    @JvmStatic
+    var duckMediaForPrompts: Boolean = false
 }

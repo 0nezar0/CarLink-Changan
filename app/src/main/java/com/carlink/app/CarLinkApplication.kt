@@ -42,6 +42,13 @@ class CarLinkApplication : App() {
             // Tells the main process's floating switcher when the Android Auto picture is in front.
             com.carlink.app.switcher.ProjectionVisibility.installInEngineProcess(this)
         } else {
+            // v1.6.5: once, dark theme and Bluetooth audio if those old defaults were never
+            // changed; CS75 top margin off if it was only the old first-launch default.
+            // Bluetooth audio runs before the margin migration so a settings write cannot
+            // persist "through CarLink" as if the driver chose it.
+            com.carlink.app.ui.DarkThemeDefaultMigration.apply(this)
+            com.carlink.core.settings.BluetoothAudioDefaultMigration.apply(this)
+            com.carlink.core.settings.Cs75TopMarginOffMigration.apply(this)
             // Settings > Display > Screen type reaches detection before any session (CarPlay's turning canvas).
             com.carlink.app.ui.applyScreenType(com.carlink.app.ui.UiPreferences(this).uiProfileMode)
             // The floating switcher over CarPlay / Android Auto (and the USB switch prompt).
@@ -59,9 +66,13 @@ class CarLinkApplication : App() {
     private fun brandEngines() {
         val name = getString(R.string.app_name)
         HostIntegration.homeActivity = HomeActivity::class.java
+        // CarLink: engine support QR/link must not open upstream DiAuto issues.
+        HostIntegration.reportIssuesUrl = com.carlink.app.diagnostics.GitHubIssueReport.NEW_ISSUE
         HostIntegration.appName = name
         HostIntegration.serviceChannelName = getString(R.string.carlink_notification_channel_android_auto)
         HostIntegration.mediaSessionTag = "CarLink Android Auto"
+        HostIntegration.mediaSnapshotFile = java.io.File(
+            noBackupFilesDir, com.carlink.core.diagnostics.AaMediaSnapshotStore.FILE_NAME)
         HostIntegration.toastHandler = { _, text, forced ->
             Log.i(TOAST_TAG, "Android Auto engine toast forced=$forced: $text")
             !forced

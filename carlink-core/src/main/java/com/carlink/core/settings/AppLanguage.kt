@@ -24,19 +24,31 @@ object AppLanguage {
     const val SYSTEM = ""
 
     /** The languages offered, as stored (BCP 47). Keep in step with localeFilters and xml/locales_config. */
-    val SUPPORTED = listOf(SYSTEM, "en", "ar")
+    val SUPPORTED = listOf(
+        SYSTEM, "ar", "en",
+        "es", "pt", "fr", "it", "de", "ms", "tr", "zh-CN", "hu",
+    )
 
     /** Each language's name in its own script; [SYSTEM] has a translated label in the app. */
     fun nativeName(tag: String): String = when (tag) {
-        "en" -> "English"
         "ar" -> "العربية"
+        "en" -> "English"
+        "es" -> "Español"
+        "pt" -> "Português"
+        "fr" -> "Français"
+        "it" -> "Italiano"
+        "de" -> "Deutsch"
+        "ms" -> "Bahasa Melayu"
+        "tr" -> "Türkçe"
+        "zh-CN" -> "简体中文"
+        "hu" -> "Magyar"
         else -> tag
     }
 
     fun sanitize(tag: String?): String = tag?.takeIf { it in SUPPORTED } ?: SYSTEM
 
     /** The locale for [tag]; null for [SYSTEM]. */
-    fun locale(tag: String): Locale? = if (tag == SYSTEM) null else Locale(tag)
+    fun locale(tag: String): Locale? = if (tag == SYSTEM) null else Locale.forLanguageTag(tag)
 
     /** The device's own language, whatever an earlier choice did to this process. */
     fun systemLocale(): Locale = Resources.getSystem().configuration.locales[0]
@@ -54,8 +66,15 @@ object AppLanguage {
      * [chosen], or the device's own [system] locale when it is the same language: "ar" on an
      * ar-SA-u-nu-latn device keeps its region and number style.
      */
-    fun resolve(chosen: Locale?, system: Locale): Locale =
-        if (chosen == null || chosen.language == system.language) system else chosen
+    fun resolve(chosen: Locale?, system: Locale): Locale {
+        if (chosen == null) return system
+        if (chosen.language != system.language) return chosen
+        // Same language: keep the device's region and number style unless the choice names a
+        // different region or script (Simplified vs Traditional Chinese).
+        if (chosen.country.isNotEmpty() && !chosen.country.equals(system.country, ignoreCase = true)) return chosen
+        if (chosen.script.isNotEmpty() && !chosen.script.equals(system.script, ignoreCase = true)) return chosen
+        return system
+    }
 
     /** Before Android 13 the app supplies the language; from 13 the platform does. */
     val appSupplied: Boolean get() = Build.VERSION.SDK_INT < 33

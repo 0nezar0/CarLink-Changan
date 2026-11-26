@@ -121,6 +121,8 @@ sealed interface CheckOutcome {
     /** Nothing newer: the latest release is this version or older, unusable, or there is none yet. */
     data object UpToDate : CheckOutcome
     data object RateLimited : CheckOutcome
+    /** GitHub answered 404: the repository is private (not readable without signing in) or has no release yet. */
+    data object NotFound : CheckOutcome
     data class Failed(val detail: String) : CheckOutcome
 }
 
@@ -146,8 +148,8 @@ class GitHubReleaseSource(
         }
         return when {
             answer.rateLimited -> CheckOutcome.RateLimited
-            // No published release yet.
-            answer.code == 404 -> CheckOutcome.UpToDate
+            // Private repository, or no published release yet: never claim "up to date".
+            answer.code == 404 -> CheckOutcome.NotFound
             answer.code !in 200..299 -> CheckOutcome.Failed("HTTP ${answer.code}")
             else -> when (val parsed = if (beta) ReleaseParser.newest(answer.body) else ReleaseParser.parse(answer.body)) {
                 is ParsedRelease.Unusable -> CheckOutcome.UpToDate

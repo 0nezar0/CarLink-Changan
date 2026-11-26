@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian (hu) vendor strings for strings_night_mode.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_app_appearance_dark">Sötét</string>
+    <string name="settings_app_appearance_light">Világos</string>
+    <string name="settings_app_appearance_auto">Automatikus</string>
+    <string name="carplay_night_start">Az éjszaka kezdete</string>
+    <string name="carplay_night_end">Az éjszaka vége</string>
+    <string name="settings_app_appearance">Alkalmazás megjelenése</string>
+    <string name="settings_app_appearance_description">Az Automatikus a mentett CarPlay nappali/éjszakai beállítást követi; amíg a CarPlay nyitva van, az aktuális eredményt követi. A Világos és a Sötét rögzített, és nem igényel újracsatlakozást.</string>
+    <string name="settings_switch_to_dark_appearance">Váltás sötét megjelenésre</string>
+    <string name="settings_switch_to_light_appearance">Váltás világos megjelenésre</string>
+    <string name="carplay_night_mode">CarPlay nappali/éjszakai mód</string>
+    <string name="carplay_night_system">Android-rendszer követése</string>
+    <string name="carplay_night_ambient">Környezeti fény követése</string>
+    <string name="carplay_night_day">Mindig nappal</string>
+    <string name="carplay_night_night">Mindig éjszaka</string>
+    <string name="carplay_night_schedule">Ütemezett</string>
+    <string name="carplay_night_schedule_hint">A fejegység helyi idejét használja. Állítson be eltérő kezdő- és befejezési időt; az éjszakán átnyúló tartományok támogatottak.</string>
+    <string name="carplay_night_schedule_same_time">A kezdő- és a befejezési időnek különböznie kell.</string>
+    <string name="carplay_night_hint">Mentse, és térjen vissza a CarPlayhez az alkalmazáshoz.</string>
+    <string name="carplay_night_ambient_hint">Az alábbi küszöböt és késleltetést használja. Fényérzékelő nélkül az Androidot követi.</string>
+    <string name="carplay_night_time_note">Ha a CarPlay-beállításokban a megjelenés Automatikus, a CarPlay az iPhone idejét is figyelembe veszi. Még ha a Mindig nappalt választja, a CarPlay éjszaka akkor is sötétnek tűnhet.</string>
+</resources>

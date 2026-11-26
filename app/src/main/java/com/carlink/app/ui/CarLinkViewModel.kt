@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.map
 import com.carlink.core.settings.CarLinkPreferences
 import com.carlink.core.settings.ConnectionMethod
 import com.carlink.core.settings.WifiEnvironmentReader
+import com.carlink.core.settings.HideCarStatusBarMode
 import com.carlink.core.settings.UnifiedSettings
 import com.carlink.core.settings.UnifiedSettingsStore
 import com.carlink.core.settings.WirelessPath
@@ -148,6 +149,8 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
 
     val link: StateFlow<LinkState> = session.state.map { it.toLinkState(AirPlayPersistence.loadDirectVideoOutput(app)) }
         .stateIn(viewModelScope, SharingStarted.Eagerly, session.state.value.toLinkState(AirPlayPersistence.loadDirectVideoOutput(app)))
+    /** The live session (path, reconnect count) for Settings › Diagnostics › Connection status. */
+    val sessionState = session.state
 
     /** The current or last session of each engine in this process (Idle never replaces one): the issue report describes them. */
     private val lastSessions = HashMap<Engine, com.carlink.app.diagnostics.LastSession>()
@@ -236,6 +239,57 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
     fun setCarBrand(brand: com.carlink.core.settings.CarBrand) {
         Connection.setCarBrand(app, brand)
         _vehicle.value = readVehicle()
+        com.carlink.app.switcher.SwitcherController.onSettingChanged()
+    }
+
+    private val _cs75HideBarPrompt = MutableStateFlow(false)
+    /**
+     * True after the driver picks the CS75 Plus entry, until they answer the status-bar hide dialog.
+     * A fresh install does not ask until they say Yes to the first-launch car question.
+     * Restoring a backup does not ask. The 48 px top margin stays off unless they turn it on in Settings.
+     */
+    val cs75HideBarPrompt: StateFlow<Boolean> = _cs75HideBarPrompt.asStateFlow()
+
+    /** The brand list. Choosing the CS75 Plus entry asks whether to hide the car's notification bar. */
+    fun chooseCarBrand(brand: com.carlink.core.settings.CarBrand) {
+        setCarBrand(brand)
+        if (brand.isChanganCs75Plus) _cs75HideBarPrompt.value = true
+    }
+
+    /** Enable turns on hide-in-all-apps-except-launcher. Skip or Back leaves (or turns) it off. */
+    fun answerCs75HideBar(enable: Boolean) {
+        _cs75HideBarPrompt.value = false
+        updateSettings {
+            it.copy(
+                hideCarStatusBarMode = if (enable) HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER
+                else HideCarStatusBarMode.OFF,
+            )
+        }
+    }
+
+    private val _cs75FirstLaunchPrompt = MutableStateFlow(
+        Cs75FirstLaunchPrompt.shouldShow(
+            freshInstall = Cs75FirstLaunchPrompt.isFreshInstall(app),
+            brandChosen = Connection.carBrand(app) != null,
+            alreadyAnswered = uiPreferences.cs75FirstLaunchPromptDone,
+        ),
+    )
+    /** True on the first launch after a fresh install, until the driver answers the CS75 car question. */
+    val cs75FirstLaunchPrompt: StateFlow<Boolean> = _cs75FirstLaunchPrompt.asStateFlow()
+
+    /**
+     * Yes selects [com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS] and applies its
+     * projection defaults (CarPlay 400 mm, HEVC, Android Auto 200 DPI). The 48 px top margin
+     * stays off. Then the status-bar hide prompt is shown ([answerCs75HideBar]).
+     * No dismisses the dialog and leaves the normal first-run flow. Either way the car
+     * question is not shown again.
+     */
+    fun answerCs75FirstLaunch(isCs75: Boolean) {
+        _cs75FirstLaunchPrompt.value = false
+        uiPreferences.cs75FirstLaunchPromptDone = true
+        if (!isCs75) return
+        setCarBrand(com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS)
+        _cs75HideBarPrompt.value = true
     }
 
     private fun readVehicle() = VehicleChoice(Connection.carBrand(app), com.carlink.core.settings.CarBrand.detect(app))
@@ -491,9 +545,14 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
         if (next == _unified.value) return
         _unified.value = next
         unifiedStore.save(next)
+        // Visual effects' Automatic follows Lite mode (ui/theme/RenderingMode.kt).
+        _display.value = readDisplay()
+        // Read at each navigation prompt, so it applies to a running CarPlay session at once (#83).
+        com.shilapi.xcertplay.media.HostAudio.duckMediaForPrompts = next.duckMusicForDirections
         // Engines read their settings at the start of each session (SessionManager writes them).
         refreshNetwork()
         session.onSettingsChanged()
+        com.carlink.app.switcher.SwitcherController.onSettingChanged()
     }
 
     /** Runtime permissions CarLink asks for in one go (Bluetooth, Wi-Fi, location, microphone, notifications). */

@@ -24,8 +24,10 @@ class UpdateVerifierTest {
 
     @Test fun pinnedFingerprintNormalizes() {
         assertEquals(64, pin.length)
-        assertEquals("037468ca5beb70ea5f68543329b03368247dfb393d3f626a6b472d10e5657d21", pin)
-        assertEquals(pin, ReleaseKey.normalize("03 74 68 ca 5b eb 70 ea 5f 68 54 33 29 b0 33 68 24 7d fb 39 3d 3f 62 6a 6b 47 2d 10 e5 65 7d 21"))
+        // The key of the CS75 Plus 2023 releases (CarLink-CS75Plus2023-v1.1.apk), not upstream CarLink's.
+        assertEquals("4b194c0c5d3f25bb65927771c30e5a78bb57a4aca1e85babd763b03dd9554a6b", pin)
+        assertEquals("com.carlink.app.hudtest", Updates.RELEASE_PACKAGE)
+        assertEquals(pin, ReleaseKey.normalize("4b 19 4c 0c 5d 3f 25 bb 65 92 77 71 c3 0e 5a 78 bb 57 a4 ac a1 e8 5b ab d7 63 b0 3d d9 55 4a 6b"))
     }
 
     @Test fun passesWhenAllThreeChecksPass() {
@@ -47,7 +49,8 @@ class UpdateVerifierTest {
     @Test fun wrongPackage() {
         val file = apk()
         assertEquals(VerifyFailure.WRONG_PACKAGE,
-            verifier(good.copy(packageName = "com.carlink.app.hudtest")).verify(file, JavaSha256.sha256Hex(file)))
+            // Upstream CarLink's package is not this build.
+            verifier(good.copy(packageName = "com.carlink.app")).verify(file, JavaSha256.sha256Hex(file)))
     }
 
     @Test fun notNewer() {

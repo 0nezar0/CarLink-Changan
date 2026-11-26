@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Simplified Chinese (zh-CN) translation of carlink_core_strings.xml. -->
+<resources>
+    <string name="carlink_core_ipad_no_carplay">iPad 和 iPod 无法使用 CarPlay。请插入 iPhone。</string>
+    <string name="carlink_core_lite_mode_engaged">画面已出现卡顿，因此将从下次连接起打开精简模式：每秒 30 帧，分辨率不变。</string>
+</resources>

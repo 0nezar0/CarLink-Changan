@@ -14,6 +14,8 @@ import com.shilapi.xcertplay.network.CarHotspotStatus
 /**
  * [HEADUNIT_SERVER]: Android Auto only; the car dials the phone's head unit server (port 5277) on
  * whatever Wi-Fi the car has joined (the phone's hotspot or a shared router), GitHub #70.
+ * Found by DiAuto's NetworkDiscovery (a typed address, then the gateway, then the subnet). No
+ * Bluetooth and no Wi-Fi Direct; the phone's developer setting "Start head unit server" must be on.
  */
 enum class WirelessPath { SAME_WIFI, CAR_HOTSPOT, WIFI_DIRECT, HEADUNIT_SERVER }
 

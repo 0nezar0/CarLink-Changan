@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French (fr) vendor strings for home_layout_strings.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_force_full_settings">Forcer la disposition complète des paramètres</string>
+    <string name="settings_force_full_settings_hint">Utilise la disposition complète des paramètres, avec une barre latérale de catégories en mode paysage, et la disposition automatique en mode portrait. Ne modifie ni l’écran d’accueil ni CarPlay.</string>
+</resources>

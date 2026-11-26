@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for picture.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="picture_done">Selesai</string>
+    <string name="picture_adjustments">Pelarasan gambar</string>
+    <string name="picture_live_hint">Langsung pada video CarPlay utama. Perubahan disimpan serta-merta. Gambar tanpa larasan ialah perbandingan sementara.</string>
+    <string name="picture_show_original">Tunjuk tanpa larasan</string>
+    <string name="picture_brightness">Kecerahan</string>
+    <string name="picture_contrast">Kontras</string>
+    <string name="picture_saturation">Ketepuan</string>
+    <string name="picture_warmth">Kehangatan</string>
+    <string name="picture_reset">Tetapkan semula gambar</string>
+</resources>

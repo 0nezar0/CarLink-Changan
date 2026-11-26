@@ -61,11 +61,20 @@ class HomeActivity : ComponentActivity() {
         val pendingSwitch by connection.pendingSwitch.collectAsStateWithLifecycle()
         val quiet = UpdatePolicy.sessionQuiet(session, pendingSwitch)
         if (!state.showsDialog || (state is UpdateState.Available && !quiet)) return
+        // Android 9 and older: the APK goes to the public Downloads/CarLink only with storage
+        // access, asked once here; denied still downloads (CarLink's own Downloads/CarLink).
+        val askStorage = androidx.activity.compose.rememberLauncherForActivityResult(
+            androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { updater.download() }
         val actions = remember(updater) {
             object : UpdateDialogActions {
                 override fun ignore() = updater.ignore()
                 override fun later() = updater.later()
-                override fun download() = updater.download()
+                override fun download() {
+                    if (com.carlink.app.update.UpdateFiles.needsStoragePermission(this@HomeActivity)) {
+                        runCatching { askStorage.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) }
+                            .onFailure { updater.download() }
+                    } else updater.download()
+                }
                 override fun cancel() = updater.cancel()
                 override fun openSettings() = updater.openInstallPermission()
                 override fun dismiss() = updater.dismiss()
@@ -137,7 +146,7 @@ class HomeActivity : ComponentActivity() {
         val address = intent.getStringExtra(EXTRA_AUTO_PHONE_ADDRESS) ?: return
         val name = intent.getStringExtra(EXTRA_AUTO_PHONE_NAME)
         intent.removeExtra(EXTRA_AUTO_PHONE_KIND)
-        Connection.get(this).onBluetoothPhone(address, kind, name)
+        Connection.onBluetoothPhone(this, address, kind, name)
     }
 
     companion object {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for strings_ambient_threshold.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="ambient_light_threshold_title">Ambang kecerahan</string>
+    <string name="ambient_light_threshold_summary">%1$d lux</string>
+    <string name="ambient_light_threshold_value">Ambang pensuisan (lux)</string>
+    <string name="ambient_light_threshold_hint">Di bawah ambang (lux) memilih malam; pada atau di atasnya memilih siang. Bacaan mesti kekal di sisi baharu selama kelewatan yang dipilih. Masukkan integer dari 1 hingga 200000.</string>
+    <string name="ambient_light_threshold_error">Masukkan integer dari 1 hingga 200000.</string>
+    <string name="ambient_light_reset_defaults">Tetapkan semula lalai</string>
+</resources>

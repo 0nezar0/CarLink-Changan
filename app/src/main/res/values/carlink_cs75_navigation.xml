@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carlink_cs75_nav_title">Navigation bar</string>
+    <string name="carlink_cs75_nav_description">Swipe inward from the left or right edge to show the bar. Swipe again from the same edge to hide it. Needs CarLink\'s accessibility service.</string>
+    <string name="carlink_cs75_nav_back">Back</string>
+    <string name="carlink_cs75_nav_home">Home</string>
+    <string name="carlink_cs75_nav_apps">Installed apps</string>
+    <string name="carlink_cs75_nav_settings">Android settings</string>
+    <string name="carlink_cs75_nav_apps_unavailable">Could not open the app.</string>
+</resources>

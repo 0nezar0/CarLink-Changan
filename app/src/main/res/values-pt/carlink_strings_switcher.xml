@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Portuguese (pt) translation of carlink_strings_switcher.xml. -->
+<resources>
+    <string name="carlink_switcher_bubble">Seletor do CarLink</string>
+    <string name="carlink_switcher_bubble_action">Abrir o seletor de telemóveis</string>
+    <string name="carlink_switcher_panel_window">Painel do seletor do CarLink</string>
+    <string name="carlink_switcher_dimmer_window">Atenuação do CarLink</string>
+    <string name="carlink_switcher_connected_for">Ligado · %1$s</string>
+    <string name="carlink_switcher_switch_title">Mudar de telemóvel</string>
+    <string name="carlink_switcher_no_phones">Não há outros telemóveis emparelhados</string>
+    <string name="carlink_switcher_no_phones_hint">Emparelhe outro telemóvel nas definições de Bluetooth para mudar para ele aqui.</string>
+    <string name="carlink_switcher_switching">A mudar…</string>
+    <string name="carlink_switcher_home">Início do CarLink</string>
+    <string name="carlink_switcher_size_reconnects">Ao alterá-lo, a ligação é restabelecida durante uns segundos</string>
+    <string name="carlink_switcher_size_upright">Na vertical, o Android Auto para em %1$s</string>
+    <string name="carlink_switcher_next_connection">A sessão atual mantém a ligação.</string>
+    <string name="carlink_switcher_close">Fechar</string>
+    <string name="carlink_switcher_back">Voltar</string>
+    <string name="carlink_switcher_not_now">Agora não</string>
+    <string name="carlink_switcher_phone_fallback">o telemóvel novo</string>
+    <string name="carlink_switcher_night">Modo noturno</string>
+    <string name="carlink_switcher_dimmer">Atenuação</string>
+    <string name="carlink_switcher_dimmer_off">Desligado</string>
+    <string name="carlink_switcher_dimmer_level">Nível %1$d</string>
+    <string name="carlink_switcher_stereo_home">Estéreo</string>
+    <string name="carlink_switcher_stereo_home_value">Lançador</string>
+    <string name="carlink_switcher_night_next">O modo noturno aplica-se na ligação seguinte; a atenuação, de imediato.</string>
+</resources>

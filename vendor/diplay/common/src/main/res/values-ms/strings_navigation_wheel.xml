@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) vendor strings for strings_navigation_wheel.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="settings_navigation_wheel_service_required">Benarkan perkhidmatan kebolehcapaian kekunci stereng dalam tetapan Android, atau gunakan butang kebenaran ADB sedia ada.</string>
+    <string name="settings_navigation_wheel_volume">Volum stereng semasa panduan navigasi (uji kaji)</string>
+    <string name="settings_navigation_wheel_volume_description">Semasa panduan lisan CarPlay, kekunci volum melaraskan strim audio navigasi yang dipilih. Selain itu kekunci mengikuti unit kepala. Memerlukan kebenaran kebolehcapaian kekunci stereng. Panggilan, zum peta dan kayu bedik mengekalkan keutamaan. Diuji secara setempat pada unit kepala Tang platform-21; ujian dalam kereta di hulu masih menunggu. Penghalaan automatik atau media tidak dipintas.</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French (fr) translation of carlink_strings_switcher.xml. -->
+<resources>
+    <string name="carlink_switcher_bubble">Sélecteur CarLink</string>
+    <string name="carlink_switcher_bubble_action">Ouvrir le sélecteur de téléphones</string>
+    <string name="carlink_switcher_panel_window">Panneau du sélecteur CarLink</string>
+    <string name="carlink_switcher_dimmer_window">Gradateur CarLink</string>
+    <string name="carlink_switcher_connected_for">Connecté · %1$s</string>
+    <string name="carlink_switcher_switch_title">Changer de téléphone</string>
+    <string name="carlink_switcher_no_phones">Aucun autre téléphone associé</string>
+    <string name="carlink_switcher_no_phones_hint">Associez un autre téléphone dans les réglages Bluetooth pour basculer vers lui ici.</string>
+    <string name="carlink_switcher_switching">Changement…</string>
+    <string name="carlink_switcher_home">Accueil CarLink</string>
+    <string name="carlink_switcher_size_reconnects">Le modifier reconnecte pendant quelques secondes</string>
+    <string name="carlink_switcher_size_upright">À la verticale, Android Auto s’arrête à %1$s</string>
+    <string name="carlink_switcher_next_connection">La session en cours conserve sa connexion.</string>
+    <string name="carlink_switcher_close">Fermer</string>
+    <string name="carlink_switcher_back">Retour</string>
+    <string name="carlink_switcher_not_now">Pas maintenant</string>
+    <string name="carlink_switcher_phone_fallback">le nouveau téléphone</string>
+    <string name="carlink_switcher_night">Mode nuit</string>
+    <string name="carlink_switcher_dimmer">Gradateur</string>
+    <string name="carlink_switcher_dimmer_off">Désactivé</string>
+    <string name="carlink_switcher_dimmer_level">Niveau %1$d</string>
+    <string name="carlink_switcher_stereo_home">Autoradio</string>
+    <string name="carlink_switcher_stereo_home_value">Écran d’accueil</string>
+    <string name="carlink_switcher_night_next">Le mode nuit s’applique à la prochaine connexion ; le gradateur, tout de suite.</string>
+</resources>

@@ -113,11 +113,15 @@ interface SettingsActions {
     fun restoreSettings() {}
 }
 
-/** Rail and grid order. */
-internal val categoryOrder = listOf(
+/** Standard rail and grid order, without the CS75-only category. */
+private val standardCategoryOrder = listOf(
     SettingsCategory.CONNECTION, SettingsCategory.DISPLAY, SettingsCategory.SOUND,
     SettingsCategory.NAVIGATION, SettingsCategory.CAR, SettingsCategory.GENERAL,
 )
+
+/** Rail and grid order. The CS75 category is first, and only present, when that brand is selected. */
+internal fun categoryOrder(includeCs75: Boolean): List<SettingsCategory> =
+    if (includeCs75) listOf(SettingsCategory.CHANGAN_CS75) + standardCategoryOrder else standardCategoryOrder
 
 @get:StringRes
 internal val SettingsCategory.title: Int
@@ -128,6 +132,7 @@ internal val SettingsCategory.title: Int
         SettingsCategory.NAVIGATION -> R.string.carlink_settings_cat_navigation
         SettingsCategory.CAR -> R.string.carlink_settings_cat_car
         SettingsCategory.GENERAL -> R.string.carlink_settings_cat_general
+        SettingsCategory.CHANGAN_CS75 -> R.string.carlink_settings_group_changan
     }
 
 @get:StringRes
@@ -139,6 +144,7 @@ internal val SettingsCategory.summary: Int
         SettingsCategory.NAVIGATION -> R.string.carlink_settings_cat_navigation_summary
         SettingsCategory.CAR -> R.string.carlink_settings_cat_car_summary
         SettingsCategory.GENERAL -> R.string.carlink_settings_cat_general_summary
+        SettingsCategory.CHANGAN_CS75 -> R.string.carlink_settings_cat_cs75_summary
     }
 
 @get:DrawableRes
@@ -150,6 +156,7 @@ internal val SettingsCategory.icon: Int
         SettingsCategory.NAVIGATION -> R.drawable.carlink_ic_navigation
         SettingsCategory.CAR -> R.drawable.carlink_ic_directions_car
         SettingsCategory.GENERAL -> R.drawable.carlink_ic_tune
+        SettingsCategory.CHANGAN_CS75 -> R.drawable.carlink_ic_dashboard
     }
 
 @get:DrawableRes
@@ -161,6 +168,7 @@ internal val SettingsCategory.selectedIcon: Int
         SettingsCategory.NAVIGATION -> R.drawable.carlink_ic_navigation_filled
         SettingsCategory.CAR -> R.drawable.carlink_ic_directions_car_filled
         SettingsCategory.GENERAL -> R.drawable.carlink_ic_tune_filled
+        SettingsCategory.CHANGAN_CS75 -> R.drawable.carlink_ic_dashboard_filled
     }
 
 /** The bottom sheets Settings opens; saved by [key] so a rotation keeps the sheet open. */
@@ -168,51 +176,7 @@ internal enum class EssentialSheet {
     CONNECTION_METHOD, CAR_HOTSPOT, SAME_WIFI, PICTURE, INTERFACE_SIZE, DAY_NIGHT, NIGHT_START, NIGHT_END,
     DRIVING_SIDE, SOUND, AUDIO_DELAY, LITE_MODE, APPEARANCE, LAYOUT, CARLINK_SIZE, RENDERING, CAR_BRAND, WHEEL_KEYS,
     MEDIA_LEVEL, NAVIGATION_LEVEL, CALL_LEVEL, CALL_STREAM, MIC_GAIN, HEADUNIT_SERVER_ADDRESS,
-    MARGIN_TOP,
-    CP_MARGIN_TOP, CP_MARGIN_BOTTOM, CP_MARGIN_LEFT, CP_MARGIN_RIGHT,
-    AA_MARGIN_TOP, AA_MARGIN_BOTTOM, AA_MARGIN_LEFT, AA_MARGIN_RIGHT,
     LANGUAGE,
-}
-
-/** One edge of a projection's screen margins. */
-internal enum class MarginEdge { TOP, BOTTOM, LEFT, RIGHT }
-
-/** The engine (CarPlay true, Android Auto false) and edge a margin sheet sets; null for other sheets. */
-internal fun projectionMargin(sheet: EssentialSheet): Pair<Boolean, MarginEdge>? = when (sheet) {
-    EssentialSheet.CP_MARGIN_TOP -> true to MarginEdge.TOP
-    EssentialSheet.CP_MARGIN_BOTTOM -> true to MarginEdge.BOTTOM
-    EssentialSheet.CP_MARGIN_LEFT -> true to MarginEdge.LEFT
-    EssentialSheet.CP_MARGIN_RIGHT -> true to MarginEdge.RIGHT
-    EssentialSheet.AA_MARGIN_TOP -> false to MarginEdge.TOP
-    EssentialSheet.AA_MARGIN_BOTTOM -> false to MarginEdge.BOTTOM
-    EssentialSheet.AA_MARGIN_LEFT -> false to MarginEdge.LEFT
-    EssentialSheet.AA_MARGIN_RIGHT -> false to MarginEdge.RIGHT
-    else -> null
-}
-
-/** The margin sheet for [carPlay]'s [edge]. */
-internal fun marginSheet(carPlay: Boolean, edge: MarginEdge): EssentialSheet = EssentialSheet.entries.first { projectionMargin(it) == (carPlay to edge) }
-
-internal fun com.carlink.core.settings.ScreenMargins.get(edge: MarginEdge): Int = when (edge) {
-    MarginEdge.TOP -> top
-    MarginEdge.BOTTOM -> bottom
-    MarginEdge.LEFT -> left
-    MarginEdge.RIGHT -> right
-}
-
-internal fun com.carlink.core.settings.ScreenMargins.with(edge: MarginEdge, px: Int) = when (edge) {
-    MarginEdge.TOP -> copy(top = px)
-    MarginEdge.BOTTOM -> copy(bottom = px)
-    MarginEdge.LEFT -> copy(left = px)
-    MarginEdge.RIGHT -> copy(right = px)
-}
-
-/** A margin edge's title and description. */
-internal fun MarginEdge.texts(): Pair<Int, Int> = when (this) {
-    MarginEdge.TOP -> R.string.carlink_settings_margin_top to R.string.carlink_settings_margin_top_detail
-    MarginEdge.BOTTOM -> R.string.carlink_settings_margin_bottom to R.string.carlink_settings_margin_bottom_detail
-    MarginEdge.LEFT -> R.string.carlink_settings_margin_left to R.string.carlink_settings_margin_left_detail
-    MarginEdge.RIGHT -> R.string.carlink_settings_margin_right to R.string.carlink_settings_margin_right_detail
 }
 
 internal object SheetKey {
@@ -236,15 +200,6 @@ internal fun advancedValueLabel(setting: AdvancedSetting, value: String?): Strin
     val control = setting.control as? Control.Choice ?: return null
     return value?.let { v -> control.options.firstOrNull { it.value == v }?.label ?: v }
 }
-
-/** Pixel choices for Settings › Display › Screen margins, in activity pixels. */
-internal val SCREEN_MARGIN_PX = listOf(0, 24, 32, 40, 48, 56, 64, 72, 80, 96, 120)
-
-/** "None" for 0, else a pixel count. */
-@Composable
-internal fun marginLabel(px: Int): String =
-    if (px <= 0) stringResource(R.string.carlink_settings_margin_none)
-    else stringResource(R.string.carlink_settings_margin_px, px)
 
 // ---- Labels -------------------------------------------------------------------------------
 
@@ -272,6 +227,7 @@ internal fun vehicleLabel(profile: VehicleProfile): String = stringResource(
 internal fun carBrandLabel(brand: CarBrand?): String = when (brand) {
     null -> stringResource(R.string.carlink_settings_car_not_chosen)
     CarBrand.OTHER -> stringResource(R.string.carlink_settings_car_other)
+    CarBrand.CHANGAN_CS75_PLUS -> stringResource(R.string.carlink_settings_car_brand_cs75)
     else -> brand.displayName
 }
 
@@ -297,6 +253,7 @@ internal fun interfaceSizeLabel(size: InterfaceSize): String = stringResource(
         InterfaceSize.SMALL -> R.string.carlink_settings_size_small
         InterfaceSize.MEDIUM -> R.string.carlink_settings_size_medium
         InterfaceSize.LARGE -> R.string.carlink_settings_size_large
+        InterfaceSize.EXTRA_LARGE -> R.string.carlink_settings_size_extra_large
         InterfaceSize.CUSTOM -> R.string.carlink_settings_custom
     },
 )

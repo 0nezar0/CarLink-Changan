@@ -23,8 +23,8 @@ class AaSessionSettingsTest {
 
     private fun values(settings: UnifiedSettings = base, transport: Transport = Transport.WIRELESS,
                        path: WirelessPath? = WirelessPath.WIFI_DIRECT, profile: VehicleProfile = VehicleProfile.GENERIC,
-                       wifi: WifiEnvironment? = null) =
-        AaSessionSettings.values(settings, transport, path, profile, "My Car", 320, wifi)
+                       wifi: WifiEnvironment? = null, bydHeadUnit: Boolean = profile == VehicleProfile.BYD_DILINK) =
+        AaSessionSettings.values(settings, transport, path, profile, "My Car", 320, wifi, bydHeadUnit = bydHeadUnit)
 
     @Test fun everySessionWritesTheHostOwnedKeys() {
         for (path in listOf(WirelessPath.WIFI_DIRECT, WirelessPath.CAR_HOTSPOT)) {
@@ -41,11 +41,22 @@ class AaSessionSettingsTest {
             assertEquals(false, v["cluster-map-enabled"])
             assertEquals("the picture follows the screen (#31)", 0, v["screen-orientation"])
             assertEquals(0, v["inset-left"])
-            assertEquals("Changan default", 48, v["inset-top"])
+            assertEquals("no margins until the driver turns the Top margin on", 0, v["inset-top"])
             assertEquals(0, v["inset-right"])
             assertEquals(0, v["inset-bottom"])
         }
         assertEquals(false, values(transport = Transport.USB, path = null).values["auto-connect-last-session"])
+    }
+
+    @Test fun automaticDayNightFollowsTheStereoLightsWhereItReportsThem() {
+        fun night(dayNight: com.carlink.core.settings.DayNight, lights: Boolean) = AaSessionSettings.values(
+            base.copy(dayNight = dayNight), Transport.USB, null, VehicleProfile.GENERIC, "My Car", 320, stereoLights = lights,
+        ).values["night-mode"]
+        assertEquals("sunrise/sunset", 0, night(com.carlink.core.settings.DayNight.AUTOMATIC, lights = false))
+        assertEquals("DiAuto's CAR_SIGNAL", 6, night(com.carlink.core.settings.DayNight.AUTOMATIC, lights = true))
+        assertEquals("a fixed choice wins", 1, night(com.carlink.core.settings.DayNight.DAY, lights = true))
+        assertEquals(3, night(com.carlink.core.settings.DayNight.SCHEDULE, lights = true))
+        assertEquals(com.andrerinas.openheadunit.utils.Settings.NightMode.CAR_SIGNAL.value, 6)
     }
 
     @Test fun theModuleRouteReachesTheEngineOnlyForWirelessSessions() {
@@ -101,11 +112,13 @@ class AaSessionSettingsTest {
         assertEquals(0, v["native-ap-transport"])
         assertEquals("0", v["static-bssid"])
         assertEquals(setOf("192.168.43.1"), v[AaSessionSettings.HEADUNIT_SERVER_ADDRESSES_KEY])
+        assertEquals("", v["hotspot-ssid"])
         // Discovery only without a typed address, and no other route inherits it.
         assertEquals(emptySet<String>(), values(path = WirelessPath.HEADUNIT_SERVER).values[AaSessionSettings.HEADUNIT_SERVER_ADDRESSES_KEY])
         assertEquals(emptySet<String>(), values(settings = base.copy(headunitServerAddress = "192.168.43.1"))
             .values[AaSessionSettings.HEADUNIT_SERVER_ADDRESSES_KEY])
         assertEquals(3, values(transport = Transport.USB, path = WirelessPath.HEADUNIT_SERVER).values["wifi-connection-mode"])
+        assertEquals(3, values(transport = Transport.USB, path = null).values["wifi-connection-mode"])
     }
 
     @Test fun usbWritesTheWifiDirectRouteForTheBackgroundEngine() {
@@ -115,7 +128,7 @@ class AaSessionSettingsTest {
     }
 
     @Test fun musicAndNavigationFollowTheProfile() {
-        val generic = values(settings = base.copy(bydDirections = true)).values
+        val generic = values(settings = base.copy(bydDirections = true, soundThroughCarBluetooth = false)).values
         assertEquals(false, generic["music-via-bluetooth"])
         assertEquals(false, generic["byd-navigation-enabled"])
         assertEquals(true, values(settings = base.copy(soundThroughCarBluetooth = true)).values["music-via-bluetooth"])
@@ -131,13 +144,26 @@ class AaSessionSettingsTest {
         assertEquals(2, v["resolutionId"])
         assertEquals(30, v["fps-limit"])
         assertEquals(0, v["dpi-pixel-density"])
-        for ((size, percent) in listOf(InterfaceSize.SMALL to 80, InterfaceSize.MEDIUM to 100, InterfaceSize.LARGE to 135)) {
+        for ((size, percent) in listOf(InterfaceSize.SMALL to 100, InterfaceSize.MEDIUM to 135, InterfaceSize.LARGE to 165, InterfaceSize.EXTRA_LARGE to 200)) {
             val sized = values(settings = base.copy(interfaceSize = size)).values
             assertEquals(0, sized["dpi-pixel-density"])
             assertEquals(percent, sized[AaSessionSettings.SIZE_PERCENT_KEY])
         }
         val custom = values(settings = base.copy(picture = Picture.CUSTOM)).values
         assertFalse(custom.containsKey("resolutionId"))
+    }
+
+    /** Lite mode's SurfaceView, its undo ([com.carlink.core.connection.VideoSurfaceMemory]), and Custom left alone. */
+    @Test fun videoSurfaceIsWrittenUndoneOrLeftToTheDriver() {
+        fun surface(picture: Picture, aaSurfaceView: Boolean?) = AaSessionSettings.values(base.copy(picture = picture), Transport.USB, null,
+            VehicleProfile.GENERIC, "My Car", 320, null,
+            picture = com.carlink.core.connection.PicturePolicy.ENGINE_DEFAULTS.copy(aaSurfaceView = aaSurfaceView)).values["view-mode"]
+        assertEquals(0, surface(Picture.AUTOMATIC, true))
+        assertEquals(AaSessionSettings.ENGINE_DEFAULT, surface(Picture.AUTOMATIC, false))
+        assertEquals(AaSessionSettings.ENGINE_DEFAULT, surface(Picture.BEST, false))
+        assertNull(surface(Picture.AUTOMATIC, null))
+        assertNull("Custom: Lab › Video surface is the driver's", surface(Picture.CUSTOM, true))
+        assertNull(surface(Picture.CUSTOM, false))
     }
 
     /**
@@ -179,24 +205,55 @@ class AaSessionSettingsTest {
             resumeMusic = true)).values
         assertEquals(-50, v["media-volume-offset"])
         // Android Auto's speech channel carries the directions (and the Assistant); its system channel the chimes.
-        assertEquals(100, v["assistant-volume-offset"])
-        assertEquals(100, v["navigation-volume-offset"])
+        // Boosts go through CarLink's soft-clipping hook, not DiAuto's flat clip.
+        assertEquals(0, v["assistant-volume-offset"])
+        assertEquals(0, v["navigation-volume-offset"])
+        assertEquals(6, v[AaSessionSettings.NAVIGATION_BOOST_KEY])
+        assertEquals(0, v[AaSessionSettings.MEDIA_BOOST_KEY])
+        assertEquals(12, values(UnifiedSettings(navigationLevelDb = 12)).values[AaSessionSettings.NAVIGATION_BOOST_KEY])
         assertEquals(9, v[AaSessionSettings.MIC_GAIN_KEY])
         assertEquals(true, v[AaSessionSettings.RESUME_MUSIC_KEY])
         val normal = values().values
-        for (key in listOf("media-volume-offset", "assistant-volume-offset", "navigation-volume-offset", AaSessionSettings.MIC_GAIN_KEY)) {
+        for (key in listOf("media-volume-offset", "assistant-volume-offset", "navigation-volume-offset", AaSessionSettings.MIC_GAIN_KEY,
+            AaSessionSettings.MEDIA_BOOST_KEY, AaSessionSettings.NAVIGATION_BOOST_KEY)) {
             assertEquals("every session writes $key", 0, normal[key])
         }
         assertEquals(false, normal[AaSessionSettings.RESUME_MUSIC_KEY])
     }
 
-    @Test fun screenMarginsAreWrittenAsDiAutoInsets() {
-        val v = values(settings = base.copy(marginTopPx = 96, carPlayMargins = com.carlink.core.settings.ScreenMargins(1, 2, 3, 4),
-            androidAutoMargins = com.carlink.core.settings.ScreenMargins(left = 8, top = 48, right = 16, bottom = 24))).values
-        assertEquals(8, v["inset-left"])
+    /** The switcher's Custom size (#83): Android Auto's own percent, and the same size for both engines. */
+    @Test fun customSizeUsesItsPercentAndMatchesCarPlaysWidth() {
+        val v = values(UnifiedSettings(interfaceSize = InterfaceSize.CUSTOM, customSizePercent = 150)).values
+        assertEquals(150, v[AaSessionSettings.SIZE_PERCENT_KEY])
+        assertEquals(false, v.containsKey("dpi-pixel-density")) // an Advanced DPI still wins
+        // The presets map onto each other exactly; between them it is linear.
+        assertEquals(135, AaSessionSettings.percentForCarPlayWidth(180))
+        assertEquals(150, AaSessionSettings.percentForCarPlayWidth(165))
+        assertEquals(165, AaSessionSettings.carPlayWidthForPercent(150))
+        assertEquals(120, AaSessionSettings.carPlayWidthForPercent(200))
+        assertEquals(245, AaSessionSettings.carPlayWidthForPercent(80)) // beyond Small, along the end segment
+        assertTrue(AaSessionSettings.percentForCarPlayWidth(100) in AaSessionSettings.CUSTOM_PERCENT_RANGE) // the narrowest CarPlay width still fits
+    }
+
+    @Test fun joyingStreamsUseDiAutosCarVolumeGroups() {
+        val v = AaSessionSettings.values(base, Transport.USB, null, VehicleProfile.GENERIC, "My Car", 320,
+            audioStreams = mapOf("NAVIGATION" to 4, "ASSISTANT" to 7, "PHONE" to 2)).values
+        assertEquals(true, v["car-volume-groups"])
+        assertEquals(4, v["car-navi-stream"])
+        assertEquals(7, v["car-voice-stream"])
+        // Other stereos: DiAuto's own values stay.
+        assertEquals(false, values().values.containsKey("car-volume-groups"))
+    }
+
+    @Test fun theTopMarginIsWrittenAsDiAutoInsets() {
+        val v = values(settings = base.copy(topMargin = true)).values
+        assertEquals(0, v["inset-left"])
         assertEquals(48, v["inset-top"])
-        assertEquals(16, v["inset-right"])
-        assertEquals(24, v["inset-bottom"])
+        assertEquals(0, v["inset-right"])
+        assertEquals(0, v["inset-bottom"])
+        // Off: every inset back to zero, written every session so 48 cannot stick.
+        val off = values(settings = base.copy(topMargin = false)).values
+        for (key in listOf("inset-left", "inset-top", "inset-right", "inset-bottom")) assertEquals(key, 0, off[key])
     }
 
     @Test fun sharedNetworkPathsAlsoProbeForTheHeadUnitServer() {
@@ -234,5 +291,22 @@ class AaSessionSettingsTest {
             assertEquals("$method/$path", expected, AaSessionSettings.probesHeadUnitServer(method, Transport.WIRELESS, path))
             assertFalse(AaSessionSettings.probesHeadUnitServer(method, Transport.USB, path))
         }
+    }
+
+    /** Upright on the 2560x1600 tablet (320 dpi), Android Auto stops near Medium; sideways every size grows (2026-11-18). */
+    @Test fun aTurningScreenUprightStopsGrowingAtMedium() {
+        val upright = AaSessionSettings.turningMaxPercent(320, 1600, 2560)
+        assertTrue("$upright", upright in 120..134)
+        assertEquals(listOf(InterfaceSize.SMALL, InterfaceSize.MEDIUM), AaSessionSettings.sizesThatGrow(upright))
+        val sideways = AaSessionSettings.turningMaxPercent(320, 2560, 1600)
+        assertEquals(InterfaceSize.entries.filter { it != InterfaceSize.CUSTOM }, AaSessionSettings.sizesThatGrow(sideways))
+    }
+
+    /** A phone or tablet set to BYD keeps Android Auto's music; a real DiLink sends it over the car's Bluetooth. */
+    @Test fun bydBluetoothMusicOnlyOnARealDiLink() {
+        val tablet = values(settings = base.copy(soundThroughCarBluetooth = false), profile = VehicleProfile.BYD_DILINK, bydHeadUnit = false).values
+        assertEquals(false, tablet["music-via-bluetooth"])
+        val dilink = values(profile = VehicleProfile.BYD_DILINK, bydHeadUnit = true).values
+        assertEquals(true, dilink["music-via-bluetooth"])
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Malay (ms) translation of carlink_strings.xml. -->
+<resources>
+    <string name="app_name">CarLink</string>
+    <string name="notification_channel_launch">Buka CarLink</string>
+    <string name="notification_phone_ready">%1$s berada berdekatan. Ketik untuk disambungkan.</string>
+    <string name="notification_open">Ketik untuk membuka CarLink.</string>
+    <string name="carlink_notification_channel_android_auto">Sambungan Android Auto</string>
+    <string name="carlink_back">Kembali</string>
+    <string name="carlink_engine_carplay">CarPlay</string>
+    <string name="carlink_engine_android_auto">Android Auto</string>
+    <string name="carlink_transport_usb">USB</string>
+    <string name="carlink_transport_wireless">Wayarles</string>
+    <string name="carlink_transport_cable">Kabel</string>
+    <string name="carlink_transport_usb_cable">Kabel USB</string>
+    <string name="carlink_transport_plugged_in">Tersambung (USB)</string>
+    <string name="carlink_transport_with_path">%1$s · %2$s</string>
+    <string name="carlink_transport_connected_cable">Disambungkan melalui kabel</string>
+    <string name="carlink_transport_connected_wireless">Disambungkan secara wayarles</string>
+    <string name="carlink_transport_connecting_cable">Menyambung melalui kabel</string>
+    <string name="carlink_transport_connecting_wireless">Menyambung secara wayarles</string>
+    <string name="carlink_state_on">Hidup</string>
+    <string name="carlink_state_off">Mati</string>
+    <string name="carlink_state_selected">Dipilih</string>
+</resources>

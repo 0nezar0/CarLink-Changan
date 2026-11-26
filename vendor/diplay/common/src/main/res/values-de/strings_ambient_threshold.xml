@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings_ambient_threshold.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="ambient_light_threshold_title">Helligkeitsschwelle</string>
+    <string name="ambient_light_threshold_summary">%1$d Lux</string>
+    <string name="ambient_light_threshold_value">Wechselschwelle (Lux)</string>
+    <string name="ambient_light_threshold_hint">Unter der Schwelle (Lux) wird Nacht gewählt; bei Erreichen oder darüber Tag. Die Messwerte müssen für die gewählte Verzögerung auf der neuen Seite bleiben. Geben Sie eine ganze Zahl von 1 bis 200000 ein.</string>
+    <string name="ambient_light_threshold_error">Geben Sie eine ganze Zahl von 1 bis 200000 ein.</string>
+    <string name="ambient_light_reset_defaults">Standard zurücksetzen</string>
+</resources>

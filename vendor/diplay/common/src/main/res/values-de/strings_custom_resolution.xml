@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German (de) vendor strings for strings_custom_resolution.xml. Existing translations were not overwritten. -->
+<resources>
+    <string name="custom_resolution_summary">%1$d %%</string>
+    <string name="custom_resolution_hint">Geben Sie 30–160 Prozent ein. Übernehmen, um CarPlay erneut zu verbinden.</string>
+    <string name="resolution_number_error">Geben Sie eine ganze Zahl von %1$d bis %2$d ein.</string>
+    <string name="resolution_reset_defaults">Standard zurücksetzen</string>
+    <string name="resolution_canvas_unsupported">Dieses Hauptgerät kann die vergrößerte Auflösung nicht decodieren. Es wird 100 % verwendet.</string>
+</resources>

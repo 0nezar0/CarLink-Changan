@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="carlink_cs75_nav_title">Navigációs sáv</string>
+    <string name="carlink_cs75_nav_description">A sáv megjelenítéséhez húzz befelé a bal vagy a jobb szélről. Elrejtéséhez húzz újra ugyanarról a szélről. A CarLink kisegítő szolgáltatása szükséges.</string>
+    <string name="carlink_cs75_nav_back">Vissza</string>
+    <string name="carlink_cs75_nav_home">Kezdőképernyő</string>
+    <string name="carlink_cs75_nav_apps">Telepített alkalmazások</string>
+    <string name="carlink_cs75_nav_settings">Android-beállítások</string>
+    <string name="carlink_cs75_nav_apps_unavailable">Az alkalmazás nem nyitható meg.</string>
+</resources>

@@ -88,6 +88,7 @@ private fun tryPath(path: WirelessPath?): LinkRecovery = when (path) {
     WirelessPath.WIFI_DIRECT -> LinkRecovery.TRY_WIFI_DIRECT
     WirelessPath.CAR_HOTSPOT -> LinkRecovery.TRY_CAR_HOTSPOT
     WirelessPath.SAME_WIFI -> LinkRecovery.TRY_SAME_WIFI
+    // Never a next path: the head unit server is chosen alone (WirelessPolicy).
     WirelessPath.HEADUNIT_SERVER, null -> LinkRecovery.TRY_OTHER_PATH
 }
 
