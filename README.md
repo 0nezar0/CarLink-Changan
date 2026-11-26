@@ -67,6 +67,11 @@
 - **الهامش العلوي** — في الإعدادات › السيارة لكل السيارات (اختيار مستقل لكل ماركة، يبدأ مطفأ). وفي قسم شانجان أيضاً عند اختيار CS75 Plus، وبنفس القيمة.
 - **نقطة اتصال السيارة** — في إعدادات الاتصال تنويه يشرح تشغيل نقطة الاتصال، وزر **إعدادات نقطة الاتصال** يفتح إعدادات النقطة أو إعدادات الشبكة حسب ما تدعمه شاشة السيارة.
 
+<p align="center">
+  <a href="docs/images/car-hotspot-guide.png"><img src="docs/images/car-hotspot-guide.png" alt="إعداد نقطة اتصال السيارة في CarLink: الإعدادات › إظهار الإعدادات المتقدمة › الاتصال › نقطة اتصال السيارة، أدخل اسم الشبكة وكلمة المرور، ثم فعّل «تشغيل نقطة اتصال السيارة». | CarLink car hotspot setup guide" width="480"></a>
+  <br><sub>دليل مصوّر لإعداد نقطة اتصال السيارة: الإعدادات › إظهار الإعدادات المتقدمة › الاتصال › نقطة اتصال السيارة. · Illustrated car hotspot setup guide.</sub>
+</p>
+
 ## الميزات
 
 - **CarPlay و Android Auto معاً:** بالسلك أو لاسلكياً، والتطبيق يعرف الآيفون من الأندرويد بدون ما تختار.
@@ -91,6 +96,11 @@
 2. انقل الملف إلى شاشة السيارة وثبّته (يُسمح بتثبيت التطبيقات من مصادر غير متجر التطبيقات إن طلبت الشاشة ذلك).
 3. بعد التثبيت، حدّث من داخل التطبيق: **الإعدادات › حول › التحقق من التحديثات**.
 4. إذا تبي تجرب النسخ التجريبية قبل الإصدار المستقر، فعّل **الإعدادات › حول › الحصول على نسخ تجريبية**.
+
+<p align="center">
+  <a href="docs/images/install-guide-cs75.png"><img src="docs/images/install-guide-cs75.png" alt="دليل تثبيت CarLink على شانجان CS75 Plus 2022 و2023: كود *#518300# في ES File Explorer، ثم Remote Manager (FTP)، ونسخ الملف إلى /oem/app، وإعادة التشغيل بضغطة مطولة على خفض الصوت 10 ثوانٍ. | CarLink install guide for Changan CS75 Plus 2022/2023" width="480"></a>
+  <br><sub>دليل مصوّر لتثبيت CarLink على شانجان CS75 Plus 2022 و2023 (ES File Explorer ثم FTP ثم /oem/app). · Illustrated install guide for the Changan CS75 Plus 2022/2023.</sub>
+</p>
 
 الإصدار الحالي: [CS75 Plus 2023 v1.6.6 (تجريبي)](https://github.com/0nezar0/carlink-releases/releases/tag/v1.6.6). كل النسخ في [صفحة الإصدارات](https://github.com/0nezar0/carlink-releases/releases).
 
@@ -169,6 +179,18 @@ This build is based on [CarLink](https://github.com/F-e-n-y-x/CarLink) by **F-e-
 2. Copy it to the head unit and install it (allow installation from outside the store if the unit asks).
 3. Later updates can be installed from **Settings › About › Check for updates**.
 4. To receive test builds, turn on **Settings › About › Get test versions**.
+
+<p align="center">
+  <a href="docs/images/install-guide-cs75.png"><img src="docs/images/install-guide-cs75.png" alt="Install guide for the Changan CS75 Plus 2022/2023: enter the code *#518300# in ES File Explorer, start Remote Manager (FTP), copy the APK into /oem/app, then long-press volume down for 10 seconds to restart. | دليل تثبيت CarLink على شانجان CS75 Plus" width="480"></a>
+  <br><sub>Illustrated install guide for the Changan CS75 Plus 2022/2023 (ES File Explorer, FTP, /oem/app). · دليل مصوّر للتثبيت على شانجان CS75 Plus 2022 و2023.</sub>
+</p>
+
+**Car hotspot.** To set up the car hotspot: Settings › Show advanced › Connection › Car hotspot, enter its name (SSID) and password, then turn on **Start car hotspot**.
+
+<p align="center">
+  <a href="docs/images/car-hotspot-guide.png"><img src="docs/images/car-hotspot-guide.png" alt="CarLink car hotspot setup: Settings › Show advanced › Connection › Car hotspot, enter the SSID and password, then enable Start car hotspot. | دليل إعداد نقطة اتصال السيارة في CarLink" width="480"></a>
+  <br><sub>Illustrated car hotspot setup guide. · دليل مصوّر لإعداد نقطة اتصال السيارة.</sub>
+</p>
 
 The current build is [CS75 Plus 2023 v1.6.6 (test)](https://github.com/0nezar0/carlink-releases/releases/tag/v1.6.6). All builds are on the [releases page](https://github.com/0nezar0/carlink-releases/releases).
 
