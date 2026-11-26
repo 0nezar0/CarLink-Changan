@@ -83,9 +83,13 @@ class PhoneClassifierTest {
         assertEquals(PhoneKind.IPHONE, PhoneClassifier.classifyBluetooth(bt("IPAD"), null))
     }
 
-    /** Hands-free and media without iAP2 is no proof: iOS 27 iPhones with a custom name look like this (#89, #90). */
-    @Test fun phoneWithSdpRecordsButNoIap2IsAsked() {
-        assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Sam's phone", setOf(handsFree, a2dpSource)), null))
+    /** CarLink: v1.6.5's reading is back: a phone's records beyond media streaming without iAP2 are Android. */
+    @Test fun phoneWithSdpRecordsButNoIap2IsAndroid() {
+        assertEquals(PhoneKind.ANDROID, PhoneClassifier.classifyBluetooth(bt("Sam's phone", setOf(handsFree, a2dpSource)), null))
+        // ...but that reading alone is not remembered.
+        assertEquals(false, PhoneClassifier.isProof(bt("Sam's phone", setOf(handsFree, a2dpSource)), PhoneKind.ANDROID))
+        assertEquals(true, PhoneClassifier.isProof(bt("Xiaomi 14T Pro"), PhoneKind.ANDROID))
+        assertEquals(true, PhoneClassifier.isProof(bt("Sam's phone", setOf(PhoneClassifier.OBEX_OBJECT_PUSH_UUID)), PhoneKind.ANDROID))
         // Only media streaming seen (an iPhone paired through a stereo's module, 2026-11-08): no guess.
         assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Car phone", setOf(a2dpSource)), null))
         assertEquals(PhoneKind.ANDROID,
@@ -93,7 +97,40 @@ class PhoneClassifierTest {
     }
 
     @Test fun customNamedPhoneWithoutSdpCacheWaits() {
-        assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Galaxy"), null))
+        assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Car phone"), null))
+        assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Sam's phone"), null))
+    }
+
+    // CarLink: the first pairing of a Xiaomi 14T Pro showed the Android/iPhone chooser (2026-11-26).
+    @Test fun androidDefaultNamesAreAndroid() {
+        listOf("Xiaomi 14T Pro", "Redmi Note 13", "POCO F6", "SM-S921B", "Galaxy A55", "OnePlus 12", "HONOR 200",
+            "CPH2581", "RMX3851", "moto g84", "Galaxy")
+            .forEach { assertEquals(it, PhoneKind.ANDROID, PhoneClassifier.classifyBluetooth(bt(it), null)) }
+    }
+
+    @Test fun androidNameWordsAreWholeWords() {
+        listOf("Simone", "Monica's phone", "Pocophone", "Honorable", "iPhone Galaxy").forEach {
+            assertEquals(it, false, PhoneClassifier.looksLikeAndroidName(it))
+        }
+    }
+
+    @Test fun objectPushIsAndroidOnlyForAPhone() {
+        val opp = PhoneClassifier.OBEX_OBJECT_PUSH_UUID
+        assertEquals(PhoneKind.ANDROID, PhoneClassifier.classifyBluetooth(bt("Nezar", setOf(handsFree, a2dpSource, opp)), null))
+        assertEquals(PhoneKind.ANDROID, PhoneClassifier.classifyBluetooth(bt("Nezar", setOf(opp), major = null), null))
+        // A watch or a laptop publishes Object Push too.
+        assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Nezar", setOf(opp), major = 0x0700), null))
+        assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Nezar", setOf(opp), major = 0x0100), null))
+    }
+
+    @Test fun iphoneEvidenceBeatsAndroidHints() {
+        val opp = PhoneClassifier.OBEX_OBJECT_PUSH_UUID
+        assertEquals(PhoneKind.IPHONE, PhoneClassifier.classifyBluetooth(bt("Galaxy", setOf(PhoneClassifier.IAP2_BLUETOOTH_UUID, opp)), null))
+        assertEquals(PhoneKind.IPHONE, PhoneClassifier.classifyBluetooth(bt("Sara’s iPhone", setOf(opp)), null))
+        assertEquals(PhoneKind.IPHONE, PhoneClassifier.classifyBluetooth(bt("آيفون نزار"), null))
+        // A remembered ANDROID never outlives an iAP2 record.
+        assertEquals(PhoneKind.IPHONE,
+            PhoneClassifier.classifyBluetooth(bt("Xiaomi", setOf(PhoneClassifier.IAP2_BLUETOOTH_UUID)), PhoneKind.ANDROID))
     }
 
     @Test fun nonPhonesAreNotAndroidAuto() {
