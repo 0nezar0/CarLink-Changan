@@ -16,6 +16,15 @@ import org.robolectric.annotation.Config
 class SettingsStoresTest {
     private val app: Application get() = RuntimeEnvironment.getApplication()
 
+    @Test fun carHotspotStartIsOnByDefaultAndAnExplicitChoiceIsKept() {
+        app.getSharedPreferences("carlink", Context.MODE_PRIVATE).edit().clear().commit()
+        assertTrue(CarLinkPreferences(app).autoCarHotspot)
+        CarLinkPreferences(app).autoCarHotspot = false
+        assertFalse(CarLinkPreferences(app).autoCarHotspot)
+        CarLinkPreferences(app).autoCarHotspot = true
+        assertTrue(CarLinkPreferences(app).autoCarHotspot)
+    }
+
     @Test fun emptyUnifiedStoreLoadsTheDefaults() {
         assertEquals(UnifiedSettings(), UnifiedSettingsStore(app).load())
     }

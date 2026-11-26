@@ -263,11 +263,11 @@
     <string name="carlink_settings_car_brand_detail">BYD: hozzáadja a DiLink-extrákat. A többi márka csak ezt az autót jelöli, a Changan kivételével.</string>
     <string name="carlink_settings_car_brand_changan_note">Changan: a logója a CarPlay autóba-vissza gombján (más autók az alapértelmezett ikont kapják). A CS75 Plus választásakor rákérdez az értesítési sáv elrejtésére — minden alkalmazásban a kezdőképernyő kivételével, vagy a teljes listából kiválasztott alkalmazásokban. A hang alapból az autó Bluetoothján szól. A CarPlay továbbra is 400 mm-t és HEVC-t, az Android Auto 200 DPI-t használ. Mindez a Beállításokban módosítható.</string>
     <string name="carlink_settings_car_brand_sheet_body">Válassza ki ennek az autónak a márkáját. A CarPlay és az Android Auto minden autóban ugyanúgy működik.</string>
-    <string name="carlink_cs75_hide_bar_prompt_title">Értesítési sáv elrejtése</string>
-    <string name="carlink_cs75_hide_bar_prompt_body">Elrejti az autó lebegő értesítési sávját CarPlay és Android Auto közben, hogy ne takarja a képet. Bekapcsolja?</string>
-    <string name="carlink_cs75_hide_bar_prompt_hint">A beállításokban bármikor módosíthatja vagy kikapcsolhatja. A rejtéshez a CarLinknek akadálymentesítési engedélyre is szüksége van.</string>
-    <string name="carlink_cs75_hide_bar_prompt_enable">Bekapcsolás</string>
-    <string name="carlink_cs75_hide_bar_prompt_skip">Kihagyás</string>
+    <string name="carlink_projection_prompt_title">Elrejted az állapotsort és használod a HEVC-t?</string>
+    <string name="carlink_projection_prompt_body">Elrejted az autó lebegő állapotsorát CarPlay és Android Auto közben, és HEVC videót használsz az élesebb képért?</string>
+    <string name="carlink_projection_prompt_yes">Igen</string>
+    <string name="carlink_projection_prompt_no">Nem</string>
+    <string name="carlink_projection_prompt_hint">A beállításokban bármikor módosíthatja vagy kikapcsolhatja. A rejtéshez a CarLinknek akadálymentesítési engedélyre is szüksége van.</string>
     <string name="carlink_settings_car_generic">Általános</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">Felismerve: %1$s</string>

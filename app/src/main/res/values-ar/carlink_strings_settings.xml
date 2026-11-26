@@ -132,11 +132,11 @@
     <string name="carlink_cs75_first_launch_title">هل سيارتك شانجان /\u2068CS75 Plus 2023-2022\u2069؟</string>
     <string name="carlink_cs75_first_launch_yes">نعم</string>
     <string name="carlink_cs75_first_launch_no">لا</string>
-    <string name="carlink_cs75_hide_bar_prompt_title">إخفاء شريط الإشعارات</string>
-    <string name="carlink_cs75_hide_bar_prompt_body">يخفي شريط الإشعارات العائم حق السيارة أثناء \u2068CarPlay\u2069 و\u2068Android Auto\u2069، عشان ما يغطي الصورة. تبي تشغّله؟</string>
-    <string name="carlink_cs75_hide_bar_prompt_hint">تقدر تغيّره أو تطفيه أي وقت من الإعدادات. وحتحتاج تفعّل إذن إمكانية الوصول لـ \u2068CarLink\u2069 عشان يشتغل الإخفاء.</string>
-    <string name="carlink_cs75_hide_bar_prompt_enable">تشغيل</string>
-    <string name="carlink_cs75_hide_bar_prompt_skip">تخطي</string>
+    <string name="carlink_projection_prompt_title">إخفاء شريط الإشعارات وتفعيل \u2068HEVC\u2069؟</string>
+    <string name="carlink_projection_prompt_body">تبي نخفي شريط الإشعارات العائم حق السيارة أثناء \u2068CarPlay\u2069 و\u2068Android Auto\u2069، ونفعّل \u2068HEVC\u2069 عشان صورة أوضح؟</string>
+    <string name="carlink_projection_prompt_yes">نعم</string>
+    <string name="carlink_projection_prompt_no">لا</string>
+    <string name="carlink_projection_prompt_hint">تقدر تغيّره أو تطفيه أي وقت من الإعدادات. وحتحتاج تفعّل إذن إمكانية الوصول لـ \u2068CarLink\u2069 عشان يشتغل الإخفاء.</string>
     <string name="carlink_settings_hide_bar_off">إيقاف</string>
     <string name="carlink_settings_hide_bar_off_detail">شريط حالة السيارة يبقى ظاهر.</string>
     <string name="carlink_settings_hide_bar_all">إخفاء الشريط في كل التطبيقات ما عدا الشاشة الرئيسية</string>
@@ -275,7 +275,7 @@
     <string name="carlink_settings_floating_switcher_permission_detail">يحتاج Android إلى ذلك قبل أن يظهر CarLink الزر</string>
     <string name="carlink_settings_car_brand">ماركة السيارة</string>
     <string name="carlink_settings_car_brand_detail">BYD: تضيف إضافات DiLink. والماركات الثانية تسمّي السيارة بس، ما عدا شانجان.</string>
-    <string name="carlink_settings_car_brand_changan_note">شانجان: يطلع شعارها على زر الرجوع للسيارة في \u2068CarPlay\u2069 (باقي السيارات لها الأيقونة الافتراضية). عند اختيار إدخال \u2068CS75 Plus 2023-2022\u2069 ينسأل عن إخفاء شريط الإشعارات، وتقدر تخفيه في كل التطبيقات أو في تطبيقات تختارها من قائمة كاملة. تشغيل الصوت عبر \u2068Bluetooth\u2069 في السيارة افتراضي. ويتعيّن \u2068CarPlay\u2069 على 400 مم و\u2068HEVC\u2069، و\u2068Android Auto\u2069 على \u2068200 DPI\u2069. تقدر تغيّر كل هذا من الإعدادات.</string>
+    <string name="carlink_settings_car_brand_changan_note">شانجان: يطلع شعارها على زر الرجوع للسيارة في \u2068CarPlay\u2069 (باقي السيارات لها الأيقونة الافتراضية). إدخال \u2068CS75 Plus 2023-2022\u2069 يخفي شريط الإشعارات افتراضياً، وتقدر تخفيه في كل التطبيقات أو في تطبيقات تختارها من قائمة كاملة في الإعدادات. تشغيل الصوت عبر \u2068Bluetooth\u2069 في السيارة افتراضي. ويتعيّن \u2068CarPlay\u2069 على 400 مم و\u2068HEVC\u2069، و\u2068Android Auto\u2069 على \u2068200 DPI\u2069. تقدر تغيّر كل هذا من الإعدادات.</string>
     <string name="carlink_settings_car_brand_sheet_body">اختر ماركة هذه السيارة. يعمل CarPlay وAndroid Auto بالطريقة نفسها في كل سيارة.</string>
     <string name="carlink_settings_car_generic">عام</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
@@ -289,7 +289,7 @@
     <string name="carlink_settings_car_byd_not_dilink">هذه الشاشة ليست وحدة BYD DiLink، لذلك لا يمكن لإضافات BYD أن تعمل هنا. اختر ماركة سيارتك، أو «أخرى».</string>
     <string name="carlink_settings_car_explain_byd">تضيف BYD إضافات DiLink: الاتجاهات على الشاشة الأمامية ولوحة العدادات، وأزرار مقود BYD.</string>
     <string name="carlink_settings_car_explain_other">يعمل CarPlay وAndroid Auto كما في أي سيارة. الماركة تسمّي هذه السيارة في CarLink فقط.</string>
-    <string name="carlink_settings_car_explain_changan">يشتغل \u2068CarPlay\u2069 و\u2068Android Auto\u2069 مثل أي سيارة. وشانجان يطلع شعارها على زر الرجوع في \u2068CarPlay\u2069. عند الاختيار ينسأل عن إخفاء شريط الإشعارات، وفيه قائمة بكل التطبيقات إذا حاب تخفيه في تطبيقات معيّنة. الصوت عبر \u2068Bluetooth\u2069 في السيارة افتراضي. ويتعيّن \u2068CarPlay\u2069 على 400 مم و\u2068HEVC\u2069، و\u2068Android Auto\u2069 على \u2068200 DPI\u2069.</string>
+    <string name="carlink_settings_car_explain_changan">يشتغل \u2068CarPlay\u2069 و\u2068Android Auto\u2069 مثل أي سيارة. وشانجان يطلع شعارها على زر الرجوع في \u2068CarPlay\u2069. عند الاختيار يتخفى شريط الإشعارات افتراضياً، وفي الإعدادات قائمة بكل التطبيقات إذا حاب تخفيه في تطبيقات معيّنة. الصوت عبر \u2068Bluetooth\u2069 في السيارة افتراضي. ويتعيّن \u2068CarPlay\u2069 على 400 مم و\u2068HEVC\u2069، و\u2068Android Auto\u2069 على \u2068200 DPI\u2069.</string>
     <string name="carlink_wheel_keys">أزرار المقود</string>
     <string name="carlink_wheel_keys_detail">علّم CarLink أزرار مقودك للصوت والمكالمات والموسيقى في CarPlay وAndroid Auto</string>
     <plurals name="carlink_wheel_keys_value">

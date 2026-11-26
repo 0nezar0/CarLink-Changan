@@ -263,11 +263,11 @@
     <string name="carlink_settings_car_brand_detail">BYD: acrescenta os respetivos extras DiLink. As outras marcas apenas identificam este carro, exceto Changan.</string>
     <string name="carlink_settings_car_brand_changan_note">Changan: o respetivo logótipo no botão de regresso ao carro do CarPlay (os outros carros recebem o ícone predefinido). Ao escolher a entrada CS75 Plus, é-lhe perguntado se deve ocultar a barra de notificações — em todas as aplicações exceto o ecrã inicial, ou nas que escolher de uma lista completa. O som é reproduzido através do Bluetooth do carro por predefinição. O CarPlay mantém 400 mm e HEVC, e o Android Auto 200 DPI. Pode alterar tudo em Definições.</string>
     <string name="carlink_settings_car_brand_sheet_body">Escolha a marca deste carro. O CarPlay e o Android Auto funcionam da mesma forma em todos os carros.</string>
-    <string name="carlink_cs75_hide_bar_prompt_title">Ocultar a barra de notificações</string>
-    <string name="carlink_cs75_hide_bar_prompt_body">Oculta a barra de notificações flutuante do carro durante o CarPlay e o Android Auto, para não tapar a imagem. Ativar?</string>
-    <string name="carlink_cs75_hide_bar_prompt_hint">Pode alterá-la ou desligá-la a qualquer momento em Definições. O CarLink também precisa da permissão de acessibilidade para a ocultação funcionar.</string>
-    <string name="carlink_cs75_hide_bar_prompt_enable">Ativar</string>
-    <string name="carlink_cs75_hide_bar_prompt_skip">Saltar</string>
+    <string name="carlink_projection_prompt_title">Ocultar a barra de estado e usar HEVC?</string>
+    <string name="carlink_projection_prompt_body">Ocultar a barra de estado flutuante do carro durante o CarPlay e o Android Auto e usar vídeo HEVC para uma imagem mais nítida?</string>
+    <string name="carlink_projection_prompt_yes">Sim</string>
+    <string name="carlink_projection_prompt_no">Não</string>
+    <string name="carlink_projection_prompt_hint">Pode alterá-la ou desligá-la a qualquer momento em Definições. O CarLink também precisa da permissão de acessibilidade para a ocultação funcionar.</string>
     <string name="carlink_settings_car_generic">Genérico</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">Detetado: %1$s</string>

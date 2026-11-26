@@ -66,4 +66,45 @@ class Cs75ProjectionDefaultsTest {
         assertEquals(Cs75ProjectionDefaults.CARPLAY_WIDTH_MM, air.getInt("display_width_physical_mm", 0))
         assertTrue(air.getBoolean("hevc_enabled", false))
     }
+
+    private val hideMode get() = UnifiedSettingsStore(ctx).load().hideCarStatusBarMode
+
+    @Test fun firstCs75SelectionTurnsStatusBarHideOnByDefault() {
+        assertEquals(HideCarStatusBarMode.OFF, hideMode)
+        CarBrandStore(ctx).set(CarBrand.CHANGAN_CS75_PLUS)
+        assertEquals(HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER, hideMode)
+        assertTrue(vehicle.getBoolean(Cs75ProjectionDefaults.KEY_HIDE_BAR_DEFAULT_APPLIED, false))
+    }
+
+    @Test fun anExplicitHideChoiceIsKept() {
+        val store = UnifiedSettingsStore(ctx)
+        store.save(store.load().copy(hideCarStatusBarMode = HideCarStatusBarMode.OFF))
+        CarBrandStore(ctx).set(CarBrand.CHANGAN_CS75_PLUS)
+        assertEquals(HideCarStatusBarMode.OFF, hideMode)
+    }
+
+    @Test fun aLaterOffIsNotTurnedBackOn() {
+        CarBrandStore(ctx).set(CarBrand.CHANGAN_CS75_PLUS)
+        val store = UnifiedSettingsStore(ctx)
+        store.save(store.load().copy(hideCarStatusBarMode = HideCarStatusBarMode.OFF))
+        CarBrandStore(ctx).chosen()
+        Cs75ProjectionDefaults.applyIfUnset(ctx)
+        assertEquals(HideCarStatusBarMode.OFF, hideMode)
+    }
+
+    @Test fun anExistingCs75ChoiceWithNoStoredHideModeGetsTheDefaultOnce() {
+        // A CS75 choice made before the default existed: projection defaults already applied, no hide mode stored.
+        vehicle.edit().putString(CarBrandStore.KEY_BRAND, CarBrand.CHANGAN_CS75_PLUS.name)
+            .putBoolean(CarBrandStore.KEY_CS75_MIGRATED, true)
+            .putBoolean(Cs75ProjectionDefaults.KEY_APPLIED, true).commit()
+        assertEquals(CarBrand.CHANGAN_CS75_PLUS, CarBrandStore(ctx).chosen())
+        assertEquals(HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER, hideMode)
+    }
+
+    @Test fun otherBrandsDoNotGetTheHideDefault() {
+        CarBrandStore(ctx).set(CarBrand.OTHER)
+        CarBrandStore(ctx).set(CarBrand.CHANGAN)
+        assertEquals(HideCarStatusBarMode.OFF, hideMode)
+        assertFalse(vehicle.getBoolean(Cs75ProjectionDefaults.KEY_HIDE_BAR_DEFAULT_APPLIED, false))
+    }
 }

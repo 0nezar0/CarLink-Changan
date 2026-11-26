@@ -73,7 +73,7 @@ data class ConnectionPrefs(
     /** Settings › Connection › Root mode (advanced). */
     val rootMode: Boolean = false,
     /** Settings › Connection › "Switch the car hotspot on" (advanced, #36). */
-    val autoCarHotspot: Boolean = false,
+    val autoCarHotspot: Boolean = true,
     /** "Android Auto on this screen (experimental)" (Settings › Connection, advanced). */
     val androidAutoOnScreen: Boolean = false,
     /** Android Auto (Gearhead) is installed on this device: Self Mode needs it. */
@@ -242,29 +242,33 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
         com.carlink.app.switcher.SwitcherController.onSettingChanged()
     }
 
-    private val _cs75HideBarPrompt = MutableStateFlow(false)
-    /**
-     * True after the driver picks the CS75 Plus entry, until they answer the status-bar hide dialog.
-     * A fresh install does not ask until they say Yes to the first-launch car question.
-     * Restoring a backup does not ask.
-     */
-    val cs75HideBarPrompt: StateFlow<Boolean> = _cs75HideBarPrompt.asStateFlow()
-
-    /** The brand list. Choosing the CS75 Plus entry asks whether to hide the car's notification bar. */
+    /** The brand list. The CS75 Plus entry hides the car's notification bar by default, without asking. */
     fun chooseCarBrand(brand: com.carlink.core.settings.CarBrand) {
         setCarBrand(brand)
-        if (brand.isChanganCs75Plus) _cs75HideBarPrompt.value = true
     }
 
-    /** Enable turns on hide-in-all-apps-except-launcher. Skip or Back leaves (or turns) it off. */
-    fun answerCs75HideBar(enable: Boolean) {
-        _cs75HideBarPrompt.value = false
-        updateSettings {
-            it.copy(
-                hideCarStatusBarMode = if (enable) HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER
-                else HideCarStatusBarMode.OFF,
-            )
-        }
+    private val _projectionPrompt = MutableStateFlow(false)
+    /**
+     * True while the Yes/No "hide the status bar and use HEVC?" question is on screen. It is for
+     * every car except the CS75 Plus, and is shown once ([ProjectionPrompt]).
+     */
+    val projectionPrompt: StateFlow<Boolean> = _projectionPrompt.asStateFlow()
+
+    private fun refreshProjectionPrompt() {
+        _projectionPrompt.value = ProjectionPrompt.shouldShow(
+            brand = Connection.carBrand(app),
+            alreadyAnswered = uiPreferences.projectionPromptDone,
+            firstLaunchQuestionShowing = _cs75FirstLaunchPrompt.value,
+        )
+    }
+
+    /** Yes turns on the car status-bar hide (all apps except the car's home screen) and CarPlay HEVC. No changes nothing. */
+    fun answerProjectionPrompt(enable: Boolean) {
+        _projectionPrompt.value = false
+        uiPreferences.projectionPromptDone = true
+        if (!enable) return
+        updateSettings { it.copy(hideCarStatusBarMode = HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER) }
+        com.shilapi.xcertplay.AirPlayPersistence.saveHevcEnabled(app, true)
     }
 
     private val _cs75FirstLaunchPrompt = MutableStateFlow(
@@ -279,17 +283,16 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
 
     /**
      * Yes selects [com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS] and applies its
-     * projection defaults (CarPlay 400 mm, HEVC, Android Auto 200 DPI). Then the status-bar
-     * hide prompt is shown ([answerCs75HideBar]).
-     * No dismisses the dialog and leaves the normal first-run flow. Either way the car
-     * question is not shown again.
+     * projection defaults (CarPlay 400 mm, HEVC, Android Auto 200 DPI, status-bar hide on),
+     * and the Yes/No status-bar and HEVC question is never shown for it.
+     * No dismisses the dialog; the status-bar and HEVC question follows ([answerProjectionPrompt]).
+     * Either way the car question is not shown again.
      */
     fun answerCs75FirstLaunch(isCs75: Boolean) {
         _cs75FirstLaunchPrompt.value = false
         uiPreferences.cs75FirstLaunchPromptDone = true
-        if (!isCs75) return
-        setCarBrand(com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS)
-        _cs75HideBarPrompt.value = true
+        if (isCs75) setCarBrand(com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS)
+        refreshProjectionPrompt()
     }
 
     private fun readVehicle() = VehicleChoice(Connection.carBrand(app), com.carlink.core.settings.CarBrand.detect(app))
@@ -340,6 +343,7 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
     val permissionsNeeded: StateFlow<Boolean> = _permissionsNeeded.asStateFlow()
 
     init {
+        refreshProjectionPrompt()
         // Root mode re-applies its grants once per run (an update or a reinstall resets some of them).
         if (preferences.rootMode) viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             com.carlink.core.settings.RootMode.grant(app, com.carlink.app.ui.setup.SetupPermissions.runtimePermissions())

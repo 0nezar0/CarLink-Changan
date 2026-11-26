@@ -263,11 +263,11 @@
     <string name="carlink_settings_car_brand_detail">BYD: menambah tambahan DiLinknya. Jenama lain hanya melabel kereta ini, kecuali Changan.</string>
     <string name="carlink_settings_car_brand_changan_note">Changan: logonya pada butang kembali ke kereta CarPlay (kereta lain mendapat ikon lalai). Apabila anda memilih entri CS75 Plus, anda ditanya tentang menyembunyikan bar pemberitahuan — dalam semua apl kecuali skrin utama, atau dalam apl yang anda pilih daripada senarai penuh. Bunyi dimainkan melalui Bluetooth kereta secara lalai. CarPlay kekal pada 400 mm dan HEVC, dan Android Auto pada 200 DPI. Anda boleh mengubah semua ini dalam Tetapan.</string>
     <string name="carlink_settings_car_brand_sheet_body">Pilih jenama kereta ini. CarPlay dan Android Auto berfungsi sama dalam setiap kereta.</string>
-    <string name="carlink_cs75_hide_bar_prompt_title">Sembunyikan bar pemberitahuan</string>
-    <string name="carlink_cs75_hide_bar_prompt_body">Menyembunyikan bar pemberitahuan terapung kereta semasa CarPlay dan Android Auto supaya ia tidak menutupi gambar. Hidupkan?</string>
-    <string name="carlink_cs75_hide_bar_prompt_hint">Anda boleh mengubah atau mematikannya pada bila-bila masa dalam Tetapan. CarLink juga memerlukan keizinan Kebolehcapaian supaya penyembunyian berfungsi.</string>
-    <string name="carlink_cs75_hide_bar_prompt_enable">Hidupkan</string>
-    <string name="carlink_cs75_hide_bar_prompt_skip">Langkau</string>
+    <string name="carlink_projection_prompt_title">Sembunyikan bar status dan guna HEVC?</string>
+    <string name="carlink_projection_prompt_body">Sembunyikan bar status terapung kereta semasa CarPlay dan Android Auto, dan guna video HEVC untuk gambar yang lebih tajam?</string>
+    <string name="carlink_projection_prompt_yes">Ya</string>
+    <string name="carlink_projection_prompt_no">Tidak</string>
+    <string name="carlink_projection_prompt_hint">Anda boleh mengubah atau mematikannya pada bila-bila masa dalam Tetapan. CarLink juga memerlukan keizinan Kebolehcapaian supaya penyembunyian berfungsi.</string>
     <string name="carlink_settings_car_generic">Umum</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">Dikesan: %1$s</string>

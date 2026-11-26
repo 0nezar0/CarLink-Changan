@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.carlink.app.ui.about.AboutScreen
 import com.carlink.app.ui.diagnostics.DiagnosticsScreen
 import com.carlink.app.ui.home.HomeScreen
-import com.carlink.app.ui.settings.Cs75HideBarDialog
+import com.carlink.app.ui.settings.ProjectionPromptDialog
 import com.carlink.app.ui.settings.Cs75FirstLaunchDialog
 import com.carlink.app.ui.settings.SettingsScreen
 import com.carlink.app.ui.theme.CarMotion
@@ -78,7 +78,7 @@ fun CarLinkApp(vm: CarLinkViewModel, onExitToCarHome: () -> Unit) {
 
     val reduceMotion = LocalReduceMotion.current
     val travel = with(LocalDensity.current) { 48.dp.roundToPx() }
-    val askCs75HideBar by vm.cs75HideBarPrompt.collectAsStateWithLifecycle()
+    val askProjection by vm.projectionPrompt.collectAsStateWithLifecycle()
     val askCs75FirstLaunch by vm.cs75FirstLaunchPrompt.collectAsStateWithLifecycle()
     // A Surface (not a plain background) so every screen's text defaults to onBackground.
     androidx.compose.material3.Surface(
@@ -88,7 +88,7 @@ fun CarLinkApp(vm: CarLinkViewModel, onExitToCarHome: () -> Unit) {
     ) {
         // Every screen draws its atmosphere behind the system bars and pads its own content.
         if (askCs75FirstLaunch) Cs75FirstLaunchDialog(onAnswer = vm::answerCs75FirstLaunch)
-        if (askCs75HideBar) Cs75HideBarDialog(onAnswer = vm::answerCs75HideBar)
+        if (askProjection) ProjectionPromptDialog(onAnswer = vm::answerProjectionPrompt)
         Box(Modifier.fillMaxSize()) {
                 AnimatedContent(
                     targetState = route,

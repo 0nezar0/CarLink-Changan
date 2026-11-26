@@ -1,6 +1,7 @@
 package com.carlink.core.settings
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import com.carlink.core.engine.AndroidAutoSettings
 import com.shilapi.xcertplay.AirPlayPersistence
@@ -13,6 +14,10 @@ import com.shilapi.xcertplay.AirPlayPersistence
  * - CarPlay width **400 mm** (Advanced setting `cp_width`, the "400 mm" option).
  * - CarPlay **HEVC** on (Advanced setting `cp_hevc`).
  * - Android Auto pixel density **200** (Advanced setting `aa_dpi`, key `dpi-pixel-density`).
+ * - Car status-bar hide **on** (all apps except the car's home screen), with no question asked.
+ *   Written once ([KEY_HIDE_BAR_DEFAULT_APPLIED]) and only when the driver never stored a hide
+ *   mode, so an explicit Off, or a saved mode, is kept. It also reaches a CS75 Plus choice that
+ *   was made before this default existed.
  *
  * Values the driver already set in Advanced are left alone. Other brands, including generic
  * [CarBrand.CHANGAN], are not written. A one-shot flag in [CarBrandStore.PREFS] stops a later
@@ -25,6 +30,7 @@ object Cs75ProjectionDefaults {
     const val CARPLAY_WIDTH_MM = 400
     const val ANDROID_AUTO_DPI = 200
     const val KEY_APPLIED = "cs75_projection_defaults_applied"
+    const val KEY_HIDE_BAR_DEFAULT_APPLIED = "cs75_hide_bar_default_applied"
 
     private const val AIRPLAY_PREFS = "xcertplay_airplay"
     private const val KEY_WIDTH_PHYSICAL_MM = "display_width_physical_mm"
@@ -34,6 +40,7 @@ object Cs75ProjectionDefaults {
     fun applyIfUnset(context: Context) {
         val app = context.applicationContext
         val flagPrefs = app.getSharedPreferences(CarBrandStore.PREFS, Context.MODE_PRIVATE)
+        applyHideBarDefaultOnce(app, flagPrefs)
         if (flagPrefs.getBoolean(KEY_APPLIED, false)) return
 
         val store = UnifiedSettingsStore(app)
@@ -59,6 +66,15 @@ object Cs75ProjectionDefaults {
         }
 
         flagPrefs.edit().putBoolean(KEY_APPLIED, true).apply()
+    }
+
+    private fun applyHideBarDefaultOnce(app: Context, flagPrefs: SharedPreferences) {
+        if (flagPrefs.getBoolean(KEY_HIDE_BAR_DEFAULT_APPLIED, false)) return
+        val store = UnifiedSettingsStore(app)
+        if (!store.hasHideCarStatusBarMode()) {
+            store.save(store.load().copy(hideCarStatusBarMode = HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER))
+        }
+        flagPrefs.edit().putBoolean(KEY_HIDE_BAR_DEFAULT_APPLIED, true).apply()
     }
 
     /**

@@ -263,11 +263,11 @@
     <string name="carlink_settings_car_brand_detail">BYD : ajoute ses extras DiLink. Les autres marques ne font qu’identifier cette voiture, sauf Changan.</string>
     <string name="carlink_settings_car_brand_changan_note">Changan : son logo sur le bouton de retour à la voiture de CarPlay (les autres voitures reçoivent l’icône par défaut). Lorsque vous choisissez l’entrée CS75 Plus, on vous demande si la barre de notifications doit être masquée — dans toutes les applis sauf l’écran d’accueil, ou dans celles que vous choisissez dans une liste complète. Le son passe par le Bluetooth de la voiture par défaut. CarPlay reste à 400 mm et HEVC, et Android Auto à 200 DPI. Vous pouvez tout modifier dans Réglages.</string>
     <string name="carlink_settings_car_brand_sheet_body">Choisissez la marque de cette voiture. CarPlay et Android Auto fonctionnent de la même manière dans toutes les voitures.</string>
-    <string name="carlink_cs75_hide_bar_prompt_title">Masquer la barre de notifications</string>
-    <string name="carlink_cs75_hide_bar_prompt_body">Masque la barre de notifications flottante de la voiture pendant CarPlay et Android Auto, pour qu’elle ne recouvre pas l’image. L’activer ?</string>
-    <string name="carlink_cs75_hide_bar_prompt_hint">Vous pouvez la modifier ou la désactiver à tout moment dans les Réglages. CarLink a aussi besoin de l’autorisation d’accessibilité pour que le masquage fonctionne.</string>
-    <string name="carlink_cs75_hide_bar_prompt_enable">Activer</string>
-    <string name="carlink_cs75_hide_bar_prompt_skip">Passer</string>
+    <string name="carlink_projection_prompt_title">Masquer la barre d’état et utiliser HEVC ?</string>
+    <string name="carlink_projection_prompt_body">Masquer la barre d’état flottante de la voiture pendant CarPlay et Android Auto et utiliser la vidéo HEVC pour une image plus nette ?</string>
+    <string name="carlink_projection_prompt_yes">Oui</string>
+    <string name="carlink_projection_prompt_no">Non</string>
+    <string name="carlink_projection_prompt_hint">Vous pouvez la modifier ou la désactiver à tout moment dans les Réglages. CarLink a aussi besoin de l’autorisation d’accessibilité pour que le masquage fonctionne.</string>
     <string name="carlink_settings_car_generic">Générique</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
     <string name="carlink_settings_car_detected">Détecté : %1$s</string>

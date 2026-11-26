@@ -55,26 +55,25 @@ internal fun RestoreConfirmDialog(backup: SettingsBackup.Backup, onConfirm: () -
 }
 
 /**
- * Shown after the driver picks the CS75 Plus entry (brand list, setup, or Yes on the first-launch
- * car question). Enable turns on status-bar hide in every app except the car's home screen.
- * Skip or Back leaves it off. The switch stays in the CS75 Settings category. The 48 px top
- * margin is not changed here; it stays off until they turn it on in Settings.
+ * Asked once, for every car except the Changan CS75 Plus (which hides the bar by default): hide
+ * the car's status bar and turn on HEVC. Yes enables both; No (or Back) leaves them as they are.
+ * Both stay in Settings.
  */
 @Composable
-internal fun Cs75HideBarDialog(onAnswer: (Boolean) -> Unit) {
+internal fun ProjectionPromptDialog(onAnswer: (Boolean) -> Unit) {
     val scheme = MaterialTheme.colorScheme
     AlertDialog(
         onDismissRequest = { onAnswer(false) },
-        title = { Text(stringResource(R.string.carlink_cs75_hide_bar_prompt_title)) },
+        title = { Text(stringResource(R.string.carlink_projection_prompt_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(R.string.carlink_cs75_hide_bar_prompt_body), color = scheme.onSurface)
-                Text(stringResource(R.string.carlink_cs75_hide_bar_prompt_hint), color = scheme.onSurfaceVariant,
+                Text(stringResource(R.string.carlink_projection_prompt_body), color = scheme.onSurface)
+                Text(stringResource(R.string.carlink_projection_prompt_hint), color = scheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall)
             }
         },
-        confirmButton = { IonButton(stringResource(R.string.carlink_cs75_hide_bar_prompt_enable), { onAnswer(true) }) },
-        dismissButton = { GlassButton(stringResource(R.string.carlink_cs75_hide_bar_prompt_skip), { onAnswer(false) }) },
+        confirmButton = { IonButton(stringResource(R.string.carlink_projection_prompt_yes), { onAnswer(true) }) },
+        dismissButton = { GlassButton(stringResource(R.string.carlink_projection_prompt_no), { onAnswer(false) }) },
         containerColor = scheme.surfaceContainerHigh,
     )
 }
@@ -94,7 +93,7 @@ internal fun RestoreErrorDialog(reason: String?, onDismiss: () -> Unit) {
 
 /**
  * First launch after a fresh install only. Yes selects the CS75 Plus brand and applies its
- * projection defaults, then the status-bar hide prompt is shown. No leaves the normal flow.
+ * projection defaults, with the status-bar hide on. No leaves the normal flow, then the status-bar and HEVC question follows.
  * Back counts as No. Shown once.
  */
 @Composable

@@ -145,6 +145,9 @@ class UnifiedSettingsStore(context: Context) {
     /** The stored language alone (cheap; read at startup to refresh [AppLanguage]'s copy). */
     fun appLanguage(): String = AppLanguage.sanitize(prefs.getString("app_language", AppLanguage.SYSTEM))
 
+    /** True once a hide mode was ever stored (an explicit On or Off), so a default must not replace it. */
+    fun hasHideCarStatusBarMode(): Boolean = prefs.contains(KEY_HIDE_CAR_STATUS_BAR_MODE)
+
     private fun hideCarStatusBarMode(): HideCarStatusBarMode =
         enumOr(prefs.getString(KEY_HIDE_CAR_STATUS_BAR_MODE, null), HideCarStatusBarMode.OFF)
 
