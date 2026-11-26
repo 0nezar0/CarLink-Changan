@@ -37,7 +37,7 @@ class Cs75ProjectionDefaultsTest {
     @Test fun aLaterExplicitChangeIsNotOverwritten() {
         CarBrandStore(ctx).set(CarBrand.CHANGAN_CS75_PLUS)
         AirPlayPersistence.saveWidthPhysicalMm(ctx, 250)
-        AirPlayPersistence.saveHevcEnabled(ctx, false)
+        HevcChoice.setByUser(ctx, false) // the driver's own Off is the only thing that keeps HEVC off on a CS75 Plus
         CarBrandStore(ctx).set(CarBrand.CHANGAN_CS75_PLUS)
         Cs75ProjectionDefaults.applyIfUnset(ctx)
         assertEquals(250, air.getInt("display_width_physical_mm", 0))

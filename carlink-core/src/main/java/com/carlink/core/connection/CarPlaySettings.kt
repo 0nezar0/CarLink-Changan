@@ -270,7 +270,11 @@ object CarPlaySettingsPolicy {
         values.wirelessMode?.let { AirPlayPersistence.saveWirelessHotspotMode(context, it) }
         values.displayScalePercent?.let { AirPlayPersistence.saveDisplayScalePercent(context, it) }
         values.fps?.let { AirPlayPersistence.saveFps(context, it) }
-        values.hevc?.let {
+        // CS75 Plus: on unless the driver chose Off, whatever the picture policy or a fallback says.
+        val cs75Hevc = Cs75ProjectionDefaults.hevcOverride(context)
+        if (cs75Hevc != null) {
+            AirPlayPersistence.saveHevcEnabled(context, cs75Hevc)
+        } else values.hevc?.let {
             if (!Cs75ProjectionDefaults.shouldSuppressHevcWrite(context, it)) {
                 AirPlayPersistence.saveHevcEnabled(context, it)
             }

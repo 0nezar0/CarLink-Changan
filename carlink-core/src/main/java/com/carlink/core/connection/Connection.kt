@@ -256,7 +256,8 @@ object Connection {
         val settings = effectiveSettings(stored, wifi)
         val profile = vehicleProfile(app)
         // Every start, so the HEVC fallback knows whether this attempt sends HEVC (presets: never).
-        val picture = VideoSurfaceMemory.reconcile(app, CarPlayHevcMemory(app).apply(automaticPicture(app, settings)), settings.picture)
+        val picture = VideoSurfaceMemory.reconcile(app, CarPlayHevcMemory(app).apply(automaticPicture(app, settings),
+            exempt = carBrand(app)?.isChanganCs75Plus == true), settings.picture)
         when (plan.engine) {
             Engine.CARPLAY -> {
                 // CarLink: wireless CarPlay's iAP2 link through the stereo's module (opt-in).

@@ -12,7 +12,8 @@ import com.shilapi.xcertplay.AirPlayPersistence
  * Applied the first time that entry is selected, and once when a saved generic Changan
  * choice is migrated to it:
  * - CarPlay width **400 mm** (Advanced setting `cp_width`, the "400 mm" option).
- * - CarPlay **HEVC** on (Advanced setting `cp_hevc`).
+ * - CarPlay **HEVC** on (Advanced setting `cp_hevc`), and kept on: only the driver's own Off ([HevcChoice]) turns it
+ *   off ([hevcOverride]); no policy or safety fallback does.
  * - Android Auto pixel density **200** (Advanced setting `aa_dpi`, key `dpi-pixel-density`).
  * - Car status-bar hide **on** (all apps except the car's home screen), with no question asked.
  *   Written once ([KEY_HIDE_BAR_DEFAULT_APPLIED]) and only when the driver never stored a hide
@@ -41,6 +42,7 @@ object Cs75ProjectionDefaults {
         val app = context.applicationContext
         val flagPrefs = app.getSharedPreferences(CarBrandStore.PREFS, Context.MODE_PRIVATE)
         applyHideBarDefaultOnce(app, flagPrefs)
+        repairStoredHevcOff(app)
         if (flagPrefs.getBoolean(KEY_APPLIED, false)) return
 
         val store = UnifiedSettingsStore(app)
@@ -68,6 +70,14 @@ object Cs75ProjectionDefaults {
         flagPrefs.edit().putBoolean(KEY_APPLIED, true).apply()
     }
 
+    /** An off an earlier policy write left behind (the driver never chose it) is turned back on for the CS75 Plus. */
+    private fun repairStoredHevcOff(app: Context) {
+        if (HevcChoice.userChoice(app) != null) return
+        if (airplayPrefs(app).contains(KEY_HEVC_ENABLED) && !AirPlayPersistence.loadHevcEnabled(app)) {
+            AirPlayPersistence.saveHevcEnabled(app, true)
+        }
+    }
+
     private fun applyHideBarDefaultOnce(app: Context, flagPrefs: SharedPreferences) {
         if (flagPrefs.getBoolean(KEY_HIDE_BAR_DEFAULT_APPLIED, false)) return
         val store = UnifiedSettingsStore(app)
@@ -78,18 +88,22 @@ object Cs75ProjectionDefaults {
     }
 
     /**
-     * When Automatic picture wants to turn HEVC on, keep it off if the driver chose Off ([HevcChoice], any
-     * car), and keep a stored off value for CS75 (a previous policy write is already in prefs).
-     * Incoming `false` is still written, so [com.carlink.core.connection.CarPlayHevcMemory]
-     * can fall back to H.264 after a failed attempt.
+     * CarPlay HEVC on the CS75 Plus: the driver's own choice ([HevcChoice]) or **on**. Nothing the app
+     * decides on its own turns it off there: not Automatic picture (no decoder found, a stereo quirk),
+     * not [com.carlink.core.connection.CarPlayHevcMemory]'s "failed attempt" fallback, and not a stored
+     * off left by an earlier policy write. Null on every other brand, where the picture policy still
+     * decides ([shouldSuppressHevcWrite] only keeps a driver's Off).
      */
-    fun shouldSuppressHevcWrite(context: Context, incoming: Boolean): Boolean {
-        // The driver's explicit Off wins on every car; only a safety "off" from the policy is written then.
-        if (HevcChoice.blocksPolicyWrite(HevcChoice.userChoice(context), incoming)) return true
-        if (!incoming || !isCs75Selected(context)) return false
-        val prefs = airplayPrefs(context)
-        return prefs.contains(KEY_HEVC_ENABLED) && !AirPlayPersistence.loadHevcEnabled(context)
-    }
+    fun hevcOverride(context: Context): Boolean? =
+        if (isCs75Selected(context)) HevcChoice.userChoice(context) ?: true else null
+
+    /**
+     * Automatic picture wants to write [incoming]; true when the write must be skipped because the driver
+     * chose Off ([HevcChoice]). A safety "off" from the policy is still written (other brands only: the
+     * CS75 Plus goes through [hevcOverride] and is never switched off by the policy).
+     */
+    fun shouldSuppressHevcWrite(context: Context, incoming: Boolean): Boolean =
+        HevcChoice.blocksPolicyWrite(HevcChoice.userChoice(context), incoming)
 
     /** Keep a width already stored for CS75, so a size preset cannot replace 400 mm or a typed value. */
     fun shouldPreserveWidth(context: Context): Boolean {

@@ -92,12 +92,68 @@ class HevcChoiceTest {
         sessionStart(policyHevc = true); assertFalse(hevc)
     }
 
-    @Test fun cs75KeepsItsStoredOffRule() {
-        CarBrandStore(ctx).set(CarBrand.CHANGAN_CS75_PLUS)
-        AirPlayPersistence.saveHevcEnabled(ctx, false) // stored by an earlier policy write, not by the driver
-        assertNull(HevcChoice.userChoice(ctx))
-        assertTrue(Cs75ProjectionDefaults.shouldSuppressHevcWrite(ctx, true))
-        assertFalse(Cs75ProjectionDefaults.shouldSuppressHevcWrite(ctx, false))
+    // ---- Changan CS75 Plus: HEVC is on unless the driver chose Off ----
+
+    private fun cs75() { CarBrandStore(ctx).set(CarBrand.CHANGAN_CS75_PLUS) }
+
+    @Test fun cs75HevcIsOnByDefault() {
+        cs75()
+        assertTrue(hevc)
+        assertEquals(true, Cs75ProjectionDefaults.hevcOverride(ctx))
+        assertNull(HevcChoice.userChoice(ctx)) // a default, not a driver choice
+    }
+
+    @Test fun cs75IgnoresThePolicysOff() {
+        cs75()
+        // No hardware decoder found, the Spreadtrum quirk, or a failed attempt: all arrive as policy hevc = false.
+        repeat(3) { sessionStart(policyHevc = false); assertTrue(hevc) }
+        sessionStart(policyHevc = true); assertTrue(hevc)
+    }
+
+    @Test fun cs75StoredOffFromAnEarlierPolicyWriteIsRepaired() {
+        AirPlayPersistence.saveHevcEnabled(ctx, false) // an earlier build's policy wrote it; the driver never chose it
+        cs75()
+        assertTrue(hevc)
+    }
+
+    @Test fun cs75PresetPictureAlsoKeepsItOn() {
+        cs75()
+        AirPlayPersistence.saveHevcEnabled(ctx, false) // something wrote Off behind the app's back
+        // Preset pictures send no HEVC value at all; the override still applies.
+        CarPlaySettingsPolicy.apply(ctx, CarPlaySettingsPolicy.map(
+            UnifiedSettings(picture = Picture.BEST), null, VehicleProfile.GENERIC, true))
+        assertTrue(hevc)
+    }
+
+    @Test fun cs75ManualOffIsTheOnlyThingThatTurnsItOff() {
+        cs75()
+        HevcChoice.setByUser(ctx, false)
+        assertEquals(false, Cs75ProjectionDefaults.hevcOverride(ctx))
+        repeat(3) { sessionStart(policyHevc = true); assertFalse(hevc) }
+        CarBrandStore(ctx).chosen() // reading the brand again does not repair a driver's Off
+        assertFalse(hevc)
+        HevcChoice.setByUser(ctx, true)
+        sessionStart(policyHevc = false); assertTrue(hevc)
+    }
+
+    @Test fun cs75IsExemptFromTheFailedAttemptMemory() {
+        val memory = com.carlink.core.connection.CarPlayHevcMemory(ctx)
+        val wantsHevc = PicturePolicy.ENGINE_DEFAULTS.copy(carPlayHevc = true)
+        assertEquals(true, memory.apply(wantsHevc, exempt = true).carPlayHevc)
+        assertFalse(memory.onNoPicture()) // nothing is suspected, so nothing is remembered as failed
+        memory.onPicture()
+        assertFalse(memory.failed)
+        // Other brands keep the fallback.
+        assertEquals(true, memory.apply(wantsHevc).carPlayHevc)
+        assertTrue(memory.onNoPicture())
+        assertEquals(false, memory.apply(wantsHevc).carPlayHevc)
+    }
+
+    @Test fun otherBrandsKeepTheSafetyOffAndTheStoredOff() {
+        CarBrandStore(ctx).set(CarBrand.OTHER)
+        assertNull(Cs75ProjectionDefaults.hevcOverride(ctx))
+        sessionStart(policyHevc = false); assertFalse(hevc)
+        sessionStart(policyHevc = true); assertTrue(hevc)
     }
 
     @Test fun pureRule() {
