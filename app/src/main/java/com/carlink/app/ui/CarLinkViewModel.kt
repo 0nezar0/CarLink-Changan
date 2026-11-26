@@ -246,7 +246,7 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
     /**
      * True after the driver picks the CS75 Plus entry, until they answer the status-bar hide dialog.
      * A fresh install does not ask until they say Yes to the first-launch car question.
-     * Restoring a backup does not ask. The 48 px top margin stays off unless they turn it on in Settings.
+     * Restoring a backup does not ask.
      */
     val cs75HideBarPrompt: StateFlow<Boolean> = _cs75HideBarPrompt.asStateFlow()
 
@@ -279,8 +279,8 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
 
     /**
      * Yes selects [com.carlink.core.settings.CarBrand.CHANGAN_CS75_PLUS] and applies its
-     * projection defaults (CarPlay 400 mm, HEVC, Android Auto 200 DPI). The 48 px top margin
-     * stays off. Then the status-bar hide prompt is shown ([answerCs75HideBar]).
+     * projection defaults (CarPlay 400 mm, HEVC, Android Auto 200 DPI). Then the status-bar
+     * hide prompt is shown ([answerCs75HideBar]).
      * No dismisses the dialog and leaves the normal first-run flow. Either way the car
      * question is not shown again.
      */

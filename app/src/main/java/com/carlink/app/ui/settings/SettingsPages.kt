@@ -374,8 +374,6 @@ private fun CarEssentials(ui: SettingsUi, actions: SettingsActions, openSheet: (
             description = stringResource(R.string.carlink_cs75_nav_description),
         )
         GroupDivider()
-        TopMarginRow(ui, actions)
-        GroupDivider()
         ChoiceRow(stringResource(R.string.carlink_settings_driving_side),
             stringResource(if (right) R.string.carlink_settings_drive_right else R.string.carlink_settings_drive_left),
             { openSheet(SheetKey.of(EssentialSheet.DRIVING_SIDE)) },
@@ -575,13 +573,3 @@ internal fun languageLabel(tag: String): String =
     if (tag == com.carlink.core.settings.AppLanguage.SYSTEM) stringResource(R.string.carlink_settings_language_system)
     else com.carlink.app.ui.components.ltrIfLatin(com.carlink.core.settings.AppLanguage.nativeName(tag))
 
-/** The Top margin switch: each car has its own saved choice ([com.carlink.core.settings.UnifiedSettings.withMarginFor]). */
-@Composable
-internal fun TopMarginRow(ui: SettingsUi, actions: SettingsActions) {
-    SwitchRow(
-        stringResource(R.string.carlink_settings_top_margin), ui.unified.marginsFor(ui.carBrand).topMargin,
-        { on -> actions.update { it.withMarginFor(ui.carBrand, on) } },
-        description = stringResource(R.string.carlink_settings_top_margin_detail),
-        icon = R.drawable.carlink_ic_aspect_ratio, tags = { NextConnectionTag() },
-    )
-}

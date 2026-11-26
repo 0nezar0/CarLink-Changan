@@ -179,16 +179,13 @@ class CarPlaySettingsTest {
         assertFalse(BydOutputSettings.batteryToIphone(app))
         assertFalse(AirPlayPersistence.loadClusterMapEnabled(app))
         assertFalse(CarPlayHostIntegration.vehicleIntegrations)
-        // A fresh settings object has no margins. The 48 px Top margin is written only after the driver turns it on.
+        // Display margins stay zero: the Top margin setting was removed.
         assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
         assertEquals("CarLink", AirPlayPersistence.loadOemLabel(app))
     }
 
-    @Test fun theTopMarginReachesTheHostSafeAreaHook() {
-        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(topMargin = true)))
-        assertEquals(CarPlayHostIntegration.DisplayMargins(top = 48), CarPlayHostIntegration.displayMargins)
-        CarPlaySettingsPolicy.apply(app, map(UnifiedSettings(topMargin = false)))
-        assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
+    @Test fun aPreviousTopMarginHookIsClearedToZero() {
+        CarPlayHostIntegration.displayMargins = CarPlayHostIntegration.DisplayMargins(top = 48)
         CarPlaySettingsPolicy.apply(app, map(UnifiedSettings()))
         assertEquals(CarPlayHostIntegration.DisplayMargins(), CarPlayHostIntegration.displayMargins)
     }

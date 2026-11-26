@@ -50,4 +50,11 @@ class NavigationBarPreferenceTest {
         choose(CarBrand.TOYOTA)
         assertTrue(NavigationBarPreference.enabled(app))
     }
+
+    @Test fun stripsStayUpWhileProjectionIsInFront() {
+        assertTrue(NavigationBarStrips.shouldAttach(enabled = true, projectionInFront = true))
+        assertTrue(NavigationBarStrips.shouldAttach(enabled = true, projectionInFront = false))
+        assertFalse(NavigationBarStrips.shouldAttach(enabled = false, projectionInFront = true))
+        assertFalse(NavigationBarStrips.shouldAttach(enabled = false, projectionInFront = false))
+    }
 }

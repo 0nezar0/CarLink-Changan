@@ -125,7 +125,6 @@
     <string name="carlink_settings_night_end">La notte finisce</string>
     <string name="carlink_settings_time_earlier">15 min prima</string>
     <string name="carlink_settings_time_later">15 min dopo</string>
-    <string name="carlink_settings_group_margins">Margini dello schermo</string>
     <string name="carlink_settings_group_changan">Changan / CS75 Plus 2022-2023 only settings</string>
     <string name="carlink_settings_car_brand_cs75">Changan / CS75 Plus 2022-2023 only</string>
     <string name="carlink_settings_hide_bar_off">Off</string>
@@ -143,8 +142,6 @@
     <string name="carlink_settings_hide_bar_apps_carlink">CarLink (always included)</string>
     <string name="carlink_fce_accessibility_label">CarLink status bar hide</string>
     <string name="carlink_fce_accessibility_description">Lets CarLink see which app is in front so it can hide or show the car\'s status bar, as set in Settings for Changan CS75 Plus.</string>
-    <string name="carlink_settings_top_margin">Margine superiore</string>
-    <string name="carlink_settings_top_margin_detail">Uno spazio di 48 px in alto in CarLink, CarPlay e Android Auto, così nulla resta nascosto sotto la barra di stato dell’auto. CarLink cambia subito; CarPlay e Android Auto dalla prossima connessione. Disattivato: nessun margine.</string>
     <string name="carlink_settings_hide_car_status_bar">Nascondi la barra di stato dell\'auto</string>
     <string name="carlink_settings_hide_car_status_bar_detail">Nasconde la barra di stato fluttuante dell\'auto mentre CarPlay o Android Auto è sullo schermo, così non copre la proiezione. Si applica subito. Disattivata: la barra resta visibile. Questa impostazione di prova è solo per il Changan CS75 Plus.</string>
     <string name="carlink_settings_save_log">Salva rapporto completo</string>
@@ -264,13 +261,8 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android lo richiede prima che CarLink possa mostrare il pulsante</string>
     <string name="carlink_settings_car_brand">Marca dell’auto</string>
     <string name="carlink_settings_car_brand_detail">BYD: aggiunge i suoi extra DiLink. Le altre marche etichettano soltanto questa auto, tranne Changan.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan: il suo logo sul pulsante di ritorno all’auto di CarPlay (le altre auto ricevono l’icona predefinita). Quando scegli la voce CS75 Plus ti viene chiesto se nascondere la barra delle notifiche — in tutte le app tranne la schermata Home, o in quelle che scegli da un elenco completo. Il test del margine superiore di 48 px è disattivato per impostazione predefinita e l’audio passa tramite il Bluetooth dell’auto per impostazione predefinita. CarPlay resta a 400 mm e HEVC, Android Auto a 200 DPI. Puoi cambiare tutto in Impostazioni.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: il suo logo sul pulsante di ritorno all’auto di CarPlay (le altre auto ricevono l’icona predefinita). Quando scegli la voce CS75 Plus ti viene chiesto se nascondere la barra delle notifiche — in tutte le app tranne la schermata Home, o in quelle che scegli da un elenco completo. L’audio passa tramite il Bluetooth dell’auto per impostazione predefinita. CarPlay resta a 400 mm e HEVC, Android Auto a 200 DPI. Puoi cambiare tutto in Impostazioni.</string>
     <string name="carlink_settings_car_brand_sheet_body">Scegli la marca di quest’auto. CarPlay e Android Auto funzionano allo stesso modo in ogni auto.</string>
-    <string name="carlink_changan_margins_title">Margine superiore</string>
-    <string name="carlink_changan_margins_body">Aggiunge uno spazio di 48 px in alto in CarPlay, Android Auto e CarLink, così nulla resta nascosto sotto la barra di stato dell’auto. Attivarlo?</string>
-    <string name="carlink_changan_margins_hint">Puoi disattivarlo in qualsiasi momento in Impostazioni › Schermo › Margine superiore.</string>
-    <string name="carlink_changan_margins_yes">Sì</string>
-    <string name="carlink_changan_margins_no">No</string>
     <string name="carlink_cs75_hide_bar_prompt_title">Nascondi la barra delle notifiche</string>
     <string name="carlink_cs75_hide_bar_prompt_body">Nasconde la barra delle notifiche flottante dell’auto durante CarPlay e Android Auto, così non copre l’immagine. Attivarla?</string>
     <string name="carlink_cs75_hide_bar_prompt_hint">Puoi cambiarla o disattivarla in qualsiasi momento in Impostazioni. CarLink richiede anche l’autorizzazione Accessibilità perché la funzione funzioni.</string>
@@ -288,7 +280,7 @@
     <string name="carlink_settings_car_byd_not_dilink">Questo schermo non è un’unità BYD DiLink, quindi gli extra BYD non possono funzionare qui. Scegli la marca della tua auto, oppure Altro.</string>
     <string name="carlink_settings_car_explain_byd">BYD aggiunge gli extra DiLink: indicazioni su HUD e quadro strumenti, e i tasti del volante BYD.</string>
     <string name="carlink_settings_car_explain_other">CarPlay e Android Auto funzionano come in qualsiasi auto. La marca etichetta soltanto questa auto in CarLink.</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay e Android Auto funzionano come in qualsiasi auto. Changan mostra anche il suo logo sul pulsante di ritorno all’auto di CarPlay. Scegliendo questa voce ti viene chiesto se nascondere la barra delle notifiche, con un elenco completo di app se la nascondi solo in quelle che scegli. Il test del margine di 48 px è disattivato per impostazione predefinita e l’audio passa tramite il Bluetooth dell’auto per impostazione predefinita. CarPlay usa 400 mm e HEVC, Android Auto 200 DPI.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay e Android Auto funzionano come in qualsiasi auto. Changan mostra anche il suo logo sul pulsante di ritorno all’auto di CarPlay. Scegliendo questa voce ti viene chiesto se nascondere la barra delle notifiche, con un elenco completo di app se la nascondi solo in quelle che scegli. L’audio passa tramite il Bluetooth dell’auto per impostazione predefinita. CarPlay usa 400 mm e HEVC, Android Auto 200 DPI.</string>
     <string name="carlink_wheel_keys">Pulsanti del volante</string>
     <string name="carlink_wheel_keys_detail">Insegna a CarLink i pulsanti del volante per voce, chiamate e musica in CarPlay e Android Auto</string>
     <plurals name="carlink_wheel_keys_value">

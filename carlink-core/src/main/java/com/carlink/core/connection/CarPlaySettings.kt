@@ -254,10 +254,8 @@ object CarPlaySettingsPolicy {
             micGainDb = settings.micGainDb,
             callAudioAsMedia = settings.callAudioAsMedia,
             resumeMusic = settings.resumeMusic,
-            marginLeftPx = settings.screenMargins.left,
-            marginTopPx = settings.screenMargins.top,
-            marginRightPx = settings.screenMargins.right,
-            marginBottomPx = settings.screenMargins.bottom,
+            // The Top margin setting was removed; these stay at their zero defaults so a
+            // previous 48 px hook is cleared when [apply] writes [CarPlayHostIntegration.displayMargins].
             duckMusicForDirections = settings.duckMusicForDirections,
             sameWifiWired = settings.sameWifiWired,
             legacyStreamTypes = audioStreams,

@@ -125,7 +125,6 @@
     <string name="carlink_settings_night_end">Gece biter</string>
     <string name="carlink_settings_time_earlier">15 dk daha erken</string>
     <string name="carlink_settings_time_later">15 dk daha geç</string>
-    <string name="carlink_settings_group_margins">Ekran kenar boşlukları</string>
     <string name="carlink_settings_group_changan">Changan / CS75 Plus 2022-2023 only settings</string>
     <string name="carlink_settings_car_brand_cs75">Changan / CS75 Plus 2022-2023 only</string>
     <string name="carlink_settings_hide_bar_off">Off</string>
@@ -143,8 +142,6 @@
     <string name="carlink_settings_hide_bar_apps_carlink">CarLink (always included)</string>
     <string name="carlink_fce_accessibility_label">CarLink status bar hide</string>
     <string name="carlink_fce_accessibility_description">Lets CarLink see which app is in front so it can hide or show the car\'s status bar, as set in Settings for Changan CS75 Plus.</string>
-    <string name="carlink_settings_top_margin">Üst kenar boşluğu</string>
-    <string name="carlink_settings_top_margin_detail">CarLink, CarPlay ve Android Auto’nun üstünde 48 px’lik bir boşluk, böylece hiçbir şey aracın durum çubuğunun altında gizlenmez. CarLink hemen değişir, CarPlay ve Android Auto sonraki bağlantıdan itibaren. Kapalı: kenar boşluğu yok.</string>
     <string name="carlink_settings_hide_car_status_bar">Arabanın durum çubuğunu gizle</string>
     <string name="carlink_settings_hide_car_status_bar_detail">CarPlay veya Android Auto ekrandayken arabanın yüzen durum çubuğunu gizler, böylece görüntünün üstünde kalmaz. Hemen uygulanır. Kapalı: çubuk görünür kalır. Bu deneme ayarı yalnızca Changan CS75 Plus içindir.</string>
     <string name="carlink_settings_save_log">Tam raporu kaydet</string>
@@ -264,13 +261,8 @@
     <string name="carlink_settings_floating_switcher_permission_detail">CarLink düğmeyi gösterebilmeden önce Android buna ihtiyaç duyar</string>
     <string name="carlink_settings_car_brand">Araç markası</string>
     <string name="carlink_settings_car_brand_detail">BYD: DiLink ekstralarını ekler. Diğer markalar, Changan hariç, yalnızca bu arabayı etiketler.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan: logosu CarPlay’in arabaya dön düğmesinde (diğer arabalar varsayılan simgeyi alır). CS75 Plus kaydını seçtiğinizde bildirim çubuğunun gizlenip gizlenmeyeceği sorulur — ana ekran dışındaki tüm uygulamalarda veya tam listeden seçtiğiniz uygulamalarda. 48 px üst kenar boşluğu testi varsayılan olarak kapalıdır ve ses varsayılan olarak arabanın Bluetooth’undan çalar. CarPlay 400 mm ve HEVC, Android Auto 200 DPI olarak kalır. Tümünü Ayarlar’dan değiştirebilirsiniz.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: logosu CarPlay’in arabaya dön düğmesinde (diğer arabalar varsayılan simgeyi alır). CS75 Plus kaydını seçtiğinizde bildirim çubuğunun gizlenip gizlenmeyeceği sorulur — ana ekran dışındaki tüm uygulamalarda veya tam listeden seçtiğiniz uygulamalarda. Ses varsayılan olarak arabanın Bluetooth’undan çalar. CarPlay 400 mm ve HEVC, Android Auto 200 DPI olarak kalır. Tümünü Ayarlar’dan değiştirebilirsiniz.</string>
     <string name="carlink_settings_car_brand_sheet_body">Bu arabanın markasını seçin. CarPlay ve Android Auto her arabada aynı şekilde çalışır.</string>
-    <string name="carlink_changan_margins_title">Üst kenar boşluğu</string>
-    <string name="carlink_changan_margins_body">CarPlay, Android Auto ve CarLink’in üstüne 48 px’lik bir boşluk ekler, böylece hiçbir şey aracın durum çubuğunun altında gizlenmez. Açılsın mı?</string>
-    <string name="carlink_changan_margins_hint">İstediğiniz zaman Ayarlar › Ekran › Üst kenar boşluğu’ndan kapatabilirsiniz.</string>
-    <string name="carlink_changan_margins_yes">Evet</string>
-    <string name="carlink_changan_margins_no">Hayır</string>
     <string name="carlink_cs75_hide_bar_prompt_title">Bildirim çubuğunu gizle</string>
     <string name="carlink_cs75_hide_bar_prompt_body">Görüntünün üstünü kapatmaması için CarPlay ve Android Auto sırasında aracın yüzen bildirim çubuğunu gizler. Açılsın mı?</string>
     <string name="carlink_cs75_hide_bar_prompt_hint">Ayarlar’dan istediğiniz zaman değiştirebilir veya kapatabilirsiniz. Gizlemenin çalışması için CarLink’in erişilebilirlik iznine de ihtiyacı vardır.</string>
@@ -288,7 +280,7 @@
     <string name="carlink_settings_car_byd_not_dilink">Bu ekran bir BYD DiLink ünitesi değil, bu yüzden BYD ekstraları burada çalışamaz. Arabanızın markasını veya Diğer’i seçin.</string>
     <string name="carlink_settings_car_explain_byd">BYD, DiLink ekstralarını ekler: HUD ve gösterge grubunda yol tarifi ve BYD direksiyon düğmeleri.</string>
     <string name="carlink_settings_car_explain_other">CarPlay ve Android Auto herhangi bir arabada olduğu gibi çalışır. Marka yalnızca bu arabayı CarLink’te etiketler.</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay ve Android Auto herhangi bir arabada olduğu gibi çalışır. Changan ayrıca logosunu CarPlay’in arabaya dön düğmesinde gösterir. Bu kaydı seçmek, bildirim çubuğunun gizlenip gizlenmeyeceğini sorar; yalnızca seçtiğiniz uygulamalarda gizleyecekseniz tam bir uygulama listesi sunar. 48 px kenar boşluğu testi varsayılan olarak kapalıdır ve ses varsayılan olarak arabanın Bluetooth’undan çalar. CarPlay 400 mm ve HEVC, Android Auto 200 DPI kullanır.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay ve Android Auto herhangi bir arabada olduğu gibi çalışır. Changan ayrıca logosunu CarPlay’in arabaya dön düğmesinde gösterir. Bu kaydı seçmek, bildirim çubuğunun gizlenip gizlenmeyeceğini sorar; yalnızca seçtiğiniz uygulamalarda gizleyecekseniz tam bir uygulama listesi sunar. Ses varsayılan olarak arabanın Bluetooth’undan çalar. CarPlay 400 mm ve HEVC, Android Auto 200 DPI kullanır.</string>
     <string name="carlink_wheel_keys">Direksiyon düğmeleri</string>
     <string name="carlink_wheel_keys_detail">CarLink’e ses, aramalar ve müzik için direksiyon düğmelerinizi CarPlay ve Android Auto’da öğretin</string>
     <plurals name="carlink_wheel_keys_value">
