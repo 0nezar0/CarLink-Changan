@@ -25,12 +25,17 @@ import com.carlink.core.settings.CarBrandStore
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-/** The navigation bar switch, stored separately for each chosen car. */
+/**
+ * The navigation bar switch, stored separately for each chosen car. On by default for every car
+ * (it needs CarLink's accessibility service to show anything). A car with nothing stored takes the
+ * default, unless the driver already switched the bar off on another entry and never on anywhere:
+ * an explicit Off is not undone by choosing a different car brand.
+ */
 internal object NavigationBarPreference {
     fun preferences(context: Context): SharedPreferences =
         context.getSharedPreferences("cs75_navigation_overlay", Context.MODE_PRIVATE)
 
-    private fun key(context: Context): String = "enabled_" + (CarBrandStore(context).chosen()?.name ?: "AUTO")
+    private fun key(context: Context): String = KEY_PREFIX + (CarBrandStore(context).chosen()?.name ?: "AUTO")
 
     /**
      * The saved switch for the current car. Earlier trials kept a single `enabled` or `side`
@@ -42,7 +47,16 @@ internal object NavigationBarPreference {
             val previous = getBoolean("enabled", getString("side", null) in setOf("LEFT", "RIGHT"))
             edit().putBoolean(key, previous).remove("enabled").remove("side").apply()
         }
-        getBoolean(key, false)
+        if (contains(key)) getBoolean(key, DEFAULT_ENABLED) else defaultFor(all.filterKeys { it.startsWith(KEY_PREFIX) }.values)
+    }
+
+    const val DEFAULT_ENABLED = true
+    private const val KEY_PREFIX = "enabled_"
+
+    /** [stored]: what the other cars saved. The default, unless every saved value is an explicit Off. */
+    internal fun defaultFor(stored: Collection<Any?>): Boolean {
+        val values = stored.filterIsInstance<Boolean>()
+        return if (values.isNotEmpty() && values.none { it }) false else DEFAULT_ENABLED
     }
 
     fun setEnabled(context: Context, enabled: Boolean) {

@@ -44,11 +44,42 @@ class NavigationBarPreferenceTest {
         NavigationBarPreference.setEnabled(app, true)
         assertTrue(NavigationBarPreference.enabled(app))
         choose(CarBrand.BYD)
+        assertTrue(NavigationBarPreference.enabled(app)) // nothing saved for BYD: the default is on
+        NavigationBarPreference.setEnabled(app, false)
         assertFalse(NavigationBarPreference.enabled(app))
+        choose(CarBrand.TOYOTA)
+        assertTrue(NavigationBarPreference.enabled(app)) // Toyota keeps its own On
+    }
+
+    @Test fun theBarIsOnByDefaultForEveryCarAndForNoCarChosen() {
+        assertTrue(NavigationBarPreference.enabled(app)) // no brand chosen
+        CarBrand.entries.forEach { brand ->
+            choose(brand)
+            assertTrue(brand.name, NavigationBarPreference.enabled(app))
+        }
+    }
+
+    @Test fun anExplicitOffIsKeptAndSurvivesChoosingAnotherCar() {
+        NavigationBarPreference.setEnabled(app, false) // no car chosen yet
+        assertFalse(NavigationBarPreference.enabled(app))
+        choose(CarBrand.CHANGAN_CS75_PLUS)
+        assertFalse(NavigationBarPreference.enabled(app)) // not undone by the new default
         NavigationBarPreference.setEnabled(app, true)
         assertTrue(NavigationBarPreference.enabled(app))
-        choose(CarBrand.TOYOTA)
+        choose(CarBrand.OTHER)
         assertTrue(NavigationBarPreference.enabled(app))
+    }
+
+    @Test fun legacyOffStaysOff() {
+        choose(CarBrand.TOYOTA)
+        NavigationBarPreference.preferences(app).edit().putString("side", "OFF").commit()
+        assertFalse(NavigationBarPreference.enabled(app))
+    }
+
+    @Test fun defaultRule() {
+        assertTrue(NavigationBarPreference.defaultFor(emptyList()))
+        assertFalse(NavigationBarPreference.defaultFor(listOf(false, false)))
+        assertTrue(NavigationBarPreference.defaultFor(listOf(false, true)))
     }
 
     @Test fun stripsStayUpWhileProjectionIsInFront() {
