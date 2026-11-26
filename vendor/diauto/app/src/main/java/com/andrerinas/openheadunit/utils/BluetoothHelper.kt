@@ -239,6 +239,16 @@ object BluetoothHelper {
      * stack answered, or null when the call could not be made. Used to give a phone's hands-free link
      * back to the car after the wake poke took it ([com.andrerinas.openheadunit.aap.HandsFreeRestorePolicy]).
      */
+    /**
+     * CarLink: this unit's hands-free client's priority for [device] (hidden `getPriority`;
+     * 0 = off, 100 = on, 1000 = auto-connect), or null when it cannot be read. Diagnostics only:
+     * a priority of 0 is the stack refusing to reconnect that phone.
+     */
+    fun handsFreeClientPriority(context: Context, device: android.bluetooth.BluetoothDevice): Int? =
+        withHandsFreeClient(context) { proxy ->
+            proxy.javaClass.getMethod("getPriority", android.bluetooth.BluetoothDevice::class.java).invoke(proxy, device) as? Int
+        }
+
     fun connectHandsFreeClient(context: Context, device: android.bluetooth.BluetoothDevice): Boolean? =
         withHandsFreeClient(context) { proxy ->
             val method = proxy.javaClass.getMethod("connect", android.bluetooth.BluetoothDevice::class.java)

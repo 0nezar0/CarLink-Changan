@@ -1083,9 +1083,20 @@ class NativeAaHandshakeManager(
         // is dropped to make room. The link read is adapter-wide, so the policy is also told what
         // the target itself is doing, and says whose link it takes it to be.
         val handsFreeLink = BluetoothWakePolicy.HandsFreeLink.of(BluetoothHelper.handsFreeLinkState(context, device.address)) // CarLink: per phone, and kept for holdPoke
+        val targetLink = BluetoothWakePolicy.TargetLink.of(BluetoothHelper.deviceConnectionState(device))
+        // CarLink: where giving the calls link back has been seen to fail, a phone already on this
+        // unit is not poked at all, because the poke would leave the car without calls all drive.
+        val restoreVerdict = HandsFreeRestorePolicy.Verdict.of(settings.handsFreeRestoreVerdict)
+        if (!HandsFreeRestorePolicy.mayTakeSlot(standingInForHfp, restoreVerdict, targetLink, handsFreeLink)) {
+            AppLog.i("NativeAA: not waking ${device.name ?: "unnamed"} (${device.address}) over its hands-free record: " +
+                "it is already connected to this unit (target=$targetLink, link=$handsFreeLink) and giving the calls " +
+                "link back failed here before (restore=$restoreVerdict). If Android Auto does not start, turn the " +
+                "phone's Bluetooth off and on once.")
+            return BluetoothWakePolicy.WakeOutcome.STOOD_DOWN
+        }
         val decision = BluetoothWakePolicy.wakeDecision(
             handsFreeLink = handsFreeLink,
-            targetLink = BluetoothWakePolicy.TargetLink.of(BluetoothHelper.deviceConnectionState(device)),
+            targetLink = targetLink,
             userAsked = userAsked,
         )
         var escalated = false
@@ -1205,11 +1216,13 @@ class NativeAaHandshakeManager(
                 )
                 when (action) {
                     HandsFreeRestorePolicy.Action.DONE -> {
+                        recordRestore(true)
                         AppLog.i("NativeAA: this unit's hands-free link to ${device.name ?: "unnamed"} ($address) is up after the poke" +
                             (if (attempt == 0) "." else " (attempt $attempt)."))
                         return@launch
                     }
                     HandsFreeRestorePolicy.Action.GIVE_UP -> {
+                        recordRestore(if (link == HandsFreeRestorePolicy.ClientLink.UNREADABLE) null else false)
                         AppLog.w("NativeAA: could not give the hands-free link back to this unit after the poke " +
                             "(client link=$link). If the phone shows this unit as media only, turn the phone's " +
                             "Bluetooth off and on.")
@@ -1218,17 +1231,32 @@ class NativeAaHandshakeManager(
                     HandsFreeRestorePolicy.Action.WAIT, HandsFreeRestorePolicy.Action.DEFER ->
                         AppLog.i("NativeAA: hands-free link to $address not back yet (link=$link, $action); looking again.")
                     HandsFreeRestorePolicy.Action.CONNECT -> {
+                        val priority = BluetoothHelper.handsFreeClientPriority(context, device)
                         val asked = BluetoothHelper.connectHandsFreeClient(context, device)
                         AppLog.i("NativeAA: asked this unit's hands-free client to reconnect ${device.name ?: "unnamed"} " +
-                            "($address) after the poke (link=$link, answer=$asked).")
+                            "($address) after the poke (link=$link, priority=$priority, answer=$asked).")
                     }
                 }
             }
             val last = HandsFreeRestorePolicy.ClientLink.of(BluetoothHelper.handsFreeClientState(context, device))
+            recordRestore(when (last) {
+                HandsFreeRestorePolicy.ClientLink.CONNECTED -> true
+                HandsFreeRestorePolicy.ClientLink.UNREADABLE -> null
+                else -> false
+            })
             AppLog.i("NativeAA: hands-free restore for $address finished (link=$last).")
         }
         handsFreeRestoreJobs[address] = job
         job.invokeOnCompletion { handsFreeRestoreJobs.remove(address, job) }
+    }
+
+    /** CarLink: stores what a restore run showed, which [HandsFreeRestorePolicy.mayTakeSlot] reads. */
+    private fun recordRestore(linkBack: Boolean?) {
+        val verdict = HandsFreeRestorePolicy.verdictAfter(linkBack)
+        if (settings.handsFreeRestoreVerdict != verdict.ordinal) {
+            AppLog.i("NativeAA: hands-free restore verdict for this unit is now $verdict (link back=$linkBack).")
+        }
+        settings.handsFreeRestoreVerdict = verdict.ordinal
     }
 
     /** CarLink: the radio is in use for something a hands-free connect must not interrupt. */

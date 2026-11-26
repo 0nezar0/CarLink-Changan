@@ -24,6 +24,37 @@ object PhoneClassifier {
     /** Bluetooth major device class for phones (BluetoothClass.Device.Major.PHONE). */
     const val BLUETOOTH_MAJOR_PHONE = 0x0200
 
+    /** BluetoothClass.Device.Major.UNCATEGORIZED: some phones report no class at all. */
+    const val BLUETOOTH_MAJOR_UNCATEGORIZED = 0x1F00
+
+    /**
+     * OBEX Object Push. Every Android phone publishes it ("Bluetooth share"); iOS has never
+     * supported it, so it is positive evidence of Android, unlike a missing iAP2 record, which an
+     * iPhone can also show (GitHub #89, #90).
+     */
+    val OBEX_OBJECT_PUSH_UUID: UUID = UUID.fromString("00001105-0000-1000-8000-00805f9b34fb")
+
+    /**
+     * Words in the default Bluetooth names of Android phones (Xiaomi 14T Pro, Galaxy S24, Pixel 8,
+     * Redmi Note 13…). Whole words only, so a brand inside another word does not count.
+     */
+    private val ANDROID_NAME_WORDS = setOf(
+        "android", "xiaomi", "redmi", "poco", "galaxy", "samsung", "pixel", "oneplus", "huawei", "honor",
+        "oppo", "vivo", "iqoo", "realme", "motorola", "moto", "nokia", "xperia", "infinix", "tecno",
+        "zte", "nubia", "lenovo", "zenfone", "meizu", "fairphone",
+    )
+
+    /** Model numbers used as default names: Samsung SM-/GT-, OPPO CPH, realme RMX. */
+    private val ANDROID_MODEL_PREFIX = Regex("""^(sm-[a-z]\d|gt-[a-z]\d|cph\d{4}|rmx\d{4})""")
+
+    /** Whether [name] is an Android phone's default name. Never for a name that says iPhone or iPad. */
+    fun looksLikeAndroidName(name: String?): Boolean {
+        val lower = name.orEmpty().trim().lowercase(Locale.ROOT)
+        if (lower.isEmpty() || "iphone" in lower || "ipad" in lower) return false
+        if (ANDROID_MODEL_PREFIX.containsMatchIn(lower)) return true
+        return lower.split(Regex("""[^\p{L}\p{N}]+""")).any { it in ANDROID_NAME_WORDS }
+    }
+
     data class UsbInterfaceInfo(
         val interfaceClass: Int,
         val subclass: Int,
@@ -105,7 +136,9 @@ object PhoneClassifier {
      * 1. a phone the driver or a previous session already identified ([remembered]);
      * 2. the iAP2 service UUID, which only Apple devices publish;
      * 3. an "iPhone"/"iPad" device name (the default name, and DiPlay's own picker rule);
-     * 4. the Android Auto service UUID, which wireless Android Auto itself needs.
+     * 4. the Android Auto service UUID, which wireless Android Auto itself needs;
+     * 5. (CarLink) OBEX Object Push, which every Android phone publishes and no iPhone does;
+     * 6. (CarLink) an Android phone's default name (Xiaomi, Galaxy, Pixel, SM-…).
      * Anything else stays UNKNOWN and Home asks the driver once: hands-free, contacts and messages are
      * on iPhones too, and iOS 27 iPhones with a custom name sent no iAP2 record (GitHub #89, #90).
      */
@@ -115,8 +148,14 @@ object PhoneClassifier {
         if (IAP2_BLUETOOTH_UUID in device.uuids) return PhoneKind.IPHONE
         if (remembered != null && remembered != PhoneKind.UNKNOWN) return remembered
         val name = device.name.orEmpty().lowercase(Locale.ROOT)
-        if ("iphone" in name || "ipad" in name) return PhoneKind.IPHONE
+        if ("iphone" in name || "ipad" in name || "آيفون" in name || "ايفون" in name) return PhoneKind.IPHONE
         if (ANDROID_AUTO_BLUETOOTH_UUID in device.uuids) return PhoneKind.ANDROID
+        // CarLink: positive Android evidence that is there on the first pairing too, only for a
+        // device that says it is a phone (a Galaxy Watch or a laptop publishes Object Push as well).
+        val phoneClass = device.majorClass == null || device.majorClass == BLUETOOTH_MAJOR_PHONE ||
+            device.majorClass == BLUETOOTH_MAJOR_UNCATEGORIZED
+        if (phoneClass && OBEX_OBJECT_PUSH_UUID in device.uuids) return PhoneKind.ANDROID
+        if (phoneClass && looksLikeAndroidName(device.name)) return PhoneKind.ANDROID
         return PhoneKind.UNKNOWN
     }
 }

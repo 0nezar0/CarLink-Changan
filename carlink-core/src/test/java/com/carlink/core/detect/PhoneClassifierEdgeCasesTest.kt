@@ -72,7 +72,7 @@ class PhoneClassifierEdgeCasesTest {
     }
 
     @Test fun lookalikeNamesAreNotIphones() {
-        listOf("Sara’s Apple Watch", "Sara’s AirPods Pro", "Galaxy S24", "i Phone", "").forEach {
+        listOf("Sara’s Apple Watch", "Sara’s AirPods Pro", "i Phone", "").forEach {
             assertEquals(it, PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt(it), null))
         }
         assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt(null), null))
@@ -101,8 +101,14 @@ class PhoneClassifierEdgeCasesTest {
         assertEquals(PhoneKind.IPHONE, PhoneClassifier.classifyBluetooth(bt("Pixel 9", both), null))
     }
 
-    @Test fun phoneClassWithoutSdpRecordsWaits() {
-        assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Pixel 9", emptySet()), null))
+    /** CarLink: an Android phone's default name decides on the first pairing, before any records. */
+    @Test fun androidDefaultNameWithoutSdpRecordsIsAndroid() {
+        assertEquals(PhoneKind.ANDROID, PhoneClassifier.classifyBluetooth(bt("Pixel 9", emptySet()), null))
+        assertEquals(PhoneKind.ANDROID, PhoneClassifier.classifyBluetooth(bt("Galaxy S24"), null))
+    }
+
+    @Test fun phoneClassWithCustomNameAndNoRecordsWaits() {
+        assertEquals(PhoneKind.UNKNOWN, PhoneClassifier.classifyBluetooth(bt("Nezar", emptySet()), null))
     }
 
     @Test fun usbCDockPartsAreNotPhones() {

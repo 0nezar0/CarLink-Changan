@@ -93,4 +93,40 @@ object HandsFreeRestorePolicy {
         link == ClientLink.UNREADABLE && attempt > 0 -> Action.GIVE_UP
         else -> Action.CONNECT
     }
+
+    /** Whether giving the link back has been seen to work on this unit. Stored as its ordinal. */
+    enum class Verdict {
+        UNKNOWN,
+        WORKS,
+        FAILS;
+
+        companion object {
+            fun of(stored: Int): Verdict = values().getOrNull(stored) ?: UNKNOWN
+        }
+    }
+
+    /**
+     * What one restore run says about this unit: the link was up at the end ([linkBack] true) or
+     * not (false); null when the client could not be read at all, which counts as not working,
+     * because then nothing here can give a lost link back.
+     */
+    fun verdictAfter(linkBack: Boolean?): Verdict = if (linkBack == true) Verdict.WORKS else Verdict.FAILS
+
+    /**
+     * Whether a wake poke may open the phone's hands-free (or headset) record, given what it would
+     * cost. Where the unit publishes its own stand-in, the poke's link is the one this app serves
+     * anyway. Elsewhere, once a restore has been seen to fail on this unit, a phone that already holds
+     * any connection to the unit ([targetLink] connected or unreadable), or a unit whose own
+     * hands-free link is up, is not poked: the poke would cost the car its calls link for the whole
+     * drive. A phone with no connection at all is still woken; it has no calls link to lose.
+     * Unknown and working verdicts keep the poke, so the first run measures it.
+     */
+    fun mayTakeSlot(
+        standingInForHfp: Boolean,
+        verdict: Verdict,
+        targetLink: BluetoothWakePolicy.TargetLink,
+        handsFreeLink: BluetoothWakePolicy.HandsFreeLink,
+    ): Boolean = standingInForHfp || verdict != Verdict.FAILS ||
+        (targetLink == BluetoothWakePolicy.TargetLink.ABSENT && handsFreeLink != BluetoothWakePolicy.HandsFreeLink.CONNECTED)
 }
+

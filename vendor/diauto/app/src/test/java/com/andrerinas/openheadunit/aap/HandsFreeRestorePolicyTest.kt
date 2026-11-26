@@ -80,4 +80,43 @@ class HandsFreeRestorePolicyTest {
         assertEquals(delays.sorted(), delays)
         assertTrue(delays.first() > 0L)
     }
+
+    private val connected = BluetoothWakePolicy.TargetLink.CONNECTED
+    private val absent = BluetoothWakePolicy.TargetLink.ABSENT
+    private val unreadable = BluetoothWakePolicy.TargetLink.UNREADABLE
+    private val linkUp = BluetoothWakePolicy.HandsFreeLink.CONNECTED
+    private val noLink = BluetoothWakePolicy.HandsFreeLink.ABSENT
+
+    @Test fun verdictsComeFromTheEndOfARun() {
+        assertEquals(HandsFreeRestorePolicy.Verdict.WORKS, HandsFreeRestorePolicy.verdictAfter(true))
+        assertEquals(HandsFreeRestorePolicy.Verdict.FAILS, HandsFreeRestorePolicy.verdictAfter(false))
+        assertEquals(HandsFreeRestorePolicy.Verdict.FAILS, HandsFreeRestorePolicy.verdictAfter(null))
+        assertEquals(HandsFreeRestorePolicy.Verdict.UNKNOWN, HandsFreeRestorePolicy.Verdict.of(0))
+        assertEquals(HandsFreeRestorePolicy.Verdict.UNKNOWN, HandsFreeRestorePolicy.Verdict.of(99))
+        assertEquals(HandsFreeRestorePolicy.Verdict.FAILS,
+            HandsFreeRestorePolicy.Verdict.of(HandsFreeRestorePolicy.Verdict.FAILS.ordinal))
+    }
+
+    @Test fun anUnmeasuredOrWorkingUnitKeepsThePoke() {
+        listOf(HandsFreeRestorePolicy.Verdict.UNKNOWN, HandsFreeRestorePolicy.Verdict.WORKS).forEach {
+            assertTrue(HandsFreeRestorePolicy.mayTakeSlot(false, it, connected, linkUp))
+            assertTrue(HandsFreeRestorePolicy.mayTakeSlot(false, it, connected, noLink))
+        }
+    }
+
+    @Test fun whereRestoreFailsAPhoneAlreadyOnTheUnitIsLeftAlone() {
+        val fails = HandsFreeRestorePolicy.Verdict.FAILS
+        assertFalse(HandsFreeRestorePolicy.mayTakeSlot(false, fails, connected, noLink))
+        assertFalse(HandsFreeRestorePolicy.mayTakeSlot(false, fails, connected, linkUp))
+        assertFalse(HandsFreeRestorePolicy.mayTakeSlot(false, fails, unreadable, noLink))
+        assertFalse(HandsFreeRestorePolicy.mayTakeSlot(false, fails, absent, linkUp))
+    }
+
+    @Test fun whereRestoreFailsAPhoneWithNoConnectionIsStillWoken() {
+        assertTrue(HandsFreeRestorePolicy.mayTakeSlot(false, HandsFreeRestorePolicy.Verdict.FAILS, absent, noLink))
+    }
+
+    @Test fun theStandInAlwaysKeepsThePoke() {
+        assertTrue(HandsFreeRestorePolicy.mayTakeSlot(true, HandsFreeRestorePolicy.Verdict.FAILS, connected, linkUp))
+    }
 }
