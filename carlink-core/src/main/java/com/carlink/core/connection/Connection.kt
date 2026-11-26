@@ -253,8 +253,7 @@ object Connection {
     private fun writeSession(app: Context, plan: SessionPlan) {
         val stored = UnifiedSettingsStore(app).load()
         val wifi = WifiEnvironmentReader.read(app, stored)
-        // Margins are the Changan setting: any other brand, or none, writes zeros.
-        val settings = effectiveSettings(stored, wifi).marginsFor(carBrand(app))
+        val settings = effectiveSettings(stored, wifi)
         val profile = vehicleProfile(app)
         // Every start, so the HEVC fallback knows whether this attempt sends HEVC (presets: never).
         val picture = VideoSurfaceMemory.reconcile(app, CarPlayHevcMemory(app).apply(automaticPicture(app, settings)), settings.picture)

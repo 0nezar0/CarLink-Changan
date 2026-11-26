@@ -125,7 +125,6 @@
     <string name="carlink_settings_night_end">夜间结束</string>
     <string name="carlink_settings_time_earlier">提前 15 分钟</string>
     <string name="carlink_settings_time_later">延后 15 分钟</string>
-    <string name="carlink_settings_group_margins">屏幕边距</string>
     <string name="carlink_settings_group_changan">仅适用于长安 / CS75 Plus 2022-2023 的设置</string>
     <string name="carlink_settings_car_brand_cs75">长安 / CS75 Plus 2022-2023 专用</string>
     <string name="carlink_settings_hide_bar_off">Off</string>
@@ -143,8 +142,6 @@
     <string name="carlink_settings_hide_bar_apps_carlink">CarLink (always included)</string>
     <string name="carlink_fce_accessibility_label">CarLink status bar hide</string>
     <string name="carlink_fce_accessibility_description">Lets CarLink see which app is in front so it can hide or show the car\'s status bar, as set in Settings for Changan CS75 Plus.</string>
-    <string name="carlink_settings_top_margin">上边距</string>
-    <string name="carlink_settings_top_margin_detail">在 CarLink、CarPlay 和 Android Auto 顶部留出 48 像素空间，避免内容被车辆状态栏遮挡。CarLink 立即生效，CarPlay 和 Android Auto 从下次连接起生效。关闭：无边距。</string>
     <string name="carlink_settings_hide_car_status_bar">隐藏车辆状态栏</string>
     <string name="carlink_settings_hide_car_status_bar_detail">在 CarPlay 或 Android Auto 位于前台时隐藏车辆悬浮状态栏，以免挡住投屏画面。立即生效。关闭后状态栏保持显示。此测试选项仅适用于长安 CS75 Plus。</string>
     <string name="carlink_settings_save_log">保存完整报告</string>
@@ -264,13 +261,8 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android 需要此权限后，CarLink 才能显示该按钮</string>
     <string name="carlink_settings_car_brand">车辆品牌</string>
     <string name="carlink_settings_car_brand_detail">比亚迪：添加其 DiLink 附加功能。其他品牌仅用于标识本车，长安除外。</string>
-    <string name="carlink_settings_car_brand_changan_note">长安：在 CarPlay 的返回车辆按钮上显示其标志（其他车辆使用默认图标）。选择 CS75 Plus 条目时会询问是否隐藏通知栏——可在除主屏幕外的所有应用中隐藏，或从完整列表中选择应用。48 像素上边距测试默认关闭，声音默认通过车辆蓝牙播放。CarPlay 仍默认 400 mm 和 HEVC，Android Auto 仍默认 200 DPI。均可在设置中更改。</string>
+    <string name="carlink_settings_car_brand_changan_note">长安：在 CarPlay 的返回车辆按钮上显示其标志（其他车辆使用默认图标）。选择 CS75 Plus 条目时会询问是否隐藏通知栏——可在除主屏幕外的所有应用中隐藏，或从完整列表中选择应用。声音默认通过车辆蓝牙播放。CarPlay 仍默认 400 mm 和 HEVC，Android Auto 仍默认 200 DPI。均可在设置中更改。</string>
     <string name="carlink_settings_car_brand_sheet_body">选择本车品牌。CarPlay 和 Android Auto 在所有车辆上的工作方式相同。</string>
-    <string name="carlink_changan_margins_title">上边距</string>
-    <string name="carlink_changan_margins_body">在 CarPlay、Android Auto 和 CarLink 顶部增加 48 像素空间，避免内容被车辆状态栏遮挡。要开启吗？</string>
-    <string name="carlink_changan_margins_hint">您可以随时在 设置 › 显示 › 上边距 中关闭它。</string>
-    <string name="carlink_changan_margins_yes">是</string>
-    <string name="carlink_changan_margins_no">否</string>
     <string name="carlink_cs75_hide_bar_prompt_title">隐藏通知栏</string>
     <string name="carlink_cs75_hide_bar_prompt_body">在 CarPlay 和 Android Auto 使用期间隐藏车辆悬浮通知栏，以免挡住画面。要开启吗？</string>
     <string name="carlink_cs75_hide_bar_prompt_hint">可随时在设置中更改或关闭。隐藏功能还需要为 CarLink 开启无障碍权限。</string>
@@ -288,7 +280,7 @@
     <string name="carlink_settings_car_byd_not_dilink">此屏幕不是比亚迪 DiLink 主机，因此比亚迪附加功能无法在此使用。请选择您的车辆品牌，或选择“其他”。</string>
     <string name="carlink_settings_car_explain_byd">比亚迪会添加 DiLink 附加功能：在抬头显示和仪表盘上显示导航，以及比亚迪方向盘按键。</string>
     <string name="carlink_settings_car_explain_other">CarPlay 和 Android Auto 的工作方式与任何车辆相同。品牌仅用于在 CarLink 中标识本车。</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay 和 Android Auto 的工作方式与任何车辆相同。长安还会在 CarPlay 的返回车辆按钮上显示其标志。选择此条目时会询问是否隐藏通知栏；若只在所选应用中隐藏，会提供完整应用列表。48 像素边距测试默认关闭，声音默认通过车辆蓝牙播放。CarPlay 使用 400 mm 和 HEVC，Android Auto 使用 200 DPI。</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay 和 Android Auto 的工作方式与任何车辆相同。长安还会在 CarPlay 的返回车辆按钮上显示其标志。选择此条目时会询问是否隐藏通知栏；若只在所选应用中隐藏，会提供完整应用列表。声音默认通过车辆蓝牙播放。CarPlay 使用 400 mm 和 HEVC，Android Auto 使用 200 DPI。</string>
     <string name="carlink_wheel_keys">方向盘按键</string>
     <string name="carlink_wheel_keys_detail">让 CarLink 学习方向盘上用于语音、通话和音乐的按键，以便在 CarPlay 和 Android Auto 中使用</string>
     <plurals name="carlink_wheel_keys_value">

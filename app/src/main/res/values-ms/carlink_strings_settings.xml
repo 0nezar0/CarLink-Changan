@@ -125,7 +125,6 @@
     <string name="carlink_settings_night_end">Malam berakhir</string>
     <string name="carlink_settings_time_earlier">15 min lebih awal</string>
     <string name="carlink_settings_time_later">15 min kemudian</string>
-    <string name="carlink_settings_group_margins">Margin skrin</string>
     <string name="carlink_settings_group_changan">Changan / CS75 Plus 2022-2023 only settings</string>
     <string name="carlink_settings_car_brand_cs75">Changan / CS75 Plus 2022-2023 only</string>
     <string name="carlink_settings_hide_bar_off">Off</string>
@@ -143,8 +142,6 @@
     <string name="carlink_settings_hide_bar_apps_carlink">CarLink (always included)</string>
     <string name="carlink_fce_accessibility_label">CarLink status bar hide</string>
     <string name="carlink_fce_accessibility_description">Lets CarLink see which app is in front so it can hide or show the car\'s status bar, as set in Settings for Changan CS75 Plus.</string>
-    <string name="carlink_settings_top_margin">Margin atas</string>
-    <string name="carlink_settings_top_margin_detail">Ruang 48 px di bahagian atas CarLink, CarPlay dan Android Auto, supaya tiada apa yang tersembunyi di bawah bar status kereta. CarLink berubah serta-merta, CarPlay dan Android Auto dari sambungan seterusnya. Dimatikan: tiada margin.</string>
     <string name="carlink_settings_hide_car_status_bar">Sembunyikan bar status kereta</string>
     <string name="carlink_settings_hide_car_status_bar_detail">Menyembunyikan bar status terapung kereta semasa CarPlay atau Android Auto dipaparkan, supaya ia tidak menutup unjuran. Digunakan segera. Dimatikan: bar kekal kelihatan. Tetapan ujian ini hanya untuk Changan CS75 Plus.</string>
     <string name="carlink_settings_save_log">Simpan laporan penuh</string>
@@ -264,13 +261,8 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android memerlukannya sebelum CarLink dapat menunjukkan butang</string>
     <string name="carlink_settings_car_brand">Jenama kereta</string>
     <string name="carlink_settings_car_brand_detail">BYD: menambah tambahan DiLinknya. Jenama lain hanya melabel kereta ini, kecuali Changan.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan: logonya pada butang kembali ke kereta CarPlay (kereta lain mendapat ikon lalai). Apabila anda memilih entri CS75 Plus, anda ditanya tentang menyembunyikan bar pemberitahuan — dalam semua apl kecuali skrin utama, atau dalam apl yang anda pilih daripada senarai penuh. Ujian margin atas 48 px dimatikan secara lalai, dan bunyi dimainkan melalui Bluetooth kereta secara lalai. CarPlay kekal pada 400 mm dan HEVC, dan Android Auto pada 200 DPI. Anda boleh mengubah semua ini dalam Tetapan.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: logonya pada butang kembali ke kereta CarPlay (kereta lain mendapat ikon lalai). Apabila anda memilih entri CS75 Plus, anda ditanya tentang menyembunyikan bar pemberitahuan — dalam semua apl kecuali skrin utama, atau dalam apl yang anda pilih daripada senarai penuh. Bunyi dimainkan melalui Bluetooth kereta secara lalai. CarPlay kekal pada 400 mm dan HEVC, dan Android Auto pada 200 DPI. Anda boleh mengubah semua ini dalam Tetapan.</string>
     <string name="carlink_settings_car_brand_sheet_body">Pilih jenama kereta ini. CarPlay dan Android Auto berfungsi sama dalam setiap kereta.</string>
-    <string name="carlink_changan_margins_title">Margin atas</string>
-    <string name="carlink_changan_margins_body">Menambah ruang 48 px di bahagian atas CarPlay, Android Auto dan CarLink, supaya tiada apa yang tersembunyi di bawah bar status kereta. Hidupkannya?</string>
-    <string name="carlink_changan_margins_hint">Anda boleh mematikannya pada bila-bila masa dalam Tetapan › Paparan › Margin atas.</string>
-    <string name="carlink_changan_margins_yes">Ya</string>
-    <string name="carlink_changan_margins_no">Tidak</string>
     <string name="carlink_cs75_hide_bar_prompt_title">Sembunyikan bar pemberitahuan</string>
     <string name="carlink_cs75_hide_bar_prompt_body">Menyembunyikan bar pemberitahuan terapung kereta semasa CarPlay dan Android Auto supaya ia tidak menutupi gambar. Hidupkan?</string>
     <string name="carlink_cs75_hide_bar_prompt_hint">Anda boleh mengubah atau mematikannya pada bila-bila masa dalam Tetapan. CarLink juga memerlukan keizinan Kebolehcapaian supaya penyembunyian berfungsi.</string>
@@ -288,7 +280,7 @@
     <string name="carlink_settings_car_byd_not_dilink">Skrin ini bukan unit BYD DiLink, jadi tambahan BYD tidak dapat berfungsi di sini. Pilih jenama kereta anda, atau Lain.</string>
     <string name="carlink_settings_car_explain_byd">BYD menambah tambahan DiLink: arah pada HUD dan kluster instrumen, serta kekunci stereng BYD.</string>
     <string name="carlink_settings_car_explain_other">CarPlay dan Android Auto berfungsi sama seperti dalam mana-mana kereta. Jenama hanya melabel kereta ini dalam CarLink.</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay dan Android Auto berfungsi seperti dalam mana-mana kereta. Changan juga menunjukkan logonya pada butang kembali ke kereta CarPlay. Memilih entri ini menanya tentang menyembunyikan bar pemberitahuan, dengan senarai apl penuh jika anda menyembunyikannya hanya dalam apl yang dipilih. Ujian margin 48 px dimatikan secara lalai, dan bunyi melalui Bluetooth kereta secara lalai. CarPlay menggunakan 400 mm dan HEVC, Android Auto 200 DPI.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay dan Android Auto berfungsi seperti dalam mana-mana kereta. Changan juga menunjukkan logonya pada butang kembali ke kereta CarPlay. Memilih entri ini menanya tentang menyembunyikan bar pemberitahuan, dengan senarai apl penuh jika anda menyembunyikannya hanya dalam apl yang dipilih. Bunyi melalui Bluetooth kereta secara lalai. CarPlay menggunakan 400 mm dan HEVC, Android Auto 200 DPI.</string>
     <string name="carlink_wheel_keys">Butang stereng</string>
     <string name="carlink_wheel_keys_detail">Ajar CarLink butang stereng anda untuk suara, panggilan dan muzik dalam CarPlay dan Android Auto</string>
     <plurals name="carlink_wheel_keys_value">

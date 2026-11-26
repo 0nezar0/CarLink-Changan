@@ -6,6 +6,9 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+- Removed the Top margin setting (الهامش العلوي / اختبار الهوامش): the 48 px gap at the top of CarLink, CarPlay and Android Auto. Hiding the car's notification bar is enough to keep that bar from covering the picture, so the display is now full screen (zero margins). A leftover on-value from an earlier version is ignored and the old preference keys are dropped, so an update always starts with no margins. The setting is gone from Settings › Car, the CS75 section, and the car-brand notes. The status-bar hide option is unchanged. Android system safe-drawing insets on CarLink's own screens, and the layout insets the engines use for video crop or a turning screen, are unchanged.
+- Fix: a swipe from the left or right edge during CarPlay or Android Auto again opens the navigation bar, so you can go back. v1.6.6 (and the v1.6.7 trial) removed those edge strips while a session was on screen, to let taps reach the picture; that also blocked the swipe. The strips stay up now. A tap, long press or vertical drag on the edge is still handed to CarPlay or Android Auto underneath.
+
 ## [CS75 Plus 2023 v1.6.6] - 2026-11-26 (test)
 
 Private test build from branch `release/1.6.6-clean`, versionCode 10049. It installs over every earlier build, including the private trials up to 10048 and the public v1.6.5 (10041). Based on upstream CarLink 1.0.18.

@@ -23,9 +23,9 @@ import android.content.SharedPreferences
  *
  * This build lists [CHANGAN_CS75_PLUS] first, then a generic [CHANGAN] entry that only labels the
  * car (same as any other non-BYD make). All CS75-specific behaviour — CarPlay's Changan logo,
- * holding Automatic CarPlay to 30 fps ([ChanganPicture]), the Top margin ([UnifiedSettings.marginsFor]),
- * and the status-bar hide section — applies only to [CHANGAN_CS75_PLUS]. A saved [CHANGAN] choice
- * from earlier builds is migrated once to [CHANGAN_CS75_PLUS] ([CarBrandStore]).
+ * holding Automatic CarPlay to 30 fps ([ChanganPicture]), and the status-bar hide section —
+ * applies only to [CHANGAN_CS75_PLUS]. A saved [CHANGAN] choice from earlier builds is migrated
+ * once to [CHANGAN_CS75_PLUS] ([CarBrandStore]).
  */
 enum class CarBrand(val displayName: String, val profile: VehicleProfile = VehicleProfile.GENERIC, val luxury: Boolean = false,
                     val motorcycle: Boolean = false) {

@@ -125,7 +125,6 @@
     <string name="carlink_settings_night_end">Nacht endet</string>
     <string name="carlink_settings_time_earlier">15 Min. früher</string>
     <string name="carlink_settings_time_later">15 Min. später</string>
-    <string name="carlink_settings_group_margins">Bildschirmränder</string>
     <string name="carlink_settings_group_changan">Changan / CS75 Plus 2022-2023 only settings</string>
     <string name="carlink_settings_car_brand_cs75">Changan / CS75 Plus 2022-2023 only</string>
     <string name="carlink_settings_hide_bar_off">Off</string>
@@ -143,8 +142,6 @@
     <string name="carlink_settings_hide_bar_apps_carlink">CarLink (always included)</string>
     <string name="carlink_fce_accessibility_label">CarLink status bar hide</string>
     <string name="carlink_fce_accessibility_description">Lets CarLink see which app is in front so it can hide or show the car\'s status bar, as set in Settings for Changan CS75 Plus.</string>
-    <string name="carlink_settings_top_margin">Oberer Rand</string>
-    <string name="carlink_settings_top_margin_detail">Ein 48-px-Abstand oben in CarLink, CarPlay und Android Auto, damit nichts unter der Statusleiste des Autos verschwindet. CarLink ändert sich sofort, CarPlay und Android Auto ab der nächsten Verbindung. Aus: keine Ränder.</string>
     <string name="carlink_settings_hide_car_status_bar">Statusleiste des Autos ausblenden</string>
     <string name="carlink_settings_hide_car_status_bar_detail">Blendet die schwebende Statusleiste des Autos aus, solange CarPlay oder Android Auto im Vordergrund ist, damit sie nicht über der Projektion liegt. Gilt sofort. Aus: die Leiste bleibt sichtbar. Diese Testeinstellung gilt nur für den Changan CS75 Plus.</string>
     <string name="carlink_settings_save_log">Vollständigen Bericht speichern</string>
@@ -264,13 +261,8 @@
     <string name="carlink_settings_floating_switcher_permission_detail">Android braucht dies, bevor CarLink die Schaltfläche anzeigen kann</string>
     <string name="carlink_settings_car_brand">Automarke</string>
     <string name="carlink_settings_car_brand_detail">BYD: fügt die DiLink-Extras hinzu. Andere Marken kennzeichnen nur dieses Auto, außer Changan.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan: Logo auf der Zurück-zum-Auto-Schaltfläche von CarPlay (andere Autos erhalten das Standardsymbol). Wenn Sie den Eintrag CS75 Plus wählen, werden Sie gefragt, ob die Benachrichtigungsleiste ausgeblendet werden soll — in allen Apps außer dem Startbildschirm oder in Apps, die Sie aus einer vollständigen Liste wählen. Der 48-px-Randtest ist standardmäßig aus, und der Ton läuft standardmäßig über das Bluetooth des Autos. CarPlay bleibt bei 400 mm und HEVC, Android Auto bei 200 DPI. Alles lässt sich in den Einstellungen ändern.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: Logo auf der Zurück-zum-Auto-Schaltfläche von CarPlay (andere Autos erhalten das Standardsymbol). Wenn Sie den Eintrag CS75 Plus wählen, werden Sie gefragt, ob die Benachrichtigungsleiste ausgeblendet werden soll — in allen Apps außer dem Startbildschirm oder in Apps, die Sie aus einer vollständigen Liste wählen. Der Ton läuft standardmäßig über das Bluetooth des Autos. CarPlay bleibt bei 400 mm und HEVC, Android Auto bei 200 DPI. Alles lässt sich in den Einstellungen ändern.</string>
     <string name="carlink_settings_car_brand_sheet_body">Wählen Sie die Marke dieses Autos. CarPlay und Android Auto funktionieren in jedem Auto gleich.</string>
-    <string name="carlink_changan_margins_title">Oberer Rand</string>
-    <string name="carlink_changan_margins_body">Fügt einen 48-px-Abstand oben in CarPlay, Android Auto und CarLink hinzu, damit nichts unter der Statusleiste des Autos verschwindet. Einschalten?</string>
-    <string name="carlink_changan_margins_hint">Sie können es jederzeit unter Einstellungen › Anzeige › Oberer Rand ausschalten.</string>
-    <string name="carlink_changan_margins_yes">Ja</string>
-    <string name="carlink_changan_margins_no">Nein</string>
     <string name="carlink_cs75_hide_bar_prompt_title">Benachrichtigungsleiste ausblenden</string>
     <string name="carlink_cs75_hide_bar_prompt_body">Blendet die schwebende Benachrichtigungsleiste des Autos während CarPlay und Android Auto aus, damit sie das Bild nicht überdeckt. Einschalten?</string>
     <string name="carlink_cs75_hide_bar_prompt_hint">Sie können das jederzeit in den Einstellungen ändern oder ausschalten. Damit das Ausblenden funktioniert, braucht CarLink die Berechtigung für Bedienungshilfen.</string>
@@ -288,7 +280,7 @@
     <string name="carlink_settings_car_byd_not_dilink">Dieser Bildschirm ist keine BYD-DiLink-Einheit, daher können die BYD-Extras hier nicht funktionieren. Wählen Sie die Marke Ihres Autos oder Andere.</string>
     <string name="carlink_settings_car_explain_byd">BYD fügt die DiLink-Extras hinzu: Wegführung auf dem HUD und dem Kombiinstrument sowie BYD-Lenkradtasten.</string>
     <string name="carlink_settings_car_explain_other">CarPlay und Android Auto funktionieren wie in jedem Auto. Die Marke kennzeichnet nur dieses Auto in CarLink.</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay und Android Auto funktionieren wie in jedem Auto. Changan zeigt außerdem sein Logo auf der Zurück-zum-Auto-Schaltfläche von CarPlay. Bei der Auswahl werden Sie gefragt, ob die Benachrichtigungsleiste ausgeblendet werden soll, mit einer vollständigen App-Liste, wenn Sie nur bestimmte Apps wählen. Der 48-px-Randtest ist standardmäßig aus, der Ton läuft standardmäßig über das Bluetooth des Autos. CarPlay verwendet 400 mm und HEVC, Android Auto 200 DPI.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay und Android Auto funktionieren wie in jedem Auto. Changan zeigt außerdem sein Logo auf der Zurück-zum-Auto-Schaltfläche von CarPlay. Bei der Auswahl werden Sie gefragt, ob die Benachrichtigungsleiste ausgeblendet werden soll, mit einer vollständigen App-Liste, wenn Sie nur bestimmte Apps wählen. Der Ton läuft standardmäßig über das Bluetooth des Autos. CarPlay verwendet 400 mm und HEVC, Android Auto 200 DPI.</string>
     <string name="carlink_wheel_keys">Lenkradtasten</string>
     <string name="carlink_wheel_keys_detail">Bringen Sie CarLink die Tasten Ihres Lenkrads für Stimme, Anrufe und Musik in CarPlay und Android Auto bei</string>
     <plurals name="carlink_wheel_keys_value">
