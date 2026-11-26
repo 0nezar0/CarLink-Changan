@@ -47,3 +47,13 @@ release-signing.properties
 
 # Local release output (scripts/release.sh)
 /dist/
+
+# CarPlay MFi identity and app signing material. They are injected at build time from GitHub
+# Actions secrets (see .github/workflows/build.yml) and must never be committed.
+/mfi/
+offline-mfi/
+keystore.properties
+*.keystore.properties
+signing/
+*.jks.b64
+*.b64
