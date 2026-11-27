@@ -25,4 +25,10 @@
     <string name="carlink_switcher_stereo_home">Estéreo</string>
     <string name="carlink_switcher_stereo_home_value">Lançador</string>
     <string name="carlink_switcher_night_next">O modo noturno aplica-se na ligação seguinte; a atenuação, de imediato.</string>
+    <!-- Quick toggle in the switcher panel: CarPlay HEVC (Settings > Display > Efficient video (HEVC)); applies from the next connection. -->
+    <string name="carlink_switcher_hevc">HEVC</string>
+    <string name="carlink_switcher_hevc_on">Ligado</string>
+    <string name="carlink_switcher_hevc_off">Desligado</string>
+    <string name="carlink_switcher_hevc_toast_on">HEVC ligado para o CarPlay. Aplica-se na próxima ligação.</string>
+    <string name="carlink_switcher_hevc_toast_off">HEVC desligado para o CarPlay. Aplica-se na próxima ligação.</string>
 </resources>

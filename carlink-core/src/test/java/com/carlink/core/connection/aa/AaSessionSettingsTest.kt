@@ -41,7 +41,7 @@ class AaSessionSettingsTest {
             assertEquals(false, v["cluster-map-enabled"])
             assertEquals("the picture follows the screen (#31)", 0, v["screen-orientation"])
             assertEquals(0, v["inset-left"])
-            assertEquals("no margins until the driver turns the Top margin on", 0, v["inset-top"])
+            assertEquals("the removed Top margin setting always writes zero insets", 0, v["inset-top"])
             assertEquals(0, v["inset-right"])
             assertEquals(0, v["inset-bottom"])
         }
@@ -245,16 +245,6 @@ class AaSessionSettingsTest {
         assertEquals(false, values().values.containsKey("car-volume-groups"))
     }
 
-    @Test fun theTopMarginIsWrittenAsDiAutoInsets() {
-        val v = values(settings = base.copy(topMargin = true)).values
-        assertEquals(0, v["inset-left"])
-        assertEquals(48, v["inset-top"])
-        assertEquals(0, v["inset-right"])
-        assertEquals(0, v["inset-bottom"])
-        // Off: every inset back to zero, written every session so 48 cannot stick.
-        val off = values(settings = base.copy(topMargin = false)).values
-        for (key in listOf("inset-left", "inset-top", "inset-right", "inset-bottom")) assertEquals(key, 0, off[key])
-    }
 
     @Test fun sharedNetworkPathsAlsoProbeForTheHeadUnitServer() {
         val key = AaSessionSettings.HEADUNIT_SERVER_PROBE_KEY

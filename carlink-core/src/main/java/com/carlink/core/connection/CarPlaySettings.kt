@@ -254,10 +254,8 @@ object CarPlaySettingsPolicy {
             micGainDb = settings.micGainDb,
             callAudioAsMedia = settings.callAudioAsMedia,
             resumeMusic = settings.resumeMusic,
-            marginLeftPx = settings.screenMargins.left,
-            marginTopPx = settings.screenMargins.top,
-            marginRightPx = settings.screenMargins.right,
-            marginBottomPx = settings.screenMargins.bottom,
+            // The Top margin setting was removed; these stay at their zero defaults so a
+            // previous 48 px hook is cleared when [apply] writes [CarPlayHostIntegration.displayMargins].
             duckMusicForDirections = settings.duckMusicForDirections,
             sameWifiWired = settings.sameWifiWired,
             legacyStreamTypes = audioStreams,
@@ -272,7 +270,11 @@ object CarPlaySettingsPolicy {
         values.wirelessMode?.let { AirPlayPersistence.saveWirelessHotspotMode(context, it) }
         values.displayScalePercent?.let { AirPlayPersistence.saveDisplayScalePercent(context, it) }
         values.fps?.let { AirPlayPersistence.saveFps(context, it) }
-        values.hevc?.let {
+        // CS75 Plus: on unless the driver chose Off, whatever the picture policy or a fallback says.
+        val cs75Hevc = Cs75ProjectionDefaults.hevcOverride(context)
+        if (cs75Hevc != null) {
+            AirPlayPersistence.saveHevcEnabled(context, cs75Hevc)
+        } else values.hevc?.let {
             if (!Cs75ProjectionDefaults.shouldSuppressHevcWrite(context, it)) {
                 AirPlayPersistence.saveHevcEnabled(context, it)
             }

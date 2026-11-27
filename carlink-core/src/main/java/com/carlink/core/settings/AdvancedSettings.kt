@@ -10,7 +10,7 @@ import com.shilapi.xcertplay.CarPlayDock
 import com.shilapi.xcertplay.UsbChargingCurrent
 
 /** Where an Advanced or Lab setting appears (the same categories as the Essentials). */
-enum class SettingsCategory { CONNECTION, DISPLAY, SOUND, NAVIGATION, CAR, GENERAL, CHANGAN_CS75 }
+enum class SettingsCategory { CONNECTION, DISPLAY, SOUND, NAVIGATION, CAR, GENERAL, CHANGAN_CS75, ADDED_FEATURES }
 
 /** Advanced: shown with "Show advanced". Lab: experimental or debug, unlocked from About. */
 enum class Tier { ADVANCED, LAB }
@@ -130,7 +130,7 @@ object AdvancedSettings {
             carPlayToggle(AirPlayPersistence::loadHideBottomBar, AirPlayPersistence::saveHideBottomBar)),
         AdvancedSetting("cp_hevc", Engine.CARPLAY, SettingsCategory.DISPLAY, Tier.ADVANCED,
             "Efficient video (HEVC)", "Sharper picture for the same Wi-Fi bandwidth. Needs a hardware HEVC decoder.",
-            Applies.NEXT_CONNECTION, carPlayToggle(AirPlayPersistence::loadHevcEnabled, AirPlayPersistence::saveHevcEnabled)),
+            Applies.NEXT_CONNECTION, carPlayToggle(AirPlayPersistence::loadHevcEnabled, HevcChoice::setByUser)),
         AdvancedSetting("cp_adapt_pip", Engine.CARPLAY, SettingsCategory.DISPLAY, Tier.ADVANCED,
             "Re-negotiate size in split screen", "Off scales the picture; on asks the iPhone for the new size.",
             Applies.NOW, carPlayToggle(AirPlayPersistence::loadAdaptPipResolution, AirPlayPersistence::saveAdaptPipResolution)),
