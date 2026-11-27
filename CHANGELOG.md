@@ -6,6 +6,9 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+- Fix: Android Auto stopped connecting after the first session until the phone's head unit server was stopped and started again by hand. After the first time CarLink closed its Android Auto service, the connection manager could no longer run its own clean-up for the rest of the process, so a later session did not say goodbye to the phone and left its connection to the head unit server open; the phone's server stays bound to such a connection and answers nobody. It cleans up in every session now. (This fix was in v1.7.3 and was lost when v1.7.6 went back to the older connection code.)
+- Fix: when the phone's head unit server is found first but takes the connection and never answers, CarLink goes back to waiting and wakes the phone over Bluetooth again after a few seconds, instead of waiting for the step's time limit.
+
 ## [CS75 Plus 2023 v1.7.9] - 2026-11-28 (test)
 
 Test build from branch `trial/1.7.9` (started from v1.7.8, `1a6cecc6`, plus the Same Wi-Fi linking fix `f4a70060`), versionCode 10062. It installs over v1.7.8 (10061) and every earlier build, and keeps your settings. Everything from v1.7.8 stays (IPv4 only on the car hotspot, an iPhone's Personal Hotspot and Same Wi-Fi). This build restores the v1.7.5 Same Wi-Fi linking wait that v1.7.6 dropped when it went back to the pre-1.7.x connection code.
