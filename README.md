@@ -55,9 +55,9 @@
 
 | الوجهة | المحتوى |
 | --- | --- |
-| [التطوير الخاص](https://github.com/0nezar0/carlink-private-build) | كود العمل والنسخ التجريبية الخاصة عبر Actions. |
-| [الكود المصدري العام](https://github.com/0nezar0/CarLink-Changan) | مشروع CarLink لشانجان بترخيص AGPL-3.0. |
 | [تحميل الإصدارات](https://github.com/0nezar0/carlink-releases/releases) | ملفات APK المنشورة وملاحظات الإصدارات والتحقق من SHA-256. |
+| [الكود المصدري العام](https://github.com/0nezar0/CarLink-Changan) | مشروع CarLink لشانجان بترخيص AGPL-3.0. |
+| [التطوير الخاص](https://github.com/0nezar0/carlink-private-build) | كود العمل والنسخ التجريبية الخاصة عبر Actions. |
 
 ## إعدادات شانجان
 
@@ -152,7 +152,11 @@ bash .claude/skills/carlink-dev/scripts/dev.sh test
 
 ## English
 
-Use [public source](https://github.com/0nezar0/CarLink-Changan) for the AGPL-licensed project, [public releases](https://github.com/0nezar0/carlink-releases/releases) for APK downloads, and this private repository for development and test builds.
+| Repository | Contents |
+| --- | --- |
+| [Downloads and releases](https://github.com/0nezar0/carlink-releases/releases) | Published APKs, release notes, and SHA-256 checksums. |
+| [Public source](https://github.com/0nezar0/CarLink-Changan) | This repository contains the AGPL-3.0-licensed source for CarLink on Changan. |
+| [Private development](https://github.com/0nezar0/carlink-private-build) | Development code and private GitHub Actions test builds. |
 
 Install CarLink on an **Android car head unit** and connect your phone by cable or wirelessly: an **iPhone gets CarPlay**, an **Android phone gets Android Auto**, detected automatically.
 
