@@ -6,6 +6,10 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+## [CS75 Plus 2023 v1.7.0] - 2026-11-27 (test)
+
+Test build from branch `trial/1.7.0`, versionCode 10053. It installs over v1.6.9 (10052), v1.6.8 (10051), v1.6.7 (10050), v1.6.6 (10049) and every earlier build, and keeps your settings. Includes everything from the v1.6.9 trial, plus the settings-menu and in-app status-bar work below.
+
 - Experimental: hide the status bar (notification bar) inside CarLink only, with a swipe from the top to show it briefly (immersive sticky). The switch is in Extra features (مزايا إضافية), marked تجريبي / Experimental, and defaults to off; an explicit choice is kept. It does not hide the bar in other apps. The Changan CS75 Plus broadcast hide is unchanged and still applies on top.
 - The navigation bar (شريط التنقل) is on by default for every car, including the edge swipe during CarPlay and Android Auto. It still needs CarLink's accessibility service. A switch you already turned off stays off, also after you choose a different car.
 - The navigation-bar switch moved out of Settings › Car. When the CS75 Plus brand is selected it is in the Changan section; for every other car it is in a new Extra features section (مزايا إضافية). Both of those sections sit right after General, so the tab is in the same place regardless of brand. The preference itself is unchanged: on by default for every car, including CS75 Plus, and an explicit Off stays off.
