@@ -275,7 +275,7 @@ object Connection {
                     com.carlink.core.diagnostics.EventLog.add("CarLink", "CarPlay Bluetooth through the stereo's module: $kind (experimental)" +
                         (route.refusal?.let { "; refused: $it" } ?: ""))
                 }
-                // The car button in CarPlay: the Changan logo in a Changan, the default car icon in every other car.
+                // The car button in CarPlay: the Changan logo for Changan and CS75 Plus, the default car icon in every other car.
                 com.shilapi.xcertplay.CarPlayHostIntegration.carButtonIcon = CarPlayCarButton.icon(carBrand(app))
                 val fineLocation = app.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 CarPlaySettingsPolicy.apply(app, CarPlaySettingsPolicy.map(settings, plan.path, profile, fineLocation,

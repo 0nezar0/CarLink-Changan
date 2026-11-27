@@ -838,12 +838,13 @@ private tailrec fun android.content.Context.findActivity(): android.app.Activity
 }
 
 /**
- * A make's logo beside the chosen brand in Settings, not in the brand list. Changan only
+ * A make's logo beside the chosen brand in Settings, not in the brand list. The same Changan
+ * badge is used for [CarBrand.CHANGAN] and [CarBrand.CHANGAN_CS75_PLUS]
  * (Wikimedia Commons, CC BY-SA 4.0; a trademark of Changan Automobile, used to identify the car
  * in a private build). The list itself is the name alone.
  */
 @androidx.annotation.DrawableRes
 internal fun brandLogo(brand: CarBrand?): Int? = when (brand) {
-    CarBrand.CHANGAN_CS75_PLUS -> R.drawable.carlink_logo_changan
+    CarBrand.CHANGAN, CarBrand.CHANGAN_CS75_PLUS -> R.drawable.carlink_logo_changan
     else -> null
 }

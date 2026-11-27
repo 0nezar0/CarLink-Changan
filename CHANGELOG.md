@@ -6,6 +6,7 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+- The Changan logo (the same small Settings badge and the same CarPlay back-to-car icon as CS75 Plus) now also appears when the regular Changan brand is selected.
 - Experimental: hide the status bar (notification bar) inside CarLink only, with a swipe from the top to show it briefly (immersive sticky). The switch is in Extra features (مزايا إضافية) for cars other than CS75 Plus, marked تجريبي / Experimental, and defaults to off; an explicit choice is kept. It does not appear in the Changan settings section, because that car already has the broadcast hide. It does not hide the bar in other apps. The Changan CS75 Plus broadcast hide is unchanged.
 - The navigation bar (شريط التنقل) is on by default for every car, including the edge swipe during CarPlay and Android Auto. It still needs CarLink's accessibility service. A switch you already turned off stays off, also after you choose a different car.
 - The navigation-bar switch moved out of Settings › Car. When the CS75 Plus brand is selected it is in the Changan section; for every other car it is in a new Extra features section (مزايا إضافية). Both of those sections sit right after General, so the tab is in the same place regardless of brand. The preference itself is unchanged: on by default for every car, including CS75 Plus, and an explicit Off stays off.

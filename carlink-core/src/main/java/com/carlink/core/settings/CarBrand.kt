@@ -21,11 +21,11 @@ import android.content.SharedPreferences
  * of 72,665 units splits the combined Skoda-Volkswagen entry, leaving Volkswagen about 35,600,
  * just behind Renault's 36,420), then the smaller makes, then the luxury makes, then [OTHER].
  *
- * This build lists [CHANGAN_CS75_PLUS] first, then a generic [CHANGAN] entry that only labels the
- * car (same as any other non-BYD make). All CS75-specific behaviour — CarPlay's Changan logo,
- * holding Automatic CarPlay to 30 fps ([ChanganPicture]), and the status-bar hide section —
- * applies only to [CHANGAN_CS75_PLUS]. A saved [CHANGAN] choice from earlier builds is migrated
- * once to [CHANGAN_CS75_PLUS] ([CarBrandStore]).
+ * This build lists [CHANGAN_CS75_PLUS] first, then a generic [CHANGAN] entry. The Changan logo
+ * (Settings badge and CarPlay's back-to-car button) is shared by both entries. All other
+ * CS75-specific behaviour — holding Automatic CarPlay to 30 fps ([ChanganPicture]), and the
+ * status-bar hide section — applies only to [CHANGAN_CS75_PLUS]. A saved [CHANGAN] choice from
+ * earlier builds is migrated once to [CHANGAN_CS75_PLUS] ([CarBrandStore]).
  */
 enum class CarBrand(val displayName: String, val profile: VehicleProfile = VehicleProfile.GENERIC, val luxury: Boolean = false,
                     val motorcycle: Boolean = false) {
