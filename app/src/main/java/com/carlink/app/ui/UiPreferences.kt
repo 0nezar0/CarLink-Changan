@@ -77,6 +77,11 @@ class UiPreferences(context: Context) : UpdatePrefs {
         get() = prefs.getBoolean(KEY_CS75_FIRST_LAUNCH_PROMPT, false)
         set(value) = prefs.edit().putBoolean(KEY_CS75_FIRST_LAUNCH_PROMPT, value).apply()
 
+    /** The "use HEVC?" question was answered (Yes or No), so it is not shown again. */
+    var hevcPromptDone: Boolean
+        get() = prefs.getBoolean(KEY_HEVC_PROMPT, false)
+        set(value) = prefs.edit().putBoolean(KEY_HEVC_PROMPT, value).apply()
+
     private inline fun <reified T : Enum<T>> enumOr(name: String?, default: T): T =
         name?.let { runCatching { enumValueOf<T>(it) }.getOrNull() } ?: default
 
@@ -94,6 +99,7 @@ class UiPreferences(context: Context) : UpdatePrefs {
         private const val KEY_LAST_UPDATE_CHECK = "update_last_check"
         private const val KEY_TEST_VERSIONS = "update_test_versions"
         private const val KEY_CS75_FIRST_LAUNCH_PROMPT = "cs75_first_launch_prompt_done"
+        private const val KEY_HEVC_PROMPT = "hevc_prompt_done"
     }
 }
 

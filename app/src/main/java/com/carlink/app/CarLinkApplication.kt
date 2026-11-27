@@ -43,12 +43,11 @@ class CarLinkApplication : App() {
             com.carlink.app.switcher.ProjectionVisibility.installInEngineProcess(this)
         } else {
             // v1.6.5: once, dark theme and Bluetooth audio if those old defaults were never
-            // changed; CS75 top margin off if it was only the old first-launch default.
-            // Bluetooth audio runs before the margin migration so a settings write cannot
-            // persist "through CarLink" as if the driver chose it.
+            // changed. Then drop leftover Top margin keys so an earlier on-value cannot apply
+            // a 48 px inset after that setting was removed.
             com.carlink.app.ui.DarkThemeDefaultMigration.apply(this)
             com.carlink.core.settings.BluetoothAudioDefaultMigration.apply(this)
-            com.carlink.core.settings.Cs75TopMarginOffMigration.apply(this)
+            com.carlink.core.settings.UnifiedSettingsStore(this).dropRemovedMarginPrefs()
             // Settings > Display > Screen type reaches detection before any session (CarPlay's turning canvas).
             com.carlink.app.ui.applyScreenType(com.carlink.app.ui.UiPreferences(this).uiProfileMode)
             // The floating switcher over CarPlay / Android Auto (and the USB switch prompt).

@@ -356,6 +356,7 @@ object SwitcherController {
                 com.carlink.core.connection.CarPlaySettingsPolicy.percentForWidth(com.shilapi.xcertplay.AirPlayPersistence.loadWidthPhysicalMm(app))
                 else UnifiedSettingsStore(app).load().customSizePercent,
             dayNight = UnifiedSettingsStore(app).load().dayNight, dimmer = ScreenDimmer.level,
+            hevc = com.shilapi.xcertplay.AirPlayPersistence.loadHevcEnabled(app),
             edge = bubble?.let { if (it.params.x + geometry.bubble / 2 < geometry.screenWidth / 2) Edge.LEFT else Edge.RIGHT }
                 ?: Edge.RIGHT,
         )
@@ -518,6 +519,17 @@ object SwitcherController {
         override fun cycleDimmer() {
             ScreenDimmer.set(app, com.carlink.app.ui.switcher.nextDimLevel(ScreenDimmer.level, ScreenDimmer.ALPHAS.size))
             panelUi = panelUi?.copy(dimmer = ScreenDimmer.level)
+        }
+
+        override fun toggleHevc() {
+            val next = !com.shilapi.xcertplay.AirPlayPersistence.loadHevcEnabled(app)
+            com.carlink.core.settings.HevcChoice.setByUser(app, next)
+            panelUi = panelUi?.copy(hevc = next)
+            android.widget.Toast.makeText(
+                app,
+                if (next) R.string.carlink_switcher_hevc_toast_on else R.string.carlink_switcher_hevc_toast_off,
+                android.widget.Toast.LENGTH_SHORT,
+            ).show()
         }
 
         override fun openStereoLauncher() {

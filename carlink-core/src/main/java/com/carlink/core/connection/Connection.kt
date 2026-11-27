@@ -253,11 +253,11 @@ object Connection {
     private fun writeSession(app: Context, plan: SessionPlan) {
         val stored = UnifiedSettingsStore(app).load()
         val wifi = WifiEnvironmentReader.read(app, stored)
-        // Margins are the Changan setting: any other brand, or none, writes zeros.
-        val settings = effectiveSettings(stored, wifi).marginsFor(carBrand(app))
+        val settings = effectiveSettings(stored, wifi)
         val profile = vehicleProfile(app)
         // Every start, so the HEVC fallback knows whether this attempt sends HEVC (presets: never).
-        val picture = VideoSurfaceMemory.reconcile(app, CarPlayHevcMemory(app).apply(automaticPicture(app, settings)), settings.picture)
+        val picture = VideoSurfaceMemory.reconcile(app, CarPlayHevcMemory(app).apply(automaticPicture(app, settings),
+            exempt = carBrand(app)?.isChanganCs75Plus == true), settings.picture)
         when (plan.engine) {
             Engine.CARPLAY -> {
                 // CarLink: wireless CarPlay's iAP2 link through the stereo's module (opt-in).
@@ -275,7 +275,7 @@ object Connection {
                     com.carlink.core.diagnostics.EventLog.add("CarLink", "CarPlay Bluetooth through the stereo's module: $kind (experimental)" +
                         (route.refusal?.let { "; refused: $it" } ?: ""))
                 }
-                // The car button in CarPlay: the Changan logo in a Changan, the default car icon in every other car.
+                // The car button in CarPlay: the Changan logo for Changan and CS75 Plus, the default car icon in every other car.
                 com.shilapi.xcertplay.CarPlayHostIntegration.carButtonIcon = CarPlayCarButton.icon(carBrand(app))
                 val fineLocation = app.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 CarPlaySettingsPolicy.apply(app, CarPlaySettingsPolicy.map(settings, plan.path, profile, fineLocation,

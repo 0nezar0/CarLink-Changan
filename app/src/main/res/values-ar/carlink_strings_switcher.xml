@@ -25,4 +25,10 @@
     <string name="carlink_switcher_stereo_home">الشاشة</string>
     <string name="carlink_switcher_stereo_home_value">المشغّل</string>
     <string name="carlink_switcher_night_next">يُطبَّق الوضع الليلي من الاتصال التالي؛ والتعتيم فوراً.</string>
+    <!-- Quick toggle in the switcher panel: CarPlay HEVC (Settings > Display > Efficient video (HEVC)); applies from the next connection. -->
+    <string name="carlink_switcher_hevc">HEVC</string>
+    <string name="carlink_switcher_hevc_on">تشغيل</string>
+    <string name="carlink_switcher_hevc_off">إيقاف</string>
+    <string name="carlink_switcher_hevc_toast_on">تم تشغيل \u2068HEVC\u2069 لـ\u2068CarPlay\u2069. يتطبّق من الاتصال الجاي.</string>
+    <string name="carlink_switcher_hevc_toast_off">تم إيقاف \u2068HEVC\u2069 لـ\u2068CarPlay\u2069. يتطبّق من الاتصال الجاي.</string>
 </resources>

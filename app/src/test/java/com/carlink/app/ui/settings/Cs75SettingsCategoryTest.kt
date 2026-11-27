@@ -8,13 +8,26 @@ import org.junit.Test
 import java.io.File
 
 class Cs75SettingsCategoryTest {
-    @Test fun cs75IsTheFirstCategoryOnlyWhenThatBrandIsSelected() {
+    @Test fun brandSpecificCategoryFollowsGeneral() {
         val withCs75 = categoryOrder(includeCs75 = true)
-        assertEquals(SettingsCategory.CHANGAN_CS75, withCs75.first())
-        assertEquals(SettingsCategory.CONNECTION, withCs75[1])
         val without = categoryOrder(includeCs75 = false)
-        assertFalse(SettingsCategory.CHANGAN_CS75 in without)
+        assertEquals(SettingsCategory.CONNECTION, withCs75.first())
+        assertEquals(SettingsCategory.GENERAL, withCs75[withCs75.lastIndex - 1])
+        assertEquals(SettingsCategory.CHANGAN_CS75, withCs75.last())
+        assertFalse(SettingsCategory.ADDED_FEATURES in withCs75)
         assertEquals(SettingsCategory.CONNECTION, without.first())
+        assertEquals(SettingsCategory.GENERAL, without[without.lastIndex - 1])
+        assertEquals(SettingsCategory.ADDED_FEATURES, without.last())
+        assertFalse(SettingsCategory.CHANGAN_CS75 in without)
+        assertEquals(withCs75.dropLast(1), without.dropLast(1))
+    }
+
+    @Test fun arabicAddedFeaturesTitleIsExact() {
+        val xml = File("src/main/res/values-ar/carlink_strings_settings.xml").takeIf { it.isFile }
+            ?: File("../src/main/res/values-ar/carlink_strings_settings.xml")
+        val match = Regex("""<string name="carlink_settings_cat_added_features">([^<]+)</string>""").find(xml.readText())
+            ?: error("missing carlink_settings_cat_added_features")
+        assertEquals("مزايا إضافية", match.groupValues[1])
     }
 
     @Test fun arabicCs75TitlesIsolateTheLatinSegment() {
@@ -39,5 +52,13 @@ class Cs75SettingsCategoryTest {
                 value.contains(isolated) || value.contains(isolatedChar),
             )
         }
+    }
+
+    @Test fun arabicExperimentalTagIsExact() {
+        val xml = File("src/main/res/values-ar/carlink_strings_settings.xml").takeIf { it.isFile }
+            ?: File("../src/main/res/values-ar/carlink_strings_settings.xml")
+        val match = Regex("""<string name="carlink_settings_experimental_tag">([^<]+)</string>""").find(xml.readText())
+            ?: error("missing carlink_settings_experimental_tag")
+        assertEquals("تجريبي", match.groupValues[1])
     }
 }

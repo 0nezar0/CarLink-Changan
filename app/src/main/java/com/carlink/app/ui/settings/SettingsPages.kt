@@ -42,6 +42,7 @@ import com.carlink.core.settings.Control
 import com.carlink.core.settings.DayNight
 import com.carlink.core.settings.LiteMode
 import com.carlink.core.settings.LiteModeMemory
+import com.carlink.core.settings.CarBrand
 import com.carlink.core.settings.SettingsCategory
 import com.carlink.core.settings.Tier
 import com.carlink.app.ui.Route
@@ -75,9 +76,10 @@ internal fun CategoryPage(
             SettingsCategory.CAR -> CarEssentials(ui, actions, openSheet)
             SettingsCategory.GENERAL -> GeneralEssentials(ui, actions, openSheet, versionTaps, onVersionTap)
             SettingsCategory.CHANGAN_CS75 -> ChanganSettingsSection(ui, actions)
+            SettingsCategory.ADDED_FEATURES -> AddedFeaturesSection(ui, actions)
         }
-        // CS75 has no Advanced/Lab engine rows; keep that pane just the CS75 card.
-        if (category != SettingsCategory.CHANGAN_CS75) {
+        // CS75 and added-features panes have no Advanced/Lab engine rows.
+        if (category != SettingsCategory.CHANGAN_CS75 && category != SettingsCategory.ADDED_FEATURES) {
             if (ui.unified.showAdvanced) EngineSection(category, Tier.ADVANCED, ui, actions, openSheet)
             if (ui.unified.labUnlocked) EngineSection(category, Tier.LAB, ui, actions, openSheet)
         }
@@ -351,31 +353,55 @@ private fun NavigationEssentials(ui: SettingsUi, actions: SettingsActions) {
 }
 
 @Composable
+internal fun NavigationBarToggleRow(brandKey: Any? = null) {
+    val context = LocalContext.current
+    var navigationEnabled by remember(brandKey) { mutableStateOf(NavigationBarPreference.enabled(context)) }
+    SwitchRow(
+        title = stringResource(R.string.carlink_cs75_nav_title),
+        checked = navigationEnabled,
+        onCheckedChange = { enabled ->
+            NavigationBarPreference.setEnabled(context, enabled)
+            navigationEnabled = enabled
+            if (enabled && !FceBarAccessibilityService.isEnabled(context)) {
+                try {
+                    context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                } catch (_: ActivityNotFoundException) {
+                    android.widget.Toast.makeText(
+                        context,
+                        R.string.carlink_settings_hide_bar_accessibility_off,
+                        android.widget.Toast.LENGTH_LONG,
+                    ).show()
+                }
+            }
+        },
+        description = stringResource(R.string.carlink_cs75_nav_description),
+    )
+}
+
+@Composable
+internal fun HideAppStatusBarToggleRow(ui: SettingsUi, actions: SettingsActions) {
+    SwitchRow(
+        title = stringResource(R.string.carlink_settings_hide_app_status_bar),
+        checked = ui.unified.hideAppStatusBar,
+        onCheckedChange = { on -> actions.update { it.copy(hideAppStatusBar = on) } },
+        description = stringResource(R.string.carlink_settings_hide_app_status_bar_detail),
+        titleBadge = { ExperimentalTag() },
+    )
+}
+
+@Composable
+internal fun AddedFeaturesSection(ui: SettingsUi, actions: SettingsActions) {
+    GlassGroup {
+        NavigationBarToggleRow(ui.carBrand)
+        GroupDivider()
+        HideAppStatusBarToggleRow(ui, actions)
+    }
+}
+
+@Composable
 private fun CarEssentials(ui: SettingsUi, actions: SettingsActions, openSheet: (String) -> Unit) {
     val right = ui.unified.rightHandDrive
-    val context = LocalContext.current
-    var navigationEnabled by remember(ui.carBrand) { mutableStateOf(NavigationBarPreference.enabled(context)) }
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_settings_group_car)) }) {
-        SwitchRow(
-            title = stringResource(R.string.carlink_cs75_nav_title),
-            checked = navigationEnabled,
-            onCheckedChange = { enabled ->
-                NavigationBarPreference.setEnabled(context, enabled)
-                navigationEnabled = enabled
-                if (enabled && !FceBarAccessibilityService.isEnabled(context)) {
-                    try {
-                        context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                    } catch (_: ActivityNotFoundException) {
-                        android.widget.Toast.makeText(context, R.string.carlink_settings_hide_bar_accessibility_off,
-                            android.widget.Toast.LENGTH_LONG).show()
-                    }
-                }
-            },
-            description = stringResource(R.string.carlink_cs75_nav_description),
-        )
-        GroupDivider()
-        TopMarginRow(ui, actions)
-        GroupDivider()
         ChoiceRow(stringResource(R.string.carlink_settings_driving_side),
             stringResource(if (right) R.string.carlink_settings_drive_right else R.string.carlink_settings_drive_left),
             { openSheet(SheetKey.of(EssentialSheet.DRIVING_SIDE)) },
@@ -575,13 +601,3 @@ internal fun languageLabel(tag: String): String =
     if (tag == com.carlink.core.settings.AppLanguage.SYSTEM) stringResource(R.string.carlink_settings_language_system)
     else com.carlink.app.ui.components.ltrIfLatin(com.carlink.core.settings.AppLanguage.nativeName(tag))
 
-/** The Top margin switch: each car has its own saved choice ([com.carlink.core.settings.UnifiedSettings.withMarginFor]). */
-@Composable
-internal fun TopMarginRow(ui: SettingsUi, actions: SettingsActions) {
-    SwitchRow(
-        stringResource(R.string.carlink_settings_top_margin), ui.unified.marginsFor(ui.carBrand).topMargin,
-        { on -> actions.update { it.withMarginFor(ui.carBrand, on) } },
-        description = stringResource(R.string.carlink_settings_top_margin_detail),
-        icon = R.drawable.carlink_ic_aspect_ratio, tags = { NextConnectionTag() },
-    )
-}

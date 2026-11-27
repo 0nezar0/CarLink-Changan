@@ -119,9 +119,12 @@ private val standardCategoryOrder = listOf(
     SettingsCategory.NAVIGATION, SettingsCategory.CAR, SettingsCategory.GENERAL,
 )
 
-/** Rail and grid order. The CS75 category is first, and only present, when that brand is selected. */
+/**
+ * Rail and grid order. A brand-specific extras tab follows General: the CS75 category
+ * when that brand is selected, otherwise the added-features category.
+ */
 internal fun categoryOrder(includeCs75: Boolean): List<SettingsCategory> =
-    if (includeCs75) listOf(SettingsCategory.CHANGAN_CS75) + standardCategoryOrder else standardCategoryOrder
+    standardCategoryOrder + if (includeCs75) SettingsCategory.CHANGAN_CS75 else SettingsCategory.ADDED_FEATURES
 
 @get:StringRes
 internal val SettingsCategory.title: Int
@@ -133,6 +136,7 @@ internal val SettingsCategory.title: Int
         SettingsCategory.CAR -> R.string.carlink_settings_cat_car
         SettingsCategory.GENERAL -> R.string.carlink_settings_cat_general
         SettingsCategory.CHANGAN_CS75 -> R.string.carlink_settings_group_changan
+        SettingsCategory.ADDED_FEATURES -> R.string.carlink_settings_cat_added_features
     }
 
 @get:StringRes
@@ -145,6 +149,7 @@ internal val SettingsCategory.summary: Int
         SettingsCategory.CAR -> R.string.carlink_settings_cat_car_summary
         SettingsCategory.GENERAL -> R.string.carlink_settings_cat_general_summary
         SettingsCategory.CHANGAN_CS75 -> R.string.carlink_settings_cat_cs75_summary
+        SettingsCategory.ADDED_FEATURES -> R.string.carlink_settings_cat_added_features_summary
     }
 
 @get:DrawableRes
@@ -157,6 +162,7 @@ internal val SettingsCategory.icon: Int
         SettingsCategory.CAR -> R.drawable.carlink_ic_directions_car
         SettingsCategory.GENERAL -> R.drawable.carlink_ic_tune
         SettingsCategory.CHANGAN_CS75 -> R.drawable.carlink_ic_dashboard
+        SettingsCategory.ADDED_FEATURES -> R.drawable.carlink_ic_layers
     }
 
 @get:DrawableRes
@@ -169,6 +175,7 @@ internal val SettingsCategory.selectedIcon: Int
         SettingsCategory.CAR -> R.drawable.carlink_ic_directions_car_filled
         SettingsCategory.GENERAL -> R.drawable.carlink_ic_tune_filled
         SettingsCategory.CHANGAN_CS75 -> R.drawable.carlink_ic_dashboard_filled
+        SettingsCategory.ADDED_FEATURES -> R.drawable.carlink_ic_layers
     }
 
 /** The bottom sheets Settings opens; saved by [key] so a rotation keeps the sheet open. */

@@ -38,6 +38,10 @@ class HomeActivity : ComponentActivity() {
         if (savedInstanceState == null) { consumeAutoPhone(intent); consumeRecovery(intent); consumeCarSettings(intent) }
         setContent {
             val display by vm.display.collectAsStateWithLifecycle()
+            val unified by vm.unified.collectAsStateWithLifecycle()
+            androidx.compose.runtime.SideEffect {
+                AppImmersiveStatusBar.apply(window, unified.hideAppStatusBar)
+            }
             val profile = remember(display.uiProfileMode) { UiProfileDetector.detect(this, display.uiProfileMode) }
             CarLinkTheme(profile, display.themeMode, display.interfaceScale, display.liteRendering) {
                 androidx.compose.foundation.layout.Box {
@@ -95,8 +99,18 @@ class HomeActivity : ComponentActivity() {
         Updates.get(this).maybeAutoCheck(UpdatePolicy.sessionQuiet(connection.state.value, connection.pendingSwitch.value))
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) applyImmersiveStatusBar()
+    }
+
+    private fun applyImmersiveStatusBar() {
+        AppImmersiveStatusBar.apply(window, vm.unified.value.hideAppStatusBar)
+    }
+
     override fun onResume() {
         super.onResume()
+        applyImmersiveStatusBar()
         // After Connection.onHomeShown below had its chance to start a session, and after startup.
         window.decorView.postDelayed(autoUpdateCheck, UPDATE_CHECK_DELAY_MILLIS)
         // After the first frames: the ":aa" process start competes with Home's first draw (CarLinkApplication.deferStartupWork).

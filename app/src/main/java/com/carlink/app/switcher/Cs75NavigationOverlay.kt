@@ -25,12 +25,17 @@ import com.carlink.core.settings.CarBrandStore
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-/** The navigation bar switch, stored separately for each chosen car. */
+/**
+ * The navigation bar switch, stored separately for each chosen car. On by default for every car
+ * (it needs CarLink's accessibility service to show anything). A car with nothing stored takes the
+ * default, unless the driver already switched the bar off on another entry and never on anywhere:
+ * an explicit Off is not undone by choosing a different car brand.
+ */
 internal object NavigationBarPreference {
     fun preferences(context: Context): SharedPreferences =
         context.getSharedPreferences("cs75_navigation_overlay", Context.MODE_PRIVATE)
 
-    private fun key(context: Context): String = "enabled_" + (CarBrandStore(context).chosen()?.name ?: "AUTO")
+    private fun key(context: Context): String = KEY_PREFIX + (CarBrandStore(context).chosen()?.name ?: "AUTO")
 
     /**
      * The saved switch for the current car. Earlier trials kept a single `enabled` or `side`
@@ -42,11 +47,32 @@ internal object NavigationBarPreference {
             val previous = getBoolean("enabled", getString("side", null) in setOf("LEFT", "RIGHT"))
             edit().putBoolean(key, previous).remove("enabled").remove("side").apply()
         }
-        getBoolean(key, false)
+        if (contains(key)) getBoolean(key, DEFAULT_ENABLED) else defaultFor(all.filterKeys { it.startsWith(KEY_PREFIX) }.values)
+    }
+
+    const val DEFAULT_ENABLED = true
+    private const val KEY_PREFIX = "enabled_"
+
+    /** [stored]: what the other cars saved. The default, unless every saved value is an explicit Off. */
+    internal fun defaultFor(stored: Collection<Any?>): Boolean {
+        val values = stored.filterIsInstance<Boolean>()
+        return if (values.isNotEmpty() && values.none { it }) false else DEFAULT_ENABLED
     }
 
     fun setEnabled(context: Context, enabled: Boolean) {
         preferences(context).edit().putBoolean(key(context), enabled).apply()
+    }
+}
+
+/**
+ * When the 8 dp edge strips are attached. They stay up during CarPlay and Android Auto
+ * ([projectionInFront] true): removing them in v1.6.6 made it impossible to swipe the bar
+ * open to go back.
+ */
+internal object NavigationBarStrips {
+    fun shouldAttach(enabled: Boolean, projectionInFront: Boolean): Boolean {
+        // projectionInFront must not hide the strips.
+        return enabled
     }
 }
 
@@ -57,7 +83,8 @@ internal object NavigationBarPreference {
  * An overlay window cannot hand a touch it has received to the app below, so a touch on a closed
  * strip that is not an inward swipe (a tap, a long press, a vertical drag) is replayed to the app
  * underneath with [AccessibilityService.dispatchGesture] while the strip is briefly untouchable.
- * The strips are removed while CarPlay or Android Auto is on screen ([setProjectionInFront]).
+ * The strips stay up while CarPlay or Android Auto is on screen, so an inward swipe can still
+ * open the bar to go back. v1.6.6 removed them during projection, which blocked that swipe.
  */
 internal class Cs75NavigationOverlay(private val service: AccessibilityService) {
     private val windows = service.getSystemService(WindowManager::class.java)
@@ -85,7 +112,10 @@ internal class Cs75NavigationOverlay(private val service: AccessibilityService) 
         expandedRight = null
     }
 
-    /** CarPlay or Android Auto came to the front (true) or left it (false). */
+    /**
+     * CarPlay or Android Auto came to the front (true) or left it (false). An open bar is
+     * closed so it does not sit on the new session; the edge strips stay attached.
+     */
     fun setProjectionInFront(inFront: Boolean) {
         if (inFront == projectionInFront) return
         projectionInFront = inFront
@@ -99,7 +129,7 @@ internal class Cs75NavigationOverlay(private val service: AccessibilityService) 
 
     private fun render() {
         remove()
-        if (projectionInFront || !NavigationBarPreference.enabled(service)) return
+        if (!NavigationBarStrips.shouldAttach(NavigationBarPreference.enabled(service), projectionInFront)) return
         addEdge(onRight = false)
         addEdge(onRight = true)
     }

@@ -25,4 +25,10 @@
     <string name="carlink_switcher_stereo_home">Sztereó</string>
     <string name="carlink_switcher_stereo_home_value">Indító</string>
     <string name="carlink_switcher_night_next">Az éjszakai mód a következő csatlakozástól érvényes; a fényerőcsökkentő azonnal.</string>
+    <!-- Quick toggle in the switcher panel: CarPlay HEVC (Settings > Display > Efficient video (HEVC)); applies from the next connection. -->
+    <string name="carlink_switcher_hevc">HEVC</string>
+    <string name="carlink_switcher_hevc_on">Be</string>
+    <string name="carlink_switcher_hevc_off">Ki</string>
+    <string name="carlink_switcher_hevc_toast_on">HEVC bekapcsolva a CarPlayhez. A következő csatlakozásnál lép érvénybe.</string>
+    <string name="carlink_switcher_hevc_toast_off">HEVC kikapcsolva a CarPlayhez. A következő csatlakozásnál lép érvénybe.</string>
 </resources>

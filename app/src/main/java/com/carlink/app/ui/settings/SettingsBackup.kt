@@ -61,6 +61,7 @@ object SettingsBackup {
         Field(UNIFIED, "hide_car_status_bar", Type.BOOL),
         Field(UNIFIED, "hide_car_status_bar_mode", Type.STRING, names<com.carlink.core.settings.HideCarStatusBarMode>()),
         Field(UNIFIED, "hide_car_status_bar_packages", Type.STRING),
+        Field(UNIFIED, "hide_app_status_bar", Type.BOOL),
         Field(UNIFIED, "app_language", Type.STRING, AppLanguage.SUPPORTED.toSet()),
         Field(UNIFIED, "wheel_keys", Type.STRING),
         Field(UNIFIED, "android_auto_back", Type.BOOL),
