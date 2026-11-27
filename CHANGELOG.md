@@ -6,6 +6,10 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+## [CS75 Plus 2023 v1.7.2] - 2026-11-27 (test)
+
+Test build from branch `trial/1.7.1`, versionCode 10055. It installs over v1.7.1 (10054), v1.7.0 (10053) and every earlier build, and keeps your settings. Includes everything from the v1.7.1 trial, plus the update fix below.
+
 - Updates: manual install fallback. Some head units (the Changan CS75 Plus among them) block the automatic install silently, so pressing download did nothing after the file was checked. The checked APK stays in Downloads/CarLink and the update dialog now shows its full path with an **Install manually** (تثبيت يدوي) button while Android's install screen is up or never appears, when the install fails or is cancelled, and while CarLink waits for "Install unknown apps". The button opens the APK with Android's installer or a file manager (the file is shared as a content:// link by CarLink's own file provider); if no app takes it, the folder is opened, and the path stays on screen. The automatic install is still tried first. A file that fails its checks is still deleted.
 
 ## [CS75 Plus 2023 v1.7.1] - 2026-11-27 (test)
