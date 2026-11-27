@@ -6,6 +6,15 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+## [CS75 Plus 2023 v1.7.5] - 2026-11-27 (test)
+
+Test build from branch `trial/1.7.1`, versionCode 10058. It installs over v1.7.4 (10057), v1.7.3 (10056) and every earlier build, and keeps your settings. Includes everything from the v1.7.4 trial, plus the iPhone Personal Hotspot changes below.
+
+- Fix: wireless CarPlay over an iPhone's Personal Hotspot now runs the same IPv4-only path as the car's own hotspot: no IPv6 address in Bonjour, in the phone's address list or on a listener, and a family remembered by an earlier build (IPv6) is cleared once. The v1.7.4 field report ended with "the iPhone did not connect" twice in a row.
+- Fix: on Same Wi-Fi and the car hotspot, a linking timeout now just tries again; it no longer says it resets Wi-Fi Direct (there is none on those paths). Same Wi-Fi waits 30 s for the iPhone's first connection (it was 20 s, which cut the run 10 s before the engine's own 30 s limit and restarted the whole connection).
+- Fix: a link-local IPv6 address appearing or changing on the iPhone's hotspot no longer restarts the run, and a changed link is checked again after 1.5 s before restarting.
+- Removed: the v1.7.4 fallback that remembered IPv4 after an IPv6 picture stall on Same Wi-Fi (Same Wi-Fi no longer uses IPv6).
+
 ## [CS75 Plus 2023 v1.7.4] - 2026-11-27 (test)
 
 Test build from branch `trial/1.7.1`, versionCode 10057. It installs over v1.7.3 (10056), v1.7.2 (10055) and every earlier build, and keeps your settings. Includes everything from the v1.7.3 trial (the manual install fallback for updates and the Android Auto reconnect fix), plus the iPhone Personal Hotspot fix below.

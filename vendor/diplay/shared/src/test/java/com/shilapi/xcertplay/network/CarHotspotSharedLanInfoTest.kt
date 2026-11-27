@@ -163,7 +163,7 @@ class CarHotspotSharedLanInfoTest {
     fun ipv4OnlyHelpersIgnoreLinkLocalAndSharedWifi() {
         assertTrue(isCarHotspotIpv4Only(WirelessHotspotBackend.MANUAL_HOTSPOT))
         assertTrue(isCarHotspotIpv4Only(WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT))
-        assertFalse(isCarHotspotIpv4Only(WirelessHotspotBackend.EXISTING_WIFI))
+        assertTrue(isCarHotspotIpv4Only(WirelessHotspotBackend.EXISTING_WIFI)) // v1.7.5
         assertFalse(isCarHotspotIpv4Only(WirelessHotspotBackend.WIFI_P2P))
         assertEquals(
             listOf(lanIpv4),

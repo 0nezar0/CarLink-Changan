@@ -40,10 +40,17 @@ internal object WirelessAddressFamilyPlan {
      * CarLink #93: the car hotspot and LocalOnlyHotspot run IPv4 end to end. On an IPv4-only head unit's SoftAP
      * (Changan CS75 Plus, Allwinner T7) CarPlay stalled after the Wi-Fi credentials while any IPv6 was offered:
      * a link-local AAAA in Bonjour, an IPv6 host in iAP2 0x4301/0x5703, or a family remembered from Same Wi-Fi
-     * or flipped after a first-TCP timeout. Wi-Fi Direct and Same Wi-Fi keep both families. Diagnosis: 0nezar0.
+     * or flipped after a first-TCP timeout. Diagnosis: 0nezar0.
+     *
+     * CarLink v1.7.5: existing Wi-Fi (an iPhone's Personal Hotspot joined by the head unit) is the same kind of
+     * IPv4 LAN, so it runs the car-hotspot path exactly: IPv4 only, no remembered or flipped family, no IPv6 in
+     * Bonjour, iAP2 or the listeners. The v1.7.4 field report (PHONE_NEVER_REACHED_CAR twice in a row) showed
+     * the dual-stack choice and the family it remembered were a way to lose the first TCP, never a way to win it.
+     * Only Wi-Fi Direct keeps both families.
      */
     fun ipv4Only(backend: WirelessHotspotBackend): Boolean =
-        backend == WirelessHotspotBackend.MANUAL_HOTSPOT || backend == WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT
+        backend == WirelessHotspotBackend.MANUAL_HOTSPOT || backend == WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT ||
+            backend == WirelessHotspotBackend.EXISTING_WIFI
 
     /**
      * Whether the AirPlay media sockets (screen, NTP, event, keep-alive, audio) bind the control session's local

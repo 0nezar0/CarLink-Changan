@@ -27,6 +27,12 @@ class ExistingWifiManager(
     private val onDiagnostic: (String) -> Unit = {},
     private val onNetworkChanged: () -> Unit = {},
     private val preferredInterface: String? = null,
+    /**
+     * CarLink v1.7.5: the run is IPv4 only (an iPhone's Personal Hotspot, like the car hotspot): the link-local IPv6
+     * address appearing or changing a moment after the link comes up is not a changed link, and a change that
+     * remains is only acted on after [LINK_SETTLE_MILLIS] (a hotspot's DHCP/RA settling must not restart a run).
+     */
+    private val ipv4Only: Boolean = false,
 ) : WirelessHotspotManager {
     private val connectivity = context.applicationContext.getSystemService(ConnectivityManager::class.java)
         ?: throw IllegalStateException("ConnectivityManager is unavailable")
@@ -52,8 +58,19 @@ class ExistingWifiManager(
             // attaching, so track the interface name until a network is selected.
             val tracked = network == selected ||
                 (selected == null && properties.interfaceName == interfaceName)
-            if (tracked && !sameLink(properties)) invalidate("interface or address changed")
+            if (!tracked || sameLink(properties)) return
+            if (!ipv4Only) return invalidate("interface or address changed")
+            // CarLink v1.7.5: look again once the link has settled; only a change that stays restarts the run.
+            settle.removeCallbacks(recheck)
+            settle.postDelayed(recheck, LINK_SETTLE_MILLIS)
         }
+    }
+
+    private val settle by lazy { android.os.Handler(Looper.getMainLooper()) }
+    private val recheck = Runnable {
+        val network = selected ?: return@Runnable
+        val current = connectivity.getLinkProperties(network)
+        if (!closed && (current == null || !sameLink(current))) invalidate("interface or address changed")
     }
 
     init {
@@ -185,9 +202,16 @@ class ExistingWifiManager(
         throw IOException("Existing Wi-Fi attachment was cancelled")
     }
 
-    private fun sameLink(properties: LinkProperties): Boolean =
-        properties.interfaceName == interfaceName && properties.linkAddresses.any { it.address == host } &&
-            existingWifiHostAddresses(properties.linkAddresses.map { it.address }, interfaceIndex).toSet() == hosts.toSet()
+    private fun sameLink(properties: LinkProperties): Boolean {
+        if (properties.interfaceName != interfaceName) return false
+        val now = existingWifiHostAddresses(properties.linkAddresses.map { it.address }, interfaceIndex)
+        if (ipv4Only) {
+            // Only the IPv4 side identifies an IPv4-only run's link; fe80:: coming and going does not.
+            val v4 = { list: List<InetAddress> -> list.filterIsInstance<java.net.Inet4Address>().toSet() }
+            return v4(now) == v4(hosts) && v4(now).isNotEmpty()
+        }
+        return properties.linkAddresses.any { it.address == host } && now.toSet() == hosts.toSet()
+    }
 
     // An iPhone told to use an open network never opens the AirPlay connection, while the same router
     // with WPA2 connects within seconds (#1232), so retrying cannot help.
@@ -219,6 +243,7 @@ class ExistingWifiManager(
         "existingWifiLink=${if (closed || invalidated.get()) "lost" else "attached"}"
 
     override fun close() {
+        if (ipv4Only) settle.removeCallbacks(recheck)
         synchronized(lock) {
             closed = true
             if (callbackRegistered) {
@@ -239,3 +264,6 @@ class ExistingWifiManager(
                 .removeCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)
         }
 }
+
+/** CarLink v1.7.5: how long a changed link may stay changed before an IPv4-only existing-Wi-Fi run restarts. */
+private const val LINK_SETTLE_MILLIS = 1_500L
