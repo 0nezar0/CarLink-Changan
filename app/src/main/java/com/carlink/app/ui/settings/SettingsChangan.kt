@@ -38,8 +38,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * CS75-only switches, shown as the first Settings category when the driver has chosen
- * the CS75 Plus brand: hide-mode radios, the accessibility prompt, and the app picker.
+ * CS75-only switches, shown after General when the driver has chosen the CS75 Plus
+ * brand (the same slot as Extra features on other cars): hide-mode radios, the
+ * accessibility prompt, the app picker, and the navigation-bar toggle.
  * Rendered in the same scrollable content pane as the other categories.
  */
 @Composable
@@ -85,6 +86,9 @@ internal fun ChanganSettingsSection(ui: SettingsUi, actions: SettingsActions) {
                 },
             )
         }
+    }
+    GlassGroup {
+        NavigationBarToggleRow(ui.carBrand)
     }
 }
 

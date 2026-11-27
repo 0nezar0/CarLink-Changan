@@ -19,6 +19,8 @@
     <string name="carlink_settings_cat_navigation_summary">Araç konumu ve yol tarifi</string>
     <string name="carlink_settings_cat_car_summary">Sürüş tarafı ve kontroller</string>
     <string name="carlink_settings_cat_general_summary">CarLink’in görünümü, yardımı ve sürümü</string>
+    <string name="carlink_settings_cat_added_features">Ek özellikler</string>
+    <string name="carlink_settings_cat_added_features_summary">Bu sürümde eklenen özellikler, örneğin gezinme çubuğu</string>
     <string name="carlink_settings_custom">Özel (Gelişmiş’te ayarlanır)</string>
     <string name="carlink_settings_custom_detail">Kesin değerler Gelişmişi göster altında ayarlanır.</string>
     <string name="carlink_settings_applies_next">Sonraki bağlantıda uygulanır</string>
@@ -263,7 +265,7 @@
     <string name="carlink_settings_car_brand_detail">BYD: DiLink ekstralarını ekler. Diğer markalar, Changan hariç, yalnızca bu arabayı etiketler.</string>
     <string name="carlink_settings_car_brand_changan_note">Changan: logosu CarPlay’in arabaya dön düğmesinde (diğer arabalar varsayılan simgeyi alır). CS75 Plus kaydı bildirim çubuğunu varsayılan olarak gizler — ana ekran dışındaki tüm uygulamalarda veya Ayarlar’daki tam listeden seçtiğiniz uygulamalarda. Ses varsayılan olarak arabanın Bluetooth’undan çalar. CarPlay 400 mm ve HEVC, Android Auto 200 DPI olarak kalır. Tümünü Ayarlar’dan değiştirebilirsiniz.</string>
     <string name="carlink_settings_car_brand_sheet_body">Bu arabanın markasını seçin. CarPlay ve Android Auto her arabada aynı şekilde çalışır.</string>
-    <string name="carlink_settings_cat_cs75_summary">Durum çubuğunu gizleme ve erişilebilirlik</string>
+    <string name="carlink_settings_cat_cs75_summary">Durum çubuğunu gizleme, erişilebilirlik ve gezinme çubuğu</string>
     <string name="carlink_cs75_first_launch_title">Arabanız bir Changan / CS75 Plus 2022-2023 mü?</string>
     <string name="carlink_cs75_first_launch_yes">Evet</string>
     <string name="carlink_cs75_first_launch_no">Hayır</string>

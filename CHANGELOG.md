@@ -6,7 +6,8 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
-- The navigation bar (شريط التنقل, Settings › Car) is on by default for every car, including the edge swipe during CarPlay and Android Auto. It still needs CarLink's accessibility service. A switch you already turned off stays off, also after you choose a different car.
+- The navigation bar (شريط التنقل) is on by default for every car, including the edge swipe during CarPlay and Android Auto. It still needs CarLink's accessibility service. A switch you already turned off stays off, also after you choose a different car.
+- The navigation-bar switch moved out of Settings › Car. When the CS75 Plus brand is selected it is in the Changan section; for every other car it is in a new Extra features section (مزايا إضافية). Both of those sections sit right after General, so the tab is in the same place regardless of brand. The preference itself is unchanged: on by default for every car, including CS75 Plus, and an explicit Off stays off.
 - Changan CS75 Plus: hiding the car's notification bar is now on by default (all apps except the car's home screen), with no question asked. An existing choice, including an explicit Off, is kept.
 - Other cars: a one-time Yes/No question (نعم / لا) asks whether to turn on HEVC video for a sharper CarPlay picture. The text says where to turn it off if the screen goes black (Settings › Show advanced › Display › Efficient video (HEVC)). Yes turns it on, No turns it off.
 - HEVC on the floating bubble: the quick-settings panel that opens from the bubble has an HEVC tile. It flips the same setting as Settings › Display › Efficient video (HEVC) and a toast says it applies from the next connection.

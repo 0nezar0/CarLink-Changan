@@ -10,7 +10,7 @@ import com.shilapi.xcertplay.CarPlayDock
 import com.shilapi.xcertplay.UsbChargingCurrent
 
 /** Where an Advanced or Lab setting appears (the same categories as the Essentials). */
-enum class SettingsCategory { CONNECTION, DISPLAY, SOUND, NAVIGATION, CAR, GENERAL, CHANGAN_CS75 }
+enum class SettingsCategory { CONNECTION, DISPLAY, SOUND, NAVIGATION, CAR, GENERAL, CHANGAN_CS75, ADDED_FEATURES }
 
 /** Advanced: shown with "Show advanced". Lab: experimental or debug, unlocked from About. */
 enum class Tier { ADVANCED, LAB }

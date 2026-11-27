@@ -19,6 +19,8 @@
     <string name="carlink_settings_cat_navigation_summary">Posizione dell’auto e indicazioni</string>
     <string name="carlink_settings_cat_car_summary">Lato di guida e comandi</string>
     <string name="carlink_settings_cat_general_summary">Aspetto, guida e versione di CarLink</string>
+    <string name="carlink_settings_cat_added_features">Funzioni aggiuntive</string>
+    <string name="carlink_settings_cat_added_features_summary">Funzioni aggiunte in questa edizione, come la barra di navigazione</string>
     <string name="carlink_settings_custom">Personalizzato (impostato in Avanzate)</string>
     <string name="carlink_settings_custom_detail">I valori esatti sono impostati in Mostra avanzate.</string>
     <string name="carlink_settings_applies_next">Si applica alla prossima connessione</string>
@@ -263,7 +265,7 @@
     <string name="carlink_settings_car_brand_detail">BYD: aggiunge i suoi extra DiLink. Le altre marche etichettano soltanto questa auto, tranne Changan.</string>
     <string name="carlink_settings_car_brand_changan_note">Changan: il suo logo sul pulsante di ritorno all’auto di CarPlay (le altre auto ricevono l’icona predefinita). La voce CS75 Plus nasconde la barra delle notifiche per impostazione predefinita — in tutte le app tranne la schermata Home, o in quelle che scegli da un elenco completo in Impostazioni. L’audio passa tramite il Bluetooth dell’auto per impostazione predefinita. CarPlay resta a 400 mm e HEVC, Android Auto a 200 DPI. Puoi cambiare tutto in Impostazioni.</string>
     <string name="carlink_settings_car_brand_sheet_body">Scegli la marca di quest’auto. CarPlay e Android Auto funzionano allo stesso modo in ogni auto.</string>
-    <string name="carlink_settings_cat_cs75_summary">Nascondi barra di stato e accessibilità</string>
+    <string name="carlink_settings_cat_cs75_summary">Nascondi barra di stato, accessibilità e barra di navigazione</string>
     <string name="carlink_cs75_first_launch_title">La tua auto è una Changan / CS75 Plus 2022-2023?</string>
     <string name="carlink_cs75_first_launch_yes">Sì</string>
     <string name="carlink_cs75_first_launch_no">No</string>

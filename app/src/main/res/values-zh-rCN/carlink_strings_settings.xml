@@ -19,6 +19,8 @@
     <string name="carlink_settings_cat_navigation_summary">车辆位置与导航指引</string>
     <string name="carlink_settings_cat_car_summary">驾驶侧与控件</string>
     <string name="carlink_settings_cat_general_summary">CarLink 的外观、帮助和版本</string>
+    <string name="carlink_settings_cat_added_features">额外功能</string>
+    <string name="carlink_settings_cat_added_features_summary">本版本新增的功能，例如导航栏</string>
     <string name="carlink_settings_custom">自定义（在“高级”中设置）</string>
     <string name="carlink_settings_custom_detail">具体数值在“显示高级选项”中设置。</string>
     <string name="carlink_settings_applies_next">将在下次连接时生效</string>
@@ -263,7 +265,7 @@
     <string name="carlink_settings_car_brand_detail">比亚迪：添加其 DiLink 附加功能。其他品牌仅用于标识本车，长安除外。</string>
     <string name="carlink_settings_car_brand_changan_note">长安：在 CarPlay 的返回车辆按钮上显示其标志（其他车辆使用默认图标）。CS75 Plus 条目默认隐藏通知栏——可在除主屏幕外的所有应用中隐藏，或在设置中从完整列表选择应用。声音默认通过车辆蓝牙播放。CarPlay 仍默认 400 mm 和 HEVC，Android Auto 仍默认 200 DPI。均可在设置中更改。</string>
     <string name="carlink_settings_car_brand_sheet_body">选择本车品牌。CarPlay 和 Android Auto 在所有车辆上的工作方式相同。</string>
-    <string name="carlink_settings_cat_cs75_summary">隐藏状态栏和无障碍权限</string>
+    <string name="carlink_settings_cat_cs75_summary">隐藏状态栏、无障碍权限和导航栏</string>
     <string name="carlink_cs75_first_launch_title">您的车是长安 / CS75 Plus 2022-2023 吗？</string>
     <string name="carlink_cs75_first_launch_yes">是</string>
     <string name="carlink_cs75_first_launch_no">否</string>
