@@ -40,9 +40,9 @@ import kotlinx.coroutines.withContext
 /**
  * CS75-only switches, shown after General when the driver has chosen the CS75 Plus
  * brand (the same slot as Extra features on other cars): hide-mode radios, the
- * accessibility prompt, the app picker, the navigation-bar toggle, and the
- * in-app (immersive) status-bar hide, which also appears under Extra features
- * on other cars.
+ * accessibility prompt, the app picker, and the navigation-bar toggle. The
+ * in-app immersive status-bar hide stays on Extra features for other cars only;
+ * this section already has the Changan broadcast hide.
  * Rendered in the same scrollable content pane as the other categories.
  */
 @Composable
@@ -91,8 +91,6 @@ internal fun ChanganSettingsSection(ui: SettingsUi, actions: SettingsActions) {
     }
     GlassGroup {
         NavigationBarToggleRow(ui.carBrand)
-        GroupDivider()
-        HideAppStatusBarToggleRow(ui, actions)
     }
 }
 
