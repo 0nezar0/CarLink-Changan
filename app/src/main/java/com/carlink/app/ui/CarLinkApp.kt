@@ -24,6 +24,7 @@ import com.carlink.app.ui.about.AboutScreen
 import com.carlink.app.ui.diagnostics.DiagnosticsScreen
 import com.carlink.app.ui.home.HomeScreen
 import com.carlink.app.ui.settings.HevcPromptDialog
+import com.carlink.app.ui.settings.Cs75AccessibilityGuideDialog
 import com.carlink.app.ui.settings.Cs75FirstLaunchDialog
 import com.carlink.app.ui.settings.SettingsScreen
 import com.carlink.app.ui.theme.CarMotion
@@ -80,6 +81,7 @@ fun CarLinkApp(vm: CarLinkViewModel, onExitToCarHome: () -> Unit) {
     val travel = with(LocalDensity.current) { 48.dp.roundToPx() }
     val askHevc by vm.hevcPrompt.collectAsStateWithLifecycle()
     val askCs75FirstLaunch by vm.cs75FirstLaunchPrompt.collectAsStateWithLifecycle()
+    val askCs75Accessibility by vm.cs75AccessibilityGuide.collectAsStateWithLifecycle()
     // A Surface (not a plain background) so every screen's text defaults to onBackground.
     androidx.compose.material3.Surface(
         Modifier.fillMaxSize(),
@@ -88,6 +90,7 @@ fun CarLinkApp(vm: CarLinkViewModel, onExitToCarHome: () -> Unit) {
     ) {
         // Every screen draws its atmosphere behind the system bars and pads its own content.
         if (askCs75FirstLaunch) Cs75FirstLaunchDialog(onAnswer = vm::answerCs75FirstLaunch)
+        if (askCs75Accessibility) Cs75AccessibilityGuideDialog(onAnswer = vm::answerCs75AccessibilityGuide)
         if (askHevc) HevcPromptDialog(onAnswer = vm::answerHevcPrompt)
         Box(Modifier.fillMaxSize()) {
                 AnimatedContent(

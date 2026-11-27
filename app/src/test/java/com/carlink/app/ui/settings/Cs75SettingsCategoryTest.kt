@@ -42,7 +42,6 @@ class Cs75SettingsCategoryTest {
         for (name in listOf(
             "carlink_settings_group_changan",
             "carlink_settings_car_brand_cs75",
-            "carlink_cs75_first_launch_title",
         )) {
             val match = Regex("""<string name="$name">([^<]+)</string>""").find(text)
                 ?: error("missing $name")
@@ -52,6 +51,15 @@ class Cs75SettingsCategoryTest {
                 value.contains(isolated) || value.contains(isolatedChar),
             )
         }
+    }
+
+    @Test fun arabicFirstLaunchQuestionIsExact() {
+        val xml = File("src/main/res/values-ar/carlink_strings_settings.xml").takeIf { it.isFile }
+            ?: File("../src/main/res/values-ar/carlink_strings_settings.xml")
+        val match = Regex("""<string name="carlink_cs75_first_launch_title">([^<]+)</string>""").find(xml.readText())
+            ?: error("missing carlink_cs75_first_launch_title")
+        // The Latin model is isolated (FSI/PDI) so the question mark stays on the Arabic side.
+        assertEquals("هل سيارتك شانجان \\u2068CS75 Plus 2023\\u2069؟", match.groupValues[1])
     }
 
     @Test fun arabicExperimentalTagIsExact() {

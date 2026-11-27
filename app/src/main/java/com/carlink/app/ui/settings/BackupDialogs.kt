@@ -98,3 +98,20 @@ internal fun Cs75FirstLaunchDialog(onAnswer: (Boolean) -> Unit) {
         containerColor = scheme.surfaceContainerHigh,
     )
 }
+
+/**
+ * CarLink v1.7.7: after Yes to the CS75 question. The navigation bar and the car status-bar hide both depend on
+ * CarLink's Accessibility service (Android only lets the driver turn it on), so this offers the settings screen.
+ */
+@Composable
+internal fun Cs75AccessibilityGuideDialog(onAnswer: (Boolean) -> Unit) {
+    val scheme = MaterialTheme.colorScheme
+    AlertDialog(
+        onDismissRequest = { onAnswer(false) },
+        title = { Text(stringResource(R.string.carlink_cs75_accessibility_guide_title)) },
+        text = { Text(stringResource(R.string.carlink_cs75_accessibility_guide_text)) },
+        confirmButton = { IonButton(stringResource(R.string.carlink_settings_hide_bar_accessibility_button), { onAnswer(true) }) },
+        dismissButton = { GlassButton(stringResource(R.string.carlink_cs75_accessibility_guide_later), { onAnswer(false) }) },
+        containerColor = scheme.surfaceContainerHigh,
+    )
+}

@@ -147,9 +147,12 @@
     <string name="carlink_settings_car_brand_cs75">Changan / CS75 Plus 2022-2023 only</string>
     <string name="carlink_settings_cat_cs75_summary">Status-bar hide, accessibility, and the navigation bar</string>
 
-    <string name="carlink_cs75_first_launch_title">Is your car a Changan / CS75 Plus 2022-2023?</string>
+    <string name="carlink_cs75_first_launch_title">Is your car a Changan CS75 Plus 2023?</string>
     <string name="carlink_cs75_first_launch_yes">Yes</string>
     <string name="carlink_cs75_first_launch_no">No</string>
+    <string name="carlink_cs75_accessibility_guide_title">Turn on Accessibility for CarLink</string>
+    <string name="carlink_cs75_accessibility_guide_text">The navigation bar and the status-bar hide are on now. They need the Accessibility permission for CarLink (CarLink reads which app is open, and draws the bar). Open Accessibility settings, choose CarLink and turn it on.</string>
+    <string name="carlink_cs75_accessibility_guide_later">Later</string>
     <string name="carlink_hevc_prompt_title">Use HEVC video?</string>
     <string name="carlink_hevc_prompt_body">Turn on HEVC video for a sharper CarPlay picture? It needs a hardware HEVC decoder on this screen.\n\nIf the screen goes black, turn HEVC off: Settings › Show advanced (on) › Display › Efficient video (HEVC).</string>
     <string name="carlink_hevc_prompt_yes">Yes</string>

@@ -3,13 +3,19 @@ package com.carlink.app.ui
 import android.content.Context
 
 /**
- * First-launch question after a fresh install: whether the car is a Changan CS75 Plus.
- * Shown once only. Never shown on an update (including users migrated from generic Changan),
- * or when a car brand is already chosen.
+ * First-launch question: whether the car is a Changan CS75 Plus 2023.
+ * Shown once only, gated on the stored answer flag (`cs75_first_launch_prompt_done`), so it
+ * never repeats. Shown on a fresh install and after the app's data was cleared; never on an
+ * update of a build already in use, or when a car brand is already chosen.
  */
 object Cs75FirstLaunchPrompt {
-    fun shouldShow(freshInstall: Boolean, brandChosen: Boolean, alreadyAnswered: Boolean): Boolean =
-        freshInstall && !brandChosen && !alreadyAnswered
+    /**
+     * CarLink v1.7.7: [freshInstall] alone missed clearing the app's data: the package times only
+     * match on a first install, so a build updated over an older one never asked after a data clear.
+     * An empty data folder ([priorUse] false: no finished setup, no known phone) counts as fresh too.
+     */
+    fun shouldShow(freshInstall: Boolean, priorUse: Boolean, brandChosen: Boolean, alreadyAnswered: Boolean): Boolean =
+        (freshInstall || !priorUse) && !brandChosen && !alreadyAnswered
 
     fun isFreshInstall(firstInstallTime: Long, lastUpdateTime: Long): Boolean =
         firstInstallTime == lastUpdateTime

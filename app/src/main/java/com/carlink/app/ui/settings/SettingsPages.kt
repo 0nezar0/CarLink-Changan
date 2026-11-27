@@ -362,17 +362,7 @@ internal fun NavigationBarToggleRow(brandKey: Any? = null) {
         onCheckedChange = { enabled ->
             NavigationBarPreference.setEnabled(context, enabled)
             navigationEnabled = enabled
-            if (enabled && !FceBarAccessibilityService.isEnabled(context)) {
-                try {
-                    context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                } catch (_: ActivityNotFoundException) {
-                    android.widget.Toast.makeText(
-                        context,
-                        R.string.carlink_settings_hide_bar_accessibility_off,
-                        android.widget.Toast.LENGTH_LONG,
-                    ).show()
-                }
-            }
+            if (enabled && !FceBarAccessibilityService.isEnabled(context)) FceBarAccessibilityService.openSettings(context) // CarLink v1.7.7
         },
         description = stringResource(R.string.carlink_cs75_nav_description),
     )

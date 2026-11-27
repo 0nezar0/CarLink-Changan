@@ -5,20 +5,29 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class Cs75FirstLaunchPromptTest {
-    @Test fun shownOnlyOnAFreshInstallWithNoBrandAndNoPriorAnswer() {
-        assertTrue(Cs75FirstLaunchPrompt.shouldShow(freshInstall = true, brandChosen = false, alreadyAnswered = false))
+    private fun show(freshInstall: Boolean = true, priorUse: Boolean = false, brandChosen: Boolean = false, answered: Boolean = false) =
+        Cs75FirstLaunchPrompt.shouldShow(freshInstall, priorUse, brandChosen, answered)
+
+    @Test fun shownOnAFreshInstallWithNoBrandAndNoPriorAnswer() {
+        assertTrue(show())
     }
 
-    @Test fun notShownOnAnUpdate() {
-        assertFalse(Cs75FirstLaunchPrompt.shouldShow(freshInstall = false, brandChosen = false, alreadyAnswered = false))
+    @Test fun shownAfterClearingDataEvenOnAnUpdatedBuild() {
+        // firstInstallTime != lastUpdateTime, but the data folder is empty.
+        assertTrue(show(freshInstall = false, priorUse = false))
+    }
+
+    @Test fun notShownOnAnUpdateOfABuildAlreadyInUse() {
+        assertFalse(show(freshInstall = false, priorUse = true))
     }
 
     @Test fun notShownWhenABrandIsAlreadyChosen() {
-        assertFalse(Cs75FirstLaunchPrompt.shouldShow(freshInstall = true, brandChosen = true, alreadyAnswered = false))
+        assertFalse(show(brandChosen = true))
     }
 
     @Test fun notShownAgainAfterTheDriverAnswers() {
-        assertFalse(Cs75FirstLaunchPrompt.shouldShow(freshInstall = true, brandChosen = false, alreadyAnswered = true))
+        assertFalse(show(answered = true))
+        assertFalse(show(freshInstall = false, priorUse = false, answered = true))
     }
 
     @Test fun aMatchingInstallAndUpdateTimeIsAFreshInstall() {

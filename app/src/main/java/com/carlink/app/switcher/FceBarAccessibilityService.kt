@@ -180,6 +180,21 @@ class FceBarAccessibilityService : AccessibilityService() {
             return raw.split(':').any { it.equals(want, ignoreCase = true) }
         }
 
+        /**
+         * CarLink v1.7.7: opens Android's Accessibility settings, the one permission the navigation bar and the car
+         * status-bar hide both need (the bar is an accessibility overlay; the foreground app is read from this
+         * service). A head unit with no such screen gets a toast instead. Shared by the toggle and the first-run guide.
+         */
+        fun openSettings(context: Context) {
+            try {
+                context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            } catch (_: android.content.ActivityNotFoundException) {
+                android.widget.Toast.makeText(
+                    context, com.carlink.app.R.string.carlink_settings_hide_bar_accessibility_off, android.widget.Toast.LENGTH_LONG,
+                ).show()
+            }
+        }
+
         /** Re-apply the current setting (for example after the driver changes mode or the app list). */
         fun refresh(context: Context) {
             val service = instance ?: return
