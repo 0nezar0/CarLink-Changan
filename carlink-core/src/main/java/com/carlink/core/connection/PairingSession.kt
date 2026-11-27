@@ -44,6 +44,8 @@ class PairingSession(context: Context) {
     private val _state = MutableStateFlow<State>(State.Waiting(null))
     val state: StateFlow<State> = _state.asStateFlow()
     private var registered = false
+    private val earlyUuids = mutableMapOf<String, Set<java.util.UUID>>()
+    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
 
     private val receiver = object : BroadcastReceiver() {
         @SuppressLint("MissingPermission")
@@ -56,18 +58,27 @@ class PairingSession(context: Context) {
                     when (intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE)) {
                         BluetoothDevice.BOND_BONDING -> _state.value = State.Pairing(name)
                         BluetoothDevice.BOND_BONDED -> {
-                            classify(device, device.uuids?.map { it.uuid }?.toSet().orEmpty())
-                            // The phone's service records decide iPhone vs Android; ask for fresh ones.
+                            // Records that arrived while the phone was still pairing count too.
+                            val early = earlyUuids.remove(KnownPhones.normalize(device.address)).orEmpty()
+                            classify(device, early + device.uuids?.map { it.uuid }?.toSet().orEmpty())
+                            // The phone's service records decide iPhone vs Android; ask for fresh ones,
+                            // and once more if they have not decided it in a few seconds.
                             runCatching { device.fetchUuidsWithSdp() }
+                            scheduleSdpRetry(device)
                         }
                         BluetoothDevice.BOND_NONE -> if (_state.value is State.Pairing) refresh()
                     }
                 }
                 BluetoothDevice.ACTION_UUID -> {
                     val device = device(intent) ?: return
-                    val current = _state.value as? State.Paired ?: return
+                    val current = _state.value as? State.Paired
+                    if (current == null) {
+                        // The stack reads the records while bonding, before BOND_BONDED: keep them.
+                        if (_state.value is State.Pairing) earlyUuids[KnownPhones.normalize(device.address)] = uuids(intent)
+                        return
+                    }
                     if (!current.address.equals(device.address, ignoreCase = true)) return
-                    classify(device, uuids(intent))
+                    classify(device, uuids(intent) + device.uuids?.map { it.uuid }?.toSet().orEmpty())
                 }
             }
         }
@@ -89,6 +100,30 @@ class PairingSession(context: Context) {
     fun close() {
         if (registered) runCatching { app.unregisterReceiver(receiver) }
         registered = false
+        handler.removeCallbacksAndMessages(null)
+        earlyUuids.clear()
+    }
+
+    /**
+     * CarLink: some stacks answer the first SDP query with the records cached while bonding only, or
+     * not at all. If the kind is still unknown after [SDP_RETRY_MILLIS], ask once more, and classify
+     * with whatever is cached [SDP_RETRY_MILLIS] after that.
+     */
+    @SuppressLint("MissingPermission")
+    private fun scheduleSdpRetry(device: BluetoothDevice) {
+        handler.removeCallbacksAndMessages(null)
+        handler.postDelayed({
+            if (!stillUnknown(device)) return@postDelayed
+            runCatching { device.fetchUuidsWithSdp() }
+            handler.postDelayed({
+                if (stillUnknown(device)) classify(device, device.uuids?.map { it.uuid }?.toSet().orEmpty())
+            }, SDP_RETRY_MILLIS)
+        }, SDP_RETRY_MILLIS)
+    }
+
+    private fun stillUnknown(device: BluetoothDevice): Boolean {
+        val current = _state.value as? State.Paired ?: return false
+        return current.address.equals(device.address, ignoreCase = true) && current.kind == PhoneKind.UNKNOWN
     }
 
     @SuppressLint("MissingPermission") // The pairing screen runs after the permission step.
@@ -100,20 +135,24 @@ class PairingSession(context: Context) {
     @SuppressLint("MissingPermission")
     private fun classify(device: BluetoothDevice, uuids: Set<java.util.UUID>) {
         val name = runCatching { device.name }.getOrNull()
-        val kind = PhoneClassifier.classifyBluetooth(
-            PhoneClassifier.BluetoothDeviceInfo(device.address, name, uuids,
-                runCatching { device.bluetoothClass?.majorDeviceClass }.getOrNull()),
-            remembered = null,
-        )
-        // Keep only proof (an iPhone's iAP2 or name, Android Auto's UUID). "Has SDP records but no
-        // iAP2" is a guess: an iPhone whose iAP2 record was not cached yet looks the same, and a
-        // remembered kind outranks later evidence, so the guess is re-made from fresh records instead.
-        val proof = kind == PhoneKind.IPHONE || PhoneClassifier.ANDROID_AUTO_BLUETOOTH_UUID in uuids
-        if (proof) knownPhones.remember(device.address, kind)
-        _state.value = State.Paired(device.address, name, kind)
+        val info = PhoneClassifier.BluetoothDeviceInfo(device.address, name, uuids,
+            runCatching { device.bluetoothClass?.majorDeviceClass }.getOrNull())
+        val kind = PhoneClassifier.classifyBluetooth(info, remembered = null)
+        // Only proof is remembered (PhoneClassifier.isProof). The v1.6.5 "records without iAP2" reading
+        // is shown but re-made from fresh records each time: an iPhone whose iAP2 record was not cached
+        // yet looks the same.
+        if (PhoneClassifier.isProof(info, kind)) knownPhones.remember(device.address, kind)
+        // A later, thinner answer (cached records only) never undoes a kind already found.
+        val previous = (_state.value as? State.Paired)?.takeIf { it.address.equals(device.address, ignoreCase = true) }?.kind
+        val shown = if (kind == PhoneKind.UNKNOWN && previous != null && previous != PhoneKind.UNKNOWN) previous else kind
+        com.carlink.core.diagnostics.EventLog.add("CarLink", "pairing: ${uuids.size} Bluetooth records -> $kind (shown $shown)")
+        _state.value = State.Paired(device.address, name, shown)
     }
 
     companion object {
+        /** How long an SDP answer is given before it is asked for again (CarLink). */
+        const val SDP_RETRY_MILLIS = 5_000L
+
         /** Makes this screen visible to phones for five minutes (system dialog). */
         fun discoverableIntent(): Intent =
             Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300)
