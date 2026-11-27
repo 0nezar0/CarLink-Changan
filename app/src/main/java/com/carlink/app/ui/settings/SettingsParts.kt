@@ -155,6 +155,11 @@ internal fun Tag(text: String, color: Color, @DrawableRes icon: Int? = null) {
 internal fun NextConnectionTag() =
     Tag(stringResource(R.string.carlink_settings_applies_next), CarLinkTokens.colors.warning, R.drawable.carlink_ic_schedule)
 
+/** A small amber pill beside an experimental setting's title. */
+@Composable
+internal fun ExperimentalTag() =
+    Tag(stringResource(R.string.carlink_settings_experimental_tag), CarLinkTokens.colors.warning)
+
 /**
  * The anatomy of every Settings row (§8.3): glyph, title, one-line description, tags under
  * it, and a trailing value or switch. The whole row is the touch target.
@@ -172,6 +177,8 @@ internal fun SettingsRow(
     /** Shown on its own line when the row is narrow, otherwise trailing. */
     value: String? = null,
     tags: (@Composable () -> Unit)? = null,
+    /** Styled badge shown beside the title (for example "Experimental"). */
+    titleBadge: (@Composable () -> Unit)? = null,
     trailing: (@Composable () -> Unit)? = null,
 ) {
     val dimens = CarLinkTokens.dimens
@@ -194,7 +201,17 @@ internal fun SettingsRow(
                 Spacer(Modifier.width(if (isCar) 24.dp else 16.dp))
             }
             Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.titleMedium, color = scheme.onSurface)
+                if (titleBadge == null) {
+                    Text(title, style = MaterialTheme.typography.titleMedium, color = scheme.onSurface)
+                } else {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Text(title, style = MaterialTheme.typography.titleMedium, color = scheme.onSurface)
+                        Box(Modifier.align(Alignment.CenterVertically)) { titleBadge() }
+                    }
+                }
                 if (value != null && narrow) {
                     Spacer(Modifier.height(2.dp))
                     Text(value, style = MaterialTheme.typography.titleSmall, color = scheme.primary, maxLines = 2)
@@ -250,11 +267,12 @@ internal fun SwitchRow(
     title: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier,
     description: String? = null, @DrawableRes icon: Int? = null, enabled: Boolean = true,
     tags: (@Composable () -> Unit)? = null,
+    titleBadge: (@Composable () -> Unit)? = null,
 ) {
     val on = stringResource(R.string.carlink_state_on)
     val off = stringResource(R.string.carlink_state_off)
     SettingsRow(title, modifier.semantics { stateDescription = if (checked) on else off }, description, icon, enabled,
-        onClick = { onCheckedChange(!checked) }, role = Role.Switch, tags = tags) {
+        onClick = { onCheckedChange(!checked) }, role = Role.Switch, tags = tags, titleBadge = titleBadge) {
         IonSwitch(checked, enabled)
     }
 }

@@ -22,6 +22,11 @@
     <string name="carlink_settings_cat_navigation_summary">Car location and directions</string>
     <string name="carlink_settings_cat_car_summary">Driving side and controls</string>
     <string name="carlink_settings_cat_general_summary">CarLink’s look, help and version</string>
+    <string name="carlink_settings_cat_added_features">Extra features</string>
+    <string name="carlink_settings_cat_added_features_summary">Features added in this edition, such as the navigation bar and an in-app status-bar hide</string>
+    <string name="carlink_settings_hide_app_status_bar">Hide the status bar in CarLink</string>
+    <string name="carlink_settings_hide_app_status_bar_detail">Hides the notification bar only inside this app. A swipe from the top shows it briefly. It does not hide the bar in other apps.</string>
+    <string name="carlink_settings_experimental_tag">Experimental</string>
 
     <!-- Shared -->
     <string name="carlink_settings_custom">Custom (set in Advanced)</string>
@@ -138,19 +143,17 @@
     <string name="carlink_settings_night_end">Night ends</string>
     <string name="carlink_settings_time_earlier">15 min earlier</string>
     <string name="carlink_settings_time_later">15 min later</string>
-    <string name="carlink_settings_group_margins">Screen margins</string>
     <string name="carlink_settings_group_changan">Changan / CS75 Plus 2022-2023 only settings</string>
     <string name="carlink_settings_car_brand_cs75">Changan / CS75 Plus 2022-2023 only</string>
-    <string name="carlink_settings_cat_cs75_summary">Status-bar hide, accessibility, and the top margin</string>
+    <string name="carlink_settings_cat_cs75_summary">Status-bar hide, accessibility, and the navigation bar</string>
 
     <string name="carlink_cs75_first_launch_title">Is your car a Changan / CS75 Plus 2022-2023?</string>
     <string name="carlink_cs75_first_launch_yes">Yes</string>
     <string name="carlink_cs75_first_launch_no">No</string>
-    <string name="carlink_cs75_hide_bar_prompt_title">Hide the notification bar</string>
-    <string name="carlink_cs75_hide_bar_prompt_body">Hides the car\'s floating notification bar during CarPlay and Android Auto, so it does not cover the picture. Turn it on?</string>
-    <string name="carlink_cs75_hide_bar_prompt_hint">You can change or turn it off any time in Settings. CarLink also needs the Accessibility permission for the hide to work.</string>
-    <string name="carlink_cs75_hide_bar_prompt_enable">Turn on</string>
-    <string name="carlink_cs75_hide_bar_prompt_skip">Skip</string>
+    <string name="carlink_hevc_prompt_title">Use HEVC video?</string>
+    <string name="carlink_hevc_prompt_body">Turn on HEVC video for a sharper CarPlay picture? It needs a hardware HEVC decoder on this screen.\n\nIf the screen goes black, turn HEVC off: Settings › Show advanced (on) › Display › Efficient video (HEVC).</string>
+    <string name="carlink_hevc_prompt_yes">Yes</string>
+    <string name="carlink_hevc_prompt_no">No</string>
     <string name="carlink_settings_hide_bar_off">Off</string>
     <string name="carlink_settings_hide_bar_off_detail">The car\'s status bar stays visible.</string>
     <string name="carlink_settings_hide_bar_all">Hide the status bar in all apps except the home screen</string>
@@ -166,8 +169,6 @@
     <string name="carlink_settings_hide_bar_apps_carlink">CarLink (always included)</string>
     <string name="carlink_fce_accessibility_label">CarLink status bar hide</string>
     <string name="carlink_fce_accessibility_description">Lets CarLink see which app is in front so it can hide or show the car\'s status bar, as set in Settings for Changan CS75 Plus.</string>
-    <string name="carlink_settings_top_margin">Top margin</string>
-    <string name="carlink_settings_top_margin_detail">A 48 px space at the top of CarLink, CarPlay and Android Auto, so nothing hides under the car’s status bar. CarLink changes at once, CarPlay and Android Auto from the next connection. Off: no margins.</string>
     <string name="carlink_settings_hide_car_status_bar">Hide the car\'s status bar</string>
     <string name="carlink_settings_hide_car_status_bar_detail">Hides the car\'s floating status bar while CarPlay or Android Auto is on screen, so it does not sit on top of the projection. Applies at once. Off: the car\'s bar stays visible. This test setting is for the Changan CS75 Plus only.</string>
     <string name="carlink_settings_save_log">Save full report</string>
@@ -300,13 +301,8 @@
     <!-- Settings › Car › Car brand (core settings/CarBrand), also the setup's car step. Brand names come from CarBrand.displayName. -->
     <string name="carlink_settings_car_brand">Car brand</string>
     <string name="carlink_settings_car_brand_detail">BYD: adds its DiLink extras. Other brands only label this car, except Changan.</string>
-    <string name="carlink_settings_car_brand_changan_note">Changan: its logo on CarPlay’s back-to-car button (other cars get the default icon). When you pick the CS75 Plus entry you’re asked about hiding the notification bar — in every app except the home screen, or in apps you choose from a full list. The 48 px top-margin test is off by default, and sound plays through the car’s Bluetooth by default. CarPlay still defaults to a 400 mm width and HEVC, and Android Auto to 200 DPI. You can change all of this in Settings.</string>
+    <string name="carlink_settings_car_brand_changan_note">Changan: its logo on CarPlay’s back-to-car button (other cars get the default icon). The CS75 Plus entry hides the notification bar by default — in every app except the home screen, or in apps you choose from a full list in Settings. Sound plays through the car’s Bluetooth by default. CarPlay still defaults to a 400 mm width and HEVC, and Android Auto to 200 DPI. You can change all of this in Settings.</string>
     <string name="carlink_settings_car_brand_sheet_body">Pick the make of this car. CarPlay and Android Auto work the same in every car.</string>
-    <string name="carlink_changan_margins_title">Top margin</string>
-    <string name="carlink_changan_margins_body">Adds a 48 px space at the top of CarPlay, Android Auto and CarLink, so nothing hides under the car’s status bar. Turn it on?</string>
-    <string name="carlink_changan_margins_hint">You can turn it off any time in Settings › Display › Top margin.</string>
-    <string name="carlink_changan_margins_yes">Yes</string>
-    <string name="carlink_changan_margins_no">No</string>
     <!-- What the detection found: a generic screen, or a BYD DiLink unit. -->
     <string name="carlink_settings_car_generic">Generic</string>
     <string name="carlink_settings_car_byd">BYD (DiLink)</string>
@@ -321,7 +317,7 @@
     <string name="carlink_settings_car_byd_not_dilink">This screen is not a BYD DiLink unit, so the BYD extras cannot work here. Choose your car\'s make, or Other.</string>
     <string name="carlink_settings_car_explain_byd">BYD adds the DiLink extras: directions on the HUD and the instrument cluster, and BYD steering-wheel keys.</string>
     <string name="carlink_settings_car_explain_other">CarPlay and Android Auto work the same as in any car. The brand only labels this car in CarLink.</string>
-    <string name="carlink_settings_car_explain_changan">CarPlay and Android Auto work as in any car. Changan also shows its logo on CarPlay\'s back-to-car button. Choosing this entry asks about hiding the notification bar, with a full app list if you hide it only in apps you pick. The 48 px top-margin test is off by default, and sound plays through the car’s Bluetooth by default. CarPlay defaults to 400 mm and HEVC, and Android Auto to 200 DPI.</string>
+    <string name="carlink_settings_car_explain_changan">CarPlay and Android Auto work as in any car. Changan also shows its logo on CarPlay\'s back-to-car button. Choosing this entry hides the notification bar by default, with a full app list in Settings if you hide it only in apps you pick. Sound plays through the car’s Bluetooth by default. CarPlay defaults to 400 mm and HEVC, and Android Auto to 200 DPI.</string>
     <!-- Settings › Car › Steering-wheel buttons (core settings/WheelKeys). -->
     <string name="carlink_wheel_keys">Steering-wheel buttons</string>
     <string name="carlink_wheel_keys_detail">Teach CarLink your wheel\'s buttons for voice, calls and music in CarPlay and Android Auto</string>

@@ -39,9 +39,13 @@ class CarLinkPreferences(context: Context) {
         get() = prefs.getBoolean(KEY_ROOT_MODE, false)
         set(value) = prefs.edit().putBoolean(KEY_ROOT_MODE, value).apply()
 
-    /** Settings › Connection › "Switch the car hotspot on" (advanced, #36): CarLink starts it when a session needs it. */
+    /**
+     * Settings › Connection › "Switch the car hotspot on" (advanced, #36): CarLink starts it when a session needs it.
+     * On by default for every car; a value the driver stored (On or Off) is kept, because the default
+     * only applies while the key is absent.
+     */
     var autoCarHotspot: Boolean
-        get() = prefs.getBoolean(KEY_AUTO_CAR_HOTSPOT, false)
+        get() = prefs.getBoolean(KEY_AUTO_CAR_HOTSPOT, true)
         set(value) = prefs.edit().putBoolean(KEY_AUTO_CAR_HOTSPOT, value).apply()
 
     /** "Android Auto on this screen (experimental)" (Settings › Connection, advanced): Home offers DiAuto's Self Mode. */

@@ -63,7 +63,7 @@
 
 اختر **شانجان CS75 Plus 2022–2023** ليظهر قسم شانجان داخل الإعدادات. التعديلات التالية موجودة في كود التطوير الخاص:
 
-- **شريط التنقّل** — مفتاح في الإعدادات › السيارة، لكل السيارات. اسحب للداخل من الحافة اليمنى أو اليسرى ليظهر الشريط على نفس الجهة، وكرّر السحبة لإخفائه. أزراره: رجوع، الرئيسية، التطبيقات المثبّتة (الضغط يفتح التطبيق والضغط المطوّل يفتح معلومات التطبيق)، CarLink، وإعدادات أندرويد. اللمس العادي على حافة الشاشة يصل للتطبيق تحتها، والحافتان تتوقفان أثناء CarPlay و Android Auto. يتطلب تفعيل خدمة CarLink في إمكانية الوصول. اختيار كل سيارة يُحفظ لوحده.
+- **شريط التنقّل** — مفتاح في الإعدادات › السيارة، لكل السيارات. اسحب للداخل من الحافة اليمنى أو اليسرى ليظهر الشريط على نفس الجهة، وكرّر السحبة لإخفائه. أزراره: رجوع، الرئيسية، التطبيقات المثبّتة (الضغط يفتح التطبيق والضغط المطوّل يفتح معلومات التطبيق)، CarLink، وإعدادات أندرويد. اللمس العادي على حافة الشاشة يصل للتطبيق تحتها، والسحب للداخل يفتح الشريط حتى أثناء CarPlay و Android Auto. يتطلب تفعيل خدمة CarLink في إمكانية الوصول. اختيار كل سيارة يُحفظ لوحده.
 - **الهامش العلوي** — في الإعدادات › السيارة لكل السيارات (اختيار مستقل لكل ماركة، يبدأ مطفأ). وفي قسم شانجان أيضاً عند اختيار CS75 Plus، وبنفس القيمة.
 - **نقطة اتصال السيارة** — في إعدادات الاتصال تنويه يشرح تشغيل نقطة الاتصال، وزر **إعدادات نقطة الاتصال** يفتح إعدادات النقطة أو إعدادات الشبكة حسب ما تدعمه شاشة السيارة.
 
@@ -161,7 +161,7 @@ This build is based on [CarLink](https://github.com/F-e-n-y-x/CarLink) by **F-e-
 ### Features
 
 - **CarPlay and Android Auto in one app**, wired or wireless, with automatic phone detection.
-- **For Android head units in general, with special Changan CS75 Plus 2023 support:** choose Changan for its logo on CarPlay's back-to-car button and in Settings › Car. The optional 48 px top margin and the navigation bar are in Settings › Car for every brand (each car keeps its own choice). Other cars, or no brand, get the default car icon.
+- **For Android head units in general, with special Changan CS75 Plus 2023 support:** choose Changan for its logo on CarPlay's back-to-car button and in Settings › Car. The navigation bar is in the Changan settings section when CS75 Plus is selected, and in Extra features (after General) for every other brand; each car keeps its own choice. Other cars, or no brand, get the default car icon.
 - **Starts with the car:** opens when the screen turns on, reconnects the last phone and tries the path that worked last time first.
 - **11 languages in the app:** Arabic, English, Spanish, Portuguese, French, Italian, German, Malay, Turkish, Simplified Chinese and Hungarian. Switch in Settings › General › Language (or follow the system language).
 - **Connection status:** Settings › Connection › Connection status (also in Diagnostics). Live figures, refreshed about once a second while connected: connection type and wireless method, phone name, video (resolution, frame rate, codec, decoder, incoming fps, dropped and late frames, decode latency, bitrate), audio, Wi-Fi band, link speed and signal when wireless, session uptime and reconnect count. Anything unavailable is shown as such.
