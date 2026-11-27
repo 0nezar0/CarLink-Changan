@@ -402,44 +402,6 @@ class AaSessionTrackerTest {
         assertEquals(listOf(AdapterEvent.Connected), t.state(P.CONNECTION_TRANSPORT_STARTED, firstFrame = true).filter { it == AdapterEvent.Connected })
     }
 
-    @Test fun aStuckProbeServerPutsTheAttemptBackToWaitingAndWakesThePhoneAgain() {
-        val t = wireless()
-        t.event(EngineEvent.HEAD_UNIT_SERVER_FOUND, "ip=192.168.43.1")
-        assertFalse("the probe's answer stopped the wakes", t.shouldRepoke(now + limits.repokeAfterLossMillis))
-        // Automatic / Car hotspot / Same Wi-Fi: the server took the connection and never answered.
-        assertEquals(listOf(AdapterEvent.Progress(1, 4, ProgressStage.WAITING_FOR_PHONE)),
-            t.event(EngineEvent.HEAD_UNIT_SERVER_STUCK, "endpoint=192.168.43.1:5277;count=1"))
-        assertFalse("not at once", t.shouldRepoke(now))
-        assertTrue("the Bluetooth wake is back", t.shouldRepoke(now + limits.repokeAfterLossMillis))
-        assertEquals("the accept timeout runs again from here", FailureReason.PHONE_DID_NOT_ANSWER,
-            t.after(limits.acceptTimeoutMillis).filterIsInstance<AdapterEvent.Failed>().single().reason)
-    }
-
-    @Test fun aStuckProbeServerDoesNotDisturbARouteThatAnswered() {
-        // Bluetooth answered first, the probe found a server after: its failure changes nothing.
-        val bluetoothFirst = wireless()
-        bluetoothFirst.event(EngineEvent.BT_CHANNEL_ACCEPTED)
-        bluetoothFirst.event(EngineEvent.HEAD_UNIT_SERVER_FOUND)
-        assertEquals(emptyList<AdapterEvent>(), bluetoothFirst.event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
-        assertFalse(bluetoothFirst.shouldRepoke(now + limits.acceptHintMillis))
-        // The probe found it first, then Bluetooth answered too: Bluetooth now carries the attempt.
-        val both = wireless()
-        both.event(EngineEvent.HEAD_UNIT_SERVER_FOUND)
-        both.event(EngineEvent.CREDENTIALS_SENT, "transport=WIFI_DIRECT")
-        assertEquals(emptyList<AdapterEvent>(), both.event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
-        assertFalse(both.shouldRepoke(now + limits.acceptHintMillis))
-    }
-
-    @Test fun aStuckProbeServerDoesNotEndALiveSessionOrStartOne() {
-        val live = wireless()
-        live.event(EngineEvent.HEAD_UNIT_SERVER_FOUND)
-        live.state(P.CONNECTION_CONNECTING)
-        assertEquals(emptyList<AdapterEvent>(), live.event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
-        // No probe was found first: nothing was stopped, so nothing is undone.
-        val unprobed = wireless()
-        assertEquals(emptyList<AdapterEvent>(), unprobed.event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
-    }
-
     @Test fun aHeadUnitServerFoundAfterTheSessionStartedDoesNotStepBack() {
         val t = wireless()
         t.state(P.CONNECTION_CONNECTING)

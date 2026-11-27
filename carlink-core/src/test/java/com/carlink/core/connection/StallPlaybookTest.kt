@@ -1,7 +1,6 @@
 package com.carlink.core.connection
 
 import com.carlink.core.core.Engine
-import com.carlink.core.settings.WirelessPath
 import com.carlink.core.core.Transport
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -40,28 +39,6 @@ class StallPlaybookTest {
             StallPlaybook.actions(Engine.CARPLAY, wireless, ProgressStage.STARTING_PROJECTION))
         assertEquals(listOf(RecoveryAction.NEXT_PATH, RecoveryAction.GIVE_UP), StallPlaybook.actions(Engine.CARPLAY, wireless, null))
         assertEquals(listOf(RecoveryAction.ASK_REPLUG), StallPlaybook.actions(Engine.ANDROID_AUTO, usb, null))
-    }
-
-    // v1.7.5: v1.7.4's field report logged "RESET_WIFI_DIRECT" on Same Wi-Fi, where there is no Wi-Fi Direct group.
-    @Test fun linkingOnAnOrdinaryWifiLanIsARetryNotAWifiDirectReset() {
-        for (path in listOf(WirelessPath.SAME_WIFI, WirelessPath.CAR_HOTSPOT)) {
-            assertEquals(path.name, listOf(RecoveryAction.RETRY_STEP, RecoveryAction.NEXT_PATH, RecoveryAction.GIVE_UP),
-                StallPlaybook.actions(Engine.CARPLAY, wireless, ProgressStage.JOINING_WIFI, path))
-        }
-        assertEquals(listOf(RecoveryAction.RESET_WIFI_DIRECT, RecoveryAction.NEXT_PATH, RecoveryAction.GIVE_UP),
-            StallPlaybook.actions(Engine.CARPLAY, wireless, ProgressStage.JOINING_WIFI, WirelessPath.WIFI_DIRECT))
-        // Other phases are the same on every path.
-        assertEquals(StallPlaybook.actions(Engine.CARPLAY, wireless, ProgressStage.HANDSHAKE),
-            StallPlaybook.actions(Engine.CARPLAY, wireless, ProgressStage.HANDSHAKE, WirelessPath.SAME_WIFI))
-    }
-
-    @Test fun sameWifiLinkingWaitsAsLongAsDiplaysFirstTcpDeadline() {
-        val same = AdaptiveDeadlines.bounds(ProgressStage.JOINING_WIFI, wireless, WirelessPath.SAME_WIFI)
-        assertEquals(30_000, same.default)
-        assertEquals(30_000, AdaptiveDeadlines.deadline(listOf(1_000, 1_000, 1_000), same)) // a fast phone never goes under it
-        assertEquals(20_000, AdaptiveDeadlines.bounds(ProgressStage.JOINING_WIFI, wireless, WirelessPath.CAR_HOTSPOT).default)
-        assertEquals(20_000, AdaptiveDeadlines.bounds(ProgressStage.JOINING_WIFI, wireless).default)
-        assertEquals(20_000, AdaptiveDeadlines.bounds(ProgressStage.JOINING_WIFI, wireless, WirelessPath.WIFI_DIRECT).default)
     }
 
     @Test fun nextPathIsSkippedWhenThereIsNone() {

@@ -268,12 +268,6 @@ class CarPlayAdapter internal constructor(
                 app.getSharedPreferences("diplay_wireless", Context.MODE_PRIVATE).edit().remove("hotspot_address_family").apply()
                 marks.edit().putBoolean("forget_ipv6_guess", true).apply()
             }
-            // v1.7.5: an iPhone's Personal Hotspot (existing Wi-Fi) runs IPv4 only, like the car hotspot. A family
-            // remembered by v1.7.4 or earlier (IPv6 after a flip) is dropped once, so nothing is carried over.
-            if (!marks.getBoolean("forget_hotspot_family_175", false)) {
-                app.getSharedPreferences("diplay_wireless", Context.MODE_PRIVATE).edit().remove("hotspot_address_family").apply()
-                marks.edit().putBoolean("forget_hotspot_family_175", true).apply()
-            }
             CarPlayHostIntegration.vehicleIntegrations = profile == VehicleProfile.BYD_DILINK
             // v1.6.6: the car hotspot picks IPv4 or IPv4 + IPv6 by itself (CarHotspotIpFamily). The
             // CS75 Plus 2023 SoftAP is IPv4-only, so that profile stays on the v1.6.5 IPv4-only path.

@@ -123,14 +123,13 @@ class CarHotspotSharedLanManager(
 }
 
 /**
- * CarLink: the car's own AP (and local-only hotspot, and from v1.7.5 an existing Wi-Fi such as an iPhone's
- * Personal Hotspot) must stay IPv4-only. A link-local
+ * CarLink: the car's own AP (and local-only hotspot) must stay IPv4-only. A link-local
  * IPv6 address on the same interface conflicted with AirPlay/Bonjour on the CS75 Plus.
  */
 internal fun isCarHotspotIpv4Only(backend: WirelessHotspotBackend): Boolean =
     backend == WirelessHotspotBackend.MANUAL_HOTSPOT ||
         backend == WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT ||
-        backend == WirelessHotspotBackend.EXISTING_WIFI // CarLink v1.7.5: an iPhone's Personal Hotspot too
+        backend == WirelessHotspotBackend.EXISTING_WIFI // CarLink v1.7.6: an iPhone's Personal Hotspot too
 
 internal fun ipv4OnlyAddresses(addresses: Iterable<InetAddress>): List<InetAddress> =
     addresses.filterIsInstance<Inet4Address>().filter { address ->

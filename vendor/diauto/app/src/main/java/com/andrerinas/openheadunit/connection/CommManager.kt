@@ -958,11 +958,10 @@ class CommManager(
     }
 
     /**
-     * Performs a final disconnect and cancels the coroutines still running in the internal scope.
+     * Performs a final disconnect and cancels the internal coroutine scope.
      *
      * Call this when the owning component (e.g. the foreground service) is destroyed.
-     * CarLink: the instance stays usable afterwards. It lives as long as the process, which outlives
-     * the service, so the scope itself is left open for the next session.
+     * After [destroy], the CommManager instance must not be used again.
      */
     /**
      * Closes the session because the link carrying it is about to go away, and blocks until the
@@ -991,13 +990,7 @@ class CommManager(
 
     fun destroy() {
         doDisconnect()
-        // CarLink: cancel the work in flight, not the scope. This manager lives in AppComponent for
-        // the whole process, and CarLink stops AapService (which calls destroy) at the end of every
-        // session while ":aa" stays alive. A cancelled scope refused every later launch, so in the
-        // next session disconnect(), transportedQuited() and disconnectForLinkLoss() never ran
-        // doDisconnect: no ByeBye, and the socket to the phone's head unit server stayed open
-        // until the next connect() closed it, after the new dial had been accepted.
-        _scope.coroutineContext.cancelChildren()
+        _scope.cancel()
     }
 
     companion object {

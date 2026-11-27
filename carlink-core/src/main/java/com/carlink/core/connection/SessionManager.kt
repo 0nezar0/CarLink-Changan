@@ -988,7 +988,7 @@ class SessionManager(
         if ((a.viaHeadUnitServer || plan.path == WirelessPath.HEADUNIT_SERVER) && stage != null)
             return note("stall: head unit server, ${StallPlaybook.phaseName(stage).lowercase()} has taken $waited ms; still waiting")
         val key = a.index to stage
-        val (action, used) = StallPlaybook.next(StallPlaybook.actions(plan.engine, plan.transport, stage, plan.path),
+        val (action, used) = StallPlaybook.next(StallPlaybook.actions(plan.engine, plan.transport, stage),
             recoveries[key] ?: 0, a.index + 1 < a.paths.size)
         recoveries[key] = used
         val usual = profiles.usualMillis(request, plan.path, stage)

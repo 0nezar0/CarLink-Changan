@@ -40,29 +40,14 @@ internal object WirelessAddressFamilyPlan {
      * CarLink #93: the car hotspot and LocalOnlyHotspot run IPv4 end to end. On an IPv4-only head unit's SoftAP
      * (Changan CS75 Plus, Allwinner T7) CarPlay stalled after the Wi-Fi credentials while any IPv6 was offered:
      * a link-local AAAA in Bonjour, an IPv6 host in iAP2 0x4301/0x5703, or a family remembered from Same Wi-Fi
-     * or flipped after a first-TCP timeout. Diagnosis: 0nezar0.
+     * or flipped after a first-TCP timeout. Wi-Fi Direct keeps both families. Diagnosis: 0nezar0.
      *
-     * CarLink v1.7.5: existing Wi-Fi (an iPhone's Personal Hotspot joined by the head unit) is the same kind of
-     * IPv4 LAN, so it runs the car-hotspot path exactly: IPv4 only, no remembered or flipped family, no IPv6 in
-     * Bonjour, iAP2 or the listeners. The v1.7.4 field report (PHONE_NEVER_REACHED_CAR twice in a row) showed
-     * the dual-stack choice and the family it remembered were a way to lose the first TCP, never a way to win it.
-     * Only Wi-Fi Direct keeps both families.
+     * CarLink v1.7.6: existing Wi-Fi (an iPhone's Personal Hotspot joined by the head unit) runs the same IPv4-only
+     * path as the car hotspot. Nothing else of the 1.7.x connection changes is kept.
      */
     fun ipv4Only(backend: WirelessHotspotBackend): Boolean =
         backend == WirelessHotspotBackend.MANUAL_HOTSPOT || backend == WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT ||
-            backend == WirelessHotspotBackend.EXISTING_WIFI
-
-    /**
-     * Whether the AirPlay media sockets (screen, NTP, event, keep-alive, audio) bind the control session's local
-     * address instead of `::` when that address is IPv4 (`mediaBindAddress`; an IPv6 session always keeps `::`).
-     * True on every backend that puts the iPhone on an ordinary IPv4 network: the car hotspot, LocalOnlyHotspot
-     * and existing Wi-Fi, which includes an iPhone's own Personal Hotspot joined by the head unit. There an IPv4
-     * session finishing SETUP and then stalling at Picture is the symptom of #93: on a head unit whose `::` sockets
-     * are IPv6-only (Android's IPV6_V6ONLY) the iPhone's IPv4 connects to the screen, timing and event ports are
-     * never accepted. Wi-Fi Direct is unchanged. The CS75 car-hotspot and local-only paths are as before.
-     */
-    fun bindMediaToSessionIpv4(backend: WirelessHotspotBackend): Boolean =
-        backend != WirelessHotspotBackend.WIFI_P2P
+            backend == WirelessHotspotBackend.EXISTING_WIFI // CarLink v1.7.6
 
     /** [addresses] this path may publish, listen on or offer: only the IPv4 ones on an [ipv4Only] backend. */
     fun usable(backend: WirelessHotspotBackend, addresses: List<java.net.InetAddress>): List<java.net.InetAddress> =

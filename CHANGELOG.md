@@ -6,6 +6,15 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+## [CS75 Plus 2023 v1.7.6] - 2026-11-27 (test)
+
+Test build from branch `trial/1.7.1`, versionCode 10059. It installs over v1.7.5 (10058) and every earlier build, and keeps your settings. The connection code goes back to what it was before the 1.7.x connection changes; only the IPv4 lock for an iPhone's Personal Hotspot stays.
+
+- Reverted: the Android Auto reconnect-after-exit change (v1.7.3), the CarPlay picture-stall fallback and media-socket change (v1.7.4), and the path-aware stall playbook, 30 s Same Wi-Fi linking deadline, link-settling in `ExistingWifiManager` and the family-clear marker (v1.7.5).
+- Kept: wireless CarPlay over an iPhone's Personal Hotspot runs the same IPv4-only path as the car's own hotspot (no IPv6 in Bonjour, in the iAP2 hosts, on a listener or in a remembered family).
+- IPv4 only on the car hotspot too, on every car and head unit, as in v1.6.5: the automatic IPv4/IPv6 decision added in v1.6.6 is switched off.
+- Not touched: the manual install fallback for updates, the navigation-bar and status-bar changes, the Bluetooth fixes.
+
 ## [CS75 Plus 2023 v1.7.5] - 2026-11-27 (test)
 
 Test build from branch `trial/1.7.1`, versionCode 10058. It installs over v1.7.4 (10057), v1.7.3 (10056) and every earlier build, and keeps your settings. Includes everything from the v1.7.4 trial, plus the iPhone Personal Hotspot changes below.

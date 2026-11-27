@@ -30,7 +30,7 @@ class WirelessAddressFamilyPlanTest {
         // #283: the Android 9 link-local reply route failed; shared LAN is unchanged.
         assertEquals(Choice(null, guessed = false),
             WirelessAddressFamilyPlan.choose(WirelessHotspotBackend.WIFI_P2P, null, 28))
-        // CarLink: car / local-only APs and existing Wi-Fi (v1.7.5) always publish IPv4, even with no remembered family.
+        // CarLink: car / local-only APs and (v1.7.6) existing Wi-Fi always publish IPv4, even with no remembered family.
         assertEquals(Choice(FAMILY_IPV4, guessed = false),
             WirelessAddressFamilyPlan.choose(WirelessHotspotBackend.EXISTING_WIFI, null, 36))
         assertEquals(Choice(FAMILY_IPV4, guessed = false),
@@ -61,7 +61,7 @@ class WirelessAddressFamilyPlanTest {
         val all = listOf(v6, v4, v6Global)
         assertEquals(listOf(v4), WirelessAddressFamilyPlan.usable(WirelessHotspotBackend.MANUAL_HOTSPOT, all))
         assertEquals(listOf(v4), WirelessAddressFamilyPlan.usable(WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT, all))
-        // v1.7.5: an iPhone's Personal Hotspot (existing Wi-Fi) is IPv4 only too.
+        // v1.7.6: an iPhone's Personal Hotspot (existing Wi-Fi) is IPv4 only too.
         assertEquals(listOf(v4), WirelessAddressFamilyPlan.usable(WirelessHotspotBackend.EXISTING_WIFI, all))
         assertEquals(all, WirelessAddressFamilyPlan.usable(WirelessHotspotBackend.WIFI_P2P, all))
         // With IPv6 only, the car hotspot has no host yet: the address wait looks for IPv4.
@@ -82,22 +82,6 @@ class WirelessAddressFamilyPlanTest {
         assertEquals(listOf(v4), WirelessAddressFamilyPlan.forPath(lan).hostAddresses)
         val direct = info(WirelessHotspotBackend.WIFI_P2P, v6, listOf(v6, v4))
         org.junit.Assert.assertSame(direct, WirelessAddressFamilyPlan.forPath(direct))
-    }
-
-    @Test fun mediaSocketsBindToAnIpv4SessionOnEveryInfrastructureBackend() {
-        // #93's Picture stall, on the car hotspot and on an iPhone's Personal Hotspot (existing Wi-Fi) alike.
-        for (backend in listOf(WirelessHotspotBackend.MANUAL_HOTSPOT, WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT,
-            WirelessHotspotBackend.EXISTING_WIFI)) {
-            assertEquals(backend.name, true, WirelessAddressFamilyPlan.bindMediaToSessionIpv4(backend))
-        }
-        assertEquals(false, WirelessAddressFamilyPlan.bindMediaToSessionIpv4(WirelessHotspotBackend.WIFI_P2P))
-    }
-
-    @Test fun existingWifiRunsIpv4OnlyLikeTheCarHotspot() {
-        assertEquals(Choice(FAMILY_IPV4, guessed = false),
-            WirelessAddressFamilyPlan.choose(WirelessHotspotBackend.EXISTING_WIFI, FAMILY_IPV6, 34))
-        assertEquals(true, WirelessAddressFamilyPlan.ipv4Only(WirelessHotspotBackend.EXISTING_WIFI))
-        assertEquals(false, WirelessAddressFamilyPlan.ipv4Only(WirelessHotspotBackend.WIFI_P2P))
     }
 
     @Test fun aRememberedFamilyWinsAndIsNotAGuess() {

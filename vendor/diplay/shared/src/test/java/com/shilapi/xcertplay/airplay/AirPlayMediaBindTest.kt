@@ -45,12 +45,6 @@ class AirPlayMediaBindTest {
         assertEquals(ipv4, mediaBindAddress(ipv4, ipv4Only = true))
     }
 
-    // CarLink v1.7.4: the head unit joined an iPhone's Personal Hotspot (existing Wi-Fi): an IPv4 session binds its IPv4.
-    @Test fun iphonePersonalHotspotSessionBindsItsIpv4() {
-        val onIphoneHotspot = InetAddress.getByName("172.20.10.4")
-        assertEquals(onIphoneHotspot, mediaBindAddress(onIphoneHotspot, ipv4Only = true))
-    }
-
     @Test fun everyOtherCaseKeepsTheWildcard() {
         assertEquals(wildcard, mediaBindAddress(ipv4, ipv4Only = false))
         assertEquals(wildcard, mediaBindAddress(linkLocal, ipv4Only = true))

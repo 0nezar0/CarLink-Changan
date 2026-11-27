@@ -1609,9 +1609,9 @@ class CarPlayController(
             )
             // CarLink v1.6.6: probe the car hotspot before anything is advertised. IPv4 only (the
             // v1.6.5 path) unless IPv6 is clearly usable; then IPv4 first plus IPv6 (dual stack).
-            val ipSession = if (hotspotInfo.backend == WirelessHotspotBackend.MANUAL_HOTSPOT) {
-                decideCarHotspotIpFamily(generation, hotspotInfo)
-            } else null
+            // CarLink v1.7.6: IPv4 only on the car hotspot for every unit, as in v1.6.5: the automatic probe
+            // (dual stack) is not used; the iPhone's Personal Hotspot takes the same IPv4-only path.
+            val ipSession: CarHotspotIpSession? = null
             val dualStack = ipSession?.decision?.dualStack == true
             val ipv4Only = carHotspotPath && !dualStack // CarLink
             val carHotspotIpv6: List<InetAddress> = if (dualStack) ipSession!!.decision.ipv6Addresses else emptyList()
@@ -1711,8 +1711,7 @@ class CarPlayController(
             val wirelessAirPlayConfig = airPlayConfig.copy(
                 deviceId = deviceIdentifier,
                 btMac = hostBluetoothMac,
-                // CarLink: #93, extended to existing Wi-Fi (an iPhone's Personal Hotspot): an IPv4 session binds IPv4.
-                bindMediaToSessionIpv4 = WirelessAddressFamilyPlan.bindMediaToSessionIpv4(hotspotInfo.backend),
+                bindMediaToSessionIpv4 = WirelessAddressFamilyPlan.ipv4Only(hotspotInfo.backend), // CarLink: #93
             )
 
             onStatus(CarPlayStatus.AttachingNetwork)
@@ -3159,7 +3158,6 @@ class CarPlayController(
                 appContext, config.existingWifiSsid, config.existingWifiPassphrase, ::debugLog,
                 onNetworkChanged = { if (!isStaleWirelessRun(generation)) restartWireless() },
                 preferredInterface = config.existingWifiInterface,
-                ipv4Only = true, // CarLink v1.7.5: an iPhone's Personal Hotspot runs the car-hotspot IPv4-only path
             )
             // CarLink: after the car hotspot is up, attach with the same ExistingWifiManager
             // path as shared-network (SAME_WIFI). SoftAP is located first; then that
