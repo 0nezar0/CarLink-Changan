@@ -6,6 +6,8 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+- Fix: wireless CarPlay over an iPhone's Personal Hotspot (the head unit joins the iPhone's own Wi-Fi) could stall at the picture. After the connection was set up, the screen, timing and event ports were bound to `::`, which on some head units accepts IPv6 only, so the iPhone's IPv4 connections never arrived. On existing Wi-Fi an IPv4 session now binds those ports to its IPv4 address (the way the car hotspot already did). If an existing-Wi-Fi run uses an IPv6 address and the first picture does not come within 25 s of the first connection, CarLink remembers IPv4 and restarts on it. Wi-Fi Direct and the Changan car-hotspot choice (IPv4 only, IPv6 added only when the head unit clearly runs it) are unchanged. Ported from upstream pull request F-e-n-y-x/CarLink#104.
+
 ## [CS75 Plus 2023 v1.7.3] - 2026-11-27 (test)
 
 Test build from branch `trial/1.7.1`, versionCode 10056. It installs over v1.7.2 (10055), v1.7.1 (10054) and every earlier build, and keeps your settings. Includes everything from the v1.7.2 trial (the manual install fallback for updates), plus the Android Auto fixes below.

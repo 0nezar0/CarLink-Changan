@@ -81,6 +81,21 @@ class WirelessAddressFamilyPlanTest {
         org.junit.Assert.assertSame(lan, WirelessAddressFamilyPlan.forPath(lan))
     }
 
+    @Test fun mediaSocketsBindToAnIpv4SessionOnEveryInfrastructureBackend() {
+        // #93's Picture stall, on the car hotspot and on an iPhone's Personal Hotspot (existing Wi-Fi) alike.
+        for (backend in listOf(WirelessHotspotBackend.MANUAL_HOTSPOT, WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT,
+            WirelessHotspotBackend.EXISTING_WIFI)) {
+            assertEquals(backend.name, true, WirelessAddressFamilyPlan.bindMediaToSessionIpv4(backend))
+        }
+        assertEquals(false, WirelessAddressFamilyPlan.bindMediaToSessionIpv4(WirelessHotspotBackend.WIFI_P2P))
+    }
+
+    @Test fun existingWifiStillPublishesBothFamiliesAndKeepsItsRememberedFamily() {
+        assertEquals(Choice(FAMILY_IPV6, guessed = false),
+            WirelessAddressFamilyPlan.choose(WirelessHotspotBackend.EXISTING_WIFI, FAMILY_IPV6, 34))
+        assertEquals(false, WirelessAddressFamilyPlan.ipv4Only(WirelessHotspotBackend.EXISTING_WIFI))
+    }
+
     @Test fun aRememberedFamilyWinsAndIsNotAGuess() {
         // After a guessed IPv6 timed out, upstream's flip remembers IPv4.
         assertEquals(Choice(FAMILY_IPV4, guessed = false),

@@ -45,6 +45,18 @@ internal object WirelessAddressFamilyPlan {
     fun ipv4Only(backend: WirelessHotspotBackend): Boolean =
         backend == WirelessHotspotBackend.MANUAL_HOTSPOT || backend == WirelessHotspotBackend.LOCAL_ONLY_HOTSPOT
 
+    /**
+     * Whether the AirPlay media sockets (screen, NTP, event, keep-alive, audio) bind the control session's local
+     * address instead of `::` when that address is IPv4 (`mediaBindAddress`; an IPv6 session always keeps `::`).
+     * True on every backend that puts the iPhone on an ordinary IPv4 network: the car hotspot, LocalOnlyHotspot
+     * and existing Wi-Fi, which includes an iPhone's own Personal Hotspot joined by the head unit. There an IPv4
+     * session finishing SETUP and then stalling at Picture is the symptom of #93: on a head unit whose `::` sockets
+     * are IPv6-only (Android's IPV6_V6ONLY) the iPhone's IPv4 connects to the screen, timing and event ports are
+     * never accepted. Wi-Fi Direct is unchanged. The CS75 car-hotspot and local-only paths are as before.
+     */
+    fun bindMediaToSessionIpv4(backend: WirelessHotspotBackend): Boolean =
+        backend != WirelessHotspotBackend.WIFI_P2P
+
     /** [addresses] this path may publish, listen on or offer: only the IPv4 ones on an [ipv4Only] backend. */
     fun usable(backend: WirelessHotspotBackend, addresses: List<java.net.InetAddress>): List<java.net.InetAddress> =
         if (ipv4Only(backend)) addresses.filterIsInstance<java.net.Inet4Address>() else addresses
