@@ -69,6 +69,8 @@ internal class AaSessionTracker(
     private var startedAt = 0L
     private var waitingSince = 0L
     private var accepted = false
+    /** The phone counts as answering only because the engine found its head unit server (not Bluetooth). */
+    private var acceptedByProbe = false
     private var hinted = false
     private var sawServiceRunning = false
     /** A CommManager session (Connecting or later) is under way. */
@@ -156,11 +158,13 @@ internal class AaSessionTracker(
                     (d["reason"]?.let { ": $it" } ?: ""))
             EngineEvent.BT_CHANNEL_ACCEPTED.name -> {
                 accepted = true
+                acceptedByProbe = false
                 nextRepokeAt = null
                 progress(2, ProgressStage.HANDSHAKE)
             }
             EngineEvent.CREDENTIALS_SENT.name -> {
                 accepted = true
+                acceptedByProbe = false
                 progress(3, ProgressStage.JOINING_WIFI)
             }
             // The engine re-offers the network on the phone's held Bluetooth channel after a drop:
@@ -172,6 +176,7 @@ internal class AaSessionTracker(
                 emptyList()
             } else {
                 accepted = true
+                acceptedByProbe = false
                 nextRepokeAt = null
                 progress(2, ProgressStage.HANDSHAKE)
             }
@@ -196,6 +201,7 @@ internal class AaSessionTracker(
             // The engine found the phone's head unit server and dials it with the probe's socket:
             // the phone has answered, so no more Bluetooth wakes for this attempt.
             EngineEvent.HEAD_UNIT_SERVER_FOUND.name -> {
+                acceptedByProbe = !accepted // CarLink: only when nothing else had answered yet
                 accepted = true
                 nextRepokeAt = null
                 listOf(AdapterEvent.ViaHeadUnitServer) + if (sessionLive) emptyList() else progress(2, ProgressStage.HANDSHAKE)
@@ -208,7 +214,15 @@ internal class AaSessionTracker(
             EngineEvent.HEAD_UNIT_SERVER_STUCK.name -> if (!sessionLive && (selfMode || headUnitServerPath)) fail(
                 FailureReason.HEAD_UNIT_SERVER_STUCK,
                 "Android Auto's head unit server took the connection and never answered (${d["endpoint"] ?: "5277"})",
-            ) else emptyList()
+            ) else if (!sessionLive && acceptedByProbe) {
+                // CarLink: the probe's "the phone answered" was wrong. FOUND had stopped the Bluetooth
+                // wakes and the accept timeout, so the attempt would have waited for its stage deadline.
+                // Back to waiting, and wake the phone again soon. A Bluetooth route that has already
+                // answered (acceptedByProbe is cleared by it) or a live session is left alone.
+                backToWaiting(now)
+                nextRepokeAt = now + limits.repokeAfterLossMillis
+                progress(1, ProgressStage.WAITING_FOR_PHONE)
+            } else emptyList()
             EngineEvent.ORIENTATION_CHANGED.name -> if (sessionLive) listOf(AdapterEvent.Restart(
                 if (d["cause"] == "window-shape") "the projection window changed shape"
                 else "the screen turned ${d["screen"] ?: ""}".trimEnd())) else emptyList()
@@ -355,6 +369,7 @@ internal class AaSessionTracker(
     private fun backToWaiting(now: Long) {
         waitingSince = now
         accepted = false
+        acceptedByProbe = false
         hinted = false
         step = 0
     }
