@@ -6,6 +6,9 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+## [CS75 Plus 2023 v1.7.1] - 2026-11-27 (test)
+
+Test build from branch `trial/1.7.1`, versionCode 10054. It installs over v1.7.0 (10053), v1.6.9 (10052) and every earlier build, and keeps your settings. Includes everything from the v1.7.0 trial, plus the settings and logo changes below.
 
 - The Changan logo (the same small Settings badge and the same CarPlay back-to-car icon as CS75 Plus) now also appears when the regular Changan brand is selected.
 - Experimental: hide the status bar (notification bar) inside CarLink only, with a swipe from the top to show it briefly (immersive sticky). The switch is in Extra features (مزايا إضافية) for cars other than CS75 Plus, marked تجريبي / Experimental, and defaults to off; an explicit choice is kept. It does not appear in the Changan settings section, because that car already has the broadcast hide. It does not hide the bar in other apps. The Changan CS75 Plus broadcast hide is unchanged.
