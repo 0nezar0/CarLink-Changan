@@ -1,5 +1,6 @@
 package com.carlink.app.ui
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -28,6 +29,15 @@ class Cs75FirstLaunchPromptTest {
     @Test fun notShownAgainAfterTheDriverAnswers() {
         assertFalse(show(answered = true))
         assertFalse(show(freshInstall = false, priorUse = false, answered = true))
+    }
+
+    @Test fun yesTurnsTheCarBarHideOnButKeepsAModeTheDriverChose() {
+        val modes = com.carlink.core.settings.HideCarStatusBarMode.values()
+        assertEquals(com.carlink.core.settings.HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER,
+            Cs75FirstLaunchPrompt.hideModeAfterYes(com.carlink.core.settings.HideCarStatusBarMode.OFF))
+        modes.filter { it != com.carlink.core.settings.HideCarStatusBarMode.OFF }.forEach {
+            assertEquals(it, Cs75FirstLaunchPrompt.hideModeAfterYes(it))
+        }
     }
 
     @Test fun aMatchingInstallAndUpdateTimeIsAFreshInstall() {

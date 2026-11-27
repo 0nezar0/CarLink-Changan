@@ -6,8 +6,12 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+## [CS75 Plus 2023 v1.7.7] - 2026-11-27 (test)
+
+Test build from branch `trial/1.7.1`, versionCode 10060. It installs over v1.7.6 (10059) and every earlier build, and keeps your settings. The connection code is the same as v1.7.6; only the first-run question below is new.
+
 - First-run CS75 question: «هل سيارتك شانجان CS75 Plus 2023؟» (نعم / لا) now also appears after the app's data is cleared (it only appeared on a first install, so a build updated over an older one never asked again). It is shown once, kept by the stored answer flag `cs75_first_launch_prompt_done`, and never on an update of a build already in use.
-- نعم now switches on both Changan features explicitly (the navigation bar, and the car status-bar hide: all apps except the car's home screen), then offers Android's Accessibility settings when CarLink's Accessibility service is off, since both features need it. لا leaves them as they were.
+- نعم now switches on both Changan features explicitly (the navigation bar, the car status-bar hide: all apps except the car's home screen, and the experimental in-CarLink status-bar hide), then offers Android's Accessibility settings when CarLink's Accessibility service is off, since both features need it. لا leaves them as they were.
 
 ## [CS75 Plus 2023 v1.7.6] - 2026-11-27 (test)
 

@@ -285,6 +285,6 @@ gets them; the app manifest adds only `HomeActivity` and CarLink's UI entries.
 - `app/ui/Cs75FirstLaunchPrompt`, `CarLinkViewModel.answerCs75FirstLaunch` / `enableCs75Bars`, `CarLinkApp` (marked `CarLink v1.7.7`):
   the CS75 Plus question is also asked after the app's data is cleared (an empty data folder counts as fresh), once, by the stored flag
   `cs75_first_launch_prompt_done`. Yes writes `enabled_CHANGAN_CS75_PLUS` = true in `cs75_navigation_overlay` (navigation bar) and
-  `hide_car_status_bar_mode` = `ALL_EXCEPT_LAUNCHER` in the unified settings (car status-bar hide), then opens a guide to Android's
+  `hide_car_status_bar_mode` = `ALL_EXCEPT_LAUNCHER` in the unified settings (car status-bar hide) and `hide_app_status_bar` = true (the experimental in-CarLink hide), then opens a guide to Android's
   Accessibility settings when `switcher/FceBarAccessibilityService` is off (`openSettings`, shared with the navigation-bar switch).
   Both features need only that Accessibility service; no Notification Listener, overlay or WRITE_SECURE_SETTINGS permission.

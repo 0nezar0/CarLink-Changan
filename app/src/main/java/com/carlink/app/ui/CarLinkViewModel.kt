@@ -272,7 +272,7 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
     private val _cs75FirstLaunchPrompt = MutableStateFlow(
         Cs75FirstLaunchPrompt.shouldShow(
             freshInstall = Cs75FirstLaunchPrompt.isFreshInstall(app),
-            priorUse = uiPreferences.setupDone || com.carlink.core.connection.DeviceEnvironment.lastPhoneAddress(app) != null,
+            priorUse = uiPreferences.setupDone || uiPreferences.hevcPromptDone || com.carlink.core.connection.DeviceEnvironment.lastPhoneAddress(app) != null,
             brandChosen = Connection.carBrand(app) != null,
             alreadyAnswered = uiPreferences.cs75FirstLaunchPromptDone,
         ),
@@ -311,14 +311,19 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
      * CarLink v1.7.7: Yes to the CS75 question switches on both Changan features, through the same stores their Settings
      * switches write: the navigation bar ([com.carlink.app.switcher.NavigationBarPreference], key `enabled_CHANGAN_CS75_PLUS`
      * in `cs75_navigation_overlay`) and the car status-bar hide (`hide_car_status_bar_mode` = ALL_EXCEPT_LAUNCHER in
-     * the unified settings). Both need the CarLink Accessibility service, which only the driver can turn on, so the guide
+     * the unified settings), plus the experimental in-CarLink status-bar hide (`hide_app_status_bar` = true). Both bars need the CarLink Accessibility service, which only the driver can turn on, so the guide
      * dialog follows when it is off.
      */
     private fun enableCs75Bars() {
         com.carlink.app.switcher.NavigationBarPreference.setEnabled(app, true)
         // The brand's own defaults were just written to the store; read them before changing one field.
         _unified.value = unifiedStore.load()
-        updateSettings { it.copy(hideCarStatusBarMode = com.carlink.core.settings.HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER) }
+        updateSettings {
+            it.copy(
+                hideCarStatusBarMode = Cs75FirstLaunchPrompt.hideModeAfterYes(it.hideCarStatusBarMode),
+                hideAppStatusBar = true, // the experimental in-CarLink hide (`hide_app_status_bar`), confirmed with the Yes path
+            )
+        }
         com.carlink.app.switcher.SwitcherController.onSettingChanged()
         _cs75AccessibilityGuide.value = !com.carlink.app.switcher.FceBarAccessibilityService.isEnabled(app)
     }

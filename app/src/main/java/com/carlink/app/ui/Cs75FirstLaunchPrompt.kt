@@ -17,6 +17,11 @@ object Cs75FirstLaunchPrompt {
     fun shouldShow(freshInstall: Boolean, priorUse: Boolean, brandChosen: Boolean, alreadyAnswered: Boolean): Boolean =
         (freshInstall || !priorUse) && !brandChosen && !alreadyAnswered
 
+    /** Yes turns the car status-bar hide on; a hide mode the driver already chose is not replaced. */
+    fun hideModeAfterYes(current: com.carlink.core.settings.HideCarStatusBarMode): com.carlink.core.settings.HideCarStatusBarMode =
+        if (current == com.carlink.core.settings.HideCarStatusBarMode.OFF) com.carlink.core.settings.HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER
+        else current
+
     fun isFreshInstall(firstInstallTime: Long, lastUpdateTime: Long): Boolean =
         firstInstallTime == lastUpdateTime
 
