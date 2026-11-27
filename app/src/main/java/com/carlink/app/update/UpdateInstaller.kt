@@ -1,5 +1,6 @@
 package com.carlink.app.update
 
+import android.app.DownloadManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,7 +8,9 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.net.Uri
 import android.os.Build
+import android.provider.DocumentsContract
 import android.provider.Settings
+import com.carlink.app.diagnostics.CarLinkFileProvider
 import android.util.Log
 import java.io.File
 import java.io.IOException
@@ -22,6 +25,15 @@ interface UpdateInstaller {
 
     /** Writes [file] into a PackageInstaller session and commits it. Blocking; throws [IOException]. */
     fun install(file: File)
+
+    /**
+     * Manual fallback: hands the already verified [file] to Android's installer (or a file manager)
+     * with an ACTION_VIEW intent on a content:// URI. False when nothing could be started.
+     */
+    fun openForManualInstall(file: File): Boolean
+
+    /** Last resort of the manual fallback: opens the folder that holds [file]. False when no app can show it. */
+    fun openContainingFolder(file: File): Boolean
 }
 
 /** What the PackageInstaller session reported. */
@@ -32,6 +44,8 @@ sealed interface InstallStatus {
     data object Aborted : InstallStatus
     data class Failure(val message: String?) : InstallStatus
 }
+
+private const val APK_MIME = "application/vnd.android.package-archive"
 
 /** [UpdateInstaller] on [PackageInstaller] sessions. */
 class PackageInstallerUpdater(context: Context) : UpdateInstaller {
@@ -47,6 +61,29 @@ class PackageInstallerUpdater(context: Context) : UpdateInstaller {
         runCatching { app.startActivity(intent) }.onFailure {
             // Some head-unit builds lack the per-app page; the general "unknown apps" list then.
             runCatching { app.startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+        }
+    }
+
+    override fun openForManualInstall(file: File): Boolean {
+        val uri = runCatching { CarLinkFileProvider.uriFor(app, file) }.getOrNull() ?: return false
+        val view = Intent(Intent.ACTION_VIEW)
+            .setDataAndType(uri, APK_MIME)
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+        return runCatching { app.startActivity(view) }.isSuccess
+    }
+
+    override fun openContainingFolder(file: File): Boolean {
+        val folder = file.parentFile ?: return false
+        // A file manager that understands a folder; the folder is shown by its content:// URI.
+        val uri = runCatching { CarLinkFileProvider.uriFor(app, folder) }.getOrNull()
+        val intents = buildList {
+            if (uri != null) add(Intent(Intent.ACTION_VIEW).setDataAndType(uri, "resource/folder"))
+            if (uri != null) add(Intent(Intent.ACTION_VIEW).setDataAndType(uri, DocumentsContract.Document.MIME_TYPE_DIR))
+            add(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
+        }
+        return intents.any { intent ->
+            val launch = intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            runCatching { app.startActivity(launch) }.isSuccess
         }
     }
 

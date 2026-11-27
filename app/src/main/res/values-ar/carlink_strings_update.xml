@@ -34,6 +34,9 @@
     <string name="carlink_update_error_install_cancelled">أُلغي التثبيت.</string>
     <string name="carlink_update_try_again">إعادة المحاولة</string>
     <string name="carlink_update_close">إغلاق</string>
+    <string name="carlink_update_install_manually">تثبيت يدوي</string>
+    <string name="carlink_update_manual_path">مسار الملف: %1$s</string>
+    <string name="carlink_update_manual_hint">إذا لم يفتح Android شاشة التثبيت تلقائيًا، اضغط «تثبيت يدوي»، أو افتح هذا الملف من مدير الملفات وثبّته.</string>
     <string name="carlink_about_updates">التحديثات</string>
     <string name="carlink_about_check_updates">التحقق من التحديثات</string>
     <string name="carlink_about_updates_last_checked">الإصدار %1$s · آخر تحقق %2$s</string>

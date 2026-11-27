@@ -45,6 +45,11 @@
     <string name="carlink_update_error_install_cancelled">The installation was cancelled.</string>
     <string name="carlink_update_try_again">Try again</string>
     <string name="carlink_update_close">Close</string>
+    <!-- Manual install fallback: the verified APK is opened by Android's installer or a file manager. -->
+    <string name="carlink_update_install_manually">Install manually</string>
+    <!-- The full path of the downloaded, checked APK. -->
+    <string name="carlink_update_manual_path">Saved file: %1$s</string>
+    <string name="carlink_update_manual_hint">If Android doesn’t open the installer by itself, tap “Install manually”, or open this file from a file manager and install it.</string>
 
     <!-- ===== About › Updates ===== -->
     <string name="carlink_about_updates">Updates</string>

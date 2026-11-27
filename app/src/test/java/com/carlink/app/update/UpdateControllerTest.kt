@@ -201,6 +201,107 @@ class UpdateControllerTest {
         assertTrue("a cancelled install keeps the checked file", kept.exists())
     }
 
+    private val keptApk get() = File(downloadDir, "CarLink-CS75Plus2023-v1.1.apk")
+
+    @Test fun manualInstallOpensTheVerifiedApkWhileInstalling() {
+        val c = controller()
+        c.checkNow()
+        assertNull(c.manualApk.value)
+        c.download()
+        // A head unit may block the session silently: the dialog already offers the file.
+        assertEquals(UpdateState.Installing(release), c.state.value)
+        assertEquals(keptApk, c.manualApk.value)
+        assertEquals(ManualInstall.INSTALLER, c.installManually())
+        assertEquals(listOf(keptApk), installer.manualOpened)
+        assertTrue("opening it by hand never deletes it", keptApk.exists())
+        c.dismiss()
+        assertNull(c.manualApk.value)
+        assertTrue("closing the dialog keeps the file", keptApk.exists())
+    }
+
+    @Test fun installFailureKeepsTheFileForManualInstall() {
+        val c = controller()
+        c.checkNow()
+        c.download()
+        c.onInstallStatus(InstallStatus.Failure("INSTALL_FAILED_ABORTED"))
+        assertEquals(UpdateError.INSTALL, (c.state.value as UpdateState.Failed).error)
+        assertTrue(keptApk.exists())
+        assertEquals(keptApk, c.manualApk.value)
+        assertEquals(ManualInstall.INSTALLER, c.installManually())
+        assertEquals(listOf(keptApk), installer.manualOpened)
+        assertEquals("the file is still there after the manual install was opened", apkBytes, keptApk.readText())
+    }
+
+    @Test fun cancelledInstallKeepsTheFileForManualInstall() {
+        val c = controller()
+        c.checkNow()
+        c.download()
+        c.onInstallStatus(InstallStatus.Aborted)
+        assertEquals(UpdateError.INSTALL_CANCELLED, (c.state.value as UpdateState.Failed).error)
+        assertEquals(keptApk, c.manualApk.value)
+        assertEquals(ManualInstall.INSTALLER, c.installManually())
+    }
+
+    @Test fun sessionThatCannotBeWrittenKeepsTheFileForManualInstall() {
+        installer.installThrows = true
+        val c = controller()
+        c.checkNow()
+        c.download()
+        assertEquals(UpdateError.INSTALL, (c.state.value as UpdateState.Failed).error)
+        assertTrue(keptApk.exists())
+        assertEquals(keptApk, c.manualApk.value)
+    }
+
+    @Test fun manualInstallIsOfferedWhileWaitingForPermission() {
+        installer.allowed = false
+        val c = controller()
+        c.checkNow()
+        c.download()
+        assertEquals(UpdateState.NeedsPermission(release), c.state.value)
+        assertEquals(keptApk, c.manualApk.value)
+        assertEquals(ManualInstall.INSTALLER, c.installManually())
+        c.cancel()
+        assertNull(c.manualApk.value)
+        assertEquals(ManualInstall.NONE, c.installManually())
+    }
+
+    @Test fun manualInstallFallsBackToTheFolderAndThenToThePath() {
+        val c = controller()
+        c.checkNow()
+        c.download()
+        c.onInstallStatus(InstallStatus.Failure(null))
+        installer.manualOpens = false
+        assertEquals(ManualInstall.FOLDER, c.installManually())
+        assertEquals(listOf(keptApk), installer.folderOpened)
+        installer.folderOpens = false
+        assertEquals(ManualInstall.NONE, c.installManually())
+        // Nothing opened: the file and the path the dialog shows are still there.
+        assertTrue(keptApk.exists())
+        assertEquals(keptApk, c.manualApk.value)
+    }
+
+    @Test fun manualInstallNeverReachesAFileThatFailedVerification() {
+        checksum = "0".repeat(64)
+        val c = assertFailure(UpdateError.CHECKSUM_MISMATCH)
+        assertNull(c.manualApk.value)
+        assertEquals(ManualInstall.NONE, c.installManually())
+        assertTrue(installer.manualOpened.isEmpty())
+    }
+
+    @Test fun manualInstallStringsExistInEveryLocale() {
+        val res = File("src/main/res").takeIf { it.isDirectory } ?: File("app/src/main/res")
+        val dirs = res.listFiles { f -> f.isDirectory && f.name.startsWith("values") && File(f, "carlink_strings_update.xml").isFile }!!
+        assertTrue("English and the translations", dirs.size >= 11)
+        for (dir in dirs) {
+            val xml = File(dir, "carlink_strings_update.xml").readText()
+            for (key in listOf("carlink_update_install_manually", "carlink_update_manual_path", "carlink_update_manual_hint")) {
+                assertTrue("${dir.name} has $key", xml.contains("name=\"$key\""))
+            }
+        }
+        val arabic = File(res, "values-ar/carlink_strings_update.xml").readText()
+        assertTrue(arabic.contains("تثبيت يدوي"))
+    }
+
     @Test fun askForInstallPermissionThenContinue() {
         installer.allowed = false
         val c = controller()
@@ -281,9 +382,19 @@ class UpdateControllerTest {
     private class FakeInstaller : UpdateInstaller {
         var allowed = true
         var openedSettings = false
+        var installThrows = false
         val installed = mutableListOf<String>()
         override fun canInstall() = allowed
         override fun openInstallPermissionSettings() { openedSettings = true }
-        override fun install(file: File) { installed += file.readText() }
+        override fun install(file: File) {
+            if (installThrows) throw IOException("session refused")
+            installed += file.readText()
+        }
+        var manualOpens = true
+        var folderOpens = true
+        val manualOpened = mutableListOf<File>()
+        val folderOpened = mutableListOf<File>()
+        override fun openForManualInstall(file: File): Boolean { manualOpened += file; return manualOpens }
+        override fun openContainingFolder(file: File): Boolean { folderOpened += file; return folderOpens }
     }
 }

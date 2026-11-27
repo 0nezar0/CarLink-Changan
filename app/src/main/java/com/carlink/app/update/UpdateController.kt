@@ -37,7 +37,10 @@ val UpdateState.showsDialog: Boolean
     get() = this is UpdateState.Available || this is UpdateState.Downloading || this is UpdateState.Verifying ||
         this is UpdateState.NeedsPermission || this is UpdateState.Installing || this is UpdateState.Failed
 
-/** Why an update did not install. The downloaded file is deleted in every case. */
+/**
+ * Why an update did not install. The downloaded file is deleted in every case except [INSTALL] and
+ * [INSTALL_CANCELLED]: it passed every check, so it is kept for [UpdateController.installManually].
+ */
 enum class UpdateError(val canRetry: Boolean) {
     DOWNLOAD(true),
     CHECKSUM_MISSING(true),
@@ -56,6 +59,16 @@ private fun VerifyFailure.toError(): UpdateError = when (this) {
     VerifyFailure.WRONG_PACKAGE -> UpdateError.WRONG_PACKAGE
     VerifyFailure.NOT_NEWER -> UpdateError.NOT_NEWER
     VerifyFailure.WRONG_SIGNER -> UpdateError.WRONG_SIGNER
+}
+
+/** What [UpdateController.installManually] managed to open. */
+enum class ManualInstall {
+    /** Android's installer (or a file manager) took the verified APK. */
+    INSTALLER,
+    /** No app took the APK; the folder that holds it was opened. */
+    FOLDER,
+    /** Nothing opened: the dialog still shows the file's path. */
+    NONE,
 }
 
 /**
@@ -104,6 +117,15 @@ class UpdateController(
     private val _newer = MutableStateFlow<ReleaseInfo?>(null)
     /** The newest release a check found above [current], even one the driver chose Later or Ignore for (the report sheet names it). */
     val newer: StateFlow<ReleaseInfo?> = _newer.asStateFlow()
+
+    private val _manualApk = MutableStateFlow<File?>(null)
+    /**
+     * The downloaded, verified APK while the update is in the install steps (Installing, needs
+     * permission, install failed or cancelled): what "Install manually" opens, and the path the
+     * dialog shows. Some head units block PackageInstaller sessions silently, so the dialog offers
+     * it while Android's install screen may never come. Null in every other state.
+     */
+    val manualApk: StateFlow<File?> = _manualApk.asStateFlow()
 
     private var job: Job? = null
     private var verifiedFile: File? = null
@@ -204,9 +226,10 @@ class UpdateController(
     /** Close an answer or a failure. */
     fun dismiss() {
         when (_state.value) {
-            UpdateState.UpToDate, is UpdateState.CheckFailed, is UpdateState.Failed -> _state.value = UpdateState.Idle
+            UpdateState.UpToDate, is UpdateState.CheckFailed, is UpdateState.Failed -> { _manualApk.value = null; _state.value = UpdateState.Idle }
             // Android's install screen is up (or never came); closing ours leaves the decision there.
-            is UpdateState.Installing -> _state.value = UpdateState.Idle
+            // The verified APK stays in Downloads/CarLink for a later manual install.
+            is UpdateState.Installing -> { _manualApk.value = null; _state.value = UpdateState.Idle }
             is UpdateState.Available -> later()
             else -> Unit
         }
@@ -221,6 +244,7 @@ class UpdateController(
         } ?: return
         if (job?.isActive == true) return
         val file = File(downloadDir(), ReleaseRepo.apkName(release.version))
+        _manualApk.value = null
         _state.value = UpdateState.Downloading(release, 0L, release.apkSize.takeIf { it > 0 })
         job = scope.launch {
             try {
@@ -251,6 +275,7 @@ class UpdateController(
                     return@launch
                 }
                 verifiedFile = file
+                _manualApk.value = file
                 installOrAsk(release, file)
             } catch (cancelled: CancellationException) {
                 file.delete()
@@ -275,11 +300,32 @@ class UpdateController(
         job?.cancel()
         verifiedFile?.delete()
         verifiedFile = null
+        _manualApk.value = null
         _state.value = UpdateState.Available(release)
     }
 
     /** Opens Android's "Install unknown apps" page; the install continues when Home resumes. */
     fun openInstallPermission() = installer.openInstallPermissionSettings()
+
+    /**
+     * "Install manually": hands the kept, verified APK to Android's installer (ACTION_VIEW on a
+     * content:// URI), or to a file manager. When no app takes the file, opens its folder; when that
+     * fails too the dialog's path line is what is left. The APK is never deleted by this.
+     */
+    fun installManually(): ManualInstall {
+        val file = _manualApk.value ?: return ManualInstall.NONE
+        if (!file.isFile) { _manualApk.value = null; return ManualInstall.NONE }
+        if (installer.openForManualInstall(file)) {
+            log("manual install: opened ${file.name}")
+            return ManualInstall.INSTALLER
+        }
+        if (installer.openContainingFolder(file)) {
+            log("manual install: no installer took ${file.name}; opened its folder")
+            return ManualInstall.FOLDER
+        }
+        log("manual install: nothing could be opened for ${file.name}")
+        return ManualInstall.NONE
+    }
 
     private fun resumeAfterPermission() {
         val waiting = _state.value as? UpdateState.NeedsPermission ?: return
@@ -303,7 +349,7 @@ class UpdateController(
             log("install failed: ${e.message}")
             // The file passed every check: keep it, so it can be installed by hand.
             verifiedFile = null
-            fail(release, UpdateError.INSTALL, null, e.message)
+            fail(release, UpdateError.INSTALL, null, e.message, keepApk = file)
         }
     }
 
@@ -312,22 +358,26 @@ class UpdateController(
         val installing = _state.value as? UpdateState.Installing ?: run {
             // The dialog was closed while Android's install screen was up: only tidy up.
             if (status !is InstallStatus.WaitingForUser) verifiedFile = null
+            if (status == InstallStatus.Success) _manualApk.value = null
             return
         }
         log("install: $status")
         when (status) {
             InstallStatus.WaitingForUser -> Unit
             // Usually not seen: Android stops CarLink to replace it.
-            InstallStatus.Success -> { verifiedFile = null; _state.value = UpdateState.Idle }
-            // A verified APK is kept in Downloads/CarLink when Android's install did not finish.
-            InstallStatus.Aborted -> { verifiedFile = null; fail(installing.release, UpdateError.INSTALL_CANCELLED, null) }
-            is InstallStatus.Failure -> { verifiedFile = null; fail(installing.release, UpdateError.INSTALL, null, status.message) }
+            InstallStatus.Success -> { verifiedFile = null; _manualApk.value = null; _state.value = UpdateState.Idle }
+            // A verified APK is kept in Downloads/CarLink when Android's install did not finish,
+            // and the Failed dialog offers "Install manually" for it.
+            InstallStatus.Aborted -> { verifiedFile = null; fail(installing.release, UpdateError.INSTALL_CANCELLED, null, keepApk = _manualApk.value) }
+            is InstallStatus.Failure -> { verifiedFile = null; fail(installing.release, UpdateError.INSTALL, null, status.message, keepApk = _manualApk.value) }
         }
     }
 
-    private fun fail(release: ReleaseInfo, error: UpdateError, file: File?, detail: String? = null) {
+    /** [keepApk]: the verified APK an install failure leaves for the manual install; anything else deletes its file. */
+    private fun fail(release: ReleaseInfo, error: UpdateError, file: File?, detail: String? = null, keepApk: File? = null) {
         file?.delete()
         deleteVerified()
+        _manualApk.value = keepApk?.takeIf { it.isFile }
         _state.value = UpdateState.Failed(release, error, detail)
     }
 

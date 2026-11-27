@@ -13,7 +13,8 @@ import java.io.File
  * CarLink has storage access (asked when the driver taps "Download & install"). Without it, or on
  * Android 10 and newer (no direct file access to shared storage), CarLink's own Downloads/CarLink
  * (Android/data/<package>/files), which needs no permission. The installer reads the file itself
- * into a PackageInstaller session, so no content URI is needed.
+ * into a PackageInstaller session; the manual install fallback (UpdateInstaller.openForManualInstall)
+ * hands the same file to Android through CarLinkFileProvider, which serves this folder.
  */
 object UpdateFiles {
     /** The folder's name inside Downloads: the same Downloads/CarLink as the full reports. */

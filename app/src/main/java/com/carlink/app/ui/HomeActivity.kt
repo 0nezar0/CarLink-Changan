@@ -81,10 +81,12 @@ class HomeActivity : ComponentActivity() {
                 }
                 override fun cancel() = updater.cancel()
                 override fun openSettings() = updater.openInstallPermission()
+                override fun installManually() { updater.installManually() }
                 override fun dismiss() = updater.dismiss()
             }
         }
-        UpdateDialog(state, updater.current.toString(), actions)
+        val manualApk by updater.manualApk.collectAsStateWithLifecycle()
+        UpdateDialog(state, updater.current.toString(), actions, manualPath = manualApk?.absolutePath)
     }
 
     override fun onPause() {

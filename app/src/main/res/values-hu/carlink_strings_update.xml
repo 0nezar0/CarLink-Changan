@@ -34,6 +34,9 @@
     <string name="carlink_update_error_install_cancelled">A telepítést megszakították.</string>
     <string name="carlink_update_try_again">Újra</string>
     <string name="carlink_update_close">Bezárás</string>
+    <string name="carlink_update_install_manually">Telepítés kézzel</string>
+    <string name="carlink_update_manual_path">Mentett fájl: %1$s</string>
+    <string name="carlink_update_manual_hint">Ha az Android nem nyitja meg magától a telepítőt, koppints a „Telepítés kézzel” gombra, vagy nyisd meg ezt a fájlt egy fájlkezelőből, és telepítsd.</string>
     <string name="carlink_about_updates">Frissítések</string>
     <string name="carlink_about_check_updates">Frissítések keresése</string>
     <string name="carlink_about_updates_last_checked">%1$s verzió · utoljára ellenőrizve: %2$s</string>

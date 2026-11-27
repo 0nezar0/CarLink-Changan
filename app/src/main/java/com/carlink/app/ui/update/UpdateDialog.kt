@@ -61,6 +61,8 @@ interface UpdateDialogActions {
     fun download() {}
     fun cancel() {}
     fun openSettings() {}
+    /** "Install manually": opens the verified APK with Android's installer or a file manager. */
+    fun installManually() {}
     fun dismiss() {}
 }
 
@@ -70,7 +72,11 @@ interface UpdateDialogActions {
  * (the caller gates it). Tapping the scrim does nothing; Back means "Later" or "Close".
  */
 @Composable
-fun UpdateDialog(state: UpdateState, installedVersion: String, actions: UpdateDialogActions, modifier: Modifier = Modifier) {
+fun UpdateDialog(
+    state: UpdateState, installedVersion: String, actions: UpdateDialogActions, modifier: Modifier = Modifier,
+    /** Full path of the downloaded, verified APK while it can still be installed by hand (UpdateController.manualApk). */
+    manualPath: String? = null,
+) {
     val dimens = CarLinkTokens.dimens
     val scheme = MaterialTheme.colorScheme
     val car = CarLinkTokens.profile == UiProfile.CAR
@@ -122,14 +128,26 @@ fun UpdateDialog(state: UpdateState, installedVersion: String, actions: UpdateDi
                     stringResource(R.string.carlink_update_installing_title, state.release.version.toString()), null,
                     stringResource(R.string.carlink_update_installing_body), fraction = null,
                     icon = R.drawable.carlink_ic_system_update,
-                ) { GlassButton(stringResource(R.string.carlink_update_close), actions::dismiss) }
+                ) {
+                    // Some head units block the session silently and Android's screen never comes.
+                    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(if (car) 16.dp else 12.dp)) {
+                            GlassButton(stringResource(R.string.carlink_update_close), actions::dismiss)
+                            if (manualPath != null) IonButton(stringResource(R.string.carlink_update_install_manually), actions::installManually)
+                        }
+                        if (manualPath != null) ManualInstallNote(manualPath)
+                    }
+                }
                 is UpdateState.NeedsPermission -> {
                     Header(R.drawable.carlink_ic_lock, scheme.primary, stringResource(R.string.carlink_update_permission_title),
                         stringResource(R.string.carlink_update_version, state.release.version.toString()), null)
                     Spacer(Modifier.height(dimens.gutter))
                     Body(stringResource(R.string.carlink_update_permission_body))
+                    if (manualPath != null) ManualInstallNote(manualPath, withHint = false)
                     Buttons(inner, primary = stringResource(R.string.carlink_update_open_settings) to actions::openSettings,
-                        secondary = listOf(stringResource(R.string.carlink_update_cancel) to actions::cancel))
+                        secondary = listOfNotNull(
+                            manualPath?.let { stringResource(R.string.carlink_update_install_manually) to actions::installManually },
+                            stringResource(R.string.carlink_update_cancel) to actions::cancel))
                 }
                 is UpdateState.Failed -> {
                     Header(R.drawable.carlink_ic_error, scheme.error, stringResource(R.string.carlink_update_failed_title),
@@ -137,7 +155,13 @@ fun UpdateDialog(state: UpdateState, installedVersion: String, actions: UpdateDi
                     Spacer(Modifier.height(dimens.gutter))
                     Body(errorText(state.error, state.detail))
                     val close = stringResource(R.string.carlink_update_close) to actions::dismiss
-                    if (state.error.canRetry) {
+                    if (manualPath != null) {
+                        // The checked APK is still in Downloads/CarLink: installing it by hand is the way forward.
+                        ManualInstallNote(manualPath)
+                        val retry = stringResource(R.string.carlink_update_try_again) to actions::download
+                        Buttons(inner, primary = stringResource(R.string.carlink_update_install_manually) to actions::installManually,
+                            secondary = if (state.error.canRetry) listOf(retry, close) else listOf(close))
+                    } else if (state.error.canRetry) {
                         Buttons(inner, primary = stringResource(R.string.carlink_update_try_again) to actions::download,
                             secondary = listOf(close))
                     } else {
@@ -201,6 +225,20 @@ private fun Header(@DrawableRes icon: Int, tint: Color, title: String, version: 
             }
         }
     }
+}
+
+/** Where the verified APK is saved, and what to do if Android's installer does not open. */
+@Composable
+private fun ManualInstallNote(path: String, withHint: Boolean = true) {
+    val scheme = MaterialTheme.colorScheme
+    Spacer(Modifier.height(CarLinkTokens.dimens.gutter / 2))
+    if (withHint) {
+        Text(stringResource(R.string.carlink_update_manual_hint), style = MaterialTheme.typography.bodyMedium,
+            color = scheme.onSurfaceVariant)
+        Spacer(Modifier.height(4.dp))
+    }
+    Text(stringResource(R.string.carlink_update_manual_path, path), style = MaterialTheme.typography.bodyMedium,
+        color = scheme.onSurface)
 }
 
 @Composable

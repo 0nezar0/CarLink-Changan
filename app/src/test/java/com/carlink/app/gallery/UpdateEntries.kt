@@ -37,14 +37,18 @@ private val galleryRelease = AppVersion(1, 2).let { version ->
 }
 
 internal fun updateEntries(): List<GalleryEntry> = with(HomeFakes) {
-    fun entry(name: String, state: UpdateState) = GalleryEntry("update", name, configs = updateConfigs) {
-        OverHome { UpdateDialog(state, "1.0.0", GalleryUpdateActions) }
+    fun entry(name: String, state: UpdateState, manualPath: String? = null) = GalleryEntry("update", name, configs = updateConfigs) {
+        OverHome { UpdateDialog(state, "1.0.0", GalleryUpdateActions, manualPath = manualPath) }
     }
+    val savedApk = "/storage/emulated/0/Download/CarLink/${ReleaseRepo.apkName(galleryRelease.version)}"
     listOf(
         entry("available", UpdateState.Available(galleryRelease)),
         entry("downloading", UpdateState.Downloading(galleryRelease, 19_400_000L, galleryRelease.apkSize)),
         entry("verify-failed", UpdateState.Failed(galleryRelease, UpdateError.WRONG_SIGNER)),
         entry("permission", UpdateState.NeedsPermission(galleryRelease)),
+        // The head unit's installer did not open: the checked APK is installed by hand.
+        entry("install-failed-manual", UpdateState.Failed(galleryRelease, UpdateError.INSTALL), savedApk),
+        entry("installing-manual", UpdateState.Installing(galleryRelease), savedApk),
         // About › Updates after "Check for updates" found nothing newer.
         GalleryEntry("about", "updates-up-to-date", configs = updateConfigs) {
             AboutContent(previewFacts, onBack = {}, updates = previewUpdates.copy(state = UpdateState.UpToDate,

@@ -34,6 +34,9 @@
     <string name="carlink_update_error_install_cancelled">安装已取消。</string>
     <string name="carlink_update_try_again">重试</string>
     <string name="carlink_update_close">关闭</string>
+    <string name="carlink_update_install_manually">手动安装</string>
+    <string name="carlink_update_manual_path">已保存的文件：%1$s</string>
+    <string name="carlink_update_manual_hint">如果 Android 没有自动打开安装程序，请点按“手动安装”，或在文件管理器中打开此文件并安装。</string>
     <string name="carlink_about_updates">更新</string>
     <string name="carlink_about_check_updates">检查更新</string>
     <string name="carlink_about_updates_last_checked">版本 %1$s · 上次检查 %2$s</string>

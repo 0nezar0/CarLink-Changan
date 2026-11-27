@@ -34,6 +34,9 @@
     <string name="carlink_update_error_install_cancelled">Die Installation wurde abgebrochen.</string>
     <string name="carlink_update_try_again">Erneut versuchen</string>
     <string name="carlink_update_close">Schließen</string>
+    <string name="carlink_update_install_manually">Manuell installieren</string>
+    <string name="carlink_update_manual_path">Gespeicherte Datei: %1$s</string>
+    <string name="carlink_update_manual_hint">Öffnet Android das Installationsprogramm nicht von selbst, tippe auf „Manuell installieren“ oder öffne diese Datei in einem Dateimanager und installiere sie.</string>
     <string name="carlink_about_updates">Updates</string>
     <string name="carlink_about_check_updates">Nach Updates suchen</string>
     <string name="carlink_about_updates_last_checked">Version %1$s · zuletzt geprüft %2$s</string>

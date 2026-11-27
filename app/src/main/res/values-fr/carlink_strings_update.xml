@@ -34,6 +34,9 @@
     <string name="carlink_update_error_install_cancelled">L’installation a été annulée.</string>
     <string name="carlink_update_try_again">Réessayer</string>
     <string name="carlink_update_close">Fermer</string>
+    <string name="carlink_update_install_manually">Installer manuellement</string>
+    <string name="carlink_update_manual_path">Fichier enregistré : %1$s</string>
+    <string name="carlink_update_manual_hint">Si Android n’ouvre pas l’installateur de lui-même, touchez « Installer manuellement » ou ouvrez ce fichier depuis un gestionnaire de fichiers et installez-le.</string>
     <string name="carlink_about_updates">Mises à jour</string>
     <string name="carlink_about_check_updates">Rechercher des mises à jour</string>
     <string name="carlink_about_updates_last_checked">Version %1$s · dernière vérification %2$s</string>

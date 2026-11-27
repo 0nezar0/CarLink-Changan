@@ -34,6 +34,9 @@
     <string name="carlink_update_error_install_cancelled">Yükleme iptal edildi.</string>
     <string name="carlink_update_try_again">Yeniden dene</string>
     <string name="carlink_update_close">Kapat</string>
+    <string name="carlink_update_install_manually">Elle yükle</string>
+    <string name="carlink_update_manual_path">Kaydedilen dosya: %1$s</string>
+    <string name="carlink_update_manual_hint">Android yükleyiciyi kendiliğinden açmazsa “Elle yükle”ye dokunun ya da bu dosyayı bir dosya yöneticisinden açıp yükleyin.</string>
     <string name="carlink_about_updates">Güncellemeler</string>
     <string name="carlink_about_check_updates">Güncellemeleri denetle</string>
     <string name="carlink_about_updates_last_checked">Sürüm %1$s · son kontrol %2$s</string>

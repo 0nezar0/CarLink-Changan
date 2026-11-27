@@ -34,6 +34,9 @@
     <string name="carlink_update_error_install_cancelled">Pemasangan dibatalkan.</string>
     <string name="carlink_update_try_again">Cuba lagi</string>
     <string name="carlink_update_close">Tutup</string>
+    <string name="carlink_update_install_manually">Pasang secara manual</string>
+    <string name="carlink_update_manual_path">Fail disimpan: %1$s</string>
+    <string name="carlink_update_manual_hint">Jika Android tidak membuka pemasang dengan sendiri, ketik “Pasang secara manual”, atau buka fail ini daripada pengurus fail dan pasangkannya.</string>
     <string name="carlink_about_updates">Kemas kini</string>
     <string name="carlink_about_check_updates">Cari kemas kini</string>
     <string name="carlink_about_updates_last_checked">Versi %1$s · terakhir disemak %2$s</string>
