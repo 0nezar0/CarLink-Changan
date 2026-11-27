@@ -26,7 +26,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.carlink.app.R
+import com.carlink.app.ui.AppImmersiveStatusBar
 import com.carlink.app.ui.settings.LaunchableApps
+import com.carlink.core.settings.UnifiedSettingsStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -34,6 +36,7 @@ class InstalledAppsActivity : ComponentActivity() {
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applyImmersiveStatusBar()
         setContent {
             val apps by produceState<List<LaunchableApps.App>?>(null) {
                 value = withContext(Dispatchers.IO) {
@@ -89,6 +92,20 @@ class InstalledAppsActivity : ComponentActivity() {
         } catch (_: SecurityException) {
             Toast.makeText(this, R.string.carlink_cs75_nav_apps_unavailable, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        applyImmersiveStatusBar()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) applyImmersiveStatusBar()
+    }
+
+    private fun applyImmersiveStatusBar() {
+        AppImmersiveStatusBar.apply(window, UnifiedSettingsStore(this).load().hideAppStatusBar)
     }
 
     private fun openApp(pkg: String) {

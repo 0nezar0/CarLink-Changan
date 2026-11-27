@@ -20,7 +20,10 @@
     <string name="carlink_settings_cat_car_summary">Lado de conducción y controles</string>
     <string name="carlink_settings_cat_general_summary">Apariencia, ayuda y versión de CarLink</string>
     <string name="carlink_settings_cat_added_features">Funciones adicionales</string>
-    <string name="carlink_settings_cat_added_features_summary">Funciones añadidas en esta edición, como la barra de navegación</string>
+    <string name="carlink_settings_cat_added_features_summary">Funciones añadidas en esta edición, como la barra de navegación y ocultar la barra de estado dentro de la app</string>
+    <string name="carlink_settings_hide_app_status_bar">Ocultar la barra de estado en CarLink</string>
+    <string name="carlink_settings_hide_app_status_bar_detail">Oculta la barra de notificaciones solo dentro de esta aplicación. Un deslizamiento desde arriba la muestra un momento. No oculta la barra en otras aplicaciones.</string>
+    <string name="carlink_settings_experimental_tag">Experimental</string>
     <string name="carlink_settings_custom">Personalizado (definido en Avanzado)</string>
     <string name="carlink_settings_custom_detail">Los valores exactos se definen en Mostrar avanzado.</string>
     <string name="carlink_settings_applies_next">Se aplica en la próxima conexión</string>

@@ -20,7 +20,10 @@
     <string name="carlink_settings_cat_car_summary">Sisi pemanduan dan kawalan</string>
     <string name="carlink_settings_cat_general_summary">Rupa, bantuan dan versi CarLink</string>
     <string name="carlink_settings_cat_added_features">Ciri tambahan</string>
-    <string name="carlink_settings_cat_added_features_summary">Ciri yang ditambah dalam edisi ini, seperti bar navigasi</string>
+    <string name="carlink_settings_cat_added_features_summary">Ciri yang ditambah dalam edisi ini, seperti bar navigasi dan sembunyi bar status dalam apl</string>
+    <string name="carlink_settings_hide_app_status_bar">Sembunyi bar status dalam CarLink</string>
+    <string name="carlink_settings_hide_app_status_bar_detail">Menyembunyikan bar pemberitahuan hanya dalam apl ini. Luncuran dari atas memaparkannya seketika. Ia tidak menyembunyikan bar dalam apl lain.</string>
+    <string name="carlink_settings_experimental_tag">Percubaan</string>
     <string name="carlink_settings_custom">Tersuai (ditetapkan dalam Lanjutan)</string>
     <string name="carlink_settings_custom_detail">Nilai tepat ditetapkan di bawah Tunjukkan lanjutan.</string>
     <string name="carlink_settings_applies_next">Digunakan pada sambungan seterusnya</string>

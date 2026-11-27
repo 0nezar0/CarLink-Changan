@@ -56,6 +56,7 @@ class SettingsStoresTest {
             hideCarStatusBarMode = HideCarStatusBarMode.SELECTED_APPS,
             hideCarStatusBarPackages = setOf("com.example.app"),
             hideCarStatusBar = true,
+            hideAppStatusBar = true,
             appLanguage = "ar",
             androidAutoBack = false,
         )
@@ -171,6 +172,17 @@ class SettingsStoresTest {
         val on = UnifiedSettingsStore(app).load()
         assertEquals(HideCarStatusBarMode.ALL_EXCEPT_LAUNCHER, on.hideCarStatusBarMode)
         assertTrue(on.hideCarStatusBar)
+    }
+
+    @Test fun hideAppStatusBarDefaultsOffAndAnExplicitChoiceIsKept() {
+        val store = UnifiedSettingsStore(app)
+        assertFalse(store.load().hideAppStatusBar)
+        store.save(store.load().copy(hideAppStatusBar = true))
+        assertTrue(UnifiedSettingsStore(app).load().hideAppStatusBar)
+        store.save(store.load().copy(hideAppStatusBar = false))
+        assertFalse(UnifiedSettingsStore(app).load().hideAppStatusBar)
+        // The Changan broadcast hide is a separate setting and stays untouched.
+        assertEquals(HideCarStatusBarMode.OFF, store.load().hideCarStatusBarMode)
     }
 
 }

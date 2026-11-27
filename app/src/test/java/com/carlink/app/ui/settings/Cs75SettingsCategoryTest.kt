@@ -53,4 +53,12 @@ class Cs75SettingsCategoryTest {
             )
         }
     }
+
+    @Test fun arabicExperimentalTagIsExact() {
+        val xml = File("src/main/res/values-ar/carlink_strings_settings.xml").takeIf { it.isFile }
+            ?: File("../src/main/res/values-ar/carlink_strings_settings.xml")
+        val match = Regex("""<string name="carlink_settings_experimental_tag">([^<]+)</string>""").find(xml.readText())
+            ?: error("missing carlink_settings_experimental_tag")
+        assertEquals("تجريبي", match.groupValues[1])
+    }
 }

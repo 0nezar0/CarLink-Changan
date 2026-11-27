@@ -20,7 +20,10 @@
     <string name="carlink_settings_cat_car_summary">جهة القيادة وأدوات التحكم</string>
     <string name="carlink_settings_cat_general_summary">مظهر CarLink والمساعدة والإصدار</string>
     <string name="carlink_settings_cat_added_features">مزايا إضافية</string>
-    <string name="carlink_settings_cat_added_features_summary">المزايا المضافة في هذه النسخة، مثل شريط التنقّل</string>
+    <string name="carlink_settings_cat_added_features_summary">المزايا المضافة في هذه النسخة، مثل شريط التنقّل وإخفاء شريط الحالة داخل التطبيق</string>
+    <string name="carlink_settings_hide_app_status_bar">إخفاء شريط الحالة في CarLink</string>
+    <string name="carlink_settings_hide_app_status_bar_detail">يخفي شريط الإشعارات داخل هذا التطبيق فقط. سحبة من الأعلى تظهره مؤقتاً. ما يخفي الشريط في التطبيقات الثانية.</string>
+    <string name="carlink_settings_experimental_tag">تجريبي</string>
     <string name="carlink_settings_custom">مخصّص (يُضبط من المتقدم)</string>
     <string name="carlink_settings_custom_detail">القيم الدقيقة تُضبط تحت «إظهار المتقدم».</string>
     <string name="carlink_settings_applies_next">يُطبَّق عند الاتصال التالي</string>

@@ -20,7 +20,10 @@
     <string name="carlink_settings_cat_car_summary">Fahrerseite und Bedienelemente</string>
     <string name="carlink_settings_cat_general_summary">Aussehen, Hilfe und Version von CarLink</string>
     <string name="carlink_settings_cat_added_features">Zusätzliche Funktionen</string>
-    <string name="carlink_settings_cat_added_features_summary">In dieser Ausgabe hinzugefügte Funktionen, etwa die Navigationsleiste</string>
+    <string name="carlink_settings_cat_added_features_summary">In dieser Ausgabe hinzugefügte Funktionen, etwa die Navigationsleiste und das Ausblenden der Statusleiste in der App</string>
+    <string name="carlink_settings_hide_app_status_bar">Statusleiste in CarLink ausblenden</string>
+    <string name="carlink_settings_hide_app_status_bar_detail">Blendet die Benachrichtigungsleiste nur innerhalb dieser App aus. Ein Wisch von oben zeigt sie kurz. In anderen Apps bleibt die Leiste unverändert.</string>
+    <string name="carlink_settings_experimental_tag">Experimentell</string>
     <string name="carlink_settings_custom">Benutzerdefiniert (unter Erweitert festgelegt)</string>
     <string name="carlink_settings_custom_detail">Genaue Werte werden unter Erweitert anzeigen festgelegt.</string>
     <string name="carlink_settings_applies_next">Gilt ab der nächsten Verbindung</string>

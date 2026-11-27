@@ -66,6 +66,12 @@ data class UnifiedSettings(
     /** Packages ticked in [HideCarStatusBarMode.SELECTED_APPS]. CarLink itself is always included. */
     val hideCarStatusBarPackages: Set<String> = emptySet(),
     val hideCarStatusBar: Boolean = false,
+    /**
+     * Hide the status bar inside CarLink's own UI only (immersive sticky). Off by default;
+     * an explicit stored On or Off is kept. Separate from [hideCarStatusBarMode], which is
+     * the Changan FceSystemUI broadcast hide.
+     */
+    val hideAppStatusBar: Boolean = false,
     /** CarLink's language ([AppLanguage.SUPPORTED]); [AppLanguage.SYSTEM] follows the device. */
     val appLanguage: String = AppLanguage.SYSTEM,
     /** Lite mode for a weak CPU ([LiteMode]), off unless the driver turns it on: fewer frames, never a lower resolution; from the next connection. */
@@ -136,6 +142,7 @@ class UnifiedSettingsStore(context: Context) {
         hideCarStatusBarMode = hideCarStatusBarMode(),
         hideCarStatusBarPackages = hideCarStatusBarPackages(),
         hideCarStatusBar = hideCarStatusBarMode() != HideCarStatusBarMode.OFF,
+        hideAppStatusBar = prefs.getBoolean(KEY_HIDE_APP_STATUS_BAR, false),
         appLanguage = appLanguage(),
         liteMode = enumOr(prefs.getString("lite_mode", null), LiteMode.OFF),
         customSizePercent = prefs.getInt("custom_size_percent", 100),
@@ -202,6 +209,7 @@ class UnifiedSettingsStore(context: Context) {
             .putString(KEY_HIDE_CAR_STATUS_BAR_MODE, settings.hideCarStatusBarMode.name)
             .putString(KEY_HIDE_CAR_STATUS_BAR_PACKAGES, settings.hideCarStatusBarPackages.sorted().joinToString(","))
             .putBoolean(KEY_HIDE_CAR_STATUS_BAR, settings.hideCarStatusBarMode != HideCarStatusBarMode.OFF)
+            .putBoolean(KEY_HIDE_APP_STATUS_BAR, settings.hideAppStatusBar)
             .also { edit -> REMOVED_MARGIN_KEYS.forEach { edit.remove(it) } }
             .putString("app_language", AppLanguage.sanitize(settings.appLanguage))
             .putString("lite_mode", settings.liteMode.name)
@@ -225,6 +233,7 @@ class UnifiedSettingsStore(context: Context) {
         const val KEY_HIDE_CAR_STATUS_BAR = "hide_car_status_bar"
         const val KEY_HIDE_CAR_STATUS_BAR_MODE = "hide_car_status_bar_mode"
         const val KEY_HIDE_CAR_STATUS_BAR_PACKAGES = "hide_car_status_bar_packages"
+        const val KEY_HIDE_APP_STATUS_BAR = "hide_app_status_bar"
         /** Removed Top margin switch and earlier per-edge keys; dropped on load and save. */
         const val KEY_TOP_MARGIN = "top_margin"
         const val KEY_CARS_WITH_TOP_MARGIN = "cars_with_top_margin"

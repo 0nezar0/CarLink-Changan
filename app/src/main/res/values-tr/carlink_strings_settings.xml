@@ -20,7 +20,10 @@
     <string name="carlink_settings_cat_car_summary">Sürüş tarafı ve kontroller</string>
     <string name="carlink_settings_cat_general_summary">CarLink’in görünümü, yardımı ve sürümü</string>
     <string name="carlink_settings_cat_added_features">Ek özellikler</string>
-    <string name="carlink_settings_cat_added_features_summary">Bu sürümde eklenen özellikler, örneğin gezinme çubuğu</string>
+    <string name="carlink_settings_cat_added_features_summary">Bu sürümde eklenen özellikler, örneğin gezinme çubuğu ve uygulamada durum çubuğunu gizleme</string>
+    <string name="carlink_settings_hide_app_status_bar">CarLink’te durum çubuğunu gizle</string>
+    <string name="carlink_settings_hide_app_status_bar_detail">Bildirim çubuğunu yalnızca bu uygulamanın içinde gizler. Yukarıdan bir kaydırma onu kısa süreliğine gösterir. Diğer uygulamalardaki çubuğu gizlemez.</string>
+    <string name="carlink_settings_experimental_tag">Deneysel</string>
     <string name="carlink_settings_custom">Özel (Gelişmiş’te ayarlanır)</string>
     <string name="carlink_settings_custom_detail">Kesin değerler Gelişmişi göster altında ayarlanır.</string>
     <string name="carlink_settings_applies_next">Sonraki bağlantıda uygulanır</string>

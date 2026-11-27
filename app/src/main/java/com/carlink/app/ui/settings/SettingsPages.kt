@@ -76,7 +76,7 @@ internal fun CategoryPage(
             SettingsCategory.CAR -> CarEssentials(ui, actions, openSheet)
             SettingsCategory.GENERAL -> GeneralEssentials(ui, actions, openSheet, versionTaps, onVersionTap)
             SettingsCategory.CHANGAN_CS75 -> ChanganSettingsSection(ui, actions)
-            SettingsCategory.ADDED_FEATURES -> AddedFeaturesSection(ui.carBrand)
+            SettingsCategory.ADDED_FEATURES -> AddedFeaturesSection(ui, actions)
         }
         // CS75 and added-features panes have no Advanced/Lab engine rows.
         if (category != SettingsCategory.CHANGAN_CS75 && category != SettingsCategory.ADDED_FEATURES) {
@@ -379,9 +379,22 @@ internal fun NavigationBarToggleRow(brandKey: Any? = null) {
 }
 
 @Composable
-internal fun AddedFeaturesSection(carBrand: CarBrand?) {
+internal fun HideAppStatusBarToggleRow(ui: SettingsUi, actions: SettingsActions) {
+    SwitchRow(
+        title = stringResource(R.string.carlink_settings_hide_app_status_bar),
+        checked = ui.unified.hideAppStatusBar,
+        onCheckedChange = { on -> actions.update { it.copy(hideAppStatusBar = on) } },
+        description = stringResource(R.string.carlink_settings_hide_app_status_bar_detail),
+        titleBadge = { ExperimentalTag() },
+    )
+}
+
+@Composable
+internal fun AddedFeaturesSection(ui: SettingsUi, actions: SettingsActions) {
     GlassGroup {
-        NavigationBarToggleRow(carBrand)
+        NavigationBarToggleRow(ui.carBrand)
+        GroupDivider()
+        HideAppStatusBarToggleRow(ui, actions)
     }
 }
 

@@ -20,7 +20,10 @@
     <string name="carlink_settings_cat_car_summary">Kormányoldal és kezelőszervek</string>
     <string name="carlink_settings_cat_general_summary">A CarLink megjelenése, súgója és verziója</string>
     <string name="carlink_settings_cat_added_features">További funkciók</string>
-    <string name="carlink_settings_cat_added_features_summary">Az ebben a kiadásban hozzáadott funkciók, például a navigációs sáv</string>
+    <string name="carlink_settings_cat_added_features_summary">Az ebben a kiadásban hozzáadott funkciók, például a navigációs sáv és az állapotsor elrejtése az alkalmazásban</string>
+    <string name="carlink_settings_hide_app_status_bar">Állapotsor elrejtése a CarLinkben</string>
+    <string name="carlink_settings_hide_app_status_bar_detail">Csak ebben az alkalmazásban rejti el az értesítési sávot. Egy felülről indított csúsztatás röviden megjeleníti. Más alkalmazásokban a sáv változatlan marad.</string>
+    <string name="carlink_settings_experimental_tag">Kísérleti</string>
     <string name="carlink_settings_custom">Egyéni (a Haladóban beállítva)</string>
     <string name="carlink_settings_custom_detail">A pontos értékeket a Haladó megjelenítése alatt lehet beállítani.</string>
     <string name="carlink_settings_applies_next">A következő csatlakozáskor érvényes</string>
