@@ -74,7 +74,6 @@ class CarPlayRuntimeConfig(
     val existingWifiPassphrase: String = "",
     /** Interface override for units whose station LAN runs on an interface Android does not report as Wi-Fi, e.g. a USB NIC on eth1. */
     val existingWifiInterface: String? = null,
-    val iphoneHotspotIpv4: Boolean = false,
 ) {
     init {
         require(iphoneDevices.all { it.vendorId == APPLE_VENDOR_ID }) {
