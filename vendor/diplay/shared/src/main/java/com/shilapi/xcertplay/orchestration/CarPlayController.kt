@@ -45,6 +45,7 @@ import com.shilapi.xcertplay.mfi.RemoteMfiAuthenticationClient
 import com.shilapi.xcertplay.mfi.LocalMfiAuthenticationClient
 import com.shilapi.xcertplay.network.CarPlayBonjour
 import com.shilapi.xcertplay.network.CarPlayBonjourEvent
+import com.shilapi.xcertplay.network.WifiStationWatch
 import com.shilapi.xcertplay.network.WirelessAddressFamilyPlan // CarLink
 import com.shilapi.xcertplay.network.CarHotspotIpFamily // CarLink v1.6.6
 import com.shilapi.xcertplay.network.diagnosticSummary
@@ -1577,7 +1578,9 @@ class CarPlayController(
             wirelessAirPlayHandshake.begin(generation)
             // CarLink: Wi-Fi Direct tries the IPv6 link-local endpoint first, and the car hotspot and
             // local-only AP stay on IPv4 whatever family was remembered (WirelessAddressFamilyPlan, #93).
-            val iphoneHotspot = hotspotInfo.backend == WirelessHotspotBackend.EXISTING_WIFI && config.iphoneHotspotIpv4
+            val iphoneHotspot = hotspotInfo.backend == WirelessHotspotBackend.EXISTING_WIFI &&
+                config.existingWifiInterface.isNullOrBlank() &&
+                hotspotInfo.hostAddresses.any(WifiStationWatch::iphoneHotspotRange)
             val familyChoice = WirelessAddressFamilyPlan.choose(
                 hotspotInfo.backend,
                 HotspotAddressPolicy.parseFamily(
@@ -3160,7 +3163,6 @@ class CarPlayController(
                 appContext, config.existingWifiSsid, config.existingWifiPassphrase, ::debugLog,
                 onNetworkChanged = { if (!isStaleWirelessRun(generation)) restartWireless() },
                 preferredInterface = config.existingWifiInterface,
-                ipv4Only = config.iphoneHotspotIpv4,
             )
             // CarLink: after the car hotspot is up, attach with the same ExistingWifiManager
             // path as shared-network (SAME_WIFI). SoftAP is located first; then that
