@@ -143,52 +143,65 @@ internal fun FullLogQrSheet(ui: FullLogQrUi, onRetry: () -> Unit, onReport: () -
     val scheme = MaterialTheme.colorScheme
     val dimens = CarLinkTokens.dimens
     val gap = if (isCar) 20.dp else 14.dp
+    // Every string is read here, before the sheet's dialog window: that window has its own Compose root,
+    // which takes the context of the activity (the gallery's Arabic entries provide theirs out here).
+    val ready = ui as? FullLogQrUi.Ready
+    val preparing = stringResource(R.string.carlink_fulllog_preparing)
+    val body = stringResource(R.string.carlink_fulllog_body)
+    val a11y = stringResource(R.string.carlink_fulllog_qr_a11y)
+    val typed = ready?.let { stringResource(R.string.carlink_fulllog_type, ltr(it.endpoint.typedAddress), ltr(FullLogOnPhone.spacedCode(it.endpoint.code))) }
+    val codeClosed = stringResource(R.string.carlink_fulllog_code_closed)
+    val others = ready?.endpoint?.otherUrls?.takeIf { it.isNotEmpty() }
+        ?.let { urls -> stringResource(R.string.carlink_fulllog_other, urls.joinToString("  ·  ") { ltr(it) }) }
+    val privacy = stringResource(R.string.carlink_fulllog_privacy)
+    val stops = stringResource(R.string.carlink_fulllog_stops)
+    val noNetwork = stringResource(R.string.carlink_fulllog_no_network)
+    val failed = stringResource(R.string.carlink_fulllog_failed)
+    val retry = stringResource(R.string.carlink_fulllog_retry)
+    val report = stringResource(R.string.carlink_report_action)
+    val copy = stringResource(R.string.carlink_diag_log_copy)
+    val done = stringResource(R.string.carlink_report_done)
     CarSheet(stringResource(R.string.carlink_fulllog_title), onDismiss = onDone) {
         BoxWithConstraints(Modifier.fillMaxWidth()) {
             val qr = minOf(maxWidth, if (isCar) 360.dp else 300.dp)
             Column(Modifier.fillMaxWidth()) {
                 when (ui) {
                     FullLogQrUi.Preparing ->
-                        Text(stringResource(R.string.carlink_fulllog_preparing), style = MaterialTheme.typography.titleMedium, color = scheme.onSurface)
+                        Text(preparing, style = MaterialTheme.typography.titleMedium, color = scheme.onSurface)
                     is FullLogQrUi.Ready -> {
                         val e = ui.endpoint
-                        Text(stringResource(R.string.carlink_fulllog_body), style = MaterialTheme.typography.bodyLarge, color = scheme.onSurface,
-                            modifier = Modifier.widthIn(max = 720.dp))
+                        Text(body, style = MaterialTheme.typography.bodyLarge, color = scheme.onSurface, modifier = Modifier.widthIn(max = 720.dp))
                         Spacer(Modifier.height(gap))
-                        QrCode(e.url, qr, stringResource(R.string.carlink_fulllog_qr_a11y), Modifier.align(Alignment.CenterHorizontally))
+                        QrCode(e.url, qr, a11y, Modifier.align(Alignment.CenterHorizontally))
                         Spacer(Modifier.height(10.dp))
                         Text(ltr(e.url), style = MaterialTheme.typography.titleSmall, color = scheme.onSurface,
                             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                         Spacer(Modifier.height(gap))
-                        if (ui.codeEntryOpen) {
-                            Note(R.drawable.carlink_ic_smartphone, stringResource(R.string.carlink_fulllog_type, ltr(e.typedAddress),
-                                ltr(FullLogOnPhone.spacedCode(e.code))))
-                        } else {
-                            Note(R.drawable.carlink_ic_warning, stringResource(R.string.carlink_fulllog_code_closed))
-                        }
-                        if (e.otherUrls.isNotEmpty()) {
+                        if (ui.codeEntryOpen && typed != null) Note(R.drawable.carlink_ic_smartphone, typed)
+                        else Note(R.drawable.carlink_ic_warning, codeClosed)
+                        if (others != null) {
                             Spacer(Modifier.height(10.dp))
-                            Note(R.drawable.carlink_ic_wifi, stringResource(R.string.carlink_fulllog_other, e.otherUrls.joinToString("  ·  ") { ltr(it) }))
+                            Note(R.drawable.carlink_ic_wifi, others)
                         }
                         Spacer(Modifier.height(10.dp))
-                        Note(R.drawable.carlink_ic_lock, stringResource(R.string.carlink_fulllog_privacy))
+                        Note(R.drawable.carlink_ic_lock, privacy)
                         Spacer(Modifier.height(10.dp))
-                        Note(R.drawable.carlink_ic_info, stringResource(R.string.carlink_fulllog_stops))
+                        Note(R.drawable.carlink_ic_info, stops)
                     }
-                    FullLogQrUi.NoNetwork -> Note(R.drawable.carlink_ic_wifi_off, stringResource(R.string.carlink_fulllog_no_network))
-                    FullLogQrUi.Failed -> Note(R.drawable.carlink_ic_warning, stringResource(R.string.carlink_fulllog_failed))
+                    FullLogQrUi.NoNetwork -> Note(R.drawable.carlink_ic_wifi_off, noNetwork)
+                    FullLogQrUi.Failed -> Note(R.drawable.carlink_ic_warning, failed)
                 }
                 Spacer(Modifier.height(gap))
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(dimens.targetGap), verticalArrangement = Arrangement.spacedBy(dimens.targetGap)) {
                     when (ui) {
                         FullLogQrUi.NoNetwork, FullLogQrUi.Failed -> {
-                            IonButton(stringResource(R.string.carlink_fulllog_retry), onRetry, icon = R.drawable.carlink_ic_refresh)
-                            GlassButton(stringResource(R.string.carlink_report_action), onReport, icon = R.drawable.carlink_ic_qr_code_2)
-                            GlassButton(stringResource(R.string.carlink_diag_log_copy), onCopyLog, icon = R.drawable.carlink_ic_content_copy)
+                            IonButton(retry, onRetry, icon = R.drawable.carlink_ic_refresh)
+                            GlassButton(report, onReport, icon = R.drawable.carlink_ic_qr_code_2)
+                            GlassButton(copy, onCopyLog, icon = R.drawable.carlink_ic_content_copy)
                         }
                         else -> {
-                            IonButton(stringResource(R.string.carlink_report_done), onDone, icon = R.drawable.carlink_ic_check)
-                            GlassButton(stringResource(R.string.carlink_diag_log_copy), onCopyLog, icon = R.drawable.carlink_ic_content_copy)
+                            IonButton(done, onDone, icon = R.drawable.carlink_ic_check)
+                            GlassButton(copy, onCopyLog, icon = R.drawable.carlink_ic_content_copy)
                         }
                     }
                 }
