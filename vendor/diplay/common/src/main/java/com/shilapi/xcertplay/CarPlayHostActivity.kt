@@ -233,7 +233,6 @@ open class CarPlayHostActivity : ComponentActivity() {
         manualHotspotInterface = manualHotspotInterface,
         existingWifiSsid = existingWifiSsid,
         existingWifiPassphrase = existingWifiPassphrase,
-        iphoneHotspotIpv4 = AirPlayPersistence.loadIphoneHotspotIpv4(this),
         existingWifiInterface = existingWifiInterface.trim().takeIf { it.isNotEmpty() },
         locationReportingEnabled = locationReportingEnabled,
         availableCurrentMilliAmps = AirPlayPersistence.loadUsbChargingCurrent(this).milliAmps,
