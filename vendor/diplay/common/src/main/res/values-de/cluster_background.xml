@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_background_motion">Bewegter Hintergrund</string>
+    <string name="settings_cluster_background_motion_description">Standardmäßig aus. Aktiviert eine langsame Hintergrundbewegung, während Musik läuft. Titelwechsel blenden auch bei „Aus“ weich über.</string>
+</resources>

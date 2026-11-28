@@ -1048,4 +1048,26 @@ Az akadálymentesítést kézzel is bekapcsolhatja a rendszerbeállításokban, 
     <string name="cluster_projection_shape_half">Fél képernyő</string>
     <string name="cluster_projection_shape_full">Teljes képernyő</string>
     <string name="cluster_projection_shape_description">A fél képernyő megtartja a sebesség- és állapotkijelzéseket, amelyeket a műszeregység általában a térkép mellett mutat; a teljes képernyő hagyja, hogy a térkép kitöltse a műszeregységet. A DiPlay akkor állítja a formát, amikor a CarPlay-térkép megjelenik, amely egyébként felülírja az autóban választott formát. A fejegységen hálózati ADB szükséges.</string>
+    <string name="settings_usb_charging_medium">Közepes (1 A)</string>
+    <string name="settings_car_brand_title">Autómárka-jelvény</string>
+    <string name="settings_car_brand_summary">Kiválasztja a BYD-sorozat jelvényét, amelyet a CarPlay az alkalmazáslistájában mutat. A név csak akkor frissül, ha még az alapértelmezett vagy egy jelvénynév. Jelvény választása felülírja az egyéni képet.</string>
+    <string name="settings_car_brand_default">Alapértelmezett (BYD)</string>
+    <string name="settings_car_brand_wangchao">Dinasztia</string>
+    <string name="settings_car_brand_haiyang">Óceán</string>
+    <string name="settings_car_brand_fangchengbao">Fang Cheng Bao</string>
+    <string name="settings_car_brand_denza">Denza</string>
+    <string name="settings_car_brand_yangwang">Yangwang</string>
+    <string name="settings_car_brand_linghui">Linghui</string>
+    <string name="settings_car_brand_reset_image">Visszaállítás a márkajelvényre</string>
+    <string name="settings_car_brand_reset">Alapértelmezett jelvény és név visszaállítása</string>
+    <string name="settings_wheel_long_press_seek">Hosszú nyomás a következő/előző gombon a tekerésért (kísérleti)</string>
+    <string name="settings_wheel_long_press_seek_description">Olyan fejegységeken, amelyek kormánya saját hosszú nyomásos billentyűket küld a következő és előző számhoz (BYD DiLink 3), a hosszú nyomás körülbelül 2,5 másodpercig előre- vagy visszateker, ahelyett hogy nem csinálna semmit. iPhone-nal még nem tesztelték. A következő csatlakozáskor lép életbe.</string>
+    <string name="settings_call_attenuation">Hívás hangerőszintje</string>
+    <string name="settings_call_attenuation_description">Csökkenti a hívó hangját a CarPlay-hívásokban, az autó hívási hangerejét nem változtatva. Azonnal érvénybe lép, bármelyik kimenetet használja is a hívás. Hagyja 0 dB-en, hacsak a hívások nem torznak vagy nem élesek. Egy BYD Han (DiLink 3) autón egy hallgatási tesztben a hívások -12 és -16 dB körül szóltak tisztán.</string>
+    <string name="settings_car_hotspot_scan_pause_description">Egyes fejegységek az autó hotspotja mellett bekapcsolva tartják saját Wi-Fi-kliensüket, és rendszeresen hálózatokat keresnek; minden keresés rövid időre megszakítja a zenét. Bekapcsolva a DiPlay szünetelteti ezt a keresést, amíg a CarPlay fut, és csak ilyen egységeken. Az autó ilyenkor a CarPlay végéig magától nem csatlakozik ismert hálózathoz sem, például a telefon hotspotjához. Kapcsolja ki, hogy az autó automatikusan csatlakozhasson. A következő csatlakozáskor lép életbe.</string>
+    <string name="settings_fit_screen_shape">Igazítás a kamerakivágáshoz és a lekerekített sarkokhoz</string>
+    <string name="settings_fit_screen_shape_description">Fejegységként használt telefonhoz vagy táblagéphez. A CarPlay gombjait és dokkját távol tartja a kamerakivágástól és a lekerekített sarkoktól; a térképek továbbra is kitöltik a képernyőt. A munkamenet menüjében beállított biztonságos terület élvez elsőbbséget. A következő csatlakozáskor lép életbe.</string>
+    <string name="settings_safe_area_fitted_summary">Biztonságos terület: a kivágáshoz és a sarkokhoz igazítva, %1$d x %2$d, (%3$d, %4$d) pozícióban, %5$d x %6$d méretben</string>
+    <string name="settings_wifi_direct_unavailable">Nem érhető el</string>
+    <string name="settings_wifi_direct_unsupported_help">A Kapcsolat beállításában válassza a Beépített autó-hotspot vagy a Meglévő Wi-Fi / ugyanaz a LAN lehetőséget, majd próbálja újra.</string>
 </resources>

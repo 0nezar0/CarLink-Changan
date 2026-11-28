@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_music_border">Rand um das Albumcover anzeigen</string>
+    <string name="settings_cluster_music_border_description">Zeichnet einen dünnen Rand um das Albumcover auf der Kombiinstrument-Karte.</string>
+</resources>

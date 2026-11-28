@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_player_mode">Ansicht</string>
+    <string name="settings_cluster_player_map">Karte</string>
+    <string name="settings_cluster_player">Player (experimentell)</string>
+    <string name="settings_cluster_player_description">Schaltet sofort zwischen Karte und Player um und verwendet die gespeicherte Form der Kombiinstrument-Karte. Der Player pausiert die Karte und ihre Kopien in der Bildschirmmitte; die Abbiegehinweise des Kombiinstruments sind im Player nicht verfügbar. Die nativen Anzeigen bleiben unter der Kontrolle des Fahrzeugs.</string>
+    <string name="settings_cluster_player_speed">Geschwindigkeit im Player anzeigen</string>
+    <string name="settings_cluster_player_speed_description">Fahrzeuggeschwindigkeit in km/h, ohne Kasten. Erfordert das Auslesen der Fahrzeugdaten über ADB; zeigt — ohne aktuelle Daten.</string>
+    <string name="settings_cluster_player_idle">Es wird nichts abgespielt</string>
+    <string name="settings_cluster_player_vehicle">Fahrzeuginformationen im Player anzeigen</string>
+    <string name="settings_cluster_player_vehicle_description">Gang, Akkustand in Prozent und elektrische Reichweite, über ADB ausgelesen. Nicht verfügbare oder veraltete Werte zeigen —. Native Warnleuchten und Hinweise sind weiterhin erforderlich.</string>
+    <string name="cluster_player_vehicle_readout">Gang %1$s   ·   Akku %2$s   ·   Reichweite %3$s</string>
+    <string name="settings_cluster_player_fit_visible">Player zwischen den nativen Leisten einpassen</string>
+    <string name="settings_cluster_player_fit_visible_description">Vorübergehendes Layout für Kombiinstrumente mit oberen und unteren Fahrzeugleisten. Hält Cover, Titel, Geschwindigkeit und Fortschritt im sichtbaren Bereich; der Hintergrund füllt weiterhin die Projektion. Wird sofort angewendet und verdeckt keine nativen Anzeigen.</string>
+</resources>

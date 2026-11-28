@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_speedometer_artwork">Albumcover-Verlauf als Tachometer-Hintergrund</string>
+    <string name="settings_cluster_speedometer_artwork_description">Eigene Option. Ersetzt den einfarbigen Hintergrund, solange sie aktiviert ist, und behält Größe und Deckkraft bei. Aus stellt Ihre einfarbige Albumfarbe oder Schwarz wieder her. Bewegung ist optional.</string>
+    <string name="settings_cluster_speedometer_artwork_motion">Tachometer-Hintergrund bewegen</string>
+    <string name="settings_cluster_speedometer_artwork_motion_description">Standardmäßig aus. Aktiviert eine langsame Hintergrundbewegung, während Musik läuft. Titelwechsel blenden auch bei „Aus“ weich über.</string>
+</resources>

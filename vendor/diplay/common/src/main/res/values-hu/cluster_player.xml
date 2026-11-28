@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_player_mode">Nézet</string>
+    <string name="settings_cluster_player_map">Térkép</string>
+    <string name="settings_cluster_player">Lejátszó (kísérleti)</string>
+    <string name="settings_cluster_player_description">Azonnal vált a térkép és a lejátszó között, a mentett műszeregység-térkép alakját használva. A lejátszó szünetelteti a térképet és a képernyő közepén lévő másolatait; a műszeregység kanyarértesítései a lejátszóban nem érhetők el. A natív jelzéseket továbbra is az autó vezérli.</string>
+    <string name="settings_cluster_player_speed">Sebesség megjelenítése a lejátszóban</string>
+    <string name="settings_cluster_player_speed_description">Járműsebesség km/h-ban, keret nélkül. ADB-n keresztüli járműadat-olvasást igényel; friss adatok nélkül — jelenik meg.</string>
+    <string name="settings_cluster_player_idle">Nem szól semmi</string>
+    <string name="settings_cluster_player_vehicle">Járműinformációk megjelenítése a lejátszóban</string>
+    <string name="settings_cluster_player_vehicle_description">Sebességfokozat, akkumulátor-százalék és elektromos hatótávolság, ADB-n keresztül olvasva. A nem elérhető vagy elavult értékek helyén — jelenik meg. A natív figyelmeztető lámpák és jelzések továbbra is szükségesek.</string>
+    <string name="cluster_player_vehicle_readout">Fokozat %1$s   ·   Akku %2$s   ·   Hatótáv %3$s</string>
+    <string name="settings_cluster_player_fit_visible">Lejátszó illesztése a natív sávok közé</string>
+    <string name="settings_cluster_player_fit_visible_description">Ideiglenes elrendezés olyan műszeregységekhez, amelyeken felül és alul jármű-sáv van. A borítót, a számot, a sebességet és az előrehaladást a látható területen tartja; a háttér továbbra is kitölti a vetítést. Azonnal érvénybe lép, és nem takar el natív jelzéseket.</string>
+</resources>

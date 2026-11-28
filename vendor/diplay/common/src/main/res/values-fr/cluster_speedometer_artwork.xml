@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_speedometer_artwork">Dégradé de la pochette pour l’arrière-plan du compteur</string>
+    <string name="settings_cluster_speedometer_artwork_description">Option distincte. Remplace l’arrière-plan uni tant qu’elle est activée, en conservant la taille et l’opacité. Désactivée, elle rétablit la couleur d’album unie ou le noir. Le mouvement est facultatif.</string>
+    <string name="settings_cluster_speedometer_artwork_motion">Animer l’arrière-plan du compteur</string>
+    <string name="settings_cluster_speedometer_artwork_motion_description">Désactivé par défaut. Active un lent mouvement de l’arrière-plan pendant la lecture de musique. Les changements de piste restent en fondu même lorsque l’option est désactivée.</string>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_background_motion">Arrière-plan animé</string>
+    <string name="settings_cluster_background_motion_description">Désactivé par défaut. Active un lent mouvement de l’arrière-plan pendant la lecture de musique. Les changements de piste restent en fondu même lorsque l’option est désactivée.</string>
+</resources>

@@ -1003,4 +1003,26 @@
     <string name="video_cannot_load">Este vídeo deixou de carregar no ecrã do carro. Verifique a ligação à internet da unidade principal e volte a reproduzi-lo.</string>
     <string name="video_cannot_play_here">Este vídeo não pode ser reproduzido no ecrã do carro: a unidade principal não consegue ler ou descodificar o respetivo formato.</string>
     <string name="turn_card_overlay_note">O DiPlay desenha este cartão no mapa. Mova-o em passos de 2%. O cartão de vidro do iOS não pode ser movido sozinho. As alterações aplicam-se sem voltar a ligar. O cartão personalizado permanece visível tanto em frente como nas curvas.</string>
+    <string name="settings_usb_charging_medium">Médio (1 A)</string>
+    <string name="settings_car_brand_title">Emblema da marca do carro</string>
+    <string name="settings_car_brand_summary">Escolhe o emblema da série BYD que o CarPlay mostra na lista de apps. O nome só é atualizado quando ainda é o padrão ou o nome de um emblema. Escolher um emblema substitui uma imagem personalizada.</string>
+    <string name="settings_car_brand_default">Padrão (BYD)</string>
+    <string name="settings_car_brand_wangchao">Dinastia</string>
+    <string name="settings_car_brand_haiyang">Oceano</string>
+    <string name="settings_car_brand_fangchengbao">Fang Cheng Bao</string>
+    <string name="settings_car_brand_denza">Denza</string>
+    <string name="settings_car_brand_yangwang">Yangwang</string>
+    <string name="settings_car_brand_linghui">Linghui</string>
+    <string name="settings_car_brand_reset_image">Voltar ao emblema da marca</string>
+    <string name="settings_car_brand_reset">Restaurar o emblema e o nome padrão</string>
+    <string name="settings_wheel_long_press_seek">Toque longo em próxima/anterior para avançar/retroceder (experimental)</string>
+    <string name="settings_wheel_long_press_seek_description">Em centrais cujo volante envia teclas próprias de toque longo para próxima e anterior (BYD DiLink 3), um toque longo avança ou retrocede por cerca de 2,5 segundos em vez de não fazer nada. Ainda não testado com um iPhone. Vale a partir da próxima ligação.</string>
+    <string name="settings_call_attenuation">Nível da voz nas chamadas</string>
+    <string name="settings_call_attenuation_description">Reduz a voz de quem liga nas chamadas do CarPlay sem mudar o volume de chamada do carro. Aplica-se imediatamente, seja qual for a saída usada pela chamada. Deixe em 0 dB, a menos que suas chamadas soem distorcidas ou ásperas. Em um BYD Han (DiLink 3), as chamadas soaram limpas em cerca de -12 a -16 dB num teste de audição.</string>
+    <string name="settings_car_hotspot_scan_pause_description">Algumas centrais mantêm o próprio cliente Wi-Fi ligado junto ao hotspot do carro e procuram redes regularmente; cada busca corta a música por instantes. Com isto ativado, o DiPlay pausa essa busca enquanto o CarPlay funciona, apenas nessas centrais. O carro também não entra sozinho numa rede conhecida, como o hotspot do seu telefone, até o CarPlay terminar. Desative para o carro entrar automaticamente. Vale a partir da próxima ligação.</string>
+    <string name="settings_fit_screen_shape">Ajustar ao entalhe e aos cantos arredondados</string>
+    <string name="settings_fit_screen_shape_description">Para um telefone ou tablet usado como central. Mantém os botões e o dock do CarPlay longe do entalhe da câmera e dos cantos arredondados; os mapas continuam preenchendo a tela. Uma área segura definida no menu da sessão tem prioridade. Vale a partir da próxima ligação.</string>
+    <string name="settings_safe_area_fitted_summary">Área segura: ajustada ao entalhe e aos cantos, %1$d x %2$d em (%3$d, %4$d) em %5$d x %6$d</string>
+    <string name="settings_wifi_direct_unavailable">Indisponível</string>
+    <string name="settings_wifi_direct_unsupported_help">Escolha Hotspot interno do carro ou Wi-Fi existente / Mesma LAN na Configuração de ligação e tente de novo.</string>
 </resources>

@@ -3,9 +3,8 @@
 # Manual only (workflow_dispatch): nothing runs on push, tag or pull request. No secrets are used.
 # Test reports go into the artifact "unit-test-reports", which expires after 1 day.
 #
-# Pre-existing failures in vendor/diplay SettingsTranslationsTest (CarLink's extra engine locales,
-# values-de/fr/hu/ms/pt, miss keys) are ignored by the final check, whatever the locale. Any other
-# failure fails the job, and so does a module that produced no test results (it did not compile).
+# Every failure fails the job (translation tests included: a locale missing a string fails
+# SettingsTranslationsTest), and so does a module that produced no test results (it did not compile).
 name: Unit tests
 
 on:
@@ -68,7 +67,6 @@ jobs:
           import os, sys, glob
           import xml.etree.ElementTree as ET
 
-          known = []
           unexpected = []
           suites = 0
           tests = failures = errors = skipped = 0
@@ -93,16 +91,9 @@ jobs:
                   name = case.get("name") or ""
                   message = (bad.get("message") or "") + "\n" + (bad.text or "")
                   label = f"{cls}.{name}"
-                  if cls.endswith("SettingsTranslationsTest"):
-                      known.append(label)
-                  else:
-                      unexpected.append(f"{label}: {(bad.get('message') or (bad.text or '')).strip().splitlines()[:1] or ['(no message)']}")
+                  unexpected.append(f"{label}: {(bad.get('message') or (bad.text or '')).strip().splitlines()[:1] or ['(no message)']}")
 
           print(f"suites={suites} tests={tests} failures={failures} errors={errors} skipped={skipped}")
-          if known:
-              print("known pre-existing failures (ignored):")
-              for item in known:
-                  print(f"  - {item}")
           if unexpected:
               print("unexpected failures:")
               for item in unexpected:
@@ -122,8 +113,8 @@ jobs:
           if suites == 0 or tests == 0:
               print("no test reports found; the test run did not produce results")
               sys.exit(1)
-          if os.environ.get("GRADLE_OUTCOME") == "failure" and not known:
+          if os.environ.get("GRADLE_OUTCOME") == "failure":
               print("Gradle failed without recorded test failures")
               sys.exit(1)
-          print("unit tests passed (known SettingsTranslationsTest locale failures ignored)" if known else "unit tests passed")
+          print(f"unit tests passed: {tests} tests, 0 failures, 0 errors")
           PY

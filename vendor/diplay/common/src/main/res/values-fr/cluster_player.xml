@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_player_mode">Vue</string>
+    <string name="settings_cluster_player_map">Carte</string>
+    <string name="settings_cluster_player">Lecteur (expérimental)</string>
+    <string name="settings_cluster_player_description">Bascule instantanément entre la carte et le lecteur, en utilisant la forme enregistrée de la carte du combiné d’instruments. Le lecteur met en pause la carte et ses copies au centre de l’écran ; le guidage pas à pas du combiné n’est pas disponible dans le lecteur. Les indicateurs natifs restent contrôlés par la voiture.</string>
+    <string name="settings_cluster_player_speed">Afficher la vitesse dans le lecteur</string>
+    <string name="settings_cluster_player_speed_description">Vitesse du véhicule en km/h, sans cadre. Nécessite la lecture des données du véhicule via ADB ; affiche — sans données récentes.</string>
+    <string name="settings_cluster_player_idle">Aucune lecture en cours</string>
+    <string name="settings_cluster_player_vehicle">Afficher les informations du véhicule dans le lecteur</string>
+    <string name="settings_cluster_player_vehicle_description">Rapport engagé, pourcentage de batterie et autonomie électrique, lus via ADB. Les valeurs indisponibles ou périmées affichent —. Les voyants et alertes natifs restent indispensables.</string>
+    <string name="cluster_player_vehicle_readout">Rapport %1$s   ·   Batterie %2$s   ·   Autonomie %3$s</string>
+    <string name="settings_cluster_player_fit_visible">Ajuster le lecteur entre les bandes natives</string>
+    <string name="settings_cluster_player_fit_visible_description">Disposition temporaire pour les combinés avec des bandes véhicule en haut et en bas. Garde la pochette, le titre, la vitesse et la progression dans la zone visible ; l’arrière-plan remplit toujours la projection. S’applique immédiatement et ne masque pas les indicateurs natifs.</string>
+</resources>

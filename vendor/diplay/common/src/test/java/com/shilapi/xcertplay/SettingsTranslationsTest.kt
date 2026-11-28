@@ -24,16 +24,21 @@ class SettingsTranslationsTest {
     }
 
     // AGENTS.md ("Adding or moving a setting") requires an experimental title to carry
-    // " (experimental)" in English and the locale's own form in every translation. The ten
+    // " (experimental)" in English and the locale's own form in every translation. The
     // forms are listed there and mirrored by the table below. No locale uses a leading marker,
     // so a translated title must END with its form; the single non-title string (a description
     // with "(experimental)" mid-sentence) only has to contain it.
     private val experimentalSuffix = mapOf(
         "values-ar" to "(تجريبي)",
+        "values-de" to "(experimentell)", // CarLink
         "values-es" to "(experimental)",
+        "values-fr" to "(expérimental)", // CarLink
+        "values-hu" to "(kísérleti)", // CarLink
         "values-it" to "(sperimentale)",
         "values-ja" to "（実験的機能）",
         "values-ko" to "(실험 기능)",
+        "values-ms" to "(uji kaji)", // CarLink
+        "values-pt" to "(experimental)", // CarLink
         "values-ru" to "(экспериментально)",
         "values-tr" to "(deneysel)",
         "values-uk" to "(експериментально)",

@@ -93,9 +93,9 @@ adb shell appops set %1$s ACTIVATE_VPN allow</string>
     <string name="video_cannot_play_here">Video ini tidak dapat dimainkan pada skrin kereta: unit kepala tidak dapat membaca atau menyahkod formatnya.</string>
     <string name="settings_navigation_prompt_audio_focus">Gesaan navigasi meminta fokus audio</string>
     <string name="settings_navigation_prompt_audio_focus_description">Semasa setiap gesaan navigasi CarPlay, DiPlay meminta fokus audio sementara yang membolehkan bunyi lain merendah, dan melepaskannya selepas gesaan. Cuba ini jika gesaan senyap sehingga muzik dimainkan, atau jika muzik patut merendah semasa gesaan. Audio unit kepala sendiri mungkin merendah atau dijeda semasa gesaan. Digunakan pada sambungan CarPlay seterusnya.</string>
-    <string name="settings_carplay_same_task">Kekalkan CarPlay dalam kad pelancar (eksperimental)</string>
+    <string name="settings_carplay_same_task">Kekalkan CarPlay dalam kad pelancar (uji kaji)</string>
     <string name="settings_carplay_same_task_description">Untuk pelancar yang menunjukkan DiPlay dalam kad atau tetingkap gambar-dalam-gambar, seperti desktop DiYou BYD. CarPlay dibuka dalam tetingkap DiPlay sendiri, seperti dalam 0.2.11 dan sebelumnya, bukan tetingkap skrin penuh berasingan. Digunakan pada kali berikutnya CarPlay dibuka, tanpa memutuskan sambungan.</string>
-    <string name="settings_call_at_call_rate">Panggilan pada kadar panggilan sendiri (eksperimental)</string>
+    <string name="settings_call_at_call_rate">Panggilan pada kadar panggilan sendiri (uji kaji)</string>
     <string name="settings_call_at_call_rate_description">Tawarkan panggilan sebagai PCM pada kadar panggilan sendiri (8, 16, 24 atau 32 kHz) bukan Opus 48 kHz, seperti penerima CarPlay kilang. Berkuat kuasa pada sambungan seterusnya. Jika panggilan tiada bunyi, matikan ini.</string>
     <string name="usb_auto_confirm_title">Sahkan kebenaran USB secara automatik</string>
     <string name="usb_auto_confirm_subtitle">Menerima secara automatik gesaan kebenaran USB Android apabila iPhone disambungkan melalui kabel (memerlukan Perkhidmatan Kebolehcapaian)</string>
@@ -133,7 +133,7 @@ Anda boleh menghidupkan Kebolehcapaian secara manual dalam tetapan sistem, atau 
     <string name="btn_open_overlay_setting">Buka Tetapan Tindihan Sistem</string>
     <string name="manual_grant_cmd_hint">Atau jalankan perintah ADB ini dari komputer anda:</string>
     <string name="adb_cluster_activity_label">Peta kluster</string>
-    <string name="adb_cluster_activity_mode">Video kluster DiLink 4 melalui ADB (eksperimental)</string>
+    <string name="adb_cluster_activity_mode">Video kluster DiLink 4 melalui ADB (uji kaji)</string>
     <string name="adb_cluster_activity_description">Lancarkan peta terus pada paparan kluster yang disahkan melalui ADB dalaman. Benarkan ADB, kemudian sambungkan semula iPhone.</string>
     <string name="adb_cluster_authorize">Benarkan ADB / cuba semula penghalaan kluster</string>
     <string name="adb_cluster_open">Cuba semula peta kluster</string>
@@ -1050,4 +1050,26 @@ Anda boleh menghidupkan Kebolehcapaian secara manual dalam tetapan sistem, atau 
     <string name="widget_distance_km_decimal">%1$.1f km</string>
     <string name="widget_distance_meters">%1$d m</string>
     <string name="widget_minutes">%1$d min</string>
+    <string name="settings_usb_charging_medium">Sederhana (1 A)</string>
+    <string name="settings_car_brand_title">Lencana jenama kereta</string>
+    <string name="settings_car_brand_summary">Memilih lencana siri BYD yang dipaparkan CarPlay dalam senarai aplikasinya. Nama hanya dikemas kini apabila ia masih lalai atau nama lencana. Memilih lencana menggantikan imej tersuai.</string>
+    <string name="settings_car_brand_default">Lalai (BYD)</string>
+    <string name="settings_car_brand_wangchao">Dinasti</string>
+    <string name="settings_car_brand_haiyang">Lautan</string>
+    <string name="settings_car_brand_fangchengbao">Fang Cheng Bao</string>
+    <string name="settings_car_brand_denza">Denza</string>
+    <string name="settings_car_brand_yangwang">Yangwang</string>
+    <string name="settings_car_brand_linghui">Linghui</string>
+    <string name="settings_car_brand_reset_image">Tetapkan semula kepada lencana jenama</string>
+    <string name="settings_car_brand_reset">Pulihkan lencana dan nama lalai</string>
+    <string name="settings_wheel_long_press_seek">Tekan lama seterusnya/sebelumnya untuk mencari (uji kaji)</string>
+    <string name="settings_wheel_long_press_seek_description">Pada unit kepala yang stereng kenderaannya menghantar kekunci tekan lama sendiri untuk seterusnya dan sebelumnya (BYD DiLink 3), tekan lama mara atau mundur laju selama kira-kira 2.5 saat dan bukannya tidak berbuat apa-apa. Belum diuji dengan iPhone. Berkuat kuasa pada sambungan seterusnya.</string>
+    <string name="settings_call_attenuation">Tahap suara panggilan</string>
+    <string name="settings_call_attenuation_description">Merendahkan suara pemanggil dalam panggilan CarPlay tanpa mengubah kelantangan panggilan kereta. Digunakan serta-merta, apa pun output yang digunakan panggilan. Biarkan pada 0 dB melainkan panggilan anda kedengaran herot atau kasar. Pada sebuah BYD Han (DiLink 3), panggilan kedengaran jelas pada kira-kira -12 hingga -16 dB dalam ujian mendengar.</string>
+    <string name="settings_car_hotspot_scan_pause_description">Sesetengah unit kepala membiarkan klien Wi-Fi sendiri hidup di samping hotspot kereta dan kerap mencari rangkaian; setiap carian memotong muzik seketika. Apabila dihidupkan, DiPlay menjeda carian itu semasa CarPlay berjalan, hanya pada unit sedemikian. Kereta juga tidak menyertai rangkaian yang dikenali, seperti hotspot telefon anda, dengan sendirinya sehingga CarPlay tamat. Matikan untuk membenarkan kereta menyertai secara automatik. Berkuat kuasa pada sambungan seterusnya.</string>
+    <string name="settings_fit_screen_shape">Sesuaikan di sekeliling takuk dan sudut bulat</string>
+    <string name="settings_fit_screen_shape_description">Untuk telefon atau tablet yang digunakan sebagai unit kepala. Memastikan butang dan dok CarPlay jauh daripada takuk kamera dan sudut bulat; peta masih memenuhi skrin. Kawasan selamat yang ditetapkan dalam menu sesi diutamakan. Berkuat kuasa pada sambungan seterusnya.</string>
+    <string name="settings_safe_area_fitted_summary">Kawasan selamat: disesuaikan dengan takuk dan sudut, %1$d x %2$d pada (%3$d, %4$d) dalam %5$d x %6$d</string>
+    <string name="settings_wifi_direct_unavailable">Tidak tersedia</string>
+    <string name="settings_wifi_direct_unsupported_help">Pilih Hotspot kereta terpasang atau Wi-Fi sedia ada / LAN yang sama dalam Persediaan sambungan, kemudian cuba lagi.</string>
 </resources>

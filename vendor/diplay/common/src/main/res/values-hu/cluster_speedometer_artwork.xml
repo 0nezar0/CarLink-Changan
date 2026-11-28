@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_speedometer_artwork">Albumborító-színátmenet a sebességmérő hátteréhez</string>
+    <string name="settings_cluster_speedometer_artwork_description">Külön, önállóan bekapcsolható. Bekapcsolva lecseréli az egyszínű hátteret, a méretet és az átlátszatlanságot megtartva. Kikapcsolva visszaáll az egyszínű albumszín vagy a fekete. A mozgás választható.</string>
+    <string name="settings_cluster_speedometer_artwork_motion">Sebességmérő hátterének mozgatása</string>
+    <string name="settings_cluster_speedometer_artwork_motion_description">Alapértelmezetten ki. Lassú háttérmozgást kapcsol be zenelejátszás közben. A számváltások kikapcsolva is áttűnnek.</string>
+</resources>

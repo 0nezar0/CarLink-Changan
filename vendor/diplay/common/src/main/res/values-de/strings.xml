@@ -1048,4 +1048,26 @@ Sie können die Bedienungshilfen manuell in den Systemeinstellungen aktivieren o
     <string name="cluster_projection_shape_half">Halber Bildschirm</string>
     <string name="cluster_projection_shape_full">Vollbild</string>
     <string name="cluster_projection_shape_description">Halber Bildschirm behält die Geschwindigkeits- und Statusanzeigen, die das Kombiinstrument normalerweise neben der Karte zeigt; Vollbild lässt die Karte das Kombiinstrument ausfüllen. DiPlay setzt die Form, sobald die CarPlay-Karte erscheint, die sonst die im Auto gewählte Form überschreibt. Benötigt ADB über das Netzwerk auf dem Hauptgerät.</string>
+    <string name="settings_usb_charging_medium">Mittel (1 A)</string>
+    <string name="settings_car_brand_title">Auto-Markenabzeichen</string>
+    <string name="settings_car_brand_summary">Wählt das Abzeichen der BYD-Serie, das CarPlay in seiner App-Liste zeigt. Der Name wird nur aktualisiert, wenn er noch dem Standard oder einem Abzeichennamen entspricht. Die Wahl eines Abzeichens ersetzt ein eigenes Bild.</string>
+    <string name="settings_car_brand_default">Standard (BYD)</string>
+    <string name="settings_car_brand_wangchao">Dynastie</string>
+    <string name="settings_car_brand_haiyang">Ozean</string>
+    <string name="settings_car_brand_fangchengbao">Fang Cheng Bao</string>
+    <string name="settings_car_brand_denza">Denza</string>
+    <string name="settings_car_brand_yangwang">Yangwang</string>
+    <string name="settings_car_brand_linghui">Linghui</string>
+    <string name="settings_car_brand_reset_image">Auf Markenabzeichen zurücksetzen</string>
+    <string name="settings_car_brand_reset">Standardabzeichen und -namen wiederherstellen</string>
+    <string name="settings_wheel_long_press_seek">Langer Druck auf Weiter/Zurück zum Spulen (experimentell)</string>
+    <string name="settings_wheel_long_press_seek_description">Bei Hauptgeräten, deren Lenkrad eigene Langdruck-Tasten für Weiter und Zurück sendet (BYD DiLink 3), spult ein langer Druck etwa 2,5 Sekunden vor oder zurück, statt nichts zu tun. Mit einem iPhone noch nicht getestet. Wirkt ab der nächsten Verbindung.</string>
+    <string name="settings_call_attenuation">Stimmlautstärke bei Anrufen</string>
+    <string name="settings_call_attenuation_description">Senkt die Stimme des Anrufers bei CarPlay-Anrufen, ohne die Anruflautstärke des Autos zu ändern. Wirkt sofort, über welchen Ausgang der Anruf auch läuft. Lassen Sie den Wert bei 0 dB, außer Ihre Anrufe klingen verzerrt oder schrill. Bei einem BYD Han (DiLink 3) klangen Anrufe in einem Hörtest bei etwa -12 bis -16 dB sauber.</string>
+    <string name="settings_car_hotspot_scan_pause_description">Manche Hauptgeräte lassen ihren eigenen WLAN-Client neben dem Auto-Hotspot eingeschaltet und suchen regelmäßig nach Netzwerken; jede Suche unterbricht kurz die Musik. Ist dies aktiviert, pausiert DiPlay diese Suche, solange CarPlay läuft, und nur bei solchen Geräten. Das Auto tritt dann auch keinem bekannten Netzwerk, etwa dem Hotspot Ihres Telefons, von selbst bei, bis CarPlay endet. Schalten Sie es aus, damit das Auto automatisch beitreten kann. Wirkt ab der nächsten Verbindung.</string>
+    <string name="settings_fit_screen_shape">An Notch und abgerundete Ecken anpassen</string>
+    <string name="settings_fit_screen_shape_description">Für ein Telefon oder Tablet als Hauptgerät. Hält die Tasten und das Dock von CarPlay frei von der Kamera-Aussparung und den abgerundeten Ecken; Karten füllen weiterhin den Bildschirm. Ein im Menü der Sitzung festgelegter sicherer Bereich hat Vorrang. Wirkt ab der nächsten Verbindung.</string>
+    <string name="settings_safe_area_fitted_summary">Sicherer Bereich: an Notch und Ecken angepasst, %1$d x %2$d bei (%3$d, %4$d) in %5$d x %6$d</string>
+    <string name="settings_wifi_direct_unavailable">Nicht verfügbar</string>
+    <string name="settings_wifi_direct_unsupported_help">Wählen Sie in der Verbindungseinrichtung „Integrierter Auto-Hotspot“ oder „Vorhandenes WLAN / gleiches LAN“ und versuchen Sie es dann erneut.</string>
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_speedometer_artwork">Degradê da capa do álbum no fundo do velocímetro</string>
+    <string name="settings_cluster_speedometer_artwork_description">Opção separada. Substitui o fundo sólido enquanto estiver ativa, mantendo tamanho e opacidade. Desativada, restaura a cor sólida do álbum ou o preto. O movimento é opcional.</string>
+    <string name="settings_cluster_speedometer_artwork_motion">Mover o fundo do velocímetro</string>
+    <string name="settings_cluster_speedometer_artwork_motion_description">Desativado por padrão. Ativa um movimento lento do fundo enquanto a música toca. As trocas de faixa continuam com transição suave mesmo desativado.</string>
+</resources>

@@ -1004,4 +1004,26 @@ adb shell appops set %1$s ACTIVATE_VPN allow</string>
     <string name="settings_existing_wifi_interface">Interface réseau (facultatif)</string>
     <string name="settings_existing_wifi_interface_description">Uniquement pour les unités dont la connexion LAN passe par une interface qu’Android ne signale pas comme Wi-Fi, par exemple une carte réseau USB sur eth1. Laissez vide pour la choisir automatiquement.</string>
     <string name="turn_card_overlay_note">DiPlay dessine cette carte sur la carte. Déplacez-la par pas de 2%. La carte en verre iOS ne peut pas être déplacée toute seule. Les modifications s’appliquent sans reconnexion. La carte personnalisée reste affichée tout droit comme dans les virages.</string>
+    <string name="settings_usb_charging_medium">Moyen (1 A)</string>
+    <string name="settings_car_brand_title">Badge de marque de la voiture</string>
+    <string name="settings_car_brand_summary">Choisit le badge de la série BYD que CarPlay affiche dans sa liste d’applications. Le nom n’est mis à jour que s’il est encore celui par défaut ou un nom de badge. Choisir un badge remplace une image personnalisée.</string>
+    <string name="settings_car_brand_default">Par défaut (BYD)</string>
+    <string name="settings_car_brand_wangchao">Dynastie</string>
+    <string name="settings_car_brand_haiyang">Océan</string>
+    <string name="settings_car_brand_fangchengbao">Fang Cheng Bao</string>
+    <string name="settings_car_brand_denza">Denza</string>
+    <string name="settings_car_brand_yangwang">Yangwang</string>
+    <string name="settings_car_brand_linghui">Linghui</string>
+    <string name="settings_car_brand_reset_image">Revenir au badge de la marque</string>
+    <string name="settings_car_brand_reset">Rétablir le badge et le nom par défaut</string>
+    <string name="settings_wheel_long_press_seek">Appui long sur suivant/précédent pour avancer/reculer (expérimental)</string>
+    <string name="settings_wheel_long_press_seek_description">Sur les autoradios dont le volant envoie ses propres touches d’appui long pour suivant et précédent (BYD DiLink 3), un appui long avance ou recule rapidement pendant environ 2,5 secondes au lieu de ne rien faire. Pas encore testé avec un iPhone. Prend effet à la prochaine connexion.</string>
+    <string name="settings_call_attenuation">Niveau de la voix en appel</string>
+    <string name="settings_call_attenuation_description">Baisse la voix de l’appelant lors des appels CarPlay sans modifier le volume d’appel de la voiture. S’applique immédiatement, quelle que soit la sortie utilisée par l’appel. Laissez 0 dB sauf si vos appels sonnent déformés ou stridents. Sur une BYD Han (DiLink 3), les appels sonnaient clairs vers -12 à -16 dB lors d’un test d’écoute.</string>
+    <string name="settings_car_hotspot_scan_pause_description">Certains autoradios gardent leur propre client Wi-Fi actif à côté du point d’accès de la voiture et recherchent régulièrement des réseaux ; chaque recherche coupe brièvement la musique. Si cette option est activée, DiPlay met cette recherche en pause pendant que CarPlay fonctionne, uniquement sur ces appareils. La voiture ne rejoint alors pas non plus d’elle-même un réseau connu, comme le point d’accès de votre téléphone, avant la fin de CarPlay. Désactivez l’option pour laisser la voiture rejoindre automatiquement. S’applique à la prochaine connexion.</string>
+    <string name="settings_fit_screen_shape">Ajuster autour de l’encoche et des coins arrondis</string>
+    <string name="settings_fit_screen_shape_description">Pour un téléphone ou une tablette utilisé comme autoradio. Garde les boutons et le dock de CarPlay à l’écart de l’encoche de la caméra et des coins arrondis ; les cartes remplissent toujours l’écran. Une zone de sécurité définie dans le menu de session est prioritaire. S’applique à la prochaine connexion.</string>
+    <string name="settings_safe_area_fitted_summary">Zone de sécurité : ajustée à l’encoche et aux coins, %1$d x %2$d à (%3$d, %4$d) dans %5$d x %6$d</string>
+    <string name="settings_wifi_direct_unavailable">Non disponible</string>
+    <string name="settings_wifi_direct_unsupported_help">Choisissez Point d’accès intégré à la voiture ou Wi-Fi existant / même réseau local dans Configuration de la connexion, puis réessayez.</string>
 </resources>

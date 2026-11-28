@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_music_border">Albumborító keretének megjelenítése</string>
+    <string name="settings_cluster_music_border_description">Vékony keretet rajzol az albumborító köré a műszeregység-térképen.</string>
+</resources>

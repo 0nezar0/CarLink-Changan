@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_player_mode">Paparan</string>
+    <string name="settings_cluster_player_map">Peta</string>
+    <string name="settings_cluster_player">Pemain (uji kaji)</string>
+    <string name="settings_cluster_player_description">Bertukar serta-merta antara peta dan pemain, menggunakan bentuk peta kluster yang disimpan. Pemain menjeda peta dan salinannya di tengah skrin; panduan belok demi belok kluster tidak tersedia dalam Pemain. Penunjuk asal masih dikawal oleh kereta.</string>
+    <string name="settings_cluster_player_speed">Tunjukkan kelajuan dalam pemain</string>
+    <string name="settings_cluster_player_speed_description">Kelajuan kenderaan dalam km/j, tanpa kotak. Memerlukan bacaan kenderaan melalui ADB; menunjukkan — tanpa data terkini.</string>
+    <string name="settings_cluster_player_idle">Tiada apa-apa dimainkan</string>
+    <string name="settings_cluster_player_vehicle">Tunjukkan maklumat kenderaan dalam pemain</string>
+    <string name="settings_cluster_player_vehicle_description">Gear, peratusan bateri dan jarak elektrik, dibaca melalui ADB. Bacaan yang tidak tersedia atau lapuk menunjukkan —. Lampu amaran dan makluman asal masih diperlukan.</string>
+    <string name="cluster_player_vehicle_readout">Gear %1$s   ·   Bateri %2$s   ·   Jarak %3$s</string>
+    <string name="settings_cluster_player_fit_visible">Sesuaikan pemain di antara jalur asal</string>
+    <string name="settings_cluster_player_fit_visible_description">Reka letak sementara untuk kluster yang mempunyai jalur kenderaan atas dan bawah. Mengekalkan kulit album, lagu, kelajuan dan kemajuan di dalam kawasan yang kelihatan; latar belakang masih memenuhi unjuran. Digunakan serta-merta dan tidak menyembunyikan penunjuk asal.</string>
+</resources>

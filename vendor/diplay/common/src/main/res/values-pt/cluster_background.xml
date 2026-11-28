@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_background_motion">Fundo em movimento</string>
+    <string name="settings_cluster_background_motion_description">Desativado por padrão. Ativa um movimento lento do fundo enquanto a música toca. As trocas de faixa continuam com transição suave mesmo desativado.</string>
+</resources>

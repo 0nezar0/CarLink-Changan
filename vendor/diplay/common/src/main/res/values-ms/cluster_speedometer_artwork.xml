@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_cluster_speedometer_artwork">Kecerunan seni album untuk latar belakang speedometer</string>
+    <string name="settings_cluster_speedometer_artwork_description">Pilihan berasingan. Menggantikan latar belakang warna pepejal semasa dihidupkan, dengan mengekalkan saiz dan kelegapan. Apabila dimatikan, warna album pepejal atau hitam anda dipulihkan. Gerakan adalah pilihan.</string>
+    <string name="settings_cluster_speedometer_artwork_motion">Gerakkan latar belakang speedometer</string>
+    <string name="settings_cluster_speedometer_artwork_motion_description">Mati secara lalai. Hidupkan gerakan latar belakang yang perlahan semasa muzik dimainkan. Pertukaran lagu masih pudar masuk walaupun dimatikan.</string>
+</resources>
