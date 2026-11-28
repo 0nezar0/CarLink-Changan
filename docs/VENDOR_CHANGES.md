@@ -298,3 +298,10 @@ gets them; the app manifest adds only `HomeActivity` and CarLink's UI entries.
 | `airplay/AirPlaySession.mediaBindAddress` | On an IPv4-only path with no IPv4 session address, bind `0.0.0.0` (never `::`). | Last IPv6 wildcard on a hotspot path. |
 | `app/ui/diagnostics/IpFamilyCard`, `carlink_ipfamily_*` strings (11 locales) | The card always shows «IPv4 only», reason «Forced», with the last session's time. | Honest Diagnostics after the probe was removed. |
 
+## CarLink v1.7.9: Same Wi-Fi linking wait (`trial/1.7.9`)
+
+| Where | What | Why |
+|---|---|---|
+| `carlink-core .../StallPlaybook.kt` (`AdaptiveDeadlines.bounds`, `StallPlaybook.actions`) | On `WirelessPath.SAME_WIFI`, JOINING_WIFI waits `Bounds(30_000, 30_000, 40_000)`. A linking stall on Same Wi-Fi or the car hotspot retries the step instead of `RESET_WIFI_DIRECT`. Tests: `StallPlaybookTest`. | v1.7.6 reverted the v1.7.5 path-aware playbook; a CS75 Plus 2023 v1.7.8 field report ended with `PHONE_NEVER_REACHED_CAR` in 15 s (`JOINING_WIFI`) while the iPhone was still joining. DiPlay's first-TCP watchdog is 30 s. |
+| `carlink-core ConnectionProfiles.deadline`, `SessionManager.recover` | Pass `path` into bounds and actions again. | Wire the playbook change through. |
+

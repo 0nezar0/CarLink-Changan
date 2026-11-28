@@ -530,3 +530,12 @@ gh release create v1.6.1 \
 
 - **`build.yml` (Build CarLink):** صار فيه مدخل `upload_test_apk` (منطقي، الافتراضي false) لتشغيل يدوي `workflow_dispatch` بوضع release فقط. لو true يرفع الـ APK الموقّع بعد نجاح فحص التوقيع كـ artifact واحد باسم `carlink-test-apk` وينتهي بعد يوم واحد (`retention-days: 1`). الدفع (push) والوسوم والتشغيل الافتراضي تبقى للتحقق فقط ولا ترفع شيء. بعد أخذ الملف يُحذف الـ artifact (`gh api -X DELETE repos/0nezar0/CarLink-Changan/actions/artifacts/<id>`).
 - **`screenshots.yml` (Record screenshots):** workflow يدوي فقط يشغّل معرض لقطات الواجهة (`ScreenshotGallery`، Robolectric بدون جهاز) بـ `./gradlew :app:recordScreenshots`، مع مدخلين: `areas` (مثل `diagnostics,settings,home`) و`only` (نمط اختياري لأسماء الصور)، ويرفع الصور اللي انولدت كـ artifact باسم `carlink-screenshots` ينتهي بعد يوم (ما تُرفع للمستودع). ما يستخدم أي أسرار.
+
+## 25. v1.7.9 (تجريبي، versionCode 10062): مهلة Same Wi-Fi ترجع 30 ثانية — 28 نوفمبر 2026
+
+بُنيت من v1.7.8 (`1a6cecc6`) على الفرع `trial/1.7.9`، مع إصلاح انتظار الشبكة المشتركة من `f4a70060`. كل تعديلات v1.7.8 باقية (IPv4 فقط في نقطة السيارة ونقطة الآيفون وSame Wi-Fi). اللي تغيّر هو مهلة مرحلة الربط اللي انمسحت في v1.7.6 مع رجوع كود الاتصال لما قبل 1.7.x:
+
+- على Same Wi-Fi، مرحلة الانضمام (`JOINING_WIFI`) تنتظر 30 ثانية لأول اتصال من الآيفون (كانت 15–20 ثانية، وهذا كان يقطع المحاولة قبل مهلة المحرك الخاصة وهي 30 ثانية، ثم يعيد تشغيل كل شيء). تقرير ميداني من v1.7.8 على CS75 Plus 2023 وقف عند «لم يفتح الـ iPhone خدمة CarPlay عبر Wi-Fi» بعد 15 ثانية، والبلوتوث والمصافحة كانوا ناجحين.
+- لو المرحلة طوّلت على Same Wi-Fi أو نقطة السيارة، المحاولة تُعاد على نفس المسار. ما عاد يقول إنه يصفّر Wi-Fi Direct (ما فيه مجموعة Wi-Fi Direct على هالمسارين).
+
+الملفات: `StallPlaybook.kt` و`ConnectionProfiles.kt` و`SessionManager.kt`. الاختبار: `StallPlaybookTest`. النسخة تثبت فوق v1.7.8 (10061).

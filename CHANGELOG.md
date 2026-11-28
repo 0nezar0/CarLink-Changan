@@ -6,6 +6,12 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+## [CS75 Plus 2023 v1.7.9] - 2026-11-28 (test)
+
+Test build from branch `trial/1.7.9` (started from v1.7.8, `1a6cecc6`, plus the Same Wi-Fi linking fix `f4a70060`), versionCode 10062. It installs over v1.7.8 (10061) and every earlier build, and keeps your settings. Everything from v1.7.8 stays (IPv4 only on the car hotspot, an iPhone's Personal Hotspot and Same Wi-Fi). This build restores the v1.7.5 Same Wi-Fi linking wait that v1.7.6 dropped when it went back to the pre-1.7.x connection code.
+
+- Fix: on Same Wi-Fi, the linking phase now waits 30 s for the iPhone's first connection (it was 15–20 s, which could cut the run before DiPlay's own 30 s first-TCP limit and restart the whole connection). A linking stall retries the same path; it no longer says it resets Wi-Fi Direct (there is none on Same Wi-Fi or the car hotspot).
+
 ## [CS75 Plus 2023 v1.7.8] - 2026-11-28 (test)
 
 Test build from branch `trial/1.7.8` (started from v1.7.7, `df1efa13`), versionCode 10061. It installs over v1.7.7 (10060) and every earlier build, and keeps your settings. IPv4 only on the car hotspot, an iPhone's Personal Hotspot and Same Wi-Fi was already the rule in v1.7.6/v1.7.7; this build closes the last places where IPv6 could still matter. Wi-Fi Direct is unchanged.
