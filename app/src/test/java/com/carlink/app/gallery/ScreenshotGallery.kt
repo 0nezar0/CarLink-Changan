@@ -183,7 +183,12 @@ class ScreenshotGallery {
                 val split = config.splitWidthDp
                 if (split != null) {
                     val width = (split * activity.resources.displayMetrics.density).toInt().coerceAtMost(bitmap.width)
-                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, bitmap.height)
+                    // The split box is 640.dp at the layout start. In RTL that is the right edge of
+                    // the full panel window; cropping from x=0 left a blank Arabic car-split-third
+                    // image (v1.7.12, home_failed-head-unit-server-stuck-ar).
+                    val rtl = activity.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+                    val x = if (rtl) (bitmap.width - width).coerceAtLeast(0) else 0
+                    bitmap = Bitmap.createBitmap(bitmap, x, 0, width, bitmap.height)
                 }
             }
             return bitmap
