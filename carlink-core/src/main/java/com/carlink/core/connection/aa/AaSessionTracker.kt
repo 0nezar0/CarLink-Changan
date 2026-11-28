@@ -107,10 +107,14 @@ internal class AaSessionTracker(
         when (connection) {
             AaProtocol.CONNECTION_CONNECTING, AaProtocol.CONNECTION_CONNECTED,
             AaProtocol.CONNECTION_STARTING_TRANSPORT -> {
+                // A new session starts with its own error, not the last one's (a mid-session drop's
+                // detail quoted a start's "Handshake failed" otherwise).
+                if (!sessionLive) lastError = message
                 enterSession()
                 out += if (wireless) progress(4, ProgressStage.STARTING_PROJECTION) else progress(2, ProgressStage.HANDSHAKE)
             }
             AaProtocol.CONNECTION_HANDSHAKE_COMPLETE, AaProtocol.CONNECTION_TRANSPORT_STARTED -> {
+                if (!sessionLive) lastError = message
                 enterSession()
                 out += if (wireless) progress(4, ProgressStage.STARTING_PROJECTION) else progress(3, ProgressStage.STARTING_PROJECTION)
                 if (firstFrame) out += connect()
@@ -211,14 +215,22 @@ internal class AaSessionTracker(
             // Self Mode and the dedicated Head unit server path: a server that took the connection and
             // stayed silent will not answer again until it is restarted, so stop and say how. On
             // Automatic, Car hotspot and Same Wi-Fi it is only a ride-along probe, and the session goes on.
-            EngineEvent.HEAD_UNIT_SERVER_STUCK.name -> if (!sessionLive && (selfMode || headUnitServerPath)) fail(
+            // The event comes from a silent version exchange, so always before the first frame; but
+            // CommManager reports Connecting/Connected before that exchange, so the session is already
+            // "live" here. Gating on !sessionLive (as this did) let every stuck server through as a
+            // plain drop: LINK_TOO_WEAK retries against a server that never answered again, 40-60 s
+            // per start (CS75 Plus v1.7.11 log, 2026-11-28). Only a session with video is left alone.
+            EngineEvent.HEAD_UNIT_SERVER_STUCK.name -> if (!connected && (selfMode || headUnitServerPath)) fail(
                 FailureReason.HEAD_UNIT_SERVER_STUCK,
                 "Android Auto's head unit server took the connection and never answered (${d["endpoint"] ?: "5277"})",
-            ) else if (!sessionLive && acceptedByProbe) {
+            ) else if (!connected && acceptedByProbe) {
                 // CarLink: the probe's "the phone answered" was wrong. FOUND had stopped the Bluetooth
                 // wakes and the accept timeout, so the attempt would have waited for its stage deadline.
                 // Back to waiting, and wake the phone again soon. A Bluetooth route that has already
-                // answered (acceptedByProbe is cleared by it) or a live session is left alone.
+                // answered (acceptedByProbe is cleared by it) or a session with video is left alone.
+                // The probe's own session is over: its Disconnected is not a lost projection.
+                sessionLive = false
+                pendingEndSince = null
                 backToWaiting(now)
                 nextRepokeAt = now + limits.repokeAfterLossMillis
                 progress(1, ProgressStage.WAITING_FOR_PHONE)
@@ -349,7 +361,11 @@ internal class AaSessionTracker(
                 } else {
                     backToWaiting(now)
                     if (wireless) nextRepokeAt = now + limits.repokeAfterLossMillis
-                    listOf(AdapterEvent.Retrying(losses, reason))
+                    // An unexplained wireless drop after video is the link, not a restarted engine
+                    // process (that one is onProcessDied, and terminal): say so, with the engine's
+                    // last error, instead of ENGINE's generic "the engine restarted".
+                    val detail = if (reason == FailureReason.ENGINE) MID_SESSION_DROP + (lastError?.let { " ($it)" } ?: "") else null
+                    listOf(AdapterEvent.Retrying(losses, reason, detail))
                 }
             }
         }
@@ -391,8 +407,10 @@ internal class AaSessionTracker(
         return listOf(AdapterEvent.Failed(reason, detail + hint))
     }
 
-    private companion object {
+    internal companion object {
         const val CONNECT_STATUS = 6
+        /** [AdapterEvent.Retrying] detail for a wireless session with video that ended without ByeBye or a read timeout. */
+        const val MID_SESSION_DROP = "the connection to the phone dropped during the session"
         const val STALE_REPLUG = "unplug the phone and plug it in again (it did not start a new Android Auto session over USB)"
         val WIRELESS_ONLY = setOf(
             EngineEvent.WIFI_OFF.name, EngineEvent.P2P_OWNED_BY_OTHER.name, EngineEvent.WIFI_DIRECT_GROUP_FAILED.name,

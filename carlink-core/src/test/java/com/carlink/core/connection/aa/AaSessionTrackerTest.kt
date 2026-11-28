@@ -240,7 +240,7 @@ class AaSessionTrackerTest {
         t.state(P.CONNECTION_TRANSPORT_STARTED, firstFrame = true)
         assertEquals(emptyList<AdapterEvent>(), t.state(P.CONNECTION_DISCONNECTED))
         assertEquals(emptyList<AdapterEvent>(), t.after(1_000))
-        assertEquals(listOf(AdapterEvent.Retrying(1, FailureReason.ENGINE)), t.after(1_000))
+        assertEquals(listOf(AdapterEvent.Retrying(1, FailureReason.ENGINE, AaSessionTracker.MID_SESSION_DROP)), t.after(1_000))
     }
 
     @Test fun anEndEventAfterTheDisconnectStateDecides() {
@@ -285,7 +285,7 @@ class AaSessionTrackerTest {
     @Test fun aQuickReconnectIsARetryOfTheSameSessionWithNoRepoke() {
         val t = wireless()
         t.state(P.CONNECTION_TRANSPORT_STARTED, firstFrame = true)
-        assertEquals(listOf(AdapterEvent.Retrying(1, FailureReason.ENGINE)), t.event(EngineEvent.SESSION_ENDED, "userExit=false;clean=false"))
+        assertEquals(listOf(AdapterEvent.Retrying(1, FailureReason.ENGINE, AaSessionTracker.MID_SESSION_DROP)), t.event(EngineEvent.SESSION_ENDED, "userExit=false;clean=false"))
         assertEquals(listOf(AdapterEvent.Progress(2, 4, ProgressStage.HANDSHAKE)), t.event(EngineEvent.QUICK_RECONNECT, "result=started"))
         assertFalse("a repoke would re-arm the engine and close the held channel", t.shouldRepoke(now + 3_000))
         assertEquals(emptyList<AdapterEvent>(), t.after(limits.acceptTimeoutMillis))
@@ -379,6 +379,52 @@ class AaSessionTrackerTest {
         assertEquals(FailureReason.HEAD_UNIT_SERVER_STUCK, dedicated.event(EngineEvent.HEAD_UNIT_SERVER_STUCK).failure().reason)
         // On Automatic / hotspot / same Wi-Fi the server is only a ride-along probe: the session goes on.
         assertEquals(emptyList<AdapterEvent>(), wireless().event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
+    }
+
+    // CS75 Plus v1.7.11 (2026-11-28): CommManager reports Connecting before the version exchange,
+    // so a silent server's STUCK arrives in a live session. It used to be ignored there, and every
+    // start retried as LINK_TOO_WEAK for 40-60 s against a server that never answered again.
+    @Test fun aStuckServerFailsTheHeadUnitServerPathEvenAfterTheConnectionOpened() {
+        val dedicated = AaSessionTracker(Transport.WIRELESS, limits, headUnitServerPath = true).also { it.begin(now) }
+        dedicated.event(EngineEvent.HEAD_UNIT_SERVER_FOUND)
+        dedicated.state(P.CONNECTION_CONNECTED)
+        val failure = dedicated.event(EngineEvent.HEAD_UNIT_SERVER_STUCK, "endpoint=192.168.43.1:5277;count=1").failure()
+        assertEquals(FailureReason.HEAD_UNIT_SERVER_STUCK, failure.reason)
+        val self = self()
+        self.state(P.CONNECTION_CONNECTING)
+        assertEquals(FailureReason.HEAD_UNIT_SERVER_STUCK, self.event(EngineEvent.HEAD_UNIT_SERVER_STUCK).failure().reason)
+    }
+
+    @Test fun aStuckRideAlongProbeGoesBackToWaitingWithoutCountingALoss() {
+        val t = wireless()
+        t.event(EngineEvent.HEAD_UNIT_SERVER_FOUND)
+        t.state(P.CONNECTION_CONNECTED)
+        assertEquals(listOf(AdapterEvent.Progress(1, 4, ProgressStage.WAITING_FOR_PHONE)),
+            t.event(EngineEvent.HEAD_UNIT_SERVER_STUCK, "endpoint=192.168.49.1:5277;count=1"))
+        assertTrue("the phone is woken again soon", t.shouldRepoke(now + limits.repokeAfterLossMillis))
+        assertEquals(emptyList<AdapterEvent>(), t.state(P.CONNECTION_DISCONNECTED))
+        assertEquals("the probe's own disconnect is not a lost projection", emptyList<AdapterEvent>(), t.after(limits.endDebounceMillis))
+    }
+
+    @Test fun aStuckEventDuringASessionWithVideoIsIgnored() {
+        val dedicated = AaSessionTracker(Transport.WIRELESS, limits, headUnitServerPath = true).also { it.begin(now) }
+        dedicated.state(P.CONNECTION_TRANSPORT_STARTED, firstFrame = true)
+        assertEquals(emptyList<AdapterEvent>(), dedicated.event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
+    }
+
+    @Test fun aMidSessionDropSaysTheLinkDroppedWithThisSessionsError() {
+        val t = wireless()
+        t.onState(P.CONNECTION_ERROR, "Handshake failed", true, false, now)
+        t.state(P.CONNECTION_TRANSPORT_STARTED, firstFrame = true)
+        t.onState(P.CONNECTION_ERROR, "Connection reset", true, false, now)
+        val retry = t.after(limits.endDebounceMillis).single() as AdapterEvent.Retrying
+        assertEquals(FailureReason.ENGINE, retry.reason)
+        assertEquals(AaSessionTracker.MID_SESSION_DROP + " (Connection reset)", retry.detail)
+        val fresh = wireless()
+        fresh.onState(P.CONNECTION_ERROR, "Handshake failed", true, false, now)
+        fresh.state(P.CONNECTION_TRANSPORT_STARTED, firstFrame = true)
+        val quiet = fresh.event(EngineEvent.SESSION_ENDED, "userExit=false;clean=false").single() as AdapterEvent.Retrying
+        assertEquals("an earlier start's error is not this drop's", AaSessionTracker.MID_SESSION_DROP, quiet.detail)
     }
 
     @Test fun selfModeWaitsWithoutTimeoutAndFailsOnADrop() {
