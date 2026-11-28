@@ -29,12 +29,33 @@ object UnresponsivePeerPolicy {
     const val BACKOFF_RESCAN_MS = 60_000L
 
     /**
+     * How long to wait after an unexpected disconnect before restarting discovery, when the last
+     * handshake was not a silent failure.
+     *
+     * Distinct from [NORMAL_RESCAN_MS]: a mid-session drop should be offered a new scan promptly,
+     * while a peer that accepted and never answered has to be left alone longer (see
+     * [reconnectDelayMs]).
+     */
+    const val FRESH_RECONNECT_MS = 2_000L
+
+    /**
      * Delay before the next discovery sweep, given how many times in a row the same endpoint
      * has accepted a connection and then not answered.
      */
     fun rescanDelayMs(consecutiveSilentFailures: Int): Long =
         if (consecutiveSilentFailures >= SILENT_FAILURES_BEFORE_BACKOFF) BACKOFF_RESCAN_MS
         else NORMAL_RESCAN_MS
+
+    /**
+     * Delay before restarting discovery after a session ends.
+     *
+     * A fresh drop (no silent failures) keeps the existing 2 s reconnect. Once the phone's head
+     * unit server has accepted a connection and not answered, the same backoff as the discovery
+     * loop applies: retrying in 2 s only strands another socket on a server only the phone can
+     * unstick.
+     */
+    fun reconnectDelayMs(silentPeerFailures: Int): Long =
+        if (silentPeerFailures > 0) rescanDelayMs(silentPeerFailures) else FRESH_RECONNECT_MS
 
     /**
      * True exactly once per episode, at the point the backoff engages, so the explanation goes

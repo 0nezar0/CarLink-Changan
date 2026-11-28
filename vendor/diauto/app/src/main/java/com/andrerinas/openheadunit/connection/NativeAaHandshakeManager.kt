@@ -326,6 +326,16 @@ class NativeAaHandshakeManager(
     fun isActive(): Boolean =
         AaListenerRecoveryPolicy.canAccept(isRunning, aaListenersClosedForSession, aaListenerLost)
 
+    /**
+     * The manager was started but cannot accept: the AA listeners were closed for a session or
+     * lost (#77). [start] returns at once while [isRunning], so the caller has to re-init
+     * (AapService.initWifiMode(force = true)), the same as the poke and Bluetooth auto-start paths.
+     * Distinct from a manager that never started (no Bluetooth, a blocked route): those stay as
+     * they are.
+     */
+    fun needsListenerRearm(): Boolean =
+        AaListenerRecoveryPolicy.needsRearm(isRunning, aaListenersClosedForSession, aaListenerLost)
+
     /** elapsedRealtime() of the last credentials handed to a phone, or 0 if none since start(). */
     fun lastCredentialsDeliveredAtMs(): Long = lastCredentialsDeliveredAt
 

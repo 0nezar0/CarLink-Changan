@@ -1361,9 +1361,10 @@ class AapService : Service(), UsbReceiver.Listener {
                 AppLog.i("AapService: User exit with wirelessServer active. Not restarting discovery.")
                 return
             }
-            AppLog.i("AapService: Disconnected. Restarting discovery loop in 2s...")
+            val reconnectIn = UnresponsivePeerPolicy.reconnectDelayMs(commManager.silentPeerFailures) // CarLink
+            AppLog.i("AapService: Disconnected. Restarting discovery loop in ${reconnectIn}ms...")
             serviceScope.launch {
-                delay(2000)
+                delay(reconnectIn)
                 if (!commManager.isConnected) {
                     if (settings.wifiConnectionMode == 2 && settings.helperConnectionStrategy == 2) {
                         nearbyManager?.start()
@@ -1378,6 +1379,12 @@ class AapService : Service(), UsbReceiver.Listener {
                                 "network comes back, rather than scanning the one that went away."
                         )
                     } else {
+                        // Rebuild a dead 5288 listener first (WirelessServerRestartPolicy: no-op
+                        // if it is already accepting, backoff if the port will not bind). The
+                        // discovery loop used to restart against a server object that was assigned
+                        // but no longer listening, and CarLink's Head unit server path (mode 1)
+                        // has no other re-arm that would have rebuilt it.
+                        startWirelessServer()
                         startDiscovery()
                     }
                 }
@@ -1412,10 +1419,14 @@ class AapService : Service(), UsbReceiver.Listener {
         if (!state.isClean) {
             val mode = settings.wifiConnectionMode
             if (mode == 1 && lastType != Settings.CONNECTION_TYPE_USB) {
-                AppLog.i("AapService: Unclean WiFi disconnect in Auto Mode. Retrying discovery in 2s...")
+                val reconnectIn = UnresponsivePeerPolicy.reconnectDelayMs(commManager.silentPeerFailures) // CarLink
+                AppLog.i("AapService: Unclean WiFi disconnect in Auto Mode. Retrying discovery in ${reconnectIn}ms...")
                 serviceScope.launch {
-                    delay(2000)
-                    if (!commManager.isConnected) startDiscovery(oneShot = true)
+                    delay(reconnectIn)
+                    if (!commManager.isConnected) {
+                        startWirelessServer()
+                        startDiscovery(oneShot = true)
+                    }
                 }
             }
         }
@@ -2030,6 +2041,11 @@ class AapService : Service(), UsbReceiver.Listener {
                 // rather than silently ignoring them.
                 Settings.clearBootLoopState(this)
                 initWifiMode()
+                // CarLink: initWifiMode returns at once when the mode is already armed, and that
+                // skipped both a dead 5288 server (WirelessServerRestartPolicy never ran) and
+                // Native AA listeners that had been closed or lost (AaListenerRecoveryPolicy:
+                // start() also returns at once while the manager is still marked running).
+                rearmWirelessIfAlreadyArmed()
                 // CarLink: an already-armed Native AA skips initWifiMode's bring-up, and with it
                 // the head unit server probe; a new session still gets its one sweep. Folds into a
                 // sweep already in flight rather than starting a second one.
@@ -2709,11 +2725,34 @@ class AapService : Service(), UsbReceiver.Listener {
     }
 
     /**
-     * Starts an NSD (mDNS) scan for Android Auto Wireless services on the local network.
+     * CarLink: heal a car-side listener that died while the mode was still marked armed.
      *
-     * @param oneShot if `true`, does not reschedule after the scan finishes —
-     *                used for the "auto WiFi" reconnect case.
+     * [initWifiMode] returns at once when the mode, strategy and transport are unchanged, so a
+     * later ACTION_START_WIRELESS would skip [startWirelessServer] (and with it
+     * [WirelessServerRestartPolicy]) and would leave Native AA listeners that had been closed
+     * for a session or dropped by the car's Bluetooth stack (#77) unopened: [NativeAaHandshakeManager.start]
+     * also returns at once while the manager is still running. The poke path already force-reinits
+     * for that; this covers Head unit server (mode 1, no poke) and a wireless start with no MAC.
+     *
+     * A phone head-unit server that accepted and never answered is not rebuilt here: only the
+     * phone can unstick that, and [UnresponsivePeerPolicy] already backs off the 5277 probe.
      */
+    private fun rearmWirelessIfAlreadyArmed() {
+        val sessionUp = commManager.isConnected ||
+            commManager.connectionState.value is CommManager.ConnectionState.Connecting
+        if (sessionUp) return
+        if (nativeAaHandshakeManager?.needsListenerRearm() == true) {
+            AppLog.i("AapService: Native AA listeners are not accepting — re-arming on wireless start.")
+            initWifiMode(force = true)
+            return
+        }
+        startWirelessServer()
+        val settings = App.provide(this).settings
+        if (DiscoveryModePolicy.usesNetworkDiscovery(settings.wifiConnectionMode, settings.helperConnectionStrategy)) {
+            startDiscovery()
+        }
+    }
+
     /** CarLink: one 5277 sweep beside an armed Native AA, when the host asked for it and nothing is connected. */
     private fun kickHeadUnitServerProbe() {
         val settings = App.provide(this).settings
@@ -2722,6 +2761,12 @@ class AapService : Service(), UsbReceiver.Listener {
         startDiscovery(oneShot = true, headUnitServerProbe = true)
     }
 
+    /**
+     * Starts an NSD (mDNS) scan for Android Auto Wireless services on the local network.
+     *
+     * @param oneShot if `true`, does not reschedule after the scan finishes —
+     *                used for the "auto WiFi" reconnect case.
+     */
     private fun startDiscovery(oneShot: Boolean = false, headUnitServerProbe: Boolean = false) {
         val settings = App.provide(this).settings
         val mode = settings.wifiConnectionMode

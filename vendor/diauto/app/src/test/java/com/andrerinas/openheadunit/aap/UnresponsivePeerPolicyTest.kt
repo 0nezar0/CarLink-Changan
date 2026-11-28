@@ -76,6 +76,23 @@ class UnresponsivePeerPolicyTest {
     }
 
     @Test
+    fun `a fresh drop reconnects after two seconds`() {
+        assertEquals(UnresponsivePeerPolicy.FRESH_RECONNECT_MS, UnresponsivePeerPolicy.reconnectDelayMs(0))
+    }
+
+    @Test
+    fun `a silent peer uses the discovery backoff, not the two-second reconnect`() {
+        assertEquals(
+            UnresponsivePeerPolicy.NORMAL_RESCAN_MS,
+            UnresponsivePeerPolicy.reconnectDelayMs(1),
+        )
+        assertEquals(
+            UnresponsivePeerPolicy.BACKOFF_RESCAN_MS,
+            UnresponsivePeerPolicy.reconnectDelayMs(UnresponsivePeerPolicy.SILENT_FAILURES_BEFORE_BACKOFF),
+        )
+    }
+
+    @Test
     fun `an unknown endpoint does not inherit a previous streak`() {
         // CommManager.lastAttemptedEndpoint is null on the USB path. Treating null as "the
         // same endpoint" would let a silent USB dongle push the WiFi discovery loop into

@@ -58,4 +58,14 @@ object AaListenerRecoveryPolicy {
      */
     fun canAccept(running: Boolean, closedForSession: Boolean, listenerLost: Boolean): Boolean =
         running && !closedForSession && !listenerLost
+
+    /**
+     * The manager was started but cannot accept, so a start() that returns at once on "already
+     * running" will not reopen anything. The caller has to re-init.
+     *
+     * A manager that never started (no radio, a blocked route) is not this: there is nothing
+     * to reopen until the radio is back, which is a different event.
+     */
+    fun needsRearm(running: Boolean, closedForSession: Boolean, listenerLost: Boolean): Boolean =
+        running && !canAccept(running, closedForSession, listenerLost)
 }

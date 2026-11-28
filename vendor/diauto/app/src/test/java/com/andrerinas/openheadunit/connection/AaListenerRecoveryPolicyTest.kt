@@ -46,4 +46,19 @@ class AaListenerRecoveryPolicyTest {
     @Test fun aRadioThatIsOffIsNotRetriedInto() {
         assertFalse(AaListenerRecoveryPolicy.mayReopen(adapterEnabled = false, attemptsSoFar = 0))
     }
+
+    @Test fun aRunningManagerThatCannotAcceptNeedsAReinit() {
+        // Listeners closed for a session, or lost: start() would no-op.
+        assertTrue(AaListenerRecoveryPolicy.needsRearm(running = true, closedForSession = true, listenerLost = false))
+        assertTrue(AaListenerRecoveryPolicy.needsRearm(running = true, closedForSession = false, listenerLost = true))
+    }
+
+    @Test fun aManagerThatNeverStartedIsLeftToTheRadioComingBack() {
+        assertFalse(AaListenerRecoveryPolicy.needsRearm(running = false, closedForSession = false, listenerLost = false))
+        assertFalse(AaListenerRecoveryPolicy.needsRearm(running = false, closedForSession = false, listenerLost = true))
+    }
+
+    @Test fun aManagerThatCanAcceptIsLeftAlone() {
+        assertFalse(AaListenerRecoveryPolicy.needsRearm(running = true, closedForSession = false, listenerLost = false))
+    }
 }
