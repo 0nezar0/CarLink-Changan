@@ -134,6 +134,8 @@ class FullLogOnPhoneTest {
     @Test
     fun codeIsSpacedInThrees() {
         assertEquals("482 913", FullLogOnPhone.spacedCode("482913"))
+        // On screen: left-to-right marks keep the groups in order inside Arabic text.
+        assertEquals("\u200E482\u200E\u00A0913", com.carlink.app.ui.diagnostics.codeForDisplay("482913"))
     }
 
     /** What both Copy full log and the phone page get: saved passwords and addresses hidden. */
