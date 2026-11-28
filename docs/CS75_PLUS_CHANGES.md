@@ -582,3 +582,62 @@ gh release create v1.6.1 \
 
 الاختبارات: `AaSessionTrackerTest` (3 اختبارات جديدة: الخادم العالق يفشل مسار خادم الوحدة وSelf حتى بعد فتح الاتصال، يُتجاهل مع وجود صورة، وتسمية الانقطاع مع آخر خطأ الجلسة). لقطة المعرض: `home_failed-head-unit-server-stuck-ar`.
 
+
+## أفكار مؤجلة (Future ideas / postponed)
+
+### `ConnectionAttempts`: حارس رقم الجيل لمحاولات الاتصال (قرار 28 نوفمبر 2026: لا نطبّقه الآن)
+
+**الفكرة المقترحة:** كلاس على الخيط الرئيسي يعطي كل محاولة اتصال رقماً (جيلاً)، حتى لا يأثّر مؤقّت أو ردّ قديم من محاولة سابقة على جلسة جديدة.
+
+- `begin(timeoutMs = 60s)`: يلغي المحاولة السابقة، ويعطي المحاولة `++lastId`، ويضع Runnable للمهلة لا يشتغل إلا إذا كان `activeId` لا يزال هو نفس الرقم.
+- `connected(id)`: يمسح المهلة فقط إذا كان `id` هو الحالي.
+- `cancel()`: يمسح المهلة.
+
+**ملاحظات المراجعة:**
+- `connected()` يرجع `true` أكثر من مرة لنفس الرقم؛ تُضاف `isCurrent(id)` للسؤال بدون أثر جانبي.
+- استدعاء `cancel()` عند تدمير الخدمة أو الشاشة.
+- إذا استُدعي الكلاس من خارج الخيط الرئيسي: استخدم `Job` + `delay` بدل `Handler`.
+
+**سبب التأجيل:** سجل v1.7.11 أظهر خادم هاتف عالقاً وانقطاعات Wi-Fi، لا محاولات قديمة تتداخل مع جلسة جديدة، و`AaSessionTracker` عنده أصلاً مهلة 60 ثانية.
+
+**متى نطبّقه:** فقط إذا أظهر سجل v1.7.12 ردّاً (callback) قديماً من محاولة سابقة يؤثر على جلسة جديدة.
+
+**الكود** (مسودة أعادت كتابتها من وصف الفكرة أعلاه؛ ما وصل نص الكلاس الأصلي، فهذه ليست النسخة الحرفية. لا يدخل المشروع الآن):
+
+```kotlin
+/** Main-thread guard: only the newest connection attempt may time out or report connected. */
+class ConnectionAttempts(private val handler: Handler = Handler(Looper.getMainLooper())) {
+    private var lastId = 0
+    private var activeId = 0 // 0 = no attempt
+    private var timeout: Runnable? = null
+
+    /** Cancels the previous attempt, starts a new one and returns its id. */
+    fun begin(timeoutMs: Long = 60_000, onTimeout: (id: Int) -> Unit): Int {
+        cancel()
+        val id = ++lastId
+        activeId = id
+        val r = Runnable { if (activeId == id) { activeId = 0; timeout = null; onTimeout(id) } }
+        timeout = r
+        handler.postDelayed(r, timeoutMs)
+        return id
+    }
+
+    /** True while [id] is the current attempt (no side effect). */
+    fun isCurrent(id: Int): Boolean = id != 0 && id == activeId
+
+    /** Clears the timeout only when [id] is current; false for a stale id. */
+    fun connected(id: Int): Boolean {
+        if (!isCurrent(id)) return false
+        timeout?.let(handler::removeCallbacks)
+        timeout = null
+        return true
+    }
+
+    /** Ends the current attempt (call on service/screen destroy too). */
+    fun cancel() {
+        timeout?.let(handler::removeCallbacks)
+        timeout = null
+        activeId = 0
+    }
+}
+```
