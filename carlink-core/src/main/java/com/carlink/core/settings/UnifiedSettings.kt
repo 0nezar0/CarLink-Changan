@@ -43,7 +43,6 @@ data class UnifiedSettings(
     val duckMusicForDirections: Boolean = true,
     /** CarPlay's Same Wi-Fi reaches the network over this screen's wired Ethernet, not its Wi-Fi (GitHub #87). */
     val sameWifiWired: Boolean = false,
-    val iphoneHotspotIpv4: Boolean = false,
     /** Software gain on the microphone sent to the phone ([AudioLevels.MIC_DB]). */
     val micGainDb: Int = 0,
     /**
@@ -166,7 +165,6 @@ class UnifiedSettingsStore(context: Context) {
         callAudioAsMedia = prefs.getBoolean("call_audio_as_media", false),
         resumeMusic = prefs.getBoolean("resume_music", false),
         duckMusicForDirections = prefs.getBoolean("duck_music_directions", true),
-        iphoneHotspotIpv4 = prefs.getBoolean("iphone_hotspot_ipv4", false),
         sameWifiWired = prefs.getBoolean("same_wifi_wired", false),
         micGainDb = prefs.getInt("mic_gain_db", 0),
         headunitServerAddress = prefs.getString("headunit_server_address", "")!!,
@@ -236,7 +234,6 @@ class UnifiedSettingsStore(context: Context) {
             .putBoolean("call_audio_as_media", settings.callAudioAsMedia)
             .putBoolean("resume_music", settings.resumeMusic)
             .putBoolean("duck_music_directions", settings.duckMusicForDirections)
-            .putBoolean("iphone_hotspot_ipv4", settings.iphoneHotspotIpv4)
             .putBoolean("same_wifi_wired", settings.sameWifiWired)
             .putInt("mic_gain_db", settings.micGainDb)
             .putString("headunit_server_address", settings.headunitServerAddress)
