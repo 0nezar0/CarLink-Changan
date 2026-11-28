@@ -212,23 +212,26 @@ internal class AaSessionTracker(
             }
             EngineEvent.HEAD_UNIT_SERVER_CLOSED.name -> fail(FailureReason.HEAD_UNIT_SERVER_OFF,
                 "Android Auto's head unit server is not running (127.0.0.1:5277)")
-            // Self Mode and the dedicated Head unit server path: a server that took the connection and
-            // stayed silent will not answer again until it is restarted, so stop and say how. On
-            // Automatic, Car hotspot and Same Wi-Fi it is only a ride-along probe, and the session goes on.
-            // The event comes from a silent version exchange, so always before the first frame; but
-            // CommManager reports Connecting/Connected before that exchange, so the session is already
-            // "live" here. Gating on !sessionLive (as this did) let every stuck server through as a
-            // plain drop: LINK_TOO_WEAK retries against a server that never answered again, 40-60 s
-            // per start (CS75 Plus v1.7.11 log, 2026-11-28). Only a session with video is left alone.
-            EngineEvent.HEAD_UNIT_SERVER_STUCK.name -> if (!connected && (selfMode || headUnitServerPath)) fail(
+            // A server that took the connection and stayed silent will not answer again until it is
+            // restarted on the phone. CommManager reports Connecting before the version exchange, so
+            // the session is already "live" here; gating on !sessionLive used to turn every stuck
+            // server into LINK_TOO_WEAK retries for 40-60 s (CS75 Plus v1.7.11 log, 2026-11-28).
+            // v1.7.12 failed only on the dedicated Head unit server path and in Self mode, and left
+            // a live probe session alone — on the assumption a "native" Android Auto session might
+            // still be running. This head unit has no OEM Android Auto (CarLink is the only one),
+            // and on Automatic / Wi-Fi Direct / hotspot / Same Wi-Fi the probe hands its socket to
+            // the one session ("connecting through it"). That live session is the stuck server, so
+            // fail it the same way. A session with video, or one already carried by Bluetooth, is
+            // left alone. A probe that failed before any connection goes back to waiting so a
+            // Bluetooth wake can still try.
+            EngineEvent.HEAD_UNIT_SERVER_STUCK.name -> if (!connected && (selfMode || headUnitServerPath ||
+                (acceptedByProbe && sessionLive))) fail(
                 FailureReason.HEAD_UNIT_SERVER_STUCK,
                 "Android Auto's head unit server took the connection and never answered (${d["endpoint"] ?: "5277"})",
             ) else if (!sessionLive && acceptedByProbe) {
-                // CarLink: the probe's "the phone answered" was wrong. FOUND had stopped the Bluetooth
-                // wakes and the accept timeout, so the attempt would have waited for its stage deadline.
-                // Back to waiting, and wake the phone again soon. A Bluetooth route that has already
-                // answered (acceptedByProbe is cleared by it) or a live session is left alone (on these
-                // paths the live session may be the native one, so its end decides).
+                // The probe's "the phone answered" was wrong. FOUND had stopped the Bluetooth wakes
+                // and the accept timeout, so the attempt would have waited for its stage deadline.
+                // Back to waiting, and wake the phone again soon.
                 backToWaiting(now)
                 nextRepokeAt = now + limits.repokeAfterLossMillis
                 progress(1, ProgressStage.WAITING_FOR_PHONE)

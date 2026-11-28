@@ -6,6 +6,8 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+- Android Auto, Automatic / Wi-Fi Direct / car hotspot / Same Wi-Fi: when the phone's head unit server takes the connection and never answers, CarLink now stops at once and says to Stop and Start it, just as it already does on the Head unit server method. v1.7.12 only did this on that method; on the other wireless methods a start through the server was retried as "the connection dropped" for 40-60 s. This head unit has no built-in Android Auto — CarLink is the only one, and that connection is the session.
+
 ## [CS75 Plus 2023 v1.7.12] - 2026-11-28 (test)
 
 Test build from branch `trial/1.7.12` (started from `fix/aa-engine-restart`, `cf4a15c4`, on top of v1.7.11), versionCode 10065. It installs over v1.7.11 (10064) and every earlier build, and keeps your settings. Everything from v1.7.11 stays (QR for the full log) and v1.7.10 (Android Auto session cleanup so the phone's head unit server stays usable after exit).

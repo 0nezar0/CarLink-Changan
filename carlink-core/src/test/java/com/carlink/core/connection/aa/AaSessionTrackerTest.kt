@@ -377,7 +377,7 @@ class AaSessionTrackerTest {
         assertEquals(com.carlink.core.core.LinkProblem.HEAD_UNIT_SERVER_STUCK, failure.reason.toLinkProblem())
         val dedicated = AaSessionTracker(Transport.WIRELESS, limits, headUnitServerPath = true).also { it.begin(now) }
         assertEquals(FailureReason.HEAD_UNIT_SERVER_STUCK, dedicated.event(EngineEvent.HEAD_UNIT_SERVER_STUCK).failure().reason)
-        // On Automatic / hotspot / same Wi-Fi the server is only a ride-along probe: the session goes on.
+        // A stuck event with no probe found and no connection does not start or end a session.
         assertEquals(emptyList<AdapterEvent>(), wireless().event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
     }
 
@@ -465,11 +465,15 @@ class AaSessionTrackerTest {
         assertFalse(both.shouldRepoke(now + limits.acceptHintMillis))
     }
 
-    @Test fun aStuckProbeServerDoesNotEndALiveSessionOrStartOne() {
+    // This head unit has no OEM Android Auto: the probe's socket is the session
+    // ("found the phone's head unit server on WIFI_DIRECT; connecting through it").
+    // v1.7.12 ignored STUCK here and retried LINK_TOO_WEAK against a deaf server.
+    @Test fun aStuckProbeConnectionFailsOnAutomaticPathsToo() {
         val live = wireless()
         live.event(EngineEvent.HEAD_UNIT_SERVER_FOUND)
         live.state(P.CONNECTION_CONNECTING)
-        assertEquals(emptyList<AdapterEvent>(), live.event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
+        val failure = live.event(EngineEvent.HEAD_UNIT_SERVER_STUCK, "endpoint=192.168.49.1:5277;count=1").failure()
+        assertEquals(FailureReason.HEAD_UNIT_SERVER_STUCK, failure.reason)
         // No probe was found first: nothing was stopped, so nothing is undone.
         val unprobed = wireless()
         assertEquals(emptyList<AdapterEvent>(), unprobed.event(EngineEvent.HEAD_UNIT_SERVER_STUCK))
