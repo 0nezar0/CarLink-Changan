@@ -388,4 +388,6 @@
     <string name="carlink_settings_car_hotspot_button">Hotspot settings</string>
     <string name="carlink_settings_hotspot_notice">Turn on the hotspot in the car settings, then connect your phone to it. If the main settings screen opens, look for the hotspot under network settings.</string>
     <string name="carlink_settings_hotspot_unavailable">Could not open settings. Open hotspot settings from the car screen.</string>
+    <string name="carlink_iphone_hotspot_ipv4">iPhone hotspot: IPv4 only (experimental)</string>
+    <string name="carlink_iphone_hotspot_ipv4_detail">Use only IPv4 for CarPlay on this Wi-Fi connection. Applies on the next connection.</string>
 </resources>
