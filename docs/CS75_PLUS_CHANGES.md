@@ -604,42 +604,48 @@ gh release create v1.6.1 \
 
 **متى نطبّقه:** فقط إذا أظهر سجل v1.7.12 ردّاً (callback) قديماً من محاولة سابقة يؤثر على جلسة جديدة.
 
-**الكود** (مسودة أعادت كتابتها من وصف الفكرة أعلاه؛ ما وصل نص الكلاس الأصلي، فهذه ليست النسخة الحرفية. لا يدخل المشروع الآن):
+**الكود** (لا يدخل المشروع الآن):
 
 ```kotlin
-/** Main-thread guard: only the newest connection attempt may time out or report connected. */
-class ConnectionAttempts(private val handler: Handler = Handler(Looper.getMainLooper())) {
-    private var lastId = 0
-    private var activeId = 0 // 0 = no attempt
+class ConnectionAttempts(
+    private val onTimeout: (Long) -> Unit
+) {
+    private val handler = Handler(Looper.getMainLooper())
+    private var lastId = 0L
+    private var activeId: Long? = null
     private var timeout: Runnable? = null
 
-    /** Cancels the previous attempt, starts a new one and returns its id. */
-    fun begin(timeoutMs: Long = 60_000, onTimeout: (id: Int) -> Unit): Int {
+    // تُستدعى كل الدوال على خيط الواجهة.
+    fun begin(timeoutMs: Long = 60_000L): Long {
         cancel()
         val id = ++lastId
         activeId = id
-        val r = Runnable { if (activeId == id) { activeId = 0; timeout = null; onTimeout(id) } }
-        timeout = r
-        handler.postDelayed(r, timeoutMs)
+
+        val task = Runnable {
+            if (activeId == id) {
+                cancel()
+                onTimeout(id)
+            }
+        }
+        timeout = task
+        handler.postDelayed(task, timeoutMs)
         return id
     }
 
-    /** True while [id] is the current attempt (no side effect). */
-    fun isCurrent(id: Int): Boolean = id != 0 && id == activeId
-
-    /** Clears the timeout only when [id] is current; false for a stale id. */
-    fun connected(id: Int): Boolean {
-        if (!isCurrent(id)) return false
-        timeout?.let(handler::removeCallbacks)
-        timeout = null
+    fun connected(id: Long): Boolean {
+        if (activeId != id) return false
+        clearTimeout()
         return true
     }
 
-    /** Ends the current attempt (call on service/screen destroy too). */
     fun cancel() {
-        timeout?.let(handler::removeCallbacks)
+        activeId = null
+        clearTimeout()
+    }
+
+    private fun clearTimeout() {
+        timeout?.let { handler.removeCallbacks(it) }
         timeout = null
-        activeId = 0
     }
 }
 ```
