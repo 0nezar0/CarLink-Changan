@@ -42,7 +42,7 @@ import kotlinx.coroutines.withContext
 /** What the QR-for-the-full-log sheet shows ([FullLogQrSheet]). */
 internal sealed interface FullLogQrUi {
     data object Preparing : FullLogQrUi
-    data class Ready(val endpoint: FullLogOnPhone.Endpoint, val codeEntryOpen: Boolean = true) : FullLogQrUi
+    data class Ready(val endpoint: FullLogOnPhone.Endpoint) : FullLogQrUi
     data object NoNetwork : FullLogQrUi
     data object Failed : FullLogQrUi
 }
@@ -61,10 +61,6 @@ internal fun fullLogPageTexts(context: Context): FullLogOnPhone.PageTexts {
         download = context.getString(R.string.carlink_fulllog_page_download),
         loading = context.getString(R.string.carlink_fulllog_page_loading),
         loadFailed = context.getString(R.string.carlink_fulllog_page_load_failed),
-        codePrompt = context.getString(R.string.carlink_fulllog_page_code_prompt),
-        codeOpen = context.getString(R.string.carlink_fulllog_page_code_open),
-        codeWrong = context.getString(R.string.carlink_fulllog_page_code_wrong),
-        codeLocked = context.getString(R.string.carlink_fulllog_page_code_locked),
     )
 }
 
@@ -100,13 +96,7 @@ internal fun rememberFullLogOnPhone(vm: CarLinkViewModel, onReport: () -> Unit):
                 runCatching {
                     val text = exportCleanLog(context, vm::savedSecrets)
                     FullLogOnPhone.start(text, texts, SettingsBackupServer.addressCandidates(),
-                        onIdle = { scope.launch(Dispatchers.Main) { if (attempt == mine) close() } },
-                        onCodeEntryClosed = {
-                            scope.launch(Dispatchers.Main) {
-                                val now = ui
-                                if (attempt == mine && now is FullLogQrUi.Ready) ui = now.copy(codeEntryOpen = false)
-                            }
-                        })
+                        onIdle = { scope.launch(Dispatchers.Main) { if (attempt == mine) close() } })
                 }.getOrDefault(FullLogOnPhone.Start.Failed)
             }
             if (attempt != mine) {
@@ -135,8 +125,8 @@ internal fun rememberFullLogOnPhone(vm: CarLinkViewModel, onReport: () -> Unit):
 }
 
 /**
- * The QR code of the stereo's own page with the full log, the link written out, the address and
- * six-digit code to type, and what to do when the phone cannot reach this screen.
+ * The QR code of the stereo's own page with the full log, the link written out (typing it opens the
+ * log too), and what to do when the phone cannot reach this screen.
  */
 @Composable
 internal fun FullLogQrSheet(ui: FullLogQrUi, onRetry: () -> Unit, onReport: () -> Unit, onCopyLog: () -> Unit, onDone: () -> Unit) {
@@ -149,8 +139,6 @@ internal fun FullLogQrSheet(ui: FullLogQrUi, onRetry: () -> Unit, onReport: () -
     val preparing = stringResource(R.string.carlink_fulllog_preparing)
     val body = stringResource(R.string.carlink_fulllog_body)
     val a11y = stringResource(R.string.carlink_fulllog_qr_a11y)
-    val typed = ready?.let { stringResource(R.string.carlink_fulllog_type, ltr(it.endpoint.typedAddress), ltr(codeForDisplay(it.endpoint.code))) }
-    val codeClosed = stringResource(R.string.carlink_fulllog_code_closed)
     val others = ready?.endpoint?.otherUrls?.takeIf { it.isNotEmpty() }
         ?.let { urls -> stringResource(R.string.carlink_fulllog_other, urls.joinToString("  ·  ") { ltr(it) }) }
     val privacy = stringResource(R.string.carlink_fulllog_privacy)
@@ -177,13 +165,10 @@ internal fun FullLogQrSheet(ui: FullLogQrUi, onRetry: () -> Unit, onReport: () -
                         Text(ltr(e.url), style = MaterialTheme.typography.titleSmall, color = scheme.onSurface,
                             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                         Spacer(Modifier.height(gap))
-                        if (ui.codeEntryOpen && typed != null) Note(R.drawable.carlink_ic_smartphone, typed)
-                        else Note(R.drawable.carlink_ic_warning, codeClosed)
                         if (others != null) {
-                            Spacer(Modifier.height(10.dp))
                             Note(R.drawable.carlink_ic_wifi, others)
+                            Spacer(Modifier.height(10.dp))
                         }
-                        Spacer(Modifier.height(10.dp))
                         Note(R.drawable.carlink_ic_lock, privacy)
                         Spacer(Modifier.height(10.dp))
                         Note(R.drawable.carlink_ic_info, stops)
@@ -210,19 +195,10 @@ internal fun FullLogQrSheet(ui: FullLogQrUi, onRetry: () -> Unit, onReport: () -
     }
 }
 
-/**
- * "482 913" that stays in that order inside Arabic text: left-to-right marks make both groups strong
- * left-to-right, so the space between them cannot reorder them where a renderer ignores isolates.
- */
-internal fun codeForDisplay(code: String): String = "\u200E" + FullLogOnPhone.spacedCode(code).replace(" ", "\u200E\u00A0")
-
 /** A running page for previews and the screenshot gallery: the car hotspot address and a second one on Wi-Fi. */
-internal fun previewFullLogReady(codeEntryOpen: Boolean = true) = FullLogQrUi.Ready(
+internal fun previewFullLogReady() = FullLogQrUi.Ready(
     FullLogOnPhone.Endpoint(
-        url = "http://192.168.43.1:8888/b/3f9a1c7e5d2b8a40/",
-        typedAddress = "192.168.43.1:8888",
-        code = "482913",
-        otherUrls = listOf("http://192.168.1.37:8888/b/3f9a1c7e5d2b8a40/"),
+        url = "http://192.168.43.1:41837/b/3f9a1c7e5d2b8a40/",
+        otherUrls = listOf("http://192.168.1.37:41837/b/3f9a1c7e5d2b8a40/"),
     ),
-    codeEntryOpen,
 )

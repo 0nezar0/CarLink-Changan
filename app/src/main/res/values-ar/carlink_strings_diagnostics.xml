@@ -376,13 +376,11 @@
     <!-- v1.7.11: التشخيص › QR للسجل الكامل (FullLogOnPhone). -->
     <string name="carlink_diag_log_qr">QR للسجل الكامل</string>
     <string name="carlink_fulllog_title">السجل الكامل على جوالك</string>
-    <string name="carlink_fulllog_body">امسح الرمز بكاميرا الجوال لفتح السجل كاملاً، ثم انسخه أو احفظه كملف. لازم يكون الجوال على نفس شبكة هذه الشاشة: نقطة اتصال السيارة، أو نفس الواي فاي، أو نقطة الاتصال الشخصية في الآيفون. لا يحتاج إنترنت.</string>
+    <string name="carlink_fulllog_body">امسح الرمز بكاميرا الجوال، أو اكتب الرابط اللي تحته في متصفح الجوال، لفتح السجل كاملاً ثم انسخه أو احفظه كملف. لازم يكون الجوال على نفس شبكة هذه الشاشة: نقطة اتصال السيارة، أو نفس الواي فاي، أو نقطة الاتصال الشخصية في الآيفون. لا يحتاج إنترنت.</string>
     <string name="carlink_fulllog_preparing">جارٍ تجهيز السجل الكامل…</string>
-    <string name="carlink_fulllog_type">ما فيه كاميرا؟ في متصفح الجوال اكتب %1$s وأدخل الرمز %2$s.</string>
-    <string name="carlink_fulllog_code_closed">أُدخلت رموز خاطئة كثيرة، فأُغلقت كتابة العنوان. رمز QR ما زال يعمل؛ أغلق هذه النافذة وافتحها مجدداً لرمز جديد.</string>
     <string name="carlink_fulllog_other">عناوين أخرى لهذه الشاشة: %1$s</string>
     <string name="carlink_fulllog_stops">تتوقف الصفحة بعد 10 دقائق بدون استخدام، أو عند إغلاق هذه النافذة.</string>
-    <string name="carlink_fulllog_privacy">كلمات مرور الواي فاي المحفوظة وأسماء المالكين وعناوين الأجهزة مخفية. ما دامت هذه النافذة مفتوحة، يقدر أي أحد على هذه الشبكة معه الرابط أو الرمز يقرأ السجل.</string>
+    <string name="carlink_fulllog_privacy">كلمات مرور الواي فاي المحفوظة وأسماء المالكين وعناوين الأجهزة مخفية. ما دامت هذه النافذة مفتوحة، يقدر أي أحد على هذه الشبكة معه الرابط يقرأ السجل.</string>
     <string name="carlink_fulllog_no_network">هذه الشاشة ليست على شبكة يوصل لها جوالك. وصّل الجوال بنقطة اتصال السيارة أو بنفس الواي فاي اللي عليه الشاشة، أو وصّل الشاشة بنقطة الاتصال الشخصية في الآيفون، ثم حاول مرة ثانية. بدون شبكة، زر الإبلاغ على GitHub يعرض رمز QR مختصراً، و«نسخ السجل كاملاً» ما زال يعمل.</string>
     <string name="carlink_fulllog_failed">تعذّر تشغيل الصفحة. حاول مرة ثانية، أو استخدم «نسخ السجل كاملاً».</string>
     <string name="carlink_fulllog_retry">حاول مرة ثانية</string>
@@ -394,8 +392,4 @@
     <string name="carlink_fulllog_page_download">تنزيل</string>
     <string name="carlink_fulllog_page_loading">جارٍ تحميل السجل…</string>
     <string name="carlink_fulllog_page_load_failed">تعذّر الوصول لشاشة السيارة. تأكد أن الجوال ما زال على نفس الشبكة ثم أعد تحميل الصفحة.</string>
-    <string name="carlink_fulllog_page_code_prompt">أدخل الرمز الظاهر على شاشة السيارة.</string>
-    <string name="carlink_fulllog_page_code_open">فتح</string>
-    <string name="carlink_fulllog_page_code_wrong">رمز خاطئ. المحاولات المتبقية: {left}.</string>
-    <string name="carlink_fulllog_page_code_locked">رموز خاطئة كثيرة. في شاشة السيارة أغلق نافذة QR وافتحها مجدداً لرمز جديد.</string>
 </resources>

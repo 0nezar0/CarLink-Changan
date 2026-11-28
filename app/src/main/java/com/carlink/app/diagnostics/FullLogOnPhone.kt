@@ -9,10 +9,11 @@ import com.shilapi.xcertplay.backup.SettingsImportOutcome
  * internet needed. One QR code holds about 2.9 KB and the full log is up to ~0.6 MB, so the code
  * carries a link to a page this stereo serves itself.
  *
- * The server is DiPlay's [SettingsBackupServer] (vendor/diplay, unchanged): a random token in the
- * link, a six-digit code for a typed address (five wrong codes close code entry), and it stops by
- * itself after [IDLE_TIMEOUT_MILLIS] without a request. Its settings export/import routes are not
- * used: export answers "{}" and import refuses everything.
+ * The server is DiPlay's [SettingsBackupServer] (vendor/diplay, unchanged): a random 64-bit token in
+ * the link is the only key (no typed code: the page is started without a code page, so "/" and
+ * "/code" answer 404), and it stops by itself after [IDLE_TIMEOUT_MILLIS] without a request. Typing
+ * the link written under the QR code opens the log directly. Its settings export/import routes are
+ * not used: export answers "{}" and import refuses everything.
  *
  * The log is exported and passed through [GitHubIssueReport.clean] (saved Wi-Fi passwords, owners'
  * names, serial numbers, addresses) once, before the server starts; the page shows that text.
@@ -21,8 +22,8 @@ object FullLogOnPhone {
     /** Ten minutes without a request, as DiPlay's own phone page. */
     const val IDLE_TIMEOUT_MILLIS = SettingsBackupServer.IDLE_TIMEOUT_MILLIS
 
-    /** What the sheet shows: the link in the QR code, the address to type, the code and other addresses. */
-    data class Endpoint(val url: String, val typedAddress: String, val code: String, val otherUrls: List<String> = emptyList())
+    /** What the sheet shows: the link in the QR code (also typed as is) and the same link on other addresses. */
+    data class Endpoint(val url: String, val otherUrls: List<String> = emptyList())
 
     /** The page's words, in the stereo's language. */
     data class PageTexts(
@@ -36,10 +37,6 @@ object FullLogOnPhone {
         val download: String,
         val loading: String,
         val loadFailed: String,
-        val codePrompt: String,
-        val codeOpen: String,
-        val codeWrong: String,
-        val codeLocked: String,
     )
 
     sealed interface Start {
@@ -51,22 +48,19 @@ object FullLogOnPhone {
 
     /** A running page; [stop] is safe to call more than once. */
     class Session internal constructor(private val server: SettingsBackupServer, val endpoint: Endpoint) {
-        val codeEntryOpen: Boolean get() = server.codeEntryOpen
         fun stop() = server.stop()
     }
 
     /**
      * Starts the page for [logText] (already cleaned) on [addresses] (best first, as
-     * [SettingsBackupServer.addressCandidates]). [onIdle] and [onCodeEntryClosed] run on a server thread.
+     * [SettingsBackupServer.addressCandidates]). [onIdle] runs on a server thread.
      */
     fun start(
         logText: String,
         texts: PageTexts,
         addresses: List<String>,
         onIdle: () -> Unit = {},
-        onCodeEntryClosed: () -> Unit = {},
         idleTimeoutMillis: Int = IDLE_TIMEOUT_MILLIS,
-        typedPort: Int = SettingsBackupServer.TYPED_PORT,
     ): Start {
         if (addresses.isEmpty()) return Start.NoNetwork
         val report = logText.toByteArray(Charsets.UTF_8)
@@ -75,21 +69,14 @@ object FullLogOnPhone {
             export = { "{}".toByteArray(Charsets.UTF_8) },
             import = { SettingsImportOutcome(0, 0, invalid = true) },
             report = { report },
-            codePage = codePageHtml(texts),
+            // No code page: the token in the link is the only way in.
+            codePage = null,
         )
         server.idleTimeoutMillis = idleTimeoutMillis
-        server.typedPort = typedPort
         server.onIdle = onIdle
-        server.onCodeEntryClosed = onCodeEntryClosed
         val started = runCatching { server.start() }.getOrNull() ?: run { runCatching { server.stop() }; return Start.Failed }
-        return Start.Started(Session(server, endpoint(started.url(addresses.first()), started.typedAddress(addresses.first()), started.code,
-            addresses.drop(1).map { started.url(it) })))
+        return Start.Started(Session(server, Endpoint(started.url(addresses.first()), addresses.drop(1).map { started.url(it) })))
     }
-
-    internal fun endpoint(url: String, typed: String, code: String, others: List<String>) = Endpoint(url, typed, code, others)
-
-    /** "123 456": easier to read out and type. */
-    fun spacedCode(code: String): String = code.chunked(3).joinToString(" ")
 
     /** Escapes text for HTML element content and double-quoted attributes. */
     fun html(text: String): String = buildString(text.length) {
@@ -122,11 +109,9 @@ p { color:#9aa0a6; font-size:14px; margin:0 0 14px; }
 button { flex:1 1 140px; padding:13px 16px; border-radius:999px; border:0; font-size:16px; font-weight:600; cursor:pointer;
   background:#a8c7fa; color:#0b2540; }
 button.alt { background:#2a323d; color:#e8eaed; }
-button:disabled, input:disabled { opacity:.5; }
+button:disabled { opacity:.5; }
 textarea { width:100%; box-sizing:border-box; height:60vh; padding:12px; border-radius:12px; border:1px solid #2a323d;
   background:#0b0f13; color:#e8eaed; font:12px/1.4 ui-monospace,Menlo,Consolas,monospace; direction:ltr; text-align:left; }
-input { display:block; width:100%; box-sizing:border-box; margin-bottom:14px; padding:12px 14px; border-radius:12px;
-  border:1px solid #2a323d; background:#0b0f13; color:#e8eaed; font-size:28px; letter-spacing:6px; text-align:center; direction:ltr; }
 #status { min-height:20px; font-size:14px; color:#81c995; margin-bottom:10px; }
 #status.bad { color:#f28b82; }
 """
@@ -184,48 +169,6 @@ fetch("report", {cache: "no-store"}).then(function(r) {
   text = body; $("log").value = body; status("", false);
   $("copy").disabled = false; $("download").disabled = false;
 }).catch(function() { status(T.loadFailed, true); });
-</script>
-</body>
-</html>
-""".toByteArray(Charsets.UTF_8)
-
-    /** The page a typed address opens: asks for the six-digit code, then goes on to [pageHtml]. */
-    fun codePageHtml(t: PageTexts): ByteArray = """<!DOCTYPE html>
-<html lang="${html(t.lang)}" dir="${if (t.rtl) "rtl" else "ltr"}">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
-<title>${html(t.title)}</title>
-<style>$STYLE</style>
-</head>
-<body>
-<main>
-  <h1>${html(t.title)}</h1>
-  <form id="form">
-    <p>${html(t.codePrompt)}</p>
-    <input id="code" inputmode="numeric" autocomplete="off" maxlength="7" autofocus>
-    <div class="row"><button id="open">${html(t.codeOpen)}</button></div>
-    <div id="status"></div>
-  </form>
-</main>
-<script>
-var T = {wrong:${js(t.codeWrong)}, locked:${js(t.codeLocked)}, loadFailed:${js(t.loadFailed)}};
-var $ = function(id) { return document.getElementById(id); };
-function bad(message) { $("status").textContent = message; $("status").className = "bad"; }
-function closed() { bad(T.locked); $("code").disabled = true; $("open").disabled = true; }
-$("form").addEventListener("submit", function(event) {
-  event.preventDefault();
-  var code = $("code").value.replace(/\D/g, "");
-  fetch("code", {method: "POST", body: code, cache: "no-store"}).then(function(r) {
-    return r.json().then(function(json) { return {ok: r.ok, json: json}; });
-  }).then(function(answer) {
-    if (answer.ok && answer.json.path) { location.href = answer.json.path; return; }
-    if (answer.json.locked) { closed(); return; }
-    bad(T.wrong.replace("{left}", answer.json.left));
-    $("code").value = ""; $("code").focus();
-  }).catch(function() { bad(T.loadFailed); });
-});
 </script>
 </body>
 </html>

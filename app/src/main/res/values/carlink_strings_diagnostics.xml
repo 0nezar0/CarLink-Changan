@@ -418,13 +418,11 @@
     <!-- v1.7.11: Diagnostics › QR for the full log (FullLogOnPhone): the full log on a phone on the same network. -->
     <string name="carlink_diag_log_qr">QR for the full log</string>
     <string name="carlink_fulllog_title">Full log on your phone</string>
-    <string name="carlink_fulllog_body">Scan with your phone’s camera to open the whole log, then copy it or save it as a file. The phone must be on the same network as this screen: the car hotspot, the same Wi-Fi, or the iPhone’s Personal Hotspot. No internet needed.</string>
+    <string name="carlink_fulllog_body">Scan with your phone’s camera, or type the link below in the phone’s browser, to open the whole log, then copy it or save it as a file. The phone must be on the same network as this screen: the car hotspot, the same Wi-Fi, or the iPhone’s Personal Hotspot. No internet needed.</string>
     <string name="carlink_fulllog_preparing">Preparing the full log…</string>
-    <string name="carlink_fulllog_type">No camera? In the phone’s browser, type %1$s and enter the code %2$s.</string>
-    <string name="carlink_fulllog_code_closed">Too many wrong codes, so typing the address is closed. The QR code still works; close this and open it again for a new code.</string>
     <string name="carlink_fulllog_other">Other addresses of this screen: %1$s</string>
     <string name="carlink_fulllog_stops">The page stops after 10 minutes without use, or when you close this.</string>
-    <string name="carlink_fulllog_privacy">Saved Wi-Fi passwords, owners’ names and device addresses are hidden. While this is open, anyone on this network with the link or the code can read the log.</string>
+    <string name="carlink_fulllog_privacy">Saved Wi-Fi passwords, owners’ names and device addresses are hidden. While this is open, anyone on this network with the link can read the log.</string>
     <string name="carlink_fulllog_no_network">This screen is not on a network your phone can reach. Put the phone on the car hotspot or on the same Wi-Fi as this screen, or join this screen to the iPhone’s Personal Hotspot, then try again. Without a network, Report on GitHub shows a short QR code, and Copy full log still works.</string>
     <string name="carlink_fulllog_failed">The page could not start. Try again, or use Copy full log.</string>
     <string name="carlink_fulllog_retry">Try again</string>
@@ -436,8 +434,4 @@
     <string name="carlink_fulllog_page_download">Download</string>
     <string name="carlink_fulllog_page_loading">Loading the log…</string>
     <string name="carlink_fulllog_page_load_failed">Could not reach the car screen. Check that the phone is still on the same network, then reload.</string>
-    <string name="carlink_fulllog_page_code_prompt">Enter the code shown on the car screen.</string>
-    <string name="carlink_fulllog_page_code_open">Open</string>
-    <string name="carlink_fulllog_page_code_wrong">Wrong code. Tries left: {left}.</string>
-    <string name="carlink_fulllog_page_code_locked">Too many wrong codes. On the car screen, close the QR sheet and open it again for a new code.</string>
 </resources>

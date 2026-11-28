@@ -14,7 +14,6 @@ class FullLogOnPhoneTest {
     private val texts = FullLogOnPhone.PageTexts(
         lang = "ar", rtl = true, title = "السجل <الكامل>", hint = "hint", copy = "نسخ", copied = "copied \"ok\"",
         copyFailed = "fail</script><script>alert(1)</script>", download = "dl", loading = "loading", loadFailed = "lf",
-        codePrompt = "prompt", codeOpen = "open", codeWrong = "wrong {left}", codeLocked = "locked",
     )
     private val log = "CarLink full log\n2026-11-28 17:00:00.000  CP E  فشل الاتصال\n"
     private var session: FullLogOnPhone.Session? = null
@@ -26,7 +25,7 @@ class FullLogOnPhoneTest {
 
     private fun start(addresses: List<String> = listOf("127.0.0.1"), onIdle: () -> Unit = {}, idle: Int = FullLogOnPhone.IDLE_TIMEOUT_MILLIS):
         FullLogOnPhone.Session {
-        val started = FullLogOnPhone.start(log, texts, addresses, onIdle = onIdle, idleTimeoutMillis = idle, typedPort = 0)
+        val started = FullLogOnPhone.start(log, texts, addresses, onIdle = onIdle, idleTimeoutMillis = idle)
         assertTrue("$started", started is FullLogOnPhone.Start.Started)
         return (started as FullLogOnPhone.Start.Started).session.also { session = it }
     }
@@ -54,15 +53,13 @@ class FullLogOnPhoneTest {
 
     @Test
     fun noAddressMeansNoNetwork() {
-        assertEquals(FullLogOnPhone.Start.NoNetwork, FullLogOnPhone.start(log, texts, emptyList(), typedPort = 0))
+        assertEquals(FullLogOnPhone.Start.NoNetwork, FullLogOnPhone.start(log, texts, emptyList()))
     }
 
     @Test
     fun endpointUsesTheBestAddressAndListsTheOthers() {
         val e = start(listOf("127.0.0.1", "10.0.0.9")).endpoint
         assertTrue(e.url, e.url.matches(Regex("http://127\\.0\\.0\\.1:\\d+/b/[0-9a-f]{16}/")))
-        assertTrue(e.typedAddress, e.typedAddress.matches(Regex("127\\.0\\.0\\.1:\\d+")))
-        assertTrue(e.code, e.code.matches(Regex("\\d{6}")))
         assertEquals(1, e.otherUrls.size)
         assertTrue(e.otherUrls[0].startsWith("http://10.0.0.9:"))
     }
@@ -89,20 +86,16 @@ class FullLogOnPhoneTest {
         assertEquals("{}", request(e.url + "export").body)
     }
 
+    /** No six-digit code: the token in the link is the only way in, and the link alone opens the log. */
     @Test
-    fun theTypedCodeLeadsToTheLogPage() {
+    fun theLinkAloneOpensTheLogAndThereIsNoCodeEntry() {
         val e = start().endpoint
-        val root = "http://${e.typedAddress}/"
-        val codePage = request(root)
-        assertEquals(200, codePage.status)
-        assertTrue(codePage.body.contains("prompt"))
-        val wrongCode = if (e.code == "000000") "111111" else "000000"
-        val wrong = request(root + "code", "POST", wrongCode)
-        assertEquals(403, wrong.status)
-        val right = request(root + "code", "POST", FullLogOnPhone.spacedCode(e.code))
-        assertEquals(200, right.status)
-        val path = Regex("\"path\":\"([^\"]+)\"").find(right.body)!!.groupValues[1]
-        assertTrue(e.url.endsWith(path))
+        val root = e.url.substringBefore("/b/") + "/"
+        assertEquals(404, request(root).status)
+        assertEquals(404, request(root + "code", "POST", "123456").status)
+        assertEquals(log, request(e.url + "report").body)
+        val page = String(FullLogOnPhone.pageHtml(texts), Charsets.UTF_8)
+        assertFalse(page.contains("<input"))
     }
 
     @Test
@@ -129,13 +122,6 @@ class FullLogOnPhoneTest {
         assertTrue(page.contains("\\u003c/script\\u003e"))
         assertEquals("\"a\\\"b\\\\c\\n\\u003c\"", FullLogOnPhone.js("a\"b\\c\n<"))
         assertEquals("&lt;b&gt; &amp; &quot;x&quot; &#39;", FullLogOnPhone.html("<b> & \"x\" '"))
-    }
-
-    @Test
-    fun codeIsSpacedInThrees() {
-        assertEquals("482 913", FullLogOnPhone.spacedCode("482913"))
-        // On screen: left-to-right marks keep the groups in order inside Arabic text.
-        assertEquals("\u200E482\u200E\u00A0913", com.carlink.app.ui.diagnostics.codeForDisplay("482913"))
     }
 
     /** What both Copy full log and the phone page get: saved passwords and addresses hidden. */
