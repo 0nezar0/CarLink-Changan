@@ -17,9 +17,12 @@
 #             the secrets. Used on workflow_dispatch if chosen, and automatically on a push to main
 #             while CARLINK_KEYSTORE_B64 is not set.
 #
-# This workflow never uploads an APK artifact and never creates a GitHub release. After the checks
-# pass, the APK is deleted from the runner. Never add pull_request / pull_request_target triggers:
-# secrets must not reach code from forks.
+# This workflow never creates a GitHub release. Pushes, tags and default runs never upload anything:
+# after the checks pass, the APK is deleted from the runner. The ONLY exception is a manual run
+# (workflow_dispatch) in release mode with the "upload_test_apk" input set to true: it uploads the
+# signed APK, after the signer check passed, as an artifact that expires after 1 day, for a requested
+# test build. Delete that artifact as soon as the APK has been taken. Never add pull_request /
+# pull_request_target triggers: secrets must not reach code from forks.
 name: Build CarLink
 
 on:
@@ -33,6 +36,10 @@ on:
         type: choice
         options: [release, validate]
         default: release
+      upload_test_apk:
+        description: 'Release mode only: upload the signed APK as a 1-day artifact (requested test builds)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -149,6 +156,17 @@ jobs:
           if [ "$got" != "$EXPECTED_CERT_SHA256" ]; then
             echo "::error::APK signer $got is not the expected $EXPECTED_CERT_SHA256"; exit 1
           fi
+
+      # Opt-in only (manual run, release mode, upload_test_apk = true), and only after the signer check
+      # above passed. Pushes, tags and default runs skip this step.
+      - name: Upload the signed test APK (opt-in, expires in 1 day)
+        if: env.MODE == 'release' && github.event_name == 'workflow_dispatch' && inputs.upload_test_apk == true
+        uses: actions/upload-artifact@v5
+        with:
+          name: carlink-test-apk
+          path: ${{ env.APK }}
+          retention-days: 1
+          if-no-files-found: error
 
       - name: Remove the APK and the secrets from the runner
         if: always()
