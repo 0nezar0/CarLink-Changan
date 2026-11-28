@@ -70,6 +70,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.carlink.app.R
 import com.carlink.app.ui.CarLinkViewModel
 import com.carlink.app.ui.ConnectionPrefs
+import com.carlink.app.ui.hasNativeAndroidAuto
 import com.carlink.app.ui.offersAndroidAutoOnScreen
 import com.carlink.app.ui.HomeState
 import com.carlink.app.ui.NetworkPreview
@@ -697,7 +698,7 @@ private fun ColumnScope.HeroCopy(mode: HomeMode, ui: HomeUi, actions: HomeAction
                 stringResource(R.string.carlink_home_connected_body, phoneName, pathName(ui.network?.path, link.transport),
                     formatElapsed(elapsed))
         }
-        HomeMode.FAILED -> failureCopy(link)
+        HomeMode.FAILED -> failureCopy(link, ui.connection.hasNativeAndroidAuto)
     }
     val titleStyle = when {
         title.length <= 14 -> MaterialTheme.typography.displayLarge
@@ -800,7 +801,7 @@ private fun ColumnScope.HeroCopy(mode: HomeMode, ui: HomeUi, actions: HomeAction
                 GlassButton(stringResource(R.string.carlink_home_disconnect), actions::disconnect, icon = R.drawable.carlink_ic_link_off)
             }
             HomeMode.FAILED -> {
-                FailureActions(link, ui.network, actions, repairPhone = failedPhone(ui).takeIf { offersRepair(link) })
+                FailureActions(link, ui.network, actions, repairPhone = failedPhone(ui).takeIf { offersRepair(link) }, nativeAndroidAuto = ui.connection.hasNativeAndroidAuto)
                 // The log and the error go straight into a GitHub issue (no copying from the stereo).
                 TertiaryButton(stringResource(R.string.carlink_report_action), actions::reportProblem, icon = R.drawable.carlink_ic_bug_report)
                 // Nothing to tap on the stereo: the report is already a QR code for the driver's phone.
@@ -835,7 +836,7 @@ private fun ColumnScope.HeroCopy(mode: HomeMode, ui: HomeUi, actions: HomeAction
  * Home's headline and sentence for a failure, as string resources (the issue report quotes them
  * too). The engine sentence takes the engine's name as its argument.
  */
-internal fun failureCopyRes(problem: LinkProblem?): Pair<Int, Int> = when (problem) {
+internal fun failureCopyRes(problem: LinkProblem?, nativeAndroidAuto: Boolean = false): Pair<Int, Int> = when (problem) {
     LinkProblem.CARPLAY_AUTH_MISSING -> R.string.carlink_home_error_auth_title to R.string.carlink_home_error_auth_body
     LinkProblem.NO_IPHONE_SELECTED -> R.string.carlink_home_error_iphone_title to R.string.carlink_home_error_iphone_body
     LinkProblem.CAR_HOTSPOT_DETAILS_MISSING -> R.string.carlink_home_error_hotspot_details_title to R.string.carlink_home_error_hotspot_details_body
@@ -859,14 +860,16 @@ internal fun failureCopyRes(problem: LinkProblem?): Pair<Int, Int> = when (probl
     LinkProblem.USB -> R.string.carlink_home_error_usb_title to R.string.carlink_home_error_usb_body
     LinkProblem.EXTERNAL_BLUETOOTH -> R.string.carlink_home_error_external_bt_title to R.string.carlink_home_error_external_bt_body
     LinkProblem.EXTERNAL_MODULE -> R.string.carlink_home_error_external_module_title to R.string.carlink_home_error_external_module_body
-    LinkProblem.HEAD_UNIT_SERVER_OFF -> R.string.carlink_home_error_hu_server_title to R.string.carlink_home_error_hu_server_body
-    LinkProblem.HEAD_UNIT_SERVER_STUCK -> R.string.carlink_home_error_hu_server_stuck_title to R.string.carlink_home_error_hu_server_stuck_body
+    LinkProblem.HEAD_UNIT_SERVER_OFF -> R.string.carlink_home_error_hu_server_title to (
+        if (nativeAndroidAuto) R.string.carlink_home_error_hu_server_body else R.string.carlink_home_error_hu_server_body_no_app)
+    LinkProblem.HEAD_UNIT_SERVER_STUCK -> R.string.carlink_home_error_hu_server_stuck_title to (
+        if (nativeAndroidAuto) R.string.carlink_home_error_hu_server_stuck_body else R.string.carlink_home_error_hu_server_stuck_body_phone)
     LinkProblem.ENGINE, null -> R.string.carlink_home_error_engine_title to R.string.carlink_home_error_engine_body
 }
 
 @Composable
-internal fun failureCopy(link: LinkState): Pair<String, String> {
-    val (title, copyBody) = failureCopyRes(link.problem)
+internal fun failureCopy(link: LinkState, nativeAndroidAuto: Boolean = false): Pair<String, String> {
+    val (title, copyBody) = failureCopyRes(link.problem, nativeAndroidAuto)
     // A screen with no Wi-Fi Direct (#11): the hotspot is the only wireless way, so don't offer Wi-Fi Direct.
     val body = if (link.problem == LinkProblem.CAR_HOTSPOT_OFF && !wifiDirectHere()) R.string.carlink_home_error_hotspot_off_body_no_direct else copyBody
     // Only the pairing-lost title takes an argument (the phone); the others ignore it.
@@ -881,7 +884,8 @@ private fun wifiDirectHere(): Boolean {
 }
 
 @Composable
-private fun FailureActions(link: LinkState, network: NetworkPreview?, actions: HomeActions, repairPhone: PairedPhone?) {
+private fun FailureActions(link: LinkState, network: NetworkPreview?, actions: HomeActions, repairPhone: PairedPhone?,
+                           nativeAndroidAuto: Boolean = false) {
     val problem = link.problem
     // The fix for a stuck Bluetooth or handshake step, next to whatever the problem itself offers.
     val repair = @Composable { repairPhone?.let { RepairButton(it, actions::forgetAndRepair) } }
@@ -923,9 +927,14 @@ private fun FailureActions(link: LinkState, network: NetworkPreview?, actions: H
             repair()
         }
         // Coming back from Android Auto's settings tries again by itself (rememberProblemFix).
+        // The settings button opens the Android Auto app on this head unit, so only when it is here.
         LinkProblem.HEAD_UNIT_SERVER_OFF, LinkProblem.HEAD_UNIT_SERVER_STUCK -> {
-            IonButton(stringResource(R.string.carlink_home_open_aa_settings), { actions.fix(problem) }, icon = R.drawable.carlink_ic_settings)
-            GlassButton(stringResource(R.string.carlink_home_try_again), actions::retry, icon = R.drawable.carlink_ic_refresh)
+            if (nativeAndroidAuto) {
+                IonButton(stringResource(R.string.carlink_home_open_aa_settings), { actions.fix(problem) }, icon = R.drawable.carlink_ic_settings)
+                GlassButton(stringResource(R.string.carlink_home_try_again), actions::retry, icon = R.drawable.carlink_ic_refresh)
+            } else {
+                IonButton(stringResource(R.string.carlink_home_try_again), actions::retry, icon = R.drawable.carlink_ic_refresh)
+            }
         }
         // No Try again: nothing on this stereo changes between attempts. The cable is the way.
         LinkProblem.EXTERNAL_BLUETOOTH, LinkProblem.EXTERNAL_MODULE -> {

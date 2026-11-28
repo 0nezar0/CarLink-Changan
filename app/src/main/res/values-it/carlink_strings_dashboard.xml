@@ -214,6 +214,8 @@ Il wireless richiede che il telefono dialoghi con il Bluetooth di questo schermo
 1. Tocca Apri impostazioni di Android Auto.
 2. Apri il menu ⋮ in alto a destra e tocca Arresta server unità principale, poi Avvia server unità principale.
 3. Torna qui: CarLink riprova da solo.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">Il server dell’unità principale di Android Auto sul telefono ha accettato la connessione ma non ha mai risposto. È bloccato su una connessione precedente e non si riprende da solo, quindi CarLink ha smesso di riprovare.\n1. Sul telefono, apri le impostazioni di Android Auto.\n2. Apri il menu ⋮ e tocca Stop head unit server, poi Start head unit server.\n3. Torna qui e tocca Riprova.</string>
+    <string name="carlink_home_error_hu_server_body_no_app">Android Auto su questa schermata richiede il server dell’unità principale di Android Auto, ed è spento. Su questa unità non c’è un’app Android Auto da aprire. Tocca Riprova, oppure disattiva «Android Auto su questa schermata» nelle Impostazioni.</string>
     <string name="carlink_home_error_hu_server_body">Android Auto su questo schermo richiede il server dell’unità principale di Android Auto, ed è spento.
 1. Tocca Apri impostazioni di Android Auto.
 2. Scorri fino a Versione e toccala 10 volte, poi consenti le impostazioni sviluppatore.

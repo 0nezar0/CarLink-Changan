@@ -214,6 +214,8 @@ La conexión inalámbrica necesita que el teléfono hable con el Bluetooth de es
 1. Toca Abrir ajustes de Android Auto.
 2. Abre el menú ⋮ arriba a la derecha y toca Detener servidor de unidad principal, luego Iniciar servidor de unidad principal.
 3. Vuelve aquí: CarLink lo intenta de nuevo solo.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">El servidor de la unidad principal de Android Auto en el teléfono aceptó la conexión pero no respondió. Está atascado en una conexión anterior y no se recupera solo, así que CarLink dejó de intentarlo.\n1. En el teléfono, abre los ajustes de Android Auto.\n2. Abre el menú ⋮ y pulsa Stop head unit server y luego Start head unit server.\n3. Vuelve aquí y pulsa Reintentar.</string>
+    <string name="carlink_home_error_hu_server_body_no_app">Android Auto en esta pantalla necesita el servidor de la unidad principal de Android Auto, y está apagado. En esta unidad no hay una app de Android Auto que abrir. Pulsa Reintentar, o desactiva «Android Auto en esta pantalla» en Ajustes.</string>
     <string name="carlink_home_error_hu_server_body">Android Auto en esta pantalla necesita el servidor de la unidad principal de Android Auto, y está apagado.
 1. Toca Abrir ajustes de Android Auto.
 2. Desplázate a Versión y tócala 10 veces, luego permite los ajustes de desarrollador.

@@ -6,6 +6,9 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+- Android Auto, a stuck or stopped head unit server: the “Open Android Auto settings” button is shown only when this head unit has Google’s Android Auto (installed and able to run a car session). On a screen without it, such as the CS75 Plus, the button is hidden — it only opened the car’s Android Auto app, which is not there. The steps now say to Stop and Start the head unit server on the phone, and Try again stays.
+- The same rule already applied to “Run Android Auto on this screen” on Home and to the matching switch in Settings; those were left unchanged.
+
 ## [CS75 Plus 2023 v1.7.13] - 2026-11-28 (test)
 
 Test build from branch `trial/1.7.13` (started from `fix/aa-no-native`, `a2dc3961`, on top of v1.7.12), versionCode 10066. It installs over v1.7.12 (10065) and every earlier build, and keeps your settings. Everything from v1.7.12 stays (the Head unit server method already stopped at once when the phone's server was stuck, QR for the full log, and the mid-session drop wording).

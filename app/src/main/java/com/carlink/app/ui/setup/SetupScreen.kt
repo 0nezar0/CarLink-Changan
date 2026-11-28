@@ -81,6 +81,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.carlink.app.R
 import com.carlink.app.diagnostics.SystemScreens
 import com.carlink.app.ui.CarLinkViewModel
+import com.carlink.app.ui.hasNativeAndroidAuto
 import com.carlink.app.ui.components.CarLinkMark
 import com.carlink.app.ui.components.engineName
 import com.carlink.app.ui.components.isolate
@@ -164,6 +165,7 @@ fun SetupScreen(vm: CarLinkViewModel, start: SetupStep, onExit: () -> Unit) {
     val unified by vm.unified.collectAsStateWithLifecycle()
     val wirelessUnavailable by vm.wirelessUnavailable.collectAsStateWithLifecycle()
     val home by vm.home.collectAsStateWithLifecycle()
+    val connection by vm.connection.collectAsStateWithLifecycle()
     val pairing = remember { PairingSession(context) }
     val scope = rememberCoroutineScope()
     DisposableEffect(step == SetupStep.PAIR) {
@@ -307,6 +309,7 @@ fun SetupScreen(vm: CarLinkViewModel, start: SetupStep, onExit: () -> Unit) {
         cable = cable,
         wirelessUnavailable = wirelessUnavailable,
         interfaceSize = unified.interfaceSize,
+        nativeAndroidAuto = connection.hasNativeAndroidAuto,
     )
     SetupContent(ui, actions)
 }
@@ -588,7 +591,7 @@ private fun pairCopy(ui: SetupUi): Copy {
             stringResource(R.string.carlink_setup_pair_connected_body, engine?.let { engineName(it) } ?: ""))
         // A known problem (blocked before starting, or a precise failure) in Home's words, never "try again".
         session?.stage == LinkStage.FAILED && knownProblem(session) != null -> {
-            val (title, body) = failureCopy(session)
+            val (title, body) = failureCopy(session, ui.nativeAndroidAuto)
             val external = session.problem == LinkProblem.EXTERNAL_BLUETOOTH || session.problem == LinkProblem.EXTERNAL_MODULE
             Copy(stringResource(R.string.carlink_home_eyebrow_problem), if (external) colors.warning else scheme.error, plain(title), body)
         }

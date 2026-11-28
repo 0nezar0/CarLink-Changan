@@ -84,9 +84,13 @@ data class ConnectionPrefs(
     val androidAutoCanRunCar: Boolean = false,
 )
 
+/** Google's Android Auto is installed on this head unit and can run a car session (OEM / system Android Auto). */
+val ConnectionPrefs.hasNativeAndroidAuto: Boolean
+    get() = androidAutoInstalled && androidAutoCanRunCar
+
 /** Home's "Run Android Auto on this screen": the switch is on, Android Auto is here, and Home is idle. */
 fun ConnectionPrefs.offersAndroidAutoOnScreen(idle: Boolean): Boolean =
-    androidAutoOnScreen && androidAutoInstalled && androidAutoCanRunCar && idle
+    androidAutoOnScreen && hasNativeAndroidAuto && idle
 
 /** The wireless path the next session would use, for Home's Network chip. */
 data class NetworkPreview(
@@ -813,7 +817,19 @@ class CarLinkViewModel(application: Application) : AndroidViewModel(application)
         session.startSelf()
     }
 
-    private companion object {
+    internal companion object {
         const val ANDROID_AUTO_PACKAGE = "com.google.android.projection.gearhead"
     }
 }
+
+/** Whether this head unit has Google's Android Auto as a car app (OEM / system install). */
+fun nativeAndroidAutoOn(context: android.content.Context): Boolean {
+    val pm = context.packageManager
+    if (runCatching { pm.getPackageInfo(CarLinkViewModel.ANDROID_AUTO_PACKAGE, 0) }.isFailure) return false
+    return runCatching {
+        pm.queryIntentActivities(
+            android.content.Intent("com.google.android.gms.carsetup.START_DUPLEX")
+                .setPackage(CarLinkViewModel.ANDROID_AUTO_PACKAGE), 0).isNotEmpty()
+    }.getOrDefault(false)
+}
+

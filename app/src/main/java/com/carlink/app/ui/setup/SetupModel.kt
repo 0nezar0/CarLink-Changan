@@ -126,6 +126,8 @@ data class SetupUi(
     val pairOnly: Boolean = false,
     /** CarPlay's and Android Auto's interface size, chosen on [SetupStep.SIZE]. */
     val interfaceSize: com.carlink.core.settings.InterfaceSize = com.carlink.core.settings.InterfaceSize.MEDIUM,
+    /** This head unit has Google's Android Auto as a car app (OEM / system install). */
+    val nativeAndroidAuto: Boolean = false,
 ) {
     /** Required and recommended items not allowed yet; while any is, "Allow all" is the lit action. */
     val missingNeeded: Int get() = permissions.count { !it.granted && it.item.need != Need.OPTIONAL }

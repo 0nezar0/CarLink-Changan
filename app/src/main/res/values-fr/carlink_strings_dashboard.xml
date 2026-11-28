@@ -214,6 +214,8 @@ Le sans-fil exige que votre téléphone dialogue avec le Bluetooth de cet écran
 1. Appuyez sur Ouvrir les réglages d’Android Auto.
 2. Ouvrez le menu ⋮ en haut à droite et appuyez sur Arrêter le serveur d’unité principale, puis Démarrer le serveur d’unité principale.
 3. Revenez ici : CarLink réessaie tout seul.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">Le serveur d’unité principale d’Android Auto sur le téléphone a accepté la connexion mais n’a jamais répondu. Il est bloqué sur une connexion précédente et ne se rétablit pas tout seul, donc CarLink a arrêté d’essayer.\n1. Sur le téléphone, ouvrez les réglages d’Android Auto.\n2. Ouvrez le menu ⋮ et appuyez sur Stop head unit server, puis Start head unit server.\n3. Revenez ici et appuyez sur Réessayer.</string>
+    <string name="carlink_home_error_hu_server_body_no_app">Android Auto sur cet écran a besoin du serveur d’unité principale d’Android Auto, et il est arrêté. Cet appareil n’a pas d’application Android Auto à ouvrir. Appuyez sur Réessayer, ou désactivez « Android Auto sur cet écran » dans les Réglages.</string>
     <string name="carlink_home_error_hu_server_body">Android Auto sur cet écran a besoin du serveur d’unité principale d’Android Auto, et il est éteint.
 1. Appuyez sur Ouvrir les réglages d’Android Auto.
 2. Faites défiler jusqu’à Version et appuyez 10 fois, puis autorisez les options pour les développeurs.

@@ -214,6 +214,8 @@
 1. 点按“打开 Android Auto 设置”。
 2. 打开右上角的 ⋮ 菜单，点按“停止主机服务器”，然后再点“启动主机服务器”。
 3. 返回此处：CarLink 会自行重试。</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">手机上的 Android Auto 主机服务器接受了连接，但从未应答。它卡在先前的连接上，无法自行恢复，因此 CarLink 已停止尝试。\n1. 在手机上打开 Android Auto 设置。\n2. 打开 ⋮ 菜单，先点按 Stop head unit server，再点按 Start head unit server。\n3. 回到这里，点按“重试”。</string>
+    <string name="carlink_home_error_hu_server_body_no_app">此屏幕上的 Android Auto 需要 Android Auto 的主机服务器，但该服务器已关闭。本机没有可打开的 Android Auto 应用。请点按“重试”，或在设置中关闭“此屏幕上的 Android Auto”。</string>
     <string name="carlink_home_error_hu_server_body">此屏幕上的 Android Auto 需要 Android Auto 的主机服务器，而它当前是关闭的。
 1. 点按“打开 Android Auto 设置”。
 2. 滚动到“版本”并点按 10 次，然后允许开发者选项。

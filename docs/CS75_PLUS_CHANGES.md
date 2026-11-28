@@ -608,6 +608,17 @@ gh release create v1.6.1 \
 - الفكرة تبقى في قسم «أفكار مؤجلة» إذا ظهر لاحقاً ردّ قديم يؤثر على جلسة جديدة في سجل v1.7.12 أو ما بعده.
 
 
+## 30. زر «فتح إعدادات Android Auto» يظهر فقط إذا كانت الشاشة فيها Android Auto أصلي
+
+تعليق المستخدم على v1.7.13: «فتح الاعدادات يطلع للي عنده الاصلي فقط». الزر في شاشات فشل خادم الوحدة الرئيسية (`HEAD_UNIT_SERVER_STUCK` و`HEAD_UNIT_SERVER_OFF`) كان يفتح تطبيق Android Auto على **الشاشة** (`com.google.android.projection.gearhead` / DefaultSettingsActivity، وإلا صفحة معلومات التطبيق). في CS75 Plus ما فيه Android Auto أصلي، فالزر بلا فائدة. والخادم اللي يحتاج Stop/Start هو على **الجوال**.
+
+**تدقيق لكل ما يفترض وجود Android Auto أصلي على الشاشة:**
+
+- **يُصلح:** زر «فتح إعدادات Android Auto» في الرئيسية (وإعدادات الفشل نفسها في معالج الإعداد إن ظهرت). يظهر فقط إذا `androidAutoInstalled && androidAutoCanRunCar` (`ConnectionPrefs.hasNativeAndroidAuto`). بدون ذلك يُخفى، ويبقى زر «إعادة المحاولة»، ويتغيّر نص الخطوات: العمل على الجوال (Stop ثم Start head unit server) ثم «إعادة المحاولة». نفس الاختيار في تقرير GitHub (`IssueReporter`).
+- **كان صحيحاً وتُرك:** زر الرئيسية «تشغيل Android Auto على هذه الشاشة» يظهر فقط مع `offersAndroidAutoOnScreen` (المفتاح + التطبيق موجود ويقدر يشغّل وضع السيارة). مفتاح الإعدادات «Android Auto على هذه الشاشة» يظهر إذا التطبيق مثبّت، ويُعطَّل مع شرح إذا Google منع وضع السيارة (`aa_on_screen_unsupported`). نص الانتظار `server_waiting` ونص ورقة طريقة خادم الوحدة الرئيسية يقولان أصلاً «على الجوال». منطق الاتصال اللاسلكي ما يفتح تطبيق الشاشة. محرك Self Mode كان يفتح إعدادات Android Auto عند فشل الخادم المحلي، لكن CarLink يمنع ذلك (`onEngineEvent`) ويعرض الشاشة الخاصة به.
+- لقطات المعرض: `failed-head-unit-server-stuck` و`-ar` بدون الزر (مثل هذه السيارة)، و`failed-head-unit-server-stuck-native` مع الزر لشاشات فيها Android Auto أصلي.
+
+
 ## أفكار مؤجلة (Future ideas / postponed)
 
 ### `ConnectionAttempts`: حارس رقم الجيل لمحاولات الاتصال (قرار 28 نوفمبر 2026: لا نطبّقه الآن)

@@ -214,6 +214,8 @@ Kabellos braucht, dass Ihr Telefon mit dem Bluetooth dieses Bildschirms spricht.
 1. Tippen Sie auf Android Auto-Einstellungen öffnen.
 2. Öffnen Sie das Menü ⋮ oben rechts und tippen Sie auf Head-Unit-Server stoppen, dann Head-Unit-Server starten.
 3. Kommen Sie hierher zurück: CarLink versucht es von selbst erneut.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">Der Head-Unit-Server von Android Auto auf dem Telefon hat die Verbindung angenommen, aber nie geantwortet. Er hängt an einer früheren Verbindung fest und erholt sich nicht von selbst, daher hat CarLink den Versuch beendet.\n1. Öffnen Sie auf dem Telefon die Android-Auto-Einstellungen.\n2. Öffnen Sie das Menü ⋮ und tippen Sie auf Stop head unit server, dann auf Start head unit server.\n3. Kehren Sie hierher zurück und tippen Sie auf Erneut versuchen.</string>
+    <string name="carlink_home_error_hu_server_body_no_app">Android Auto auf diesem Bildschirm braucht den Head-Unit-Server von Android Auto, und er ist aus. Auf diesem Gerät gibt es keine Android-Auto-App zum Öffnen. Tippen Sie auf Erneut versuchen, oder schalten Sie „Android Auto auf diesem Bildschirm“ in den Einstellungen aus.</string>
     <string name="carlink_home_error_hu_server_body">Android Auto auf diesem Bildschirm braucht den Head-Unit-Server von Android Auto, und er ist aus.
 1. Tippen Sie auf Android Auto-Einstellungen öffnen.
 2. Scrollen Sie zu Version und tippen Sie 10 Mal darauf, dann erlauben Sie die Entwickleroptionen.

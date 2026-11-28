@@ -203,13 +203,18 @@ private fun homeEntries(): List<GalleryEntry> = with(HomeFakes) { listOf(
     home("failed-external-module") {
         HomeContent(ui(link = failed(LinkProblem.EXTERNAL_MODULE, engine = Engine.ANDROID_AUTO), phones = listOf(pixel)), actions)
     },
-    // Android Auto's head unit server took the connection and went silent: restart it (#84).
+    // Android Auto's head unit server took the connection and went silent: restart it on the phone
+    // (this head unit has no OEM Android Auto, so Home does not offer "Open Android Auto settings").
     home("failed-head-unit-server-stuck") {
         HomeContent(ui(link = failed(LinkProblem.HEAD_UNIT_SERVER_STUCK, engine = Engine.ANDROID_AUTO), phones = listOf(pixel)), actions)
     },
-    // v1.7.12: the same message in Arabic ("Stop and Start head unit server"), which a stuck server now shows at once.
     GalleryEntry("home", "failed-head-unit-server-stuck-ar", locale = "ar") {
         HomeContent(ui(link = failed(LinkProblem.HEAD_UNIT_SERVER_STUCK, engine = Engine.ANDROID_AUTO), phones = listOf(pixel)), actions)
+    },
+    // Same failure on a head unit that has Google's Android Auto: the settings button is shown.
+    home("failed-head-unit-server-stuck-native") {
+        HomeContent(ui(link = failed(LinkProblem.HEAD_UNIT_SERVER_STUCK, engine = Engine.ANDROID_AUTO), phones = listOf(pixel)).copy(
+            connection = prefs.copy(androidAutoInstalled = true, androidAutoCanRunCar = true)), actions)
     },
     home("failed-engine") {
         HomeContent(ui(link = failed(LinkProblem.ENGINE, engine = Engine.ANDROID_AUTO), phones = listOf(pixel, iphone)), actions)

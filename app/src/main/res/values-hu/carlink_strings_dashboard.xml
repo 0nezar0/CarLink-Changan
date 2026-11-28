@@ -214,6 +214,8 @@ A vezeték nélküli kapcsolathoz a telefonnak ennek a képernyőnek a Bluetooth
 1. Koppintson az Android Auto-beállítások megnyitása gombra.
 2. Nyissa meg a jobb felső ⋮ menüt, és koppintson a Fejegység-kiszolgáló leállítása, majd a Fejegység-kiszolgáló indítása elemre.
 3. Térjen vissza ide: a CarLink magától újra próbálkozik.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">Az Android Auto fejegység-kiszolgálója a telefonon elfogadta a kapcsolatot, de soha nem válaszolt. Egy korábbi kapcsolaton beragadt, és magától nem áll helyre, ezért a CarLink abbahagyta a próbálkozást.\n1. A telefonon nyissa meg az Android Auto beállításait.\n2. Nyissa meg a ⋮ menüt, és koppintson a Stop head unit server, majd a Start head unit server elemre.\n3. Térjen ide vissza, és koppintson az Újrapróbálás gombra.</string>
+    <string name="carlink_home_error_hu_server_body_no_app">Az Android Auto ezen a képernyőn az Android Auto fejegység-kiszolgálóját igényli, és az ki van kapcsolva. Ezen a fejegységen nincs megnyitható Android Auto alkalmazás. Koppintson az Újrapróbálás gombra, vagy kapcsolja ki a Beállításokban az „Android Auto ezen a képernyőn” opciót.</string>
     <string name="carlink_home_error_hu_server_body">Az ezen a képernyőn futó Android Autónak szüksége van az Android Auto fejegység-kiszolgálójára, és az ki van kapcsolva.
 1. Koppintson az Android Auto-beállítások megnyitása gombra.
 2. Görgessen a Verzióhoz, koppintson rá 10-szer, majd engedélyezze a fejlesztői beállításokat.

@@ -214,6 +214,8 @@ Wayarles memerlukan telefon anda berkomunikasi dengan Bluetooth skrin ini. Pada 
 1. Ketik Buka tetapan Android Auto.
 2. Buka menu ⋮ di bahagian atas kanan dan ketik Hentikan pelayan unit kepala, kemudian Mulakan pelayan unit kepala.
 3. Kembali ke sini: CarLink cuba lagi sendiri.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">Pelayan unit kepala Android Auto pada telefon menerima sambungan tetapi tidak pernah menjawab. Ia tersekat pada sambungan terdahulu dan tidak pulih sendiri, jadi CarLink berhenti mencuba.\n1. Pada telefon, buka tetapan Android Auto.\n2. Buka menu ⋮ dan ketik Stop head unit server, kemudian Start head unit server.\n3. Kembali ke sini dan ketik Cuba lagi.</string>
+    <string name="carlink_home_error_hu_server_body_no_app">Android Auto pada skrin ini memerlukan pelayan unit kepala Android Auto, dan ia dimatikan. Unit kepala ini tiada apl Android Auto untuk dibuka. Ketik Cuba lagi, atau matikan “Android Auto pada skrin ini” dalam Tetapan.</string>
     <string name="carlink_home_error_hu_server_body">Android Auto pada skrin ini memerlukan pelayan unit kepala Android Auto, dan ia dimatikan.
 1. Ketik Buka tetapan Android Auto.
 2. Tatal ke Versi dan ketiknya 10 kali, kemudian benarkan tetapan pembangun.

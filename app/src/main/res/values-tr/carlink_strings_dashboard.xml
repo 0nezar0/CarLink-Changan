@@ -214,6 +214,8 @@ Kablosuz için telefonunuzun bu ekranın Bluetooth’uyla konuşması gerekir. B
 1. Android Auto ayarlarını aç’a dokunun.
 2. Sağ üstteki ⋮ menüsünü açıp Ana ünite sunucusunu durdur, sonra Ana ünite sunucusunu başlat’a dokunun.
 3. Buraya dönün: CarLink kendiliğinden yeniden dener.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">Telefondaki Android Auto ana ünite sunucusu bağlantıyı kabul etti ancak hiç yanıt vermedi. Önceki bir bağlantıda takılı kaldı ve kendiliğinden düzelmez, bu yüzden CarLink denemeyi durdurdu.\n1. Telefonda Android Auto ayarlarını açın.\n2. ⋮ menüsünü açıp Stop head unit server, ardından Start head unit server öğesine dokunun.\n3. Buraya dönüp Yeniden dene öğesine dokunun.</string>
+    <string name="carlink_home_error_hu_server_body_no_app">Bu ekrandaki Android Auto, Android Auto ana ünite sunucusuna ihtiyaç duyar ve sunucu kapalıdır. Bu ünitede açılacak bir Android Auto uygulaması yok. Yeniden dene öğesine dokunun veya Ayarlar’da “Bu ekranda Android Auto” seçeneğini kapatın.</string>
     <string name="carlink_home_error_hu_server_body">Bu ekrandaki Android Auto, Android Auto’nun ana ünite sunucusuna ihtiyaç duyar ve o kapalıdır.
 1. Android Auto ayarlarını aç’a dokunun.
 2. Sürüm’e kaydırıp 10 kez dokunun, sonra geliştirici ayarlarına izin verin.

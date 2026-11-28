@@ -231,6 +231,8 @@
     <string name="carlink_home_error_hu_server_title">Start Android Auto’s head unit server</string>
     <string name="carlink_home_error_hu_server_stuck_title">Restart Android Auto’s head unit server</string>
     <string name="carlink_home_error_hu_server_stuck_body">Android Auto’s head unit server is stuck on an earlier connection.\n1. Tap Open Android Auto settings.\n2. In the ⋮ menu, tap Stop head unit server, then Start head unit server.\n3. Come back here: CarLink tries again by itself.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">Android Auto’s head unit server on the phone accepted the connection but never answered. It is stuck on an earlier connection and does not recover by itself, so CarLink stopped trying.\n1. On the phone, open Android Auto’s settings.\n2. Open the ⋮ menu and tap Stop head unit server, then Start head unit server.\n3. Come back here and tap Try again.</string>
+    <string name="carlink_home_error_hu_server_body_no_app">Android Auto on this screen needs Android Auto’s head unit server, and it is off. This head unit has no Android Auto app to open. Tap Try again, or turn off “Android Auto on this screen” in Settings.</string>
     <string name="carlink_home_error_hu_server_body">Android Auto on this screen needs Android Auto’s head unit server, and it is off.\n1. Tap Open Android Auto settings.\n2. Scroll to Version and tap it 10 times, then allow developer settings.\n3. Open the ⋮ menu at the top right and tap Start head unit server.\n4. Come back here: CarLink tries again by itself.</string>
     <!-- A failure's timeline: the step it stopped on is red. -->
     <string name="carlink_home_fail_step_bluetooth">Bluetooth</string>

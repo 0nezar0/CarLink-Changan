@@ -214,6 +214,8 @@ A ligação sem fios precisa que o telemóvel fale com o Bluetooth deste ecrã. 
 1. Toque em Abrir definições do Android Auto.
 2. Abra o menu ⋮ no canto superior direito e toque em Parar servidor da unidade principal, depois Iniciar servidor da unidade principal.
 3. Volte aqui: o CarLink tenta novamente sozinho.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">O servidor da unidade principal do Android Auto no telefone aceitou a ligação mas nunca respondeu. Está preso numa ligação anterior e não recupera sozinho, por isso o CarLink deixou de tentar.\n1. No telefone, abra as definições do Android Auto.\n2. Abra o menu ⋮ e toque em Stop head unit server e depois em Start head unit server.\n3. Volte aqui e toque em Tentar novamente.</string>
+    <string name="carlink_home_error_hu_server_body_no_app">O Android Auto neste ecrã precisa do servidor da unidade principal do Android Auto, e ele está desligado. Nesta unidade não há uma app do Android Auto para abrir. Toque em Tentar novamente, ou desative “Android Auto neste ecrã” nas Definições.</string>
     <string name="carlink_home_error_hu_server_body">O Android Auto neste ecrã precisa do servidor da unidade principal do Android Auto, e está desligado.
 1. Toque em Abrir definições do Android Auto.
 2. Deslize até Versão e toque 10 vezes, depois permita as definições de programador.

@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.util.DisplayMetrics
 import com.carlink.app.R
+import com.carlink.app.ui.nativeAndroidAutoOn
 import com.carlink.app.ui.home.failureCopyRes
 import com.carlink.core.connection.DeviceCapabilities
 import com.carlink.core.connection.FailureReason
@@ -47,7 +48,7 @@ object IssueReporter {
             withPhone(context, numbered, log, start?.timeMillis)
         }
         val session = sessions.firstOrNull()
-        val (titleRes, bodyRes) = failureCopyRes(session?.problem)
+        val (titleRes, bodyRes) = failureCopyRes(session?.problem, nativeAndroidAutoOn(context))
         val engineName = session?.engine?.let {
             context.getString(if (it == Engine.CARPLAY) R.string.carlink_engine_carplay else R.string.carlink_engine_android_auto)
         } ?: ""

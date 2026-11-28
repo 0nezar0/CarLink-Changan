@@ -220,6 +220,8 @@
 4. عد إلى هنا: يحاول CarLink مرة أخرى تلقائياً.</string>
     <string name="carlink_home_error_hu_server_stuck_title">أعد تشغيل خادم الوحدة الرئيسية في Android Auto</string>
     <string name="carlink_home_error_hu_server_stuck_body">استقبل خادم الوحدة الرئيسية في Android Auto الاتصال لكنه لم يرد. الخادم عالق على اتصال سابق ولا يتعافى من نفسه، لذلك أوقف CarLink المحاولة.\n1. اضغط «فتح إعدادات Android Auto».\n2. افتح قائمة ⋮ في أعلى الشاشة واضغط Stop head unit server ثم Start head unit server.\n3. عد إلى هنا: يحاول CarLink مرة أخرى تلقائياً.</string>
+    <string name="carlink_home_error_hu_server_stuck_body_phone">استقبل خادم الوحدة الرئيسية في Android Auto على الجوال الاتصال لكنه لم يرد. الخادم عالق على اتصال سابق ولا يتعافى من نفسه، لذلك أوقف CarLink المحاولة.\n1. على الجوال، افتح إعدادات Android Auto.\n2. افتح قائمة ⋮ واضغط Stop head unit server ثم Start head unit server.\n3. عد إلى هنا واضغط «إعادة المحاولة».</string>
+    <string name="carlink_home_error_hu_server_body_no_app">يحتاج Android Auto على هذه الشاشة إلى خادم الوحدة الرئيسية في Android Auto، وهو متوقف. ما فيه تطبيق Android Auto على هذه الشاشة لفتح إعداداته. اضغط «إعادة المحاولة»، أو أوقف «Android Auto على هذه الشاشة» من الإعدادات.</string>
     <string name="carlink_home_fail_step_bluetooth">Bluetooth</string>
     <string name="carlink_home_fail_step_cable">الكابل</string>
     <string name="carlink_home_fail_step_handshake">المصافحة</string>
