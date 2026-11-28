@@ -52,6 +52,12 @@ class GalleryEntry(
     val opensWindow: Boolean = false,
     /** Config names to render on; null means every config that is not opt-in. */
     val configs: Set<String>? = null,
+    /**
+     * A language to render in ("ar"), set as a resource qualifier for the whole render. Unlike a
+     * CompositionLocal override this also reaches dialog windows (CarSheet), which build their own
+     * Compose root from the activity's context.
+     */
+    val locale: String? = null,
     val content: @Composable () -> Unit,
 )
 
@@ -304,25 +310,21 @@ private fun diagnosticsEntries(): List<GalleryEntry> = listOf(
         DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
         com.carlink.app.ui.diagnostics.FullLogQrSheet(com.carlink.app.ui.diagnostics.previewFullLogReady(), {}, {}, {}, {})
     },
-    GalleryEntry("diagnostics", "full-log-qr-ar", opensWindow = true, configs = setOf("tablet", "car-landscape", "phone-portrait")) {
-        Arabic {
-            DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
-            com.carlink.app.ui.diagnostics.FullLogQrSheet(com.carlink.app.ui.diagnostics.previewFullLogReady(), {}, {}, {}, {})
-        }
+    GalleryEntry("diagnostics", "full-log-qr-ar", opensWindow = true, configs = setOf("tablet", "car-landscape", "phone-portrait"), locale = "ar") {
+        DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
+        com.carlink.app.ui.diagnostics.FullLogQrSheet(com.carlink.app.ui.diagnostics.previewFullLogReady(), {}, {}, {}, {})
     },
     GalleryEntry("diagnostics", "full-log-qr-no-network", opensWindow = true, configs = setOf("tablet", "car-landscape", "phone-portrait")) {
         DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
         com.carlink.app.ui.diagnostics.FullLogQrSheet(com.carlink.app.ui.diagnostics.FullLogQrUi.NoNetwork, {}, {}, {}, {})
     },
-    GalleryEntry("diagnostics", "full-log-qr-no-network-ar", opensWindow = true, configs = setOf("tablet", "car-landscape", "phone-portrait")) {
-        Arabic {
-            DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
-            com.carlink.app.ui.diagnostics.FullLogQrSheet(com.carlink.app.ui.diagnostics.FullLogQrUi.NoNetwork, {}, {}, {}, {})
-        }
+    GalleryEntry("diagnostics", "full-log-qr-no-network-ar", opensWindow = true, configs = setOf("tablet", "car-landscape", "phone-portrait"), locale = "ar") {
+        DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
+        com.carlink.app.ui.diagnostics.FullLogQrSheet(com.carlink.app.ui.diagnostics.FullLogQrUi.NoNetwork, {}, {}, {}, {})
     },
     // The log panel's buttons in Arabic, QR for the full log among them.
-    GalleryEntry("diagnostics", "idle-ar", configs = setOf("tablet", "car-landscape", "phone-portrait")) {
-        Arabic { DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions) }
+    GalleryEntry("diagnostics", "idle-ar", configs = setOf("tablet", "car-landscape", "phone-portrait"), locale = "ar") {
+        DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
     },
     GalleryEntry("diagnostics", "phones-empty") {
         DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog(), emptyList()), GalleryDiagnosticsActions)
@@ -550,16 +552,3 @@ private fun settingsEntries(): List<GalleryEntry> = listOf(
 )
 
 
-/** Renders [content] in Arabic, right to left (as the ip-family-card-ar entry). */
-@Composable
-private fun Arabic(content: @Composable () -> Unit) {
-    val base = androidx.compose.ui.platform.LocalContext.current
-    val cfg = android.content.res.Configuration(base.resources.configuration).apply {
-        setLocale(java.util.Locale("ar")); setLayoutDirection(java.util.Locale("ar")) }
-    val ctx = remember { base.createConfigurationContext(cfg) }
-    androidx.compose.runtime.CompositionLocalProvider(
-        androidx.compose.ui.platform.LocalContext provides ctx,
-        androidx.compose.ui.platform.LocalConfiguration provides cfg,
-        androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl,
-        content = content)
-}

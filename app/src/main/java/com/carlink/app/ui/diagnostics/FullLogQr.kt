@@ -144,7 +144,7 @@ internal fun FullLogQrSheet(ui: FullLogQrUi, onRetry: () -> Unit, onReport: () -
     val dimens = CarLinkTokens.dimens
     val gap = if (isCar) 20.dp else 14.dp
     // Every string is read here, before the sheet's dialog window: that window has its own Compose root,
-    // which takes the context of the activity (the gallery's Arabic entries provide theirs out here).
+    // which takes the context of the activity.
     val ready = ui as? FullLogQrUi.Ready
     val preparing = stringResource(R.string.carlink_fulllog_preparing)
     val body = stringResource(R.string.carlink_fulllog_body)

@@ -130,7 +130,11 @@ class ScreenshotGallery {
                     } else if (entry.configs?.contains(config.name) == false || (config.optIn && entry.configs == null)) continue
                     val file = File(out, "${entry.area}/${entry.area}_${entry.name}_${config.name}_${theme.fileName}.webp")
                     if (only != null && !only.containsMatchIn(file.name)) continue
-                    val bitmap = render(config, theme, entry)
+                    // A language entry renders with that locale (and its layout direction) as a resource qualifier.
+                    if (entry.locale != null) RuntimeEnvironment.setQualifiers("+${entry.locale}")
+                    val bitmap = try { render(config, theme, entry) } finally {
+                        if (entry.locale != null) RuntimeEnvironment.setQualifiers(config.display)
+                    }
                     file.parentFile!!.mkdirs()
                     // Half-size lossy WebP: ~1% of a full PNG and still sharp for reading the layout. The
                     // public repository would otherwise grow by gigabytes with every full re-record.
