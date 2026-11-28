@@ -12,6 +12,7 @@ Test build from branch `trial/1.7.12` (started from `fix/aa-engine-restart`, `cf
 
 - Android Auto, Head unit server: when the phone's head unit server takes the connection and never answers (it is still held by an earlier connection), CarLink now stops at once and says to Stop and Start it in Android Auto's developer settings, instead of retrying "the connection dropped" for 40-60 s. This also applies in Self mode.
 - Diagnostics: a wireless Android Auto session that drops after the picture came now says "the connection to the phone dropped during the session" with the engine's last error, instead of "the engine restarted" (the engine process had not restarted).
+- Languages: German, French, Hungarian, Malay and Portuguese now have all the DiPlay settings texts that were still in English (42 strings each: cluster player and background, car brand badge, call voice level, long-press seek, screen-shape fit and others), and Malay uses one form, "(uji kaji)", for experimental titles. The translation tests cover these languages and nothing is ignored any more.
 - Diagnostics: if Android Auto's engine process really is killed and starts again under a session, the log says so ("engine process restarted under the session", with the process ids). The next car log should tell a process restart from a dropped link.
 
 ## [CS75 Plus 2023 v1.7.11] - 2026-11-28 (test)
