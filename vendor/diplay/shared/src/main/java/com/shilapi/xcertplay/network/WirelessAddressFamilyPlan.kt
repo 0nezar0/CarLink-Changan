@@ -60,9 +60,10 @@ internal object WirelessAddressFamilyPlan {
         )
     }
 
-    fun choose(backend: WirelessHotspotBackend, remembered: String?, sdkInt: Int): Choice = when {
+    fun choose(backend: WirelessHotspotBackend, remembered: String?, sdkInt: Int,
+               forceExistingWifiIpv4: Boolean = false): Choice = when {
         // #93: a remembered or flipped family never applies here, and IPv4 is never a guess to remember.
-        ipv4Only(backend) -> Choice(HotspotAddressPolicy.FAMILY_IPV4, guessed = false)
+        ipv4Only(backend) || (forceExistingWifiIpv4 && backend == WirelessHotspotBackend.EXISTING_WIFI) -> Choice(HotspotAddressPolicy.FAMILY_IPV4, guessed = false)
         remembered != null -> Choice(remembered, guessed = false)
         ipv6Guess && backend == WirelessHotspotBackend.WIFI_P2P && sdkInt >= MIN_IPV6_GUESS_SDK ->
             Choice(HotspotAddressPolicy.FAMILY_IPV6, guessed = true)

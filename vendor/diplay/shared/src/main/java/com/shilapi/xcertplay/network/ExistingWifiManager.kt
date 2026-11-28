@@ -27,6 +27,7 @@ class ExistingWifiManager(
     private val onDiagnostic: (String) -> Unit = {},
     private val onNetworkChanged: () -> Unit = {},
     private val preferredInterface: String? = null,
+    private val ipv4Only: Boolean = false,
 ) : WirelessHotspotManager {
     private val connectivity = context.applicationContext.getSystemService(ConnectivityManager::class.java)
         ?: throw IllegalStateException("ConnectivityManager is unavailable")
@@ -100,9 +101,10 @@ class ExistingWifiManager(
                 iface != null -> Collections.list(iface.inetAddresses)
                 else -> emptyList()
             }
-            val address = if (iface == null) null else wirelessHostAddress(linkAddresses, iface.index)
+            val localAddresses = if (ipv4Only) ipv4OnlyAddresses(linkAddresses) else linkAddresses
+            val address = if (iface == null) null else wirelessHostAddress(localAddresses, iface.index)
             if (iface != null && name != null && address != null) {
-                val addresses = existingWifiHostAddresses(linkAddresses, iface.index)
+                val addresses = existingWifiHostAddresses(localAddresses, iface.index)
                 var frequency: Int? = null
                 var channel = 0
                 var apBssid: ByteArray? = null
@@ -175,6 +177,8 @@ class ExistingWifiManager(
                 throw IOException(
                     if (interfaceMissing) {
                         "Existing Wi-Fi interface $configured was not found; check the interface setting"
+                    } else if (ipv4Only) {
+                        "Existing Wi-Fi did not provide a usable IPv4 address on the selected interface"
                     } else {
                         "Existing Wi-Fi is not connected or has no usable address. Connect both devices to the same Wi-Fi in system settings"
                     },
@@ -187,7 +191,7 @@ class ExistingWifiManager(
 
     private fun sameLink(properties: LinkProperties): Boolean =
         properties.interfaceName == interfaceName && properties.linkAddresses.any { it.address == host } &&
-            existingWifiHostAddresses(properties.linkAddresses.map { it.address }, interfaceIndex).toSet() == hosts.toSet()
+            (ipv4Only || existingWifiHostAddresses(properties.linkAddresses.map { it.address }, interfaceIndex).toSet() == hosts.toSet())
 
     // An iPhone told to use an open network never opens the AirPlay connection, while the same router
     // with WPA2 connects within seconds (#1232), so retrying cannot help.
