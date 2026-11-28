@@ -6,7 +6,7 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
-- Android Auto, Head unit server: when the phone's head unit server takes the connection and never answers (it is still held by an earlier connection), CarLink now stops at once and says to Stop and Start it in Android Auto's developer settings, instead of retrying "the connection dropped" for 40-60 s. On the other wireless methods the ride-along probe goes back to waiting for the phone without counting a dropped connection.
+- Android Auto, Head unit server: when the phone's head unit server takes the connection and never answers (it is still held by an earlier connection), CarLink now stops at once and says to Stop and Start it in Android Auto's developer settings, instead of retrying "the connection dropped" for 40-60 s.
 - Diagnostics: a wireless Android Auto session that drops after the picture came now says "the connection to the phone dropped during the session" with the engine's last error, instead of "the engine restarted" (the engine process had not restarted).
 
 ## [CS75 Plus 2023 v1.7.11] - 2026-11-28 (test)

@@ -223,14 +223,12 @@ internal class AaSessionTracker(
             EngineEvent.HEAD_UNIT_SERVER_STUCK.name -> if (!connected && (selfMode || headUnitServerPath)) fail(
                 FailureReason.HEAD_UNIT_SERVER_STUCK,
                 "Android Auto's head unit server took the connection and never answered (${d["endpoint"] ?: "5277"})",
-            ) else if (!connected && acceptedByProbe) {
+            ) else if (!sessionLive && acceptedByProbe) {
                 // CarLink: the probe's "the phone answered" was wrong. FOUND had stopped the Bluetooth
                 // wakes and the accept timeout, so the attempt would have waited for its stage deadline.
                 // Back to waiting, and wake the phone again soon. A Bluetooth route that has already
-                // answered (acceptedByProbe is cleared by it) or a session with video is left alone.
-                // The probe's own session is over: its Disconnected is not a lost projection.
-                sessionLive = false
-                pendingEndSince = null
+                // answered (acceptedByProbe is cleared by it) or a live session is left alone (on these
+                // paths the live session may be the native one, so its end decides).
                 backToWaiting(now)
                 nextRepokeAt = now + limits.repokeAfterLossMillis
                 progress(1, ProgressStage.WAITING_FOR_PHONE)

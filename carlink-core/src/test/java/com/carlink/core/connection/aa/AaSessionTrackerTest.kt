@@ -395,17 +395,6 @@ class AaSessionTrackerTest {
         assertEquals(FailureReason.HEAD_UNIT_SERVER_STUCK, self.event(EngineEvent.HEAD_UNIT_SERVER_STUCK).failure().reason)
     }
 
-    @Test fun aStuckRideAlongProbeGoesBackToWaitingWithoutCountingALoss() {
-        val t = wireless()
-        t.event(EngineEvent.HEAD_UNIT_SERVER_FOUND)
-        t.state(P.CONNECTION_CONNECTED)
-        assertEquals(listOf(AdapterEvent.Progress(1, 4, ProgressStage.WAITING_FOR_PHONE)),
-            t.event(EngineEvent.HEAD_UNIT_SERVER_STUCK, "endpoint=192.168.49.1:5277;count=1"))
-        assertTrue("the phone is woken again soon", t.shouldRepoke(now + limits.repokeAfterLossMillis))
-        assertEquals(emptyList<AdapterEvent>(), t.state(P.CONNECTION_DISCONNECTED))
-        assertEquals("the probe's own disconnect is not a lost projection", emptyList<AdapterEvent>(), t.after(limits.endDebounceMillis))
-    }
-
     @Test fun aStuckEventDuringASessionWithVideoIsIgnored() {
         val dedicated = AaSessionTracker(Transport.WIRELESS, limits, headUnitServerPath = true).also { it.begin(now) }
         dedicated.state(P.CONNECTION_TRANSPORT_STARTED, firstFrame = true)
