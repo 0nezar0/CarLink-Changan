@@ -1577,6 +1577,7 @@ class CarPlayController(
             wirelessAirPlayHandshake.begin(generation)
             // CarLink: Wi-Fi Direct tries the IPv6 link-local endpoint first, and the car hotspot and
             // local-only AP stay on IPv4 whatever family was remembered (WirelessAddressFamilyPlan, #93).
+            val iphoneHotspot = hotspotInfo.backend == WirelessHotspotBackend.EXISTING_WIFI && config.iphoneHotspotIpv4
             val familyChoice = WirelessAddressFamilyPlan.choose(
                 hotspotInfo.backend,
                 HotspotAddressPolicy.parseFamily(
@@ -1584,6 +1585,7 @@ class CarPlayController(
                         .getString(HOTSPOT_FAMILY_PREFERENCE_KEY, null),
                 ),
                 Build.VERSION.SDK_INT,
+                forceExistingWifiIpv4 = iphoneHotspot,
             )
             val preferredFamily = familyChoice.preferredFamily
             startedHotspot?.observeClients { count -> // CarLink
@@ -1599,8 +1601,8 @@ class CarPlayController(
                 log = { if (!isStaleWirelessRun(generation)) debugLog(it) },
             )
             // CarLink: the car / local-only AP never flips family or uses shared-Wi-Fi memory.
-            val carHotspotPath = isCarHotspotIpv4Only(hotspotInfo.backend)
-            if (carHotspotPath) ipv4Forced.set(true)
+            val requiresIpv4Host = iphoneHotspot || isCarHotspotIpv4Only(hotspotInfo.backend)
+            if (requiresIpv4Host) ipv4Forced.set(true)
             val candidates = addressRecovery.awaitCandidates(
                 hotspotCandidates(hotspotInfo),
                 preferredFamily,
@@ -1613,18 +1615,18 @@ class CarPlayController(
                 decideCarHotspotIpFamily(generation, hotspotInfo)
             } else null
             val dualStack = ipSession?.decision?.dualStack == true
-            val ipv4Only = carHotspotPath && !dualStack // CarLink
+            val ipv4Only = requiresIpv4Host && !dualStack // CarLink
             val carHotspotIpv6: List<InetAddress> = if (dualStack) ipSession!!.decision.ipv6Addresses else emptyList()
             val familyLabel = when { // CarLink
                 ipv4Only -> "IPv4 forced"
                 dualStack -> "IPv4+IPv6 auto"
                 else -> null
             }
-            val hostAddress = if (carHotspotPath) { // CarLink: IPv4 is always the host / first address
+            val hostAddress = if (requiresIpv4Host) { // CarLink: IPv4 is always the host / first address
                 val ipv4Candidates = ipv4OnlyAddresses(candidates + listOfNotNull(hotspotInfo.hostAddress))
                 HotspotAddressPolicy.select(ipv4Candidates, HotspotAddressPolicy.FAMILY_IPV4)
                     ?: throw IOException(
-                        "Car hotspot did not provide a usable IPv4 host address",
+                        "Wireless network did not provide a usable IPv4 host address",
                     )
             } else {
                 HotspotAddressPolicy.select(candidates, preferredFamily)
@@ -1636,7 +1638,7 @@ class CarPlayController(
             synchronized(wirelessResourceLock) {
                 if (isStaleWirelessRun(generation)) return
                 wirelessPublishedAddress = hostAddress
-                wirelessAlternateAddress = if (carHotspotPath) null
+                wirelessAlternateAddress = if (requiresIpv4Host) null
                     else HotspotAddressPolicy.alternateFamilyCandidate(candidates, hostAddress)
                 wirelessAddressRecovery = addressRecovery
             }
@@ -1662,7 +1664,7 @@ class CarPlayController(
                     "family=${familyLabel ?: if (hostAddress is Inet6Address) "IPv6" else "IPv4"} " +
                     "preference=${preferredFamily ?: "default"} " +
                     "guess=${familyChoice.guessed} firstTcpMs=${watchdog.timeoutMillis} " + // CarLink
-                    "ipv4Only=${WirelessAddressFamilyPlan.ipv4Only(hotspotInfo.backend)} " + // CarLink: #93
+                    "ipv4Only=$ipv4Only " + // CarLink: #93
                     "alternate=${wirelessAlternateAddress != null} " +
                     "identitySource=${if (deviceIdentifier == hotspotInfo.bssid) "interface" else "saved"} " +
                     "host=$hostAddressText " +
@@ -1711,7 +1713,7 @@ class CarPlayController(
             val wirelessAirPlayConfig = airPlayConfig.copy(
                 deviceId = deviceIdentifier,
                 btMac = hostBluetoothMac,
-                bindMediaToSessionIpv4 = WirelessAddressFamilyPlan.ipv4Only(hotspotInfo.backend), // CarLink: #93
+                bindMediaToSessionIpv4 = requiresIpv4Host, // CarLink: #93
             )
 
             onStatus(CarPlayStatus.AttachingNetwork)
@@ -1804,7 +1806,7 @@ class CarPlayController(
                 // waits for no link-local: it advertises A records only (#93). CarLink v1.6.6: on dual stack
                 // servedAddresses already holds the probed IPv6 listeners, so their AAAA follow the A record.
                 additionalAddresses = (servedAddresses +
-                    (if (WirelessAddressFamilyPlan.ipv4Only(hotspotInfo.backend)) emptyList()
+                    (if (requiresIpv4Host) emptyList()
                     else addressRecovery.awaitCandidates(
                         hotspotCandidates(hotspotInfo), HotspotAddressPolicy.FAMILY_IPV6, BONJOUR_LINK_LOCAL_WAIT_MILLIS,
                     ).filter { it is Inet6Address && it.isLinkLocalAddress && it.scopeId != 0 }))
@@ -3158,6 +3160,7 @@ class CarPlayController(
                 appContext, config.existingWifiSsid, config.existingWifiPassphrase, ::debugLog,
                 onNetworkChanged = { if (!isStaleWirelessRun(generation)) restartWireless() },
                 preferredInterface = config.existingWifiInterface,
+                ipv4Only = config.iphoneHotspotIpv4,
             )
             // CarLink: after the car hotspot is up, attach with the same ExistingWifiManager
             // path as shared-network (SAME_WIFI). SoftAP is located first; then that
