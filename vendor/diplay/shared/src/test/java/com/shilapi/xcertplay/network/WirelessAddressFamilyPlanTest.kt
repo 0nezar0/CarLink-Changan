@@ -19,6 +19,14 @@ class WirelessAddressFamilyPlanTest {
         org.junit.Assert.assertFalse(choice.guessed)
     }
 
+    @Test fun iphoneHotspotOverrideIgnoresRememberedIpv6OnlyOnExistingWifi() {
+        val existing = WirelessHotspotBackend.EXISTING_WIFI
+        val direct = WirelessHotspotBackend.WIFI_P2P
+        assertEquals(Choice(FAMILY_IPV4, false), WirelessAddressFamilyPlan.choose(existing, FAMILY_IPV6, 28, true))
+        assertEquals(Choice(FAMILY_IPV6, false), WirelessAddressFamilyPlan.choose(existing, FAMILY_IPV6, 28, false))
+        assertEquals(Choice(FAMILY_IPV6, false), WirelessAddressFamilyPlan.choose(direct, FAMILY_IPV6, 28, true))
+    }
+
     @Test fun wifiDirectWithoutMemoryGuessesIpv6OnAndroid13AndLater() {
         assertEquals(Choice(FAMILY_IPV6, guessed = true),
             WirelessAddressFamilyPlan.choose(WirelessHotspotBackend.WIFI_P2P, null, 36))
