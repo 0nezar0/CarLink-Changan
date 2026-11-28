@@ -6,9 +6,11 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
-Branch `feat/qr-full-log` (from `trial/1.7.10`), not built or released yet.
+## [CS75 Plus 2023 v1.7.11] - 2026-11-28 (test)
 
-- New: Diagnostics › **QR for the full log**. The whole log (the same text as Copy full log) opens on your phone by scanning one QR code, with Copy and Download on the page; no internet needed. The phone must be on the same network as the screen: the car hotspot, the same Wi-Fi, or the iPhone's Personal Hotspot. Without a camera, type the link written under the QR code; it opens the log directly. The page stops after 10 minutes without use or when the sheet closes. Without a network the sheet says how to join one, and Report on GitHub (short QR code) and Copy full log still work.
+Test build from branch `trial/1.7.11` (started from v1.7.10, `266200d9`, plus the QR-for-the-full-log work on `feat/qr-full-log`, `b5e04e86`), versionCode 10064. It installs over v1.7.10 (10063) and every earlier build, and keeps your settings. Everything from v1.7.10 stays (Android Auto session cleanup so the phone's head unit server stays usable after exit) and v1.7.9 (the Same Wi-Fi 30 s linking wait) and v1.7.8 (IPv4 only on the car hotspot, an iPhone's Personal Hotspot and Same Wi-Fi).
+
+- New: Diagnostics › **QR for the full log**. The whole log (the same text as Copy full log) opens on your phone by scanning one QR code, with Copy and Download on the page; no internet needed. The phone must be on the same network as this screen: the car hotspot, the same Wi-Fi, or the iPhone's Personal Hotspot. Without a camera, type the link written under the QR code; it opens the log directly. The page stops after 10 minutes without use or when the sheet closes. Without a network the sheet says how to join one, and Report on GitHub (short QR code) and Copy full log still work.
 - Privacy: Copy full log and the phone page now hide saved Wi-Fi and hotspot passwords, owners' names in phone names and serial numbers, as the GitHub report already did.
 
 ## [CS75 Plus 2023 v1.7.10] - 2026-11-28 (test)
