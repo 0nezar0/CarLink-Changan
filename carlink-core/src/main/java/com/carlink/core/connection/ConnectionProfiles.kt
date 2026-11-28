@@ -162,7 +162,7 @@ class ConnectionProfiles(
 
     /** How long [stage] (null: the whole attempt) may take for this phone on [path] before the watchdog acts. */
     fun deadline(request: SessionRequest, path: WirelessPath?, stage: ProgressStage?): Long =
-        AdaptiveDeadlines.deadline(samples(request, path, stage), AdaptiveDeadlines.bounds(stage, request.transport))
+        AdaptiveDeadlines.deadline(samples(request, path, stage), AdaptiveDeadlines.bounds(stage, request.transport, path))
 
     /** This phone's usual (median) time for [stage] on [path], when known. */
     fun usualMillis(request: SessionRequest, path: WirelessPath?, stage: ProgressStage?): Long? =

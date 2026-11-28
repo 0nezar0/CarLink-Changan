@@ -2,6 +2,7 @@ package com.carlink.core.connection
 
 import com.carlink.core.core.Engine
 import com.carlink.core.core.Transport
+import com.carlink.core.settings.WirelessPath
 
 /**
  * How long each connection phase may take before [SessionManager] acts (pure; unit tested).
@@ -24,7 +25,13 @@ object AdaptiveDeadlines {
 
     data class Bounds(val default: Long, val min: Long, val max: Long)
 
-    fun bounds(stage: ProgressStage?, transport: Transport): Bounds {
+    /**
+     * [path] is the wireless path the attempt runs on, when known. CarLink v1.7.5: on [WirelessPath.SAME_WIFI]
+     * (an iPhone's Personal Hotspot) the linking phase waits at least as long as DiPlay's own first-TCP
+     * deadline (30 s). The field report of v1.7.4 (two 20 s linking expiries, 45 s, never a first TCP) showed
+     * CarLink cutting the run 10 s before DiPlay's watchdog could classify it, then restarting the whole stack.
+     */
+    fun bounds(stage: ProgressStage?, transport: Transport, path: WirelessPath? = null): Bounds {
         val wireless = transport == Transport.WIRELESS
         return when (stage) {
             ProgressStage.WAITING_FOR_PHONE, ProgressStage.PHONE_NOT_ANSWERING ->
@@ -32,7 +39,9 @@ object AdaptiveDeadlines {
             ProgressStage.HANDSHAKE -> Bounds(12_000, 6_000, 25_000)
             // Never under 15 s: StartSession → first TCP took 14.7 s once when the iPhone missed the
             // first DHCP offers, and that start then worked (VENDOR_CHANGES, IPv6-first experiment).
-            ProgressStage.JOINING_WIFI -> Bounds(20_000, 15_000, 30_000)
+            ProgressStage.JOINING_WIFI ->
+                if (wireless && path == WirelessPath.SAME_WIFI) Bounds(30_000, 30_000, 40_000)
+                else Bounds(20_000, 15_000, 30_000)
             // The audit's "Picture without a frame" watchdog: 20 s; never under 15 s (C9 needed 10.3 s).
             ProgressStage.STARTING_PROJECTION -> Bounds(20_000, 15_000, 30_000)
             // A backstop for engines that loop between phases (each change restarts the phase
@@ -64,7 +73,7 @@ object AdaptiveDeadlines {
  * |--------------------------|--------------------------------------------|------------------------------|
  * | Waiting for the phone    | nudge, nudge, give up (did not answer)     | nudge ×3, ask for re-plug    |
  * | Handshake                | retry step, next path, give up             | Android Auto: nudge, re-switch USB, ask for re-plug; CarPlay: nudge, retry step, ask for re-plug |
- * | Linking (joining Wi-Fi)  | reset Wi-Fi Direct, next path, give up     | (none)                       |
+ * | Linking (joining Wi-Fi)  | reset Wi-Fi Direct, next path, give up (retry step instead of the reset on Same Wi-Fi and the car hotspot: no Wi-Fi Direct there) | (none) |
  * | Picture (no first frame) | retry step, next path, give up             | retry step, ask for re-plug  |
  * | Whole attempt            | next path, give up                         | ask for re-plug              |
  *
@@ -75,7 +84,10 @@ object AdaptiveDeadlines {
  * seconds by the Android Auto tracker itself.
  */
 object StallPlaybook {
-    fun actions(engine: Engine, transport: Transport, stage: ProgressStage?): List<RecoveryAction> {
+    /** Same Wi-Fi and the car hotspot run on an ordinary Wi-Fi LAN: there is no Wi-Fi Direct group to reset. */
+    private fun infrastructure(path: WirelessPath?) = path == WirelessPath.SAME_WIFI || path == WirelessPath.CAR_HOTSPOT
+
+    fun actions(engine: Engine, transport: Transport, stage: ProgressStage?, path: WirelessPath? = null): List<RecoveryAction> {
         val usb = transport == Transport.USB
         return when (stage) {
             ProgressStage.WAITING_FOR_PHONE, ProgressStage.PHONE_NOT_ANSWERING -> when {
@@ -94,7 +106,9 @@ object StallPlaybook {
             }
             ProgressStage.JOINING_WIFI ->
                 if (usb) listOf(RecoveryAction.ASK_REPLUG)
-                else listOf(RecoveryAction.RESET_WIFI_DIRECT, RecoveryAction.NEXT_PATH, RecoveryAction.GIVE_UP)
+                // CarLink v1.7.5: the reset only means something on Wi-Fi Direct; elsewhere it is a plain retry.
+                else listOf(if (infrastructure(path)) RecoveryAction.RETRY_STEP else RecoveryAction.RESET_WIFI_DIRECT,
+                    RecoveryAction.NEXT_PATH, RecoveryAction.GIVE_UP)
             ProgressStage.STARTING_PROJECTION ->
                 if (usb) listOf(RecoveryAction.RETRY_STEP, RecoveryAction.ASK_REPLUG)
                 else listOf(RecoveryAction.RETRY_STEP, RecoveryAction.NEXT_PATH, RecoveryAction.GIVE_UP)
