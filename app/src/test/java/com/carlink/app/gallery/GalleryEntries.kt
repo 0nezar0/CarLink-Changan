@@ -216,6 +216,10 @@ private fun homeEntries(): List<GalleryEntry> = with(HomeFakes) { listOf(
         HomeContent(ui(link = failed(LinkProblem.HEAD_UNIT_SERVER_STUCK, engine = Engine.ANDROID_AUTO), phones = listOf(pixel)).copy(
             connection = prefs.copy(androidAutoInstalled = true, androidAutoCanRunCar = true)), actions)
     },
+    GalleryEntry("home", "failed-head-unit-server-stuck-native-ar", locale = "ar") {
+        HomeContent(ui(link = failed(LinkProblem.HEAD_UNIT_SERVER_STUCK, engine = Engine.ANDROID_AUTO), phones = listOf(pixel)).copy(
+            connection = prefs.copy(androidAutoInstalled = true, androidAutoCanRunCar = true)), actions)
+    },
     home("failed-engine") {
         HomeContent(ui(link = failed(LinkProblem.ENGINE, engine = Engine.ANDROID_AUTO), phones = listOf(pixel, iphone)), actions)
     },

@@ -616,7 +616,7 @@ gh release create v1.6.1 \
 
 - **يُصلح:** زر «فتح إعدادات Android Auto» في الرئيسية (وإعدادات الفشل نفسها في معالج الإعداد إن ظهرت). يظهر فقط إذا `androidAutoInstalled && androidAutoCanRunCar` (`ConnectionPrefs.hasNativeAndroidAuto`). بدون ذلك يُخفى، ويبقى زر «إعادة المحاولة»، ويتغيّر نص الخطوات: العمل على الجوال (Stop ثم Start head unit server) ثم «إعادة المحاولة». نفس الاختيار في تقرير GitHub (`IssueReporter`).
 - **كان صحيحاً وتُرك:** زر الرئيسية «تشغيل Android Auto على هذه الشاشة» يظهر فقط مع `offersAndroidAutoOnScreen` (المفتاح + التطبيق موجود ويقدر يشغّل وضع السيارة). مفتاح الإعدادات «Android Auto على هذه الشاشة» يظهر إذا التطبيق مثبّت، ويُعطَّل مع شرح إذا Google منع وضع السيارة (`aa_on_screen_unsupported`). نص الانتظار `server_waiting` ونص ورقة طريقة خادم الوحدة الرئيسية يقولان أصلاً «على الجوال». منطق الاتصال اللاسلكي ما يفتح تطبيق الشاشة. محرك Self Mode كان يفتح إعدادات Android Auto عند فشل الخادم المحلي، لكن CarLink يمنع ذلك (`onEngineEvent`) ويعرض الشاشة الخاصة به.
-- لقطات المعرض: `failed-head-unit-server-stuck` و`-ar` بدون الزر (مثل هذه السيارة)، و`failed-head-unit-server-stuck-native` مع الزر لشاشات فيها Android Auto أصلي.
+- لقطات المعرض: `failed-head-unit-server-stuck` و`-ar` بدون الزر (مثل هذه السيارة)، و`failed-head-unit-server-stuck-native` و`-native-ar` مع الزر لشاشات فيها Android Auto أصلي.
 
 
 ## أفكار مؤجلة (Future ideas / postponed)
