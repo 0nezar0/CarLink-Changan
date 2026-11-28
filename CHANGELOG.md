@@ -6,6 +6,8 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+- Fix: with the Head unit server connection method, when the phone's head unit server is off (it stops when the phone restarts, when Android Auto updates, or after a connection was cut) CarLink waited two minutes and then blamed Bluetooth. It now says after 45 s that the server is off, with the steps and a button to Android Auto's settings, and tries again by itself when you come back. The instructions also tell you to Stop and then Start the server.
+
 ## [CS75 Plus 2023 v1.7.8] - 2026-11-28 (test)
 
 Test build from branch `trial/1.7.8` (started from v1.7.7, `df1efa13`), versionCode 10061. It installs over v1.7.7 (10060) and every earlier build, and keeps your settings. IPv4 only on the car hotspot, an iPhone's Personal Hotspot and Same Wi-Fi was already the rule in v1.7.6/v1.7.7; this build closes the last places where IPv6 could still matter. Wi-Fi Direct is unchanged.

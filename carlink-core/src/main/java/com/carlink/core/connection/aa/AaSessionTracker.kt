@@ -42,6 +42,12 @@ internal class AaSessionTracker(
         val acceptHintMillis: Long = 45_000,
         /** No Android Auto channel from the phone by now: fail. */
         val acceptTimeoutMillis: Long = 120_000,
+        /**
+         * The dedicated Head unit server path: no server found on the network by now means it is
+         * off on the phone (it stops on a phone restart or an Android Auto update), so say how to
+         * start it instead of waiting for a Bluetooth answer this path never asks for.
+         */
+        val headUnitServerSearchMillis: Long = 45_000,
         /** USB: no AAP connection by now (phone locked, Android Auto prompt not accepted). */
         val usbTimeoutMillis: Long = 60_000,
         /** Engine state reports may say "not running" this long after a start (the receiver is still starting it). */
@@ -239,6 +245,10 @@ internal class AaSessionTracker(
             return if (waited >= limits.usbTimeoutMillis)
                 fail(FailureReason.PHONE_DID_NOT_ANSWER, "the phone did not start Android Auto over USB (unlock it and accept the prompt)")
             else emptyList()
+        }
+        if (headUnitServerPath && waited >= limits.headUnitServerSearchMillis) {
+            return fail(FailureReason.HEAD_UNIT_SERVER_OFF,
+                "no head unit server answered on the network in ${waited / 1000}s (Start head unit server is off on the phone)")
         }
         if (waited >= limits.acceptTimeoutMillis) {
             return fail(FailureReason.PHONE_DID_NOT_ANSWER, "the phone did not answer over Bluetooth")

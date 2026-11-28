@@ -411,4 +411,23 @@ class AaSessionTrackerTest {
     @Test fun aUsbSessionIgnoresTheProbe() {
         assertEquals(emptyList<AdapterEvent>(), usb().event(EngineEvent.HEAD_UNIT_SERVER_FOUND))
     }
+
+    @Test fun theHeadUnitServerPathSaysTheServerIsOffInsteadOfWaitingForBluetooth() {
+        val t = AaSessionTracker(Transport.WIRELESS, limits, headUnitServerPath = true).also { it.begin(now) }
+        assertEquals(emptyList<AdapterEvent>(), t.after(limits.headUnitServerSearchMillis - 1))
+        val failure = t.after(1).failure()
+        assertEquals(FailureReason.HEAD_UNIT_SERVER_OFF, failure.reason)
+        assertEquals(com.carlink.core.core.LinkProblem.HEAD_UNIT_SERVER_OFF, failure.reason.toLinkProblem())
+    }
+
+    @Test fun aFoundServerStopsTheHeadUnitServerSearchTimeout() {
+        val t = AaSessionTracker(Transport.WIRELESS, limits, headUnitServerPath = true).also { it.begin(now) }
+        t.event(EngineEvent.HEAD_UNIT_SERVER_FOUND, "ip=192.168.43.1")
+        assertEquals(emptyList<AdapterEvent>(), t.after(limits.headUnitServerSearchMillis + 1))
+    }
+
+    @Test fun otherWirelessPathsKeepTheirBluetoothTimeout() {
+        val t = wireless()
+        assertEquals(FailureReason.PHONE_DID_NOT_ANSWER, t.after(limits.acceptTimeoutMillis).failure().reason)
+    }
 }
