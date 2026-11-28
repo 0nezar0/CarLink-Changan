@@ -373,4 +373,6 @@
     <string name="carlink_settings_car_hotspot_button">إعدادات نقطة الاتصال</string>
     <string name="carlink_settings_hotspot_notice">تنويه: فعّل نقطة الاتصال من إعدادات السيارة، ثم اتصل بها من جوالك. إذا فتحت الإعدادات العامة، ابحث عن نقطة الاتصال ضمن إعدادات الشبكة.</string>
     <string name="carlink_settings_hotspot_unavailable">تعذّر فتح الإعدادات. افتح إعدادات نقطة الاتصال من شاشة السيارة.</string>
+    <string name="carlink_iphone_hotspot_ipv4">نقطة اتصال الآيفون: IPv4 فقط (تجريبي)</string>
+    <string name="carlink_iphone_hotspot_ipv4_detail">استخدم IPv4 فقط لكاربلاي عند الاتصال بشبكة الآيفون. يسري عند الاتصال التالي.</string>
 </resources>
