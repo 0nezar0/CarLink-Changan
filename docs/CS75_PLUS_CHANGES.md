@@ -526,3 +526,7 @@ gh release create v1.6.1 \
 
 الاختبارات: `WirelessHostAddressTest` و`ExistingWifiManagerTest` و`AirPlayMediaBindTest` و`IpFamilyCardTest`. النسخة تثبت فوق v1.7.7 (10060).
 
+## CI: عيّنة اللقطات وبناء الاختبار على GitHub Actions (28 نوفمبر 2026)
+
+- **`build.yml` (Build CarLink):** صار فيه مدخل `upload_test_apk` (منطقي، الافتراضي false) لتشغيل يدوي `workflow_dispatch` بوضع release فقط. لو true يرفع الـ APK الموقّع بعد نجاح فحص التوقيع كـ artifact واحد باسم `carlink-test-apk` وينتهي بعد يوم واحد (`retention-days: 1`). الدفع (push) والوسوم والتشغيل الافتراضي تبقى للتحقق فقط ولا ترفع شيء. بعد أخذ الملف يُحذف الـ artifact (`gh api -X DELETE repos/0nezar0/CarLink-Changan/actions/artifacts/<id>`).
+- **`screenshots.yml` (Record screenshots):** workflow يدوي فقط يشغّل معرض لقطات الواجهة (`ScreenshotGallery`، Robolectric بدون جهاز) بـ `./gradlew :app:recordScreenshots`، مع مدخلين: `areas` (مثل `diagnostics,settings,home`) و`only` (نمط اختياري لأسماء الصور)، ويرفع الصور اللي انولدت كـ artifact باسم `carlink-screenshots` ينتهي بعد يوم (ما تُرفع للمستودع). ما يستخدم أي أسرار.

@@ -1,0 +1,77 @@
+# Records CarLink's screenshot gallery (app/src/test/java/com/carlink/app/gallery/ScreenshotGallery.kt,
+# Robolectric, no device or emulator) on GitHub Actions and hands the images over as a short-lived artifact.
+#
+# Manual only (workflow_dispatch): nothing runs on push, tag or pull request. No secrets are used, so
+# nothing secret can end up in the images. The images are NOT committed: they go into the artifact
+# "carlink-screenshots", which expires after 1 day. Download it with `gh run download`, then delete it
+# with `gh api -X DELETE repos/<owner>/<repo>/actions/artifacts/<id>`.
+#
+# Inputs:
+#   areas  comma-separated gallery areas to re-record, for example "diagnostics,settings,home" (-Pcarlink.gallery.areas)
+#   only   optional regex on the image file names, for example "_car-landscape_" (-Pcarlink.only); with it
+#          nothing is deleted and only the matching images are rendered
+name: Record screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      areas:
+        description: 'Gallery areas, comma-separated (empty = all areas, about 15 minutes or more)'
+        type: string
+        default: 'diagnostics,settings,home'
+      only:
+        description: 'Optional regex on the image file names, for example _car-landscape_'
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: record-screenshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  record:
+    if: github.repository == '0nezar0/CarLink-Changan'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Record the gallery
+        env:
+          AREAS: ${{ inputs.areas }}
+          ONLY: ${{ inputs.only }}
+        run: |
+          set -euo pipefail
+          touch "$RUNNER_TEMP/gallery-start"
+          args=()
+          [ -n "$AREAS" ] && args+=("-Pcarlink.gallery.areas=$AREAS")
+          [ -n "$ONLY" ] && args+=("-Pcarlink.only=$ONLY")
+          ./gradlew --no-daemon :app:recordScreenshots "${args[@]}" --stacktrace
+
+      - name: Collect the images that were just rendered
+        run: |
+          set -euo pipefail
+          mkdir -p out-shots
+          find docs/screenshots -type f \( -name '*.webp' -o -name '*.png' \) -newer "$RUNNER_TEMP/gallery-start" \
+            | while read -r f; do rel="${f#docs/screenshots/}"; mkdir -p "out-shots/$(dirname "$rel")"; cp "$f" "out-shots/$rel"; done
+          echo "images: $(find out-shots -type f | wc -l)"
+
+      - name: Upload the images (artifact, expires in 1 day)
+        uses: actions/upload-artifact@v5
+        with:
+          name: carlink-screenshots
+          path: out-shots
+          retention-days: 1
+          if-no-files-found: error
