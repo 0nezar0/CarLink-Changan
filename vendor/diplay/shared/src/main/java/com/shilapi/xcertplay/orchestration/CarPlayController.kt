@@ -45,7 +45,6 @@ import com.shilapi.xcertplay.mfi.RemoteMfiAuthenticationClient
 import com.shilapi.xcertplay.mfi.LocalMfiAuthenticationClient
 import com.shilapi.xcertplay.network.CarPlayBonjour
 import com.shilapi.xcertplay.network.CarPlayBonjourEvent
-import com.shilapi.xcertplay.network.WifiStationWatch
 import com.shilapi.xcertplay.network.WirelessAddressFamilyPlan // CarLink
 import com.shilapi.xcertplay.network.CarHotspotIpFamily // CarLink v1.6.6
 import com.shilapi.xcertplay.network.diagnosticSummary
@@ -53,7 +52,6 @@ import com.shilapi.xcertplay.network.CarPlayVpnService
 import com.shilapi.xcertplay.network.LocalOnlyHotspotManager
 import com.shilapi.xcertplay.network.ManualHotspotManager
 import com.shilapi.xcertplay.network.CarHotspotSharedLanManager // CarLink
-import com.shilapi.xcertplay.network.isCarHotspotIpv4Only // CarLink
 import com.shilapi.xcertplay.network.ipv4OnlyAddresses // CarLink
 import com.shilapi.xcertplay.network.ExistingWifiManager
 import com.shilapi.xcertplay.network.HotspotAddressPolicy
@@ -1578,9 +1576,6 @@ class CarPlayController(
             wirelessAirPlayHandshake.begin(generation)
             // CarLink: Wi-Fi Direct tries the IPv6 link-local endpoint first, and the car hotspot and
             // local-only AP stay on IPv4 whatever family was remembered (WirelessAddressFamilyPlan, #93).
-            val iphoneHotspot = hotspotInfo.backend == WirelessHotspotBackend.EXISTING_WIFI &&
-                config.existingWifiInterface.isNullOrBlank() &&
-                hotspotInfo.hostAddresses.any(WifiStationWatch::iphoneHotspotRange)
             val familyChoice = WirelessAddressFamilyPlan.choose(
                 hotspotInfo.backend,
                 HotspotAddressPolicy.parseFamily(
@@ -1588,7 +1583,6 @@ class CarPlayController(
                         .getString(HOTSPOT_FAMILY_PREFERENCE_KEY, null),
                 ),
                 Build.VERSION.SDK_INT,
-                forceExistingWifiIpv4 = iphoneHotspot,
             )
             val preferredFamily = familyChoice.preferredFamily
             startedHotspot?.observeClients { count -> // CarLink
@@ -1604,7 +1598,7 @@ class CarPlayController(
                 log = { if (!isStaleWirelessRun(generation)) debugLog(it) },
             )
             // CarLink: the car / local-only AP never flips family or uses shared-Wi-Fi memory.
-            val requiresIpv4Host = iphoneHotspot || isCarHotspotIpv4Only(hotspotInfo.backend)
+            val requiresIpv4Host = WirelessAddressFamilyPlan.ipv4Only(hotspotInfo.backend)
             if (requiresIpv4Host) ipv4Forced.set(true)
             val candidates = addressRecovery.awaitCandidates(
                 hotspotCandidates(hotspotInfo),

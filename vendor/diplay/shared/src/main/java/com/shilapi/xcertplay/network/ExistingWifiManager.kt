@@ -100,8 +100,7 @@ class ExistingWifiManager(
                 iface != null -> Collections.list(iface.inetAddresses)
                 else -> emptyList()
             }
-            val ipv4Only = configured == null && linkAddresses.any(WifiStationWatch::iphoneHotspotRange)
-            val localAddresses = if (ipv4Only) ipv4OnlyAddresses(linkAddresses) else linkAddresses
+            val localAddresses = ipv4OnlyAddresses(linkAddresses)
             val address = if (iface == null) null else wirelessHostAddress(localAddresses, iface.index)
             if (iface != null && name != null && address != null) {
                 val addresses = existingWifiHostAddresses(localAddresses, iface.index)
@@ -189,7 +188,7 @@ class ExistingWifiManager(
 
     private fun sameLink(properties: LinkProperties): Boolean =
         properties.interfaceName == interfaceName && properties.linkAddresses.any { it.address == host } &&
-            ((preferredInterface.isNullOrBlank() && host?.let(WifiStationWatch::iphoneHotspotRange) == true) || existingWifiHostAddresses(properties.linkAddresses.map { it.address }, interfaceIndex).toSet() == hosts.toSet())
+            existingWifiHostAddresses(ipv4OnlyAddresses(properties.linkAddresses.map { it.address }), interfaceIndex).toSet() == hosts.toSet()
 
     // An iPhone told to use an open network never opens the AirPlay connection, while the same router
     // with WPA2 connects within seconds (#1232), so retrying cannot help.
