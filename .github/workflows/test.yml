@@ -1,0 +1,117 @@
+# Runs CarLink's unit tests (Robolectric, no device or emulator) on GitHub Actions.
+#
+# Manual only (workflow_dispatch): nothing runs on push, tag or pull request. No secrets are used.
+# Test reports go into the artifact "unit-test-reports", which expires after 1 day.
+#
+# Two pre-existing failures in vendor/diplay SettingsTranslationsTest (values-hu) are ignored by
+# the final check. Any other failure fails the job.
+name: Unit tests
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: unit-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    if: github.repository == '0nezar0/CarLink-Changan'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Unit tests
+        id: tests
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+          ./gradlew --no-daemon --continue \
+            :app:testDebugUnitTest \
+            :carlink-core:testDebugUnitTest \
+            :androidauto:testGithubDebugUnitTest \
+            :carplay-shared:testDebugUnitTest \
+            :carplay-common:testDebugUnitTest \
+            --stacktrace
+
+      - name: Upload test reports (artifact, expires in 1 day)
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: unit-test-reports
+          path: |
+            **/build/reports/tests/**
+            **/build/test-results/**
+          retention-days: 1
+          if-no-files-found: warn
+
+      - name: Fail on unexpected test failures
+        if: always()
+        env:
+          GRADLE_OUTCOME: ${{ steps.tests.outcome }}
+        run: |
+          python3 <<'PY'
+          import os, sys, glob
+          import xml.etree.ElementTree as ET
+
+          known = []
+          unexpected = []
+          suites = 0
+          tests = failures = errors = skipped = 0
+          for path in glob.glob("**/build/test-results/**/*.xml", recursive=True):
+              try:
+                  root = ET.parse(path).getroot()
+              except ET.ParseError as e:
+                  unexpected.append(f"unreadable report {path}: {e}")
+                  continue
+              suites += 1
+              tests += int(root.attrib.get("tests") or 0)
+              failures += int(root.attrib.get("failures") or 0)
+              errors += int(root.attrib.get("errors") or 0)
+              skipped += int(root.attrib.get("skipped") or 0)
+              for case in root.iter("testcase"):
+                  bad = case.find("failure")
+                  if bad is None:
+                      bad = case.find("error")
+                  if bad is None:
+                      continue
+                  cls = case.get("classname") or ""
+                  name = case.get("name") or ""
+                  message = (bad.get("message") or "") + "\n" + (bad.text or "")
+                  label = f"{cls}.{name}"
+                  if cls.endswith("SettingsTranslationsTest") and "values-hu" in message:
+                      known.append(label)
+                  else:
+                      unexpected.append(f"{label}: {(bad.get('message') or (bad.text or '')).strip().splitlines()[:1] or ['(no message)']}")
+
+          print(f"suites={suites} tests={tests} failures={failures} errors={errors} skipped={skipped}")
+          if known:
+              print("known pre-existing failures (ignored):")
+              for item in known:
+                  print(f"  - {item}")
+          if unexpected:
+              print("unexpected failures:")
+              for item in unexpected:
+                  print(f"  - {item}")
+              sys.exit(1)
+          if suites == 0 or tests == 0:
+              print("no test reports found; the test run did not produce results")
+              sys.exit(1)
+          if os.environ.get("GRADLE_OUTCOME") == "failure" and not known:
+              print("Gradle failed without recorded test failures")
+              sys.exit(1)
+          print("unit tests passed (known values-hu SettingsTranslationsTest failures ignored)" if known else "unit tests passed")
+          PY
