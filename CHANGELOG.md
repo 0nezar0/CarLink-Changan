@@ -6,8 +6,13 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
-- Android Auto, Head unit server: when the phone's head unit server takes the connection and never answers (it is still held by an earlier connection), CarLink now stops at once and says to Stop and Start it in Android Auto's developer settings, instead of retrying "the connection dropped" for 40-60 s.
+## [CS75 Plus 2023 v1.7.12] - 2026-11-28 (test)
+
+Test build from branch `trial/1.7.12` (started from `fix/aa-engine-restart`, `cf4a15c4`, on top of v1.7.11), versionCode 10065. It installs over v1.7.11 (10064) and every earlier build, and keeps your settings. Everything from v1.7.11 stays (QR for the full log) and v1.7.10 (Android Auto session cleanup so the phone's head unit server stays usable after exit).
+
+- Android Auto, Head unit server: when the phone's head unit server takes the connection and never answers (it is still held by an earlier connection), CarLink now stops at once and says to Stop and Start it in Android Auto's developer settings, instead of retrying "the connection dropped" for 40-60 s. This also applies in Self mode.
 - Diagnostics: a wireless Android Auto session that drops after the picture came now says "the connection to the phone dropped during the session" with the engine's last error, instead of "the engine restarted" (the engine process had not restarted).
+- Diagnostics: if Android Auto's engine process really is killed and starts again under a session, the log says so ("engine process restarted under the session", with the process ids). The next car log should tell a process restart from a dropped link.
 
 ## [CS75 Plus 2023 v1.7.11] - 2026-11-28 (test)
 
