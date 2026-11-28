@@ -94,16 +94,36 @@ class ExistingWifiManagerTest {
         manager().use { assertEquals("192.0.2.10", start(it).hostAddress!!.hostAddress) }
     }
 
-    @Test fun publishesIpv4AndKeepsTheScopedLinkLocalAsSecondary() {
-        properties.setLinkAddresses(properties.linkAddresses + linkAddress("fe80::1234/64"))
+    // CarLink v1.7.8: Existing Wi-Fi (an iPhone's Personal Hotspot, Same Wi-Fi) is IPv4 only.
+    @Test fun publishesIpv4OnlyAndDropsTheLinkLocal() {
+        properties.setLinkAddresses(properties.linkAddresses + linkAddress("fe80::1234/64") + linkAddress("2001:db8::7/64"))
         manager().use {
             val result = start(it)
             assertEquals("192.0.2.10", result.hostAddress!!.hostAddress)
-            assertEquals(listOf("192.0.2.10", "fe80:0:0:0:0:0:0:1234"),
-                result.hostAddresses.map { host -> host.hostAddress!!.substringBefore('%') })
-            val secondary = result.hostAddresses.last() as Inet6Address
-            assertTrue(secondary.isLinkLocalAddress)
-            assertEquals(iface.index, secondary.scopeId)
+            assertEquals(listOf("192.0.2.10"), result.hostAddresses.map { host -> host.hostAddress!! })
+            assertTrue(result.hostAddresses.none { host -> host is Inet6Address })
+        }
+    }
+
+    @Test fun ipv6ChurnDoesNotRestartTheSession() {
+        manager().use {
+            start(it)
+            // A link-local appears, a privacy address rotates, then everything IPv6 goes away: none is a link change.
+            properties.setLinkAddresses(properties.linkAddresses + linkAddress("fe80::1234/64"))
+            callback.onLinkPropertiesChanged(network, properties)
+            properties.setLinkAddresses(listOf(linkAddress("192.0.2.10/24"), linkAddress("fe80::1234/64"), linkAddress("2001:db8::1/64")))
+            callback.onLinkPropertiesChanged(network, properties)
+            properties.setLinkAddresses(listOf(linkAddress("192.0.2.10/24"), linkAddress("2001:db8::2/64")))
+            callback.onLinkPropertiesChanged(network, properties)
+            assertEquals(0, changes)
+        }
+    }
+
+    @Test fun anIpv6OnlyLinkIsNotAttachedUntilIpv4Arrives() {
+        properties.setLinkAddresses(listOf(linkAddress("fe80::1234/64")))
+        manager().use {
+            val error = assertThrows(IOException::class.java) { start(it, 1) }
+            assertTrue(error.message!!.contains("no usable address"))
         }
     }
 

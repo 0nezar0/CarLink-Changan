@@ -45,9 +45,21 @@ class AirPlayMediaBindTest {
         assertEquals(ipv4, mediaBindAddress(ipv4, ipv4Only = true))
     }
 
-    @Test fun everyOtherCaseKeepsTheWildcard() {
+    @Test fun nonIpv4OnlyPathsKeepTheIpv6Wildcard() {
         assertEquals(wildcard, mediaBindAddress(ipv4, ipv4Only = false))
-        assertEquals(wildcard, mediaBindAddress(linkLocal, ipv4Only = true))
-        assertEquals(wildcard, mediaBindAddress(null, ipv4Only = true))
+        assertEquals(wildcard, mediaBindAddress(linkLocal, ipv4Only = false))
+        assertEquals(wildcard, mediaBindAddress(null, ipv4Only = false))
     }
+
+    // CarLink v1.7.8: an IPv4-only path never binds "::", even with no IPv4 session address.
+    @Test fun ipv4OnlyPathsWithoutAnIpv4SessionAddressBindTheIpv4Wildcard() {
+        for (local in listOf(linkLocal, null)) {
+            val address = mediaBindAddress(local, ipv4Only = true)
+            assertTrue(address is java.net.Inet4Address)
+            assertTrue(address.isAnyLocalAddress)
+            assertEquals(ipv4Wildcard, address)
+        }
+    }
+
+    private val ipv4Wildcard = InetAddress.getByName("0.0.0.0")
 }

@@ -1113,5 +1113,10 @@ private fun long(value: Any?): Long? = (value as? Number)?.toLong()
  * without one, they keep upstream's `::`. On an IPv4-only head unit 0nezar0 saw SETUP finish and the `::` ports
  * then never accept the iPhone's IPv4 connects.
  */
-internal fun mediaBindAddress(local: InetAddress?, ipv4Only: Boolean): InetAddress =
-    local?.takeIf { ipv4Only && it is java.net.Inet4Address } ?: InetAddress.getByName("::")
+// CarLink v1.7.8: on an IPv4-only path (car hotspot, iPhone hotspot, Same Wi-Fi) the media sockets never fall
+// back to the IPv6 wildcard "::": with no IPv4 session address they bind the IPv4 wildcard 0.0.0.0.
+internal fun mediaBindAddress(local: InetAddress?, ipv4Only: Boolean): InetAddress = when {
+    !ipv4Only -> InetAddress.getByName("::")
+    local is java.net.Inet4Address -> local
+    else -> InetAddress.getByName("0.0.0.0")
+}

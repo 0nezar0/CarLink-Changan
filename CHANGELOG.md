@@ -6,6 +6,15 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+## [CS75 Plus 2023 v1.7.8] - 2026-11-28 (test)
+
+Test build from branch `trial/1.7.8` (started from v1.7.7, `df1efa13`), versionCode 10061. It installs over v1.7.7 (10060) and every earlier build, and keeps your settings. IPv4 only on the car hotspot, an iPhone's Personal Hotspot and Same Wi-Fi was already the rule in v1.7.6/v1.7.7; this build closes the last places where IPv6 could still matter. Wi-Fi Direct is unchanged.
+
+- Fix: on an iPhone's Personal Hotspot and on Same Wi-Fi (existing Wi-Fi), an IPv6 address appearing, rotating or disappearing on the link no longer counts as a link change, so it cannot restart the run. The host, the host list and the link comparison now see the IPv4 addresses only, and an IPv6-only link is not attached until IPv4 arrives.
+- Change: the unused v1.6.6 automatic IPv4/IPv6 probe is removed from the wireless start path (the dual-stack listeners, the picture-stall fallback and the per-screen memory are no longer wired in). IPv4 is forced for every screen, not decided.
+- Diagnostics › IP family now says so: «IPv4 only», reason «Forced», with the time of the last wireless session that applied it (before, the card stayed empty because nothing was recorded since v1.7.6).
+- Fix: when an IPv4-only session has no IPv4 session address, the picture, audio, timing, event and keep-alive sockets bind `0.0.0.0` instead of the IPv6 wildcard `::`.
+
 ## [CS75 Plus 2023 v1.7.7] - 2026-11-27 (test)
 
 Test build from branch `trial/1.7.1`, versionCode 10060. It installs over v1.7.6 (10059) and every earlier build, and keeps your settings. The connection code is the same as v1.7.6; only the first-run question below is new.

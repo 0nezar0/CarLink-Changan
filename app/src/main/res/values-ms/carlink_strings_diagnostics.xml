@@ -332,14 +332,8 @@
 
     <!-- CarLink v1.6.6: car-hotspot IP family (automatic IPv4 / IPv4 + IPv6) -->
     <string name="carlink_ipfamily_title">Keluarga IP (hotspot kereta)</string>
-    <string name="carlink_ipfamily_empty_title">Belum ada sambungan melalui hotspot kereta</string>
-    <string name="carlink_ipfamily_empty_body">CarLink memeriksa hotspot kereta dan memilih IPv4 atau IPv4 + IPv6 sendiri pada sambungan CarPlay wayarles yang pertama.</string>
     <string name="carlink_ipfamily_in_use">Digunakan</string>
     <string name="carlink_ipfamily_v4">IPv4 sahaja</string>
-    <string name="carlink_ipfamily_dual">IPv4 + IPv6</string>
-    <string name="carlink_ipfamily_supports">Skrin menyokong IPv6</string>
-    <string name="carlink_ipfamily_yes">Ya</string>
-    <string name="carlink_ipfamily_no">Tidak</string>
     <string name="carlink_ipfamily_reason">Sebab</string>
     <string name="carlink_ipfamily_decided">Diputuskan</string>
     <string name="carlink_ipfamily_r_known">Skrin ini (CS75 Plus 2023) diketahui berfungsi dengan IPv4 sahaja</string>
@@ -355,5 +349,7 @@
     <string name="carlink_ipfamily_r_fb_tcp">Ditukar ke IPv4 kerana iPhone tidak bersambung melalui IPv6; diingat untuk skrin ini</string>
     <string name="carlink_ipfamily_r_fb_picture">Ditukar ke IPv4 selepas tersekat pada Gambar; diingat untuk skrin ini</string>
     <string name="carlink_ipfamily_r_unknown">Tidak diketahui</string>
-    <string name="carlink_ipfamily_auto_note">Dipilih secara automatik. Tiada apa untuk ditetapkan.</string>
+    <!-- CarLink v1.7.8: IPv4 forced on the car hotspot, an iPhone hotspot and Same Wi-Fi -->
+    <string name="carlink_ipfamily_r_forced">Dipaksa: IPv4 sahaja pada hotspot kereta, hotspot iPhone dan Wi-Fi yang sama, pada semua skrin</string>
+    <string name="carlink_ipfamily_forced_note">Dipaksa, bukan dipilih. Tiada apa-apa untuk ditetapkan.</string>
 </resources>

@@ -1,16 +1,13 @@
 package com.carlink.app.ui.diagnostics
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -18,7 +15,6 @@ import com.carlink.app.R
 import com.carlink.app.ui.components.StatGrid
 import com.carlink.app.ui.settings.GlassGroup
 import com.carlink.app.ui.settings.GroupHeader
-import com.carlink.app.ui.settings.RowGlyph
 import com.carlink.app.ui.settings.isCar
 import com.carlink.app.ui.settings.rowPadding
 import com.carlink.app.ui.theme.CarLinkTokens
@@ -27,20 +23,18 @@ import java.text.DateFormat
 import java.util.Date
 
 /**
- * v1.6.6: the car hotspot's automatic address-family decision, as the engine recorded it
- * ([CarHotspotIpFamily.lastDecision]): IPv4 only or IPv4 + IPv6, whether the screen supports IPv6,
- * why, and when. There is no setting: the choice is automatic.
+ * v1.7.8: IPv4 is forced on the car hotspot, an iPhone's Personal Hotspot and Same Wi-Fi, for every screen
+ * (WirelessAddressFamilyPlan.ipv4Only); nothing is probed or chosen. Diagnostics says so, with the time of the
+ * last wireless session that applied it ([CarHotspotIpFamily.recordForcedIpv4]), or without a time before the first.
  */
 internal data class IpFamilyUi(
-    val dualStack: Boolean,
-    val ipv6Supported: Boolean,
-    val reason: String,
-    val decidedAtMillis: Long,
+    val reason: String = CarHotspotIpFamily.REASON_FORCED_IPV4,
+    val decidedAtMillis: Long? = null,
 ) {
     companion object {
-        fun from(last: CarHotspotIpFamily.LastDecision?): IpFamilyUi? = last?.let {
-            IpFamilyUi(it.mode == CarHotspotIpFamily.MODE_DUAL_STACK, it.ipv6Supported, it.reason, it.decidedAtMillis)
-        }
+        /** Always the forced IPv4 card; an older engine's record (probe, dual stack, fallback) is no longer true. */
+        fun from(last: CarHotspotIpFamily.LastDecision?): IpFamilyUi =
+            IpFamilyUi(decidedAtMillis = last?.takeIf { it.reason == CarHotspotIpFamily.REASON_FORCED_IPV4 }?.decidedAtMillis)
     }
 }
 
@@ -58,44 +52,31 @@ internal fun ipFamilyReasonRes(reason: String): Int = when (reason) {
     CarHotspotIpFamily.REASON_IPV6_USABLE -> R.string.carlink_ipfamily_r_usable
     CarHotspotIpFamily.REASON_FALLBACK_NO_TCP -> R.string.carlink_ipfamily_r_fb_tcp
     CarHotspotIpFamily.REASON_FALLBACK_PICTURE_STALL -> R.string.carlink_ipfamily_r_fb_picture
+    CarHotspotIpFamily.REASON_FORCED_IPV4 -> R.string.carlink_ipfamily_r_forced
     else -> R.string.carlink_ipfamily_r_unknown
 }
 
 @Composable
 internal fun IpFamilyCard(ui: IpFamilyUi?) {
     val scheme = MaterialTheme.colorScheme
+    val shown = ui ?: IpFamilyUi()
     GlassGroup(header = { GroupHeader(stringResource(R.string.carlink_ipfamily_title), icon = R.drawable.carlink_ic_wifi_tethering) }) {
         Column(Modifier.fillMaxWidth().padding(start = rowPadding, end = rowPadding, top = 12.dp, bottom = rowPadding)) {
-            if (ui == null) {
-                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    RowGlyph(R.drawable.carlink_ic_wifi_tethering, tint = scheme.onSurfaceVariant)
-                    Spacer(Modifier.width(if (isCar) 24.dp else 16.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.carlink_ipfamily_empty_title), style = MaterialTheme.typography.titleMedium,
-                            color = scheme.onSurface)
-                        Spacer(Modifier.height(4.dp))
-                        Text(stringResource(R.string.carlink_ipfamily_empty_body), style = MaterialTheme.typography.bodyMedium,
-                            color = scheme.onSurfaceVariant)
-                    }
+            val tiles = buildList {
+                add(stringResource(R.string.carlink_ipfamily_in_use) to stringResource(R.string.carlink_ipfamily_v4))
+                shown.decidedAtMillis?.let {
+                    add(stringResource(R.string.carlink_ipfamily_decided) to
+                        DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(Date(it)))
                 }
-                return@Column
             }
-            val tiles = listOf(
-                stringResource(R.string.carlink_ipfamily_in_use) to
-                    stringResource(if (ui.dualStack) R.string.carlink_ipfamily_dual else R.string.carlink_ipfamily_v4),
-                stringResource(R.string.carlink_ipfamily_supports) to
-                    stringResource(if (ui.ipv6Supported) R.string.carlink_ipfamily_yes else R.string.carlink_ipfamily_no),
-                stringResource(R.string.carlink_ipfamily_decided) to
-                    DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(Date(ui.decidedAtMillis)),
-            )
             StatGrid(tiles.size, minTileWidth = if (isCar) 200.dp else 130.dp, maxColumns = 3) { i, m ->
                 StatTile(tiles[i].first, tiles[i].second, m, labelLines = 2)
             }
             Spacer(Modifier.height(CarLinkTokens.dimens.targetGap))
-            StatTile(stringResource(R.string.carlink_ipfamily_reason), stringResource(ipFamilyReasonRes(ui.reason)),
+            StatTile(stringResource(R.string.carlink_ipfamily_reason), stringResource(ipFamilyReasonRes(shown.reason)),
                 Modifier.fillMaxWidth(), maxLines = 4)
             Spacer(Modifier.height(8.dp))
-            Text(stringResource(R.string.carlink_ipfamily_auto_note), style = MaterialTheme.typography.bodySmall,
+            Text(stringResource(R.string.carlink_ipfamily_forced_note), style = MaterialTheme.typography.bodySmall,
                 color = scheme.onSurfaceVariant)
         }
     }

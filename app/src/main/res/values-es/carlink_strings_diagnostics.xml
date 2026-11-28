@@ -332,14 +332,8 @@
 
     <!-- CarLink v1.6.6: car-hotspot IP family (automatic IPv4 / IPv4 + IPv6) -->
     <string name="carlink_ipfamily_title">Familia IP (punto de acceso del coche)</string>
-    <string name="carlink_ipfamily_empty_title">Aún no hay conexión por el punto de acceso del coche</string>
-    <string name="carlink_ipfamily_empty_body">CarLink revisa el punto de acceso del coche y elige solo IPv4 o IPv4 + IPv6 en la primera conexión inalámbrica de CarPlay.</string>
     <string name="carlink_ipfamily_in_use">En uso</string>
     <string name="carlink_ipfamily_v4">Solo IPv4</string>
-    <string name="carlink_ipfamily_dual">IPv4 + IPv6</string>
-    <string name="carlink_ipfamily_supports">La pantalla admite IPv6</string>
-    <string name="carlink_ipfamily_yes">Sí</string>
-    <string name="carlink_ipfamily_no">No</string>
     <string name="carlink_ipfamily_reason">Motivo</string>
     <string name="carlink_ipfamily_decided">Decidido</string>
     <string name="carlink_ipfamily_r_known">Se sabe que esta pantalla (CS75 Plus 2023) funciona solo con IPv4</string>
@@ -355,5 +349,7 @@
     <string name="carlink_ipfamily_r_fb_tcp">Cambiado a IPv4 porque el iPhone no se conectó por IPv6; recordado para esta pantalla</string>
     <string name="carlink_ipfamily_r_fb_picture">Cambiado a IPv4 tras quedarse parado en Imagen; recordado para esta pantalla</string>
     <string name="carlink_ipfamily_r_unknown">Desconocido</string>
-    <string name="carlink_ipfamily_auto_note">Se elige automáticamente. No hay nada que ajustar.</string>
+    <!-- CarLink v1.7.8: IPv4 forced on the car hotspot, an iPhone hotspot and Same Wi-Fi -->
+    <string name="carlink_ipfamily_r_forced">Forzado: solo IPv4 en el punto de acceso del coche, en el de un iPhone y en la misma Wi-Fi, en todas las pantallas</string>
+    <string name="carlink_ipfamily_forced_note">Forzado, no elegido. Nada que configurar.</string>
 </resources>

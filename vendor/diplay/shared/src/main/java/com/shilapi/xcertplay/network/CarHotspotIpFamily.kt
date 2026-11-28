@@ -51,6 +51,8 @@ object CarHotspotIpFamily {
     const val REASON_IPV6_USABLE = "ipv6_usable"
     const val REASON_FALLBACK_NO_TCP = "fallback_no_tcp"
     const val REASON_FALLBACK_PICTURE_STALL = "fallback_picture_stall"
+    /** CarLink v1.7.8: IPv4 is forced on the car hotspot, an iPhone hotspot and Same Wi-Fi; nothing is probed. */
+    const val REASON_FORCED_IPV4 = "forced_ipv4"
 
     /** After the iPhone's first AirPlay TCP on a dual-stack session, the picture must arrive within this. */
     const val PICTURE_STALL_MILLIS = 25_000L
@@ -65,7 +67,7 @@ object CarHotspotIpFamily {
      */
     @Volatile
     @JvmStatic
-    var knownIpv4OnlyUnit: () -> Boolean = { false }
+    var knownIpv4OnlyUnit: () -> Boolean = { false } // v1.7.8: unused; the start path forces IPv4 for every unit
 
     /** One IPv6 address on the AP interface, as the probe saw it. Null flags = not readable. */
     data class Ipv6Candidate(
@@ -225,6 +227,20 @@ object CarHotspotIpFamily {
     )
 
     fun memory(context: Context): Memory = Memory(PrefsStore(context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)))
+
+    /** The record Diagnostics shows for a forced-IPv4 session (v1.7.8). */
+    fun forcedIpv4Decision(now: Long): LastDecision =
+        LastDecision(MODE_IPV4_ONLY, REASON_FORCED_IPV4, ipv6Supported = false, decidedAtMillis = now,
+            fellBack = false, remembered = false)
+
+    /**
+     * CarLink v1.7.8: the wireless start path forces IPv4 on the car hotspot, an iPhone hotspot and Same Wi-Fi
+     * (WirelessAddressFamilyPlan.ipv4Only) instead of calling [decide]. This records that for Diagnostics.
+     */
+    @JvmStatic
+    fun recordForcedIpv4(context: Context) {
+        runCatching { memory(context).recordLast(forcedIpv4Decision(System.currentTimeMillis())) }
+    }
 
     /** For CarLink's Diagnostics screen; null before the first car-hotspot session. */
     @JvmStatic

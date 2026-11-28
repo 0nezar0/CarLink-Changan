@@ -288,3 +288,13 @@ gets them; the app manifest adds only `HomeActivity` and CarLink's UI entries.
   `hide_car_status_bar_mode` = `ALL_EXCEPT_LAUNCHER` in the unified settings (car status-bar hide) and `hide_app_status_bar` = true (the experimental in-CarLink hide), then opens a guide to Android's
   Accessibility settings when `switcher/FceBarAccessibilityService` is off (`openSettings`, shared with the navigation-bar switch).
   Both features need only that Accessibility service; no Notification Listener, overlay or WRITE_SECURE_SETTINGS permission.
+
+## CarLink v1.7.8: IPv4 only, closed (`trial/1.7.8`)
+
+| Where | What | Why |
+|---|---|---|
+| `network/WirelessHostAddress.kt` (`existingWifiIpv4Addresses`), `network/ExistingWifiManager.kt` (`start`, `sameLink`) | Existing Wi-Fi (an iPhone's Personal Hotspot, Same Wi-Fi) takes the host, the host list and the link comparison from the IPv4 addresses only; an IPv6-only link waits for IPv4. | IPv6 churn on the link restarted the run although `WirelessAddressFamilyPlan.ipv4Only(EXISTING_WIFI)` already kept IPv6 off the wire. |
+| `orchestration/CarPlayController.runWireless` and friends | Removed the unused v1.6.6 `CarHotspotIpSession`, `decideCarHotspotIpFamily`, `carHotspotIpv6Fallback`, dual-stack binds and picture-stall wiring; the start path records `CarHotspotIpFamily.recordForcedIpv4`. `carlink-core CarPlayAdapter` no longer sets `knownIpv4OnlyUnit`. `CarHotspotIpFamily` and `PictureStallWatchdog` stay as unused library code. | Dead since v1.7.6 (`ipSession` was always null); Diagnostics showed an empty card. |
+| `airplay/AirPlaySession.mediaBindAddress` | On an IPv4-only path with no IPv4 session address, bind `0.0.0.0` (never `::`). | Last IPv6 wildcard on a hotspot path. |
+| `app/ui/diagnostics/IpFamilyCard`, `carlink_ipfamily_*` strings (11 locales) | The card always shows «IPv4 only», reason «Forced», with the last session's time. | Honest Diagnostics after the probe was removed. |
+

@@ -46,5 +46,19 @@ class WirelessHostAddressTest {
         assertEquals(7, (existingWifiHostAddresses(listOf(ip("fe80::1")), 7).single() as Inet6Address).scopeId)
     }
 
+    // CarLink v1.7.8: an Existing Wi-Fi attachment sees the IPv4 addresses only.
+    @Test fun existingWifiSeesIpv4Only() {
+        val v4 = ip("172.20.10.2")
+        val all = listOf(ip("fe80::1234"), v4, ip("2001:db8::1"))
+        assertEquals(listOf(v4), existingWifiIpv4Addresses(all))
+        assertEquals(listOf(v4), existingWifiHostAddresses(existingWifiIpv4Addresses(all), 7))
+        assertEquals(emptyList<InetAddress>(), existingWifiIpv4Addresses(listOf(ip("fe80::1"), ip("2001:db8::1"), ip("169.254.1.2"))))
+        assertNull(wirelessHostAddress(existingWifiIpv4Addresses(listOf(ip("fe80::1"))), 7))
+        // IPv6 churn leaves the compared host set unchanged.
+        val before = existingWifiHostAddresses(existingWifiIpv4Addresses(listOf(v4, ip("fe80::1"))), 7).toSet()
+        val after = existingWifiHostAddresses(existingWifiIpv4Addresses(listOf(v4, ip("fe80::2"), ip("2001:db8::9"))), 7).toSet()
+        assertEquals(before, after)
+    }
+
     private fun ip(value: String) = InetAddress.getByName(value)
 }

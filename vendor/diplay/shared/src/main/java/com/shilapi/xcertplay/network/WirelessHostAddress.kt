@@ -27,3 +27,9 @@ internal fun existingWifiHostAddresses(addresses: List<InetAddress>, interfaceIn
     }
     return listOfNotNull(ipv4, ipv6)
 }
+
+/**
+ * CarLink v1.7.8: the addresses an Existing Wi-Fi attachment (an iPhone's Personal Hotspot, Same Wi-Fi) may use:
+ * the IPv4 ones only, as [WirelessAddressFamilyPlan.ipv4Only] requires for that backend.
+ */
+internal fun existingWifiIpv4Addresses(addresses: List<InetAddress>): List<InetAddress> = ipv4OnlyAddresses(addresses)

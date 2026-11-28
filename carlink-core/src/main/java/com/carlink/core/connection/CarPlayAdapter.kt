@@ -269,11 +269,8 @@ class CarPlayAdapter internal constructor(
                 marks.edit().putBoolean("forget_ipv6_guess", true).apply()
             }
             CarPlayHostIntegration.vehicleIntegrations = profile == VehicleProfile.BYD_DILINK
-            // v1.6.6: the car hotspot picks IPv4 or IPv4 + IPv6 by itself (CarHotspotIpFamily). The
-            // CS75 Plus 2023 SoftAP is IPv4-only, so that profile stays on the v1.6.5 IPv4-only path.
-            com.shilapi.xcertplay.network.CarHotspotIpFamily.knownIpv4OnlyUnit = {
-                com.carlink.core.settings.CarBrandStore(app).chosen()?.isChanganCs75Plus == true
-            }
+            // v1.7.8: the car hotspot, an iPhone's Personal Hotspot and Same Wi-Fi are IPv4 only for every unit
+            // (WirelessAddressFamilyPlan.ipv4Only); the v1.6.6 automatic probe is not wired in.
             CarPlayHostIntegration.onHostState = HostStates::dispatch
             // The default-grant wait counts from the iPhone's attach (UsbAttachTimes).
             com.shilapi.xcertplay.orchestration.CarPlayController.usbAttachAgeMillis =

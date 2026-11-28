@@ -100,9 +100,13 @@ class ExistingWifiManager(
                 iface != null -> Collections.list(iface.inetAddresses)
                 else -> emptyList()
             }
-            val address = if (iface == null) null else wirelessHostAddress(linkAddresses, iface.index)
+            // CarLink v1.7.8: an iPhone's Personal Hotspot and Same Wi-Fi are IPv4 only (WirelessAddressFamilyPlan):
+            // IPv6 never selects the host, joins the host list or counts as a link change. With no IPv4 yet
+            // the loop waits (DHCP) instead of attaching to a link-local IPv6 host.
+            val ipv4Links = existingWifiIpv4Addresses(linkAddresses)
+            val address = if (iface == null) null else wirelessHostAddress(ipv4Links, iface.index)
             if (iface != null && name != null && address != null) {
-                val addresses = existingWifiHostAddresses(linkAddresses, iface.index)
+                val addresses = existingWifiHostAddresses(ipv4Links, iface.index)
                 var frequency: Int? = null
                 var channel = 0
                 var apBssid: ByteArray? = null
@@ -187,7 +191,9 @@ class ExistingWifiManager(
 
     private fun sameLink(properties: LinkProperties): Boolean =
         properties.interfaceName == interfaceName && properties.linkAddresses.any { it.address == host } &&
-            existingWifiHostAddresses(properties.linkAddresses.map { it.address }, interfaceIndex).toSet() == hosts.toSet()
+            // CarLink v1.7.8: IPv6 churn (a link-local appearing, a privacy address rotating) is not a link change.
+            existingWifiHostAddresses(existingWifiIpv4Addresses(properties.linkAddresses.map { it.address }), interfaceIndex)
+                .toSet() == hosts.toSet()
 
     // An iPhone told to use an open network never opens the AirPlay connection, while the same router
     // with WPA2 connects within seconds (#1232), so retrying cannot help.

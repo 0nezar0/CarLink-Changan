@@ -332,14 +332,8 @@
 
     <!-- CarLink v1.6.6: car-hotspot IP family (automatic IPv4 / IPv4 + IPv6) -->
     <string name="carlink_ipfamily_title">IP-család (autó hotspot)</string>
-    <string name="carlink_ipfamily_empty_title">Még nem volt kapcsolat az autó hotspotján</string>
-    <string name="carlink_ipfamily_empty_body">A CarLink ellenőrzi az autó hotspotját, és az első vezeték nélküli CarPlay-kapcsolatnál magától választ IPv4 vagy IPv4 + IPv6 között.</string>
     <string name="carlink_ipfamily_in_use">Használatban</string>
     <string name="carlink_ipfamily_v4">Csak IPv4</string>
-    <string name="carlink_ipfamily_dual">IPv4 + IPv6</string>
-    <string name="carlink_ipfamily_supports">A kijelző támogatja az IPv6-ot</string>
-    <string name="carlink_ipfamily_yes">Igen</string>
-    <string name="carlink_ipfamily_no">Nem</string>
     <string name="carlink_ipfamily_reason">Ok</string>
     <string name="carlink_ipfamily_decided">Döntés ideje</string>
     <string name="carlink_ipfamily_r_known">Ez a kijelző (CS75 Plus 2023) ismerten csak IPv4-gyel működik</string>
@@ -355,5 +349,7 @@
     <string name="carlink_ipfamily_r_fb_tcp">IPv4-re váltott, mert az iPhone nem csatlakozott IPv6-on; ehhez a kijelzőhöz megjegyezve</string>
     <string name="carlink_ipfamily_r_fb_picture">IPv4-re váltott a Kép lépésnél történt elakadás után; ehhez a kijelzőhöz megjegyezve</string>
     <string name="carlink_ipfamily_r_unknown">Ismeretlen</string>
-    <string name="carlink_ipfamily_auto_note">Automatikusan választva. Nincs mit beállítani.</string>
+    <!-- CarLink v1.7.8: IPv4 forced on the car hotspot, an iPhone hotspot and Same Wi-Fi -->
+    <string name="carlink_ipfamily_r_forced">Kényszerítve: csak IPv4 az autó hotspotján, az iPhone hotspotján és ugyanazon a Wi-Fin, minden kijelzőn</string>
+    <string name="carlink_ipfamily_forced_note">Kényszerítve, nem választott. Nincs mit beállítani.</string>
 </resources>

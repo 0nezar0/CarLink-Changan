@@ -18,6 +18,7 @@ class IpFamilyCardTest {
         CarHotspotIpFamily.REASON_IPV6_NOT_USABLE, CarHotspotIpFamily.REASON_LINK_LOCAL_ONLY,
         CarHotspotIpFamily.REASON_NO_IPV6_ROUTE, CarHotspotIpFamily.REASON_IPV6_USABLE,
         CarHotspotIpFamily.REASON_FALLBACK_NO_TCP, CarHotspotIpFamily.REASON_FALLBACK_PICTURE_STALL,
+        CarHotspotIpFamily.REASON_FORCED_IPV4,
     )
 
     @Test fun everyEngineReasonHasItsOwnText() {
@@ -28,16 +29,29 @@ class IpFamilyCardTest {
         assertEquals(R.string.carlink_ipfamily_r_fb_picture, ipFamilyReasonRes(CarHotspotIpFamily.REASON_FALLBACK_PICTURE_STALL))
     }
 
-    @Test fun mapsTheEngineRecord() {
-        assertNull(IpFamilyUi.from(null))
-        val ui = IpFamilyUi.from(CarHotspotIpFamily.LastDecision(CarHotspotIpFamily.MODE_IPV4_ONLY,
-            CarHotspotIpFamily.REASON_LINK_LOCAL_ONLY, ipv6Supported = false, decidedAtMillis = 7L, fellBack = false, remembered = false))!!
-        assertFalse(ui.dualStack)
-        assertFalse(ui.ipv6Supported)
-        assertEquals(7L, ui.decidedAtMillis)
-        val dual = IpFamilyUi.from(CarHotspotIpFamily.LastDecision(CarHotspotIpFamily.MODE_DUAL_STACK,
-            CarHotspotIpFamily.REASON_IPV6_USABLE, ipv6Supported = true, decidedAtMillis = 8L, fellBack = false, remembered = false))!!
-        assertTrue(dual.dualStack)
-        assertNotEquals(ui, dual)
+    // v1.7.8: IPv4 is forced on every hotspot path, so the card always says so.
+    @Test fun alwaysShowsIpv4ForcedWhateverTheEngineRecorded() {
+        val none = IpFamilyUi.from(null)
+        assertEquals(CarHotspotIpFamily.REASON_FORCED_IPV4, none.reason)
+        assertNull(none.decidedAtMillis)
+        assertEquals(R.string.carlink_ipfamily_r_forced, ipFamilyReasonRes(none.reason))
+        val forced = IpFamilyUi.from(CarHotspotIpFamily.forcedIpv4Decision(7L))
+        assertEquals(CarHotspotIpFamily.REASON_FORCED_IPV4, forced.reason)
+        assertEquals(7L, forced.decidedAtMillis)
+        // A v1.6.6 record (dual stack, remembered, fallback) must not be shown as the current decision.
+        val old = IpFamilyUi.from(CarHotspotIpFamily.LastDecision(CarHotspotIpFamily.MODE_DUAL_STACK,
+            CarHotspotIpFamily.REASON_IPV6_USABLE, ipv6Supported = true, decidedAtMillis = 8L, fellBack = false, remembered = false))
+        assertEquals(CarHotspotIpFamily.REASON_FORCED_IPV4, old.reason)
+        assertNull(old.decidedAtMillis)
+        assertEquals(old, none)
+        assertNotEquals(old, forced)
+    }
+
+    @Test fun theForcedDecisionIsIpv4OnlyAndNeverDualStack() {
+        val d = CarHotspotIpFamily.forcedIpv4Decision(1L)
+        assertEquals(CarHotspotIpFamily.MODE_IPV4_ONLY, d.mode)
+        assertFalse(d.ipv6Supported)
+        assertFalse(d.fellBack)
+        assertFalse(d.remembered)
     }
 }
