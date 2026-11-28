@@ -489,14 +489,6 @@ object AirPlayPersistence {
             .putString("existing_wifi_passphrase", passphrase).apply()
     }
 
-    fun loadIphoneHotspotIpv4(context: Context): Boolean =
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean("iphone_hotspot_ipv4", false)
-
-    fun saveIphoneHotspotIpv4(context: Context, enabled: Boolean) {
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
-            .putBoolean("iphone_hotspot_ipv4", enabled).apply()
-    }
-
     /** Interface that carries the station LAN when Android does not report it as Wi-Fi, e.g. a USB NIC on eth1. */
     fun loadExistingWifiInterface(context: Context): String =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
