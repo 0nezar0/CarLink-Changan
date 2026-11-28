@@ -529,6 +529,7 @@ gh release create v1.6.1 \
 ## CI: عيّنة اللقطات وبناء الاختبار على GitHub Actions (28 نوفمبر 2026)
 
 - **`build.yml` (Build CarLink):** صار فيه مدخل `upload_test_apk` (منطقي، الافتراضي false) لتشغيل يدوي `workflow_dispatch` بوضع release فقط. لو true يرفع الـ APK الموقّع بعد نجاح فحص التوقيع كـ artifact واحد باسم `carlink-test-apk` وينتهي بعد يوم واحد (`retention-days: 1`). الدفع (push) والوسوم والتشغيل الافتراضي تبقى للتحقق فقط ولا ترفع شيء. بعد أخذ الملف يُحذف الـ artifact (`gh api -X DELETE repos/0nezar0/CarLink-Changan/actions/artifacts/<id>`).
+- **`test.yml` (Unit tests):** workflow يدوي فقط (`workflow_dispatch`) يشغّل اختبارات الوحدة: `:app:testDebugUnitTest` و`:carlink-core:testDebugUnitTest` و`:androidauto:testGithubDebugUnitTest` و`:carplay-shared:testDebugUnitTest` و`:carplay-common:testDebugUnitTest` (من ضمنها `CommManagerDestroyTest` و`AaSessionTrackerTest`). ما يستخدم أسرار، وما ينشر شيء. تقرير الاختبار يُرفع كـ artifact باسم `unit-test-reports` ينتهي بعد يوم. فشلان معروفان ومسبقان في `SettingsTranslationsTest` (values-hu) يُتجاهلان في خطوة التحقق؛ أي فشل ثاني يوقف التشغيل.
 - **`screenshots.yml` (Record screenshots):** workflow يدوي فقط يشغّل معرض لقطات الواجهة (`ScreenshotGallery`، Robolectric بدون جهاز) بـ `./gradlew :app:recordScreenshots`، مع مدخلين: `areas` (مثل `diagnostics,settings,home`) و`only` (نمط اختياري لأسماء الصور)، ويرفع الصور اللي انولدت كـ artifact باسم `carlink-screenshots` ينتهي بعد يوم (ما تُرفع للمستودع). ما يستخدم أي أسرار.
 
 ## 25. v1.7.9 (تجريبي، versionCode 10062): مهلة Same Wi-Fi ترجع 30 ثانية — 28 نوفمبر 2026
@@ -539,3 +540,13 @@ gh release create v1.6.1 \
 - لو المرحلة طوّلت على Same Wi-Fi أو نقطة السيارة، المحاولة تُعاد على نفس المسار. ما عاد يقول إنه يصفّر Wi-Fi Direct (ما فيه مجموعة Wi-Fi Direct على هالمسارين).
 
 الملفات: `StallPlaybook.kt` و`ConnectionProfiles.kt` و`SessionManager.kt`. الاختبار: `StallPlaybookTest`. النسخة تثبت فوق v1.7.8 (10061).
+
+## 26. v1.7.10 (تجريبي، versionCode 10063): تنظيف جلسة Android Auto حتى يبقى خادم الوحدة الرئيسية صالح بعد الخروج — 28 نوفمبر 2026
+
+بُنيت من v1.7.9 (`cb3e344f`) على الفرع `trial/1.7.10`، مع إصلاح تنظيف جلسة Android Auto (`97d4661c`، وهو نفس `fe594048` من v1.7.3). كل تعديلات v1.7.9 باقية (مهلة Same Wi-Fi 30 ثانية) وv1.7.8 (IPv4 فقط). بلاغ المستخدم: خادم الوحدة الرئيسية (Start head unit server) ينطفئ ويضطر يشغّله من جديد كل مرة عشان يشبك.
+
+- **السبب في التطبيق:** بعد أول ما يقفل CarLink خدمة Android Auto، `CommManager.destroy()` كان يلغي نطاق العمل بالكامل (`_scope.cancel()`). المدير يعيش طول العملية، فما عاد يقدر يشغّل التنظيف في الجلسات التالية: ما فيه ByeBye وما فيه إقفال للمقبس. خادم Android Auto في الجوال يبقى ماسك الاتصال القديم، يقبل اتصالات جديدة وما يرد، لين المستخدم يوقفه ويشغّله يدويًا. هذا الإصلاح نزل في v1.7.3 وانمسح في v1.7.6 مع رجوع كود الاتصال لما قبل 1.7.x.
+- **الإصلاح:** `destroy()` يلغي الشغل الجاري فقط (`cancelChildren`)، فتقدر كل جلسة لاحقة تودّع الجوال وتقفل المقبس. وإذا لقى فحص الخادم السيرفر أول لكن ما رد، المحاولة ترجع للانتظار وتوقظ الجوال عبر البلوتوث بعد ثوانٍ.
+- **سلوك الجوال نفسه (ما ينحل من التطبيق):** الخادم ينطفئ فعلًا عند إعادة تشغيل الجوال أو تحديث Android Auto، ويصير أصم إذا انقطع الاتصال فجأة بدون وداع (مثل إطفاء السيارة). تشغيله ممكن فقط من واجهة Android Auto.
+
+الملفات: `vendor/diauto/.../connection/CommManager.kt` و`AaSessionTracker.kt`. الاختبارات: `CommManagerDestroyTest` و`AaSessionTrackerTest`. النسخة تثبت فوق v1.7.9 (10062).

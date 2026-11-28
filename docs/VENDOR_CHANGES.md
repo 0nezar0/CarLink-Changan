@@ -307,3 +307,10 @@ gets them; the app manifest adds only `HomeActivity` and CarLink's UI entries.
 | `carlink-core .../StallPlaybook.kt` (`AdaptiveDeadlines.bounds`, `StallPlaybook.actions`) | On `WirelessPath.SAME_WIFI`, JOINING_WIFI waits `Bounds(30_000, 30_000, 40_000)`. A linking stall on Same Wi-Fi or the car hotspot retries the step instead of `RESET_WIFI_DIRECT`. Tests: `StallPlaybookTest`. | v1.7.6 reverted the v1.7.5 path-aware playbook; a CS75 Plus 2023 v1.7.8 field report ended with `PHONE_NEVER_REACHED_CAR` in 15 s (`JOINING_WIFI`) while the iPhone was still joining. DiPlay's first-TCP watchdog is 30 s. |
 | `carlink-core ConnectionProfiles.deadline`, `SessionManager.recover` | Pass `path` into bounds and actions again. | Wire the playbook change through. |
 
+
+## CarLink v1.7.10: Android Auto session cleanup (`trial/1.7.10`)
+
+| Where | What | Why |
+|---|---|---|
+| `connection/CommManager.kt` (`destroy`: `_scope.coroutineContext.cancelChildren()` instead of `_scope.cancel()`, `// CarLink`); test `CommManagerDestroyTest` | Re-applied the v1.7.3 teardown fix on top of v1.7.9. `destroy()` still runs `doDisconnect()` first, then cancels only the coroutines in flight so the process-lifetime singleton can tear down later sessions (ByeBye and socket close). | v1.7.6 reverted this with the pre-1.7.x connection code. Without it, the phone's head unit server stayed bound to the previous session and the driver had to stop and start it by hand. Same rows as the v1.7.3 table above. |
+| `carlink-core/.../aa/AaSessionTracker.kt` (`acceptedByProbe`; `HEAD_UNIT_SERVER_STUCK` on a ride-along probe); tests in `AaSessionTrackerTest` | Re-applied with the teardown fix: a silent server found first by the probe goes back to waiting and the Bluetooth wake is re-armed. | Same as v1.7.3; lost in v1.7.6. |
