@@ -149,7 +149,7 @@ internal fun FullLogQrSheet(ui: FullLogQrUi, onRetry: () -> Unit, onReport: () -
     val preparing = stringResource(R.string.carlink_fulllog_preparing)
     val body = stringResource(R.string.carlink_fulllog_body)
     val a11y = stringResource(R.string.carlink_fulllog_qr_a11y)
-    val typed = ready?.let { stringResource(R.string.carlink_fulllog_type, ltr(it.endpoint.typedAddress), ltr(FullLogOnPhone.spacedCode(it.endpoint.code))) }
+    val typed = ready?.let { stringResource(R.string.carlink_fulllog_type, ltr(it.endpoint.typedAddress), ltr(codeForDisplay(it.endpoint.code))) }
     val codeClosed = stringResource(R.string.carlink_fulllog_code_closed)
     val others = ready?.endpoint?.otherUrls?.takeIf { it.isNotEmpty() }
         ?.let { urls -> stringResource(R.string.carlink_fulllog_other, urls.joinToString("  ·  ") { ltr(it) }) }
@@ -209,6 +209,12 @@ internal fun FullLogQrSheet(ui: FullLogQrUi, onRetry: () -> Unit, onReport: () -
         }
     }
 }
+
+/**
+ * "482 913" that stays in that order inside Arabic text: left-to-right marks make both groups strong
+ * left-to-right, so the space between them cannot reorder them where a renderer ignores isolates.
+ */
+internal fun codeForDisplay(code: String): String = "\u200E" + FullLogOnPhone.spacedCode(code).replace(" ", "\u200E\u00A0")
 
 /** A running page for previews and the screenshot gallery: the car hotspot address and a second one on Wi-Fi. */
 internal fun previewFullLogReady(codeEntryOpen: Boolean = true) = FullLogQrUi.Ready(
