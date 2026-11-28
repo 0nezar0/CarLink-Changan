@@ -79,6 +79,7 @@ data class CarPlayEngineSettings(
     val duckMusicForDirections: Boolean = true,
     /** Same Wi-Fi over this screen's Ethernet: DiPlay attaches to that interface, not to Wi-Fi (#87). */
     val sameWifiWired: Boolean = false,
+    val iphoneHotspotIpv4: Boolean = false,
     /** Stream types per DiPlay audio channel for a stereo that sorts sources by stream (Joying, [QzdHeadUnit.audioStreams]). */
     val legacyStreamTypes: Map<String, Int> = emptyMap(),
 )
@@ -259,6 +260,7 @@ object CarPlaySettingsPolicy {
             marginRightPx = settings.screenMargins.right,
             marginBottomPx = settings.screenMargins.bottom,
             duckMusicForDirections = settings.duckMusicForDirections,
+            iphoneHotspotIpv4 = settings.iphoneHotspotIpv4 && !settings.sameWifiWired,
             sameWifiWired = settings.sameWifiWired,
             legacyStreamTypes = audioStreams,
         )
@@ -300,6 +302,7 @@ object CarPlaySettingsPolicy {
         AirPlayPersistence.saveManualHotspotPassphrase(context, values.carHotspot.password)
         AirPlayPersistence.saveManualHotspotSecurity(context, ManualHotspotValidation.securityFor(values.carHotspot.password))
         // Same Wi-Fi: always CarLink's values, also when cleared (F17: stale details).
+        AirPlayPersistence.saveIphoneHotspotIpv4(context, values.iphoneHotspotIpv4)
         AirPlayPersistence.saveExistingWifiCredentials(context, values.homeWifi.ssid, values.homeWifi.password)
         // DiPlay's explicit interface skips its Wi-Fi checks; empty keeps its own Wi-Fi selection.
         AirPlayPersistence.saveExistingWifiInterface(context,
