@@ -58,6 +58,10 @@ class AndroidAutoAdapter internal constructor(
     private val app = context.applicationContext
     private val sendCommand: (Intent) -> Unit = sendCommand ?: app::sendBroadcast
     private val processAlive: () -> Boolean = processAlive ?: ::isEngineProcessAlive
+    /** Only the real process check knows a pid; injected checks (tests) skip the restart note. */
+    private val watchesPid = processAlive == null
+    /** ":aa"'s pid when last seen during this session, to tell a quick restart from a dropped link. */
+    private var enginePid = 0
     private val handler = Handler(Looper.getMainLooper())
 
     private class Session(val plan: SessionPlan, val listener: (AdapterEvent) -> Unit, val tracker: AaSessionTracker, val startedAt: Long)
@@ -120,6 +124,7 @@ class AndroidAutoAdapter internal constructor(
             if (s.tracker.terminal) return
             if (s.tracker.shouldRepoke(now)) s.plan.pokeAddress?.let { send(AaProtocol.COMMAND_POKE) { putExtra(AaProtocol.EXTRA_ADDRESS, it) } }
             // The receiver starts ":aa" a moment after start(); after that, two misses in a row mean it died.
+            if (watchesPid) noteEnginePid()
             if (now - s.startedAt >= PROCESS_GRACE_MILLIS && !processAlive()) {
                 if (++deadPolls >= DEAD_POLLS) {
                     Log.w(TAG, "the Android Auto process died under the session")
@@ -218,6 +223,7 @@ class AndroidAutoAdapter internal constructor(
         groupKept = false
         orphanCheck = false
         deadPolls = 0
+        enginePid = 0
         Log.i(TAG, "start transport=${plan.transport} path=${plan.path} phone=${plan.phoneAddress != null} attempt=${plan.attempt} self=${plan.selfMode}")
         deliver(s, tracker.begin(now))
         val profile = vehicleProfile().name
@@ -310,6 +316,25 @@ class AndroidAutoAdapter internal constructor(
         attach.getParcelableExtra(UsbManager.EXTRA_DEVICE, UsbDevice::class.java)
     } else {
         @Suppress("DEPRECATION") attach.getParcelableExtra(UsbManager.EXTRA_DEVICE)
+    }
+
+    /**
+     * A ":aa" that was killed (low memory, a crash) and started again within [DEAD_POLLS] ticks is
+     * never seen dead, and its session end looks like a dropped link. A new pid says which it was
+     * (CS75 Plus v1.7.11, 2026-11-28: two drops 8-10 min into music-only sessions, cause unknown).
+     */
+    private fun noteEnginePid() {
+        val name = app.packageName + AaProtocol.ENGINE_PROCESS_SUFFIX
+        val pid = runCatching {
+            app.getSystemService(ActivityManager::class.java)?.runningAppProcesses
+                ?.firstOrNull { it.processName == name }?.pid
+        }.getOrNull() ?: return
+        if (enginePid != 0 && pid != enginePid) {
+            Log.w(TAG, "the Android Auto process restarted under the session (pid $enginePid -> $pid)")
+            com.carlink.core.diagnostics.EventLog.add("CarLink",
+                "Android Auto engine process restarted under the session (pid $enginePid -> $pid)")
+        }
+        enginePid = pid
     }
 
     private fun isEngineProcessAlive(): Boolean {
