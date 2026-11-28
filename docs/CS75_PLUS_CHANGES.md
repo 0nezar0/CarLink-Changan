@@ -507,3 +507,8 @@ gh release create v1.6.1 \
 - **حول التطبيق:** بطاقة واحدة للشكر: CarLink ومطوّره F-e-n-y-x مع رمز QR للمصدر، والمشاريع التي بُني عليها، وسطر «نسخة شانجان CS75 Plus: نزار الحازمي»، وتنويه شانجان. رقم الإصدار يظهر تحت اسم التطبيق. كل النصوص في ملفات الموارد ومترجمة.
 - **تحقق APK:** `verify-carlink-apk.yml` يتحقق من الملفات المتغيرة بـ `git diff` بدل واجهة compare المحدودة بـ 300 ملف.
 - **حالة الاختبار:** البناء واختبارات الوحدة ناجحة على الجهاز الافتراضي للتطوير. تجربة السحب وإعادة اللمس ونقطة الاتصال على شاشة السيارة الفعلية مطلوبة.
+
+## CI: عيّنة اللقطات وبناء الاختبار على GitHub Actions (28 نوفمبر 2026)
+
+- **`build.yml` (Build CarLink):** صار فيه مدخل `upload_test_apk` (منطقي، الافتراضي false) لتشغيل يدوي `workflow_dispatch` بوضع release فقط. لو true يرفع الـ APK الموقّع بعد نجاح فحص التوقيع كـ artifact واحد باسم `carlink-test-apk` وينتهي بعد يوم واحد (`retention-days: 1`). الدفع (push) والوسوم والتشغيل الافتراضي تبقى للتحقق فقط ولا ترفع شيء. بعد أخذ الملف يُحذف الـ artifact (`gh api -X DELETE repos/0nezar0/CarLink-Changan/actions/artifacts/<id>`).
+- **`screenshots.yml` (Record screenshots):** workflow يدوي فقط يشغّل معرض لقطات الواجهة (`ScreenshotGallery`، Robolectric بدون جهاز) بـ `./gradlew :app:recordScreenshots`، مع مدخلين: `areas` (مثل `diagnostics,settings,home`) و`only` (نمط اختياري لأسماء الصور)، ويرفع الصور اللي انولدت كـ artifact باسم `carlink-screenshots` ينتهي بعد يوم (ما تُرفع للمستودع). ما يستخدم أي أسرار.
