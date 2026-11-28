@@ -268,6 +268,37 @@ private fun diagnosticsEntries(): List<GalleryEntry> = listOf(
         DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog()), GalleryDiagnosticsActions)
         com.carlink.app.ui.diagnostics.IssueQrSheet(com.carlink.app.ui.diagnostics.previewIssueReport(), onShareLog = {}, onCopyLog = {}, onDone = {})
     },
+    GalleryEntry("diagnostics", "ip-family-card", configs = setOf("car-landscape", "tablet")) {
+        com.carlink.app.ui.premium.PremiumScreen("Diagnostics", onBack = {}) { margin ->
+            androidx.compose.foundation.layout.Column(androidx.compose.ui.Modifier
+                .verticalScroll(androidx.compose.foundation.rememberScrollState())
+                .padding(horizontal = margin)
+                .widthIn(max = 900.dp)) {
+                com.carlink.app.ui.diagnostics.IpFamilyCard(com.carlink.app.ui.diagnostics.IpFamilyUi.from(
+                    com.shilapi.xcertplay.network.CarHotspotIpFamily.forcedIpv4Decision(1_795_000_000_000L)))
+            }
+        }
+    },
+    GalleryEntry("diagnostics", "ip-family-card-ar", configs = setOf("car-landscape", "tablet")) {
+        val base = androidx.compose.ui.platform.LocalContext.current
+        val cfg = android.content.res.Configuration(base.resources.configuration).apply {
+            setLocale(java.util.Locale("ar")); setLayoutDirection(java.util.Locale("ar")) }
+        val ctx = androidx.compose.runtime.remember { base.createConfigurationContext(cfg) }
+        androidx.compose.runtime.CompositionLocalProvider(
+            androidx.compose.ui.platform.LocalContext provides ctx,
+            androidx.compose.ui.platform.LocalConfiguration provides cfg,
+            androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl) {
+        com.carlink.app.ui.premium.PremiumScreen("Diagnostics", onBack = {}) { margin ->
+            androidx.compose.foundation.layout.Column(androidx.compose.ui.Modifier
+                .verticalScroll(androidx.compose.foundation.rememberScrollState())
+                .padding(horizontal = margin)
+                .widthIn(max = 900.dp)) {
+                com.carlink.app.ui.diagnostics.IpFamilyCard(com.carlink.app.ui.diagnostics.IpFamilyUi.from(
+                    com.shilapi.xcertplay.network.CarHotspotIpFamily.forcedIpv4Decision(1_795_000_000_000L)))
+            }
+        }
+        }
+    },
     GalleryEntry("diagnostics", "phones-empty") {
         DiagnosticsContent(DiagnosticsUi(LinkState.Idle, null, null, previewChecks, previewLog(), emptyList()), GalleryDiagnosticsActions)
     },
