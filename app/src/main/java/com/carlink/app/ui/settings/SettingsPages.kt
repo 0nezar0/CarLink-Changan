@@ -155,12 +155,6 @@ private fun ConnectionEssentials(ui: SettingsUi, actions: SettingsActions, openS
             // #87: Automatic never picks Same Wi-Fi, so only the explicit choice shows the cable option.
             if (ui.unified.showAdvanced && method == ConnectionMethod.SAME_WIFI) {
                 GroupDivider()
-                if (!ui.unified.sameWifiWired) {
-                    SwitchRow(stringResource(R.string.carlink_iphone_hotspot_ipv4), ui.unified.iphoneHotspotIpv4,
-                        { enabled -> actions.update { it.copy(iphoneHotspotIpv4 = enabled) } },
-                        description = stringResource(R.string.carlink_iphone_hotspot_ipv4_detail), icon = R.drawable.carlink_ic_wifi)
-                    GroupDivider()
-                }
                 SwitchRow(stringResource(R.string.carlink_settings_same_wifi_wired), ui.unified.sameWifiWired,
                     { on -> actions.update { it.copy(sameWifiWired = on) } },
                     description = stringResource(R.string.carlink_settings_same_wifi_wired_detail), icon = R.drawable.carlink_ic_wifi)
