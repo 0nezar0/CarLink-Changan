@@ -94,11 +94,11 @@ fun rememberReportProblem(vm: CarLinkViewModel): () -> Unit {
                 stage = if (route == GitHubIssueReport.Route.BROWSER && IssueReporter.open(context, report.url)) ReportStage.Closed
                 else ReportStage.Qr(report)
             },
-            onCopyLog = { scope.launch { copyConnectionLog(context) } },
+            onCopyLog = { scope.launch { copyConnectionLog(context, vm::savedSecrets) } },
             onCancel = { stage = ReportStage.Closed })
         is ReportStage.Qr -> IssueQrSheet(s.report,
             onShareLog = { scope.launch { shareConnectionLog(context) } },
-            onCopyLog = { scope.launch { copyConnectionLog(context) } },
+            onCopyLog = { scope.launch { copyConnectionLog(context, vm::savedSecrets) } },
             onDone = { stage = ReportStage.Closed })
     }
     return remember(vm) {
@@ -185,13 +185,23 @@ internal suspend fun saveConnectionLog(context: Context, inputs: IssueReporter.I
 }
 
 /**
+ * The combined log as Copy full log and QR for the full log hand it over: [ConnectionLog.export]
+ * passed through [GitHubIssueReport.clean] with the saved Wi-Fi and hotspot passwords ([secrets],
+ * read here, off the main thread), so it is as clean as the GitHub report. Blocking: call on IO.
+ */
+internal fun exportCleanLog(context: Context, secrets: () -> List<String>): String {
+    val raw = ConnectionLog.export(context, logHeader(context)).readText()
+    return GitHubIssueReport.clean(raw, runCatching(secrets).getOrDefault(emptyList()))
+}
+
+/**
  * Puts the combined log on the clipboard (Copy full log) for pasting into the issue. A clip travels
  * through one Binder transaction (1 MB), so a log over [CLIP_MAX_CHARS] keeps its head (versions,
- * stereo probe) and newest lines.
+ * stereo probe) and newest lines. v1.7.11: cleaned with [exportCleanLog] (saved passwords hidden).
  */
-internal suspend fun copyConnectionLog(context: Context) {
+internal suspend fun copyConnectionLog(context: Context, secrets: () -> List<String> = { emptyList() }) {
     val text = withContext(Dispatchers.IO) {
-        runCatching { ConnectionLog.export(context, logHeader(context)).readText() }.getOrNull()
+        runCatching { exportCleanLog(context, secrets) }.getOrNull()
     } ?: return
     val clip = if (text.length <= CLIP_MAX_CHARS) text
     else text.take(4_000) + "\n…\n" + text.takeLast(CLIP_MAX_CHARS - 4_000)
@@ -281,7 +291,7 @@ internal fun IssueConfirmSheet(
 }
 
 @Composable
-private fun Note(@DrawableRes icon: Int, text: String) {
+internal fun Note(@DrawableRes icon: Int, text: String) {
     Row(verticalAlignment = Alignment.Top) {
         Icon(painterResource(icon), null, Modifier.padding(top = 2.dp).size(CarLinkTokens.dimens.iconTertiary),
             tint = MaterialTheme.colorScheme.primary)

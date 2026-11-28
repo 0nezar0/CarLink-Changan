@@ -6,6 +6,11 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
+Branch `feat/qr-full-log` (from `trial/1.7.10`), not built or released yet.
+
+- New: Diagnostics › **QR for the full log**. The whole log (the same text as Copy full log) opens on your phone by scanning one QR code, with Copy and Download on the page; no internet needed. The phone must be on the same network as the screen: the car hotspot, the same Wi-Fi, or the iPhone's Personal Hotspot. Without a camera, type the address shown and the six-digit code. The page stops after 10 minutes without use or when the sheet closes. Without a network the sheet says how to join one, and Report on GitHub (short QR code) and Copy full log still work.
+- Privacy: Copy full log and the phone page now hide saved Wi-Fi and hotspot passwords, owners' names in phone names and serial numbers, as the GitHub report already did.
+
 ## [CS75 Plus 2023 v1.7.10] - 2026-11-28 (test)
 
 Test build from branch `trial/1.7.10` (started from v1.7.9, `cb3e344f`, plus the Android Auto session-cleanup fix `97d4661c`), versionCode 10063. It installs over v1.7.9 (10062) and every earlier build, and keeps your settings. Everything from v1.7.9 stays (the Same Wi-Fi 30 s linking wait) and v1.7.8 (IPv4 only on the car hotspot, an iPhone's Personal Hotspot and Same Wi-Fi).

@@ -141,6 +141,8 @@ internal interface DiagnosticsActions {
     fun openSettings(category: SettingsCategory) {}
     fun shareLog() {}
     fun copyLog() {}
+    /** "QR for the full log" ([rememberFullLogOnPhone]). */
+    fun fullLogQr() {}
     /** "Report a problem on GitHub" ([rememberReportProblem]). */
     fun reportProblem() {}
     fun back() {}
@@ -213,6 +215,7 @@ fun DiagnosticsScreen(vm: CarLinkViewModel, onBack: () -> Unit, openSettings: (S
     }
     val scope = rememberCoroutineScope()
     val reportProblem = rememberReportProblem(vm)
+    val fullLogQr = rememberFullLogOnPhone(vm, onReport = reportProblem)
     val actions = remember(vm) {
         object : DiagnosticsActions {
             override fun fix(fix: CheckFix) = when (fix) {
@@ -249,8 +252,9 @@ fun DiagnosticsScreen(vm: CarLinkViewModel, onBack: () -> Unit, openSettings: (S
                 scope.launch { shareConnectionLog(context) }
             }
             override fun copyLog() {
-                scope.launch { copyConnectionLog(context) }
+                scope.launch { copyConnectionLog(context, vm::savedSecrets) }
             }
+            override fun fullLogQr() = fullLogQr()
             override fun reportProblem() = reportProblem()
             override fun back() = onBack()
         }
@@ -312,7 +316,7 @@ internal fun DiagnosticsContent(ui: DiagnosticsUi, actions: DiagnosticsActions, 
                     CallAudioTestCard(ui.link.stage != LinkStage.IDLE)
                 }
                 Spacer(Modifier.width(dimens.gutter * 1.5f))
-                LogPanel(ui.log, filter, { filter = it }, actions::shareLog, actions::copyLog, actions::reportProblem,
+                LogPanel(ui.log, filter, { filter = it }, actions::shareLog, actions::copyLog, actions::fullLogQr, actions::reportProblem,
                     Modifier.weight(0.53f).fillMaxHeight().padding(top = 8.dp, bottom = dimens.gutter))
             }
         } else {
@@ -330,7 +334,7 @@ internal fun DiagnosticsContent(ui: DiagnosticsUi, actions: DiagnosticsActions, 
                         SessionCard(ui); IpFamilyCard(ui.ipFamily); PhonesHealthCard(ui.health); ChecksCard(ui.checks, actions)
                     }
                     CallAudioTestCard(ui.link.stage != LinkStage.IDLE)
-                    LogPanel(ui.log, filter, { filter = it }, actions::shareLog, actions::copyLog, actions::reportProblem, Modifier.fillMaxWidth().height(logHeight))
+                    LogPanel(ui.log, filter, { filter = it }, actions::shareLog, actions::copyLog, actions::fullLogQr, actions::reportProblem, Modifier.fillMaxWidth().height(logHeight))
                 }
             }
         }
@@ -669,7 +673,7 @@ private fun StatusGlyph(status: CheckStatus, size: Dp) {
 
 @Composable
 private fun LogPanel(log: List<LogLine>?, filter: LogFilter, onFilter: (LogFilter) -> Unit, onShare: () -> Unit, onCopy: () -> Unit,
-                     onReport: () -> Unit, modifier: Modifier) {
+                     onFullLogQr: () -> Unit, onReport: () -> Unit, modifier: Modifier) {
     val scheme = MaterialTheme.colorScheme
     val shown = remember(log, filter) { log?.let { lines -> filter.source?.let { s -> lines.filter { it.source == s } } ?: lines } }
     GlassCard(modifier, contentPadding = PaddingValues(0.dp)) {
@@ -680,13 +684,14 @@ private fun LogPanel(log: List<LogLine>?, filter: LogFilter, onFilter: (LogFilte
                 Text(stringResource(R.string.carlink_diag_log_body), style = MaterialTheme.typography.bodySmall,
                     color = scheme.onSurfaceVariant)
                 Spacer(Modifier.height(if (isCar) 14.dp else 10.dp))
-                // The GitHub report, Share log and Copy full log side by side; they wrap on a narrow pane.
+                // The GitHub report, Share log, Copy full log and QR for the full log side by side; they wrap on a narrow pane.
                 androidx.compose.foundation.layout.FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(CarLinkTokens.dimens.targetGap),
                     verticalArrangement = Arrangement.spacedBy(CarLinkTokens.dimens.targetGap)) {
                     GlassButton(stringResource(R.string.carlink_report_action), onReport, icon = R.drawable.carlink_ic_bug_report)
                     GlassButton(stringResource(R.string.carlink_diag_log_share), onShare, icon = R.drawable.carlink_ic_ios_share)
                     GlassButton(stringResource(R.string.carlink_diag_log_copy), onCopy, icon = R.drawable.carlink_ic_content_copy)
+                    GlassButton(stringResource(R.string.carlink_diag_log_qr), onFullLogQr, icon = R.drawable.carlink_ic_qr_code_2)
                 }
                 Spacer(Modifier.height(if (isCar) 18.dp else 12.dp))
             }

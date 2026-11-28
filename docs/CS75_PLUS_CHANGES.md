@@ -529,7 +529,7 @@ gh release create v1.6.1 \
 ## CI: عيّنة اللقطات وبناء الاختبار على GitHub Actions (28 نوفمبر 2026)
 
 - **`build.yml` (Build CarLink):** صار فيه مدخل `upload_test_apk` (منطقي، الافتراضي false) لتشغيل يدوي `workflow_dispatch` بوضع release فقط. لو true يرفع الـ APK الموقّع بعد نجاح فحص التوقيع كـ artifact واحد باسم `carlink-test-apk` وينتهي بعد يوم واحد (`retention-days: 1`). الدفع (push) والوسوم والتشغيل الافتراضي تبقى للتحقق فقط ولا ترفع شيء. بعد أخذ الملف يُحذف الـ artifact (`gh api -X DELETE repos/0nezar0/CarLink-Changan/actions/artifacts/<id>`).
-- **`test.yml` (Unit tests):** workflow يدوي فقط (`workflow_dispatch`) يشغّل اختبارات الوحدة: `:app:testDebugUnitTest` و`:carlink-core:testDebugUnitTest` و`:androidauto:testGithubDebugUnitTest` و`:carplay-shared:testDebugUnitTest` و`:carplay-common:testDebugUnitTest` (من ضمنها `CommManagerDestroyTest` و`AaSessionTrackerTest`). ما يستخدم أسرار، وما ينشر شيء. تقرير الاختبار يُرفع كـ artifact باسم `unit-test-reports` ينتهي بعد يوم. فشلان معروفان ومسبقان في `SettingsTranslationsTest` (values-hu) يُتجاهلان في خطوة التحقق؛ أي فشل ثاني يوقف التشغيل.
+- **`test.yml` (Unit tests):** workflow يدوي فقط (`workflow_dispatch`) يشغّل اختبارات الوحدة: `:app:testDebugUnitTest` و`:carlink-core:testDebugUnitTest` و`:androidauto:testGithubDebugUnitTest` و`:carplay-shared:testDebugUnitTest` و`:carplay-common:testDebugUnitTest` (من ضمنها `CommManagerDestroyTest` و`AaSessionTrackerTest`). ما يستخدم أسرار، وما ينشر شيء. تقرير الاختبار يُرفع كـ artifact باسم `unit-test-reports` ينتهي بعد يوم. فشل `SettingsTranslationsTest` المعروف والمسبق (لغات المحرك الإضافية values-de/fr/hu/ms/pt) يُتجاهل في خطوة التحقق لأي لغة؛ أي فشل ثاني، أو موديول بدون نتائج، يوقف التشغيل.
 - **`screenshots.yml` (Record screenshots):** workflow يدوي فقط يشغّل معرض لقطات الواجهة (`ScreenshotGallery`، Robolectric بدون جهاز) بـ `./gradlew :app:recordScreenshots`، مع مدخلين: `areas` (مثل `diagnostics,settings,home`) و`only` (نمط اختياري لأسماء الصور)، ويرفع الصور اللي انولدت كـ artifact باسم `carlink-screenshots` ينتهي بعد يوم (ما تُرفع للمستودع). ما يستخدم أي أسرار.
 
 ## 25. v1.7.9 (تجريبي، versionCode 10062): مهلة Same Wi-Fi ترجع 30 ثانية — 28 نوفمبر 2026
@@ -550,3 +550,20 @@ gh release create v1.6.1 \
 - **سلوك الجوال نفسه (ما ينحل من التطبيق):** الخادم ينطفئ فعلًا عند إعادة تشغيل الجوال أو تحديث Android Auto، ويصير أصم إذا انقطع الاتصال فجأة بدون وداع (مثل إطفاء السيارة). تشغيله ممكن فقط من واجهة Android Auto.
 
 الملفات: `vendor/diauto/.../connection/CommManager.kt` و`AaSessionTracker.kt`. الاختبارات: `CommManagerDestroyTest` و`AaSessionTrackerTest`. النسخة تثبت فوق v1.7.9 (10062).
+
+## 27. QR للسجل الكامل في التشخيص (الفرع `feat/qr-full-log`، لم يُبنَ ولم يُنشر) — 28 نوفمبر 2026
+
+طلب المستخدم: QR ينسخ «السجل كاملاً» للجوال. رمز QR واحد يتسع لحوالي 2.9 KB، والسجل الكامل يوصل ~0.6 MB (السجل المدمج + logcat)، فالرمز يحمل رابط صفحة تخدمها الشاشة نفسها على الشبكة المحلية (الخيار «ب»).
+
+- **الزر:** «QR للسجل الكامل» جنب «نسخ السجل كاملاً» في لوحة السجل (`LogPanel` في `DiagnosticsScreen.kt`). يفتح نافذة (`FullLogQrSheet` في `ui/diagnostics/FullLogQr.kt`) فيها رمز QR، والرابط مكتوب، والعنوان للكتابة اليدوية مع رمز من 6 أرقام، وتنبيه الخصوصية والإيقاف التلقائي.
+- **الخادم:** `FullLogOnPhone.kt` يعيد استخدام `SettingsBackupServer` من DiPlay (بدون أي تعديل على vendor): رمز عشوائي في الرابط، رمز 6 أرقام للكتابة (5 محاولات خاطئة تقفل الكتابة، والـ QR يبقى يشتغل)، السجل يُخدم كـ `text/plain; charset=utf-8` على `/b/<token>/report`، وصفحة HTML فيها مربع السجل وزر «نسخ» و«تنزيل». مسارات تصدير/استيراد الإعدادات في الخادم معطّلة (`{}` ورفض).
+- **التصدير:** على خيط IO مرة وحدة قبل تشغيل الخادم: `ConnectionLog.export` ثم `GitHubIssueReport.clean(text, savedSecrets)` (كلمات مرور الواي فاي ونقطة الاتصال المحفوظة، أسماء المالكين، الأرقام التسلسلية، العناوين). نفس التنظيف صار في «نسخ السجل كاملاً» (`exportCleanLog` في `ReportProblem.kt`).
+- **الإيقاف:** بعد 10 دقائق بدون طلب (والنافذة تنقفل)، وعند إغلاق النافذة، وعند مغادرة الشاشة.
+- **بدون شبكة:** إذا ما فيه عنوان IPv4 على واي فاي أو نقطة اتصال أو Wi-Fi Direct، تظهر رسالة: وصّل الجوال بنقطة السيارة أو نفس الواي فاي أو نقطة الآيفون، مع «حاول مرة ثانية» و«الإبلاغ على GitHub» (رمز QR المختصر الموجود) و«نسخ السجل كاملاً».
+- **النصوص:** عربي وإنجليزي (`carlink_diag_log_qr` و`carlink_fulllog_*`)؛ اللغات الثانية تعرض الإنجليزي لين تُترجم.
+- **حجم الـ APK:** بدون اعتماديات جديدة (zxing والخادم موجودين أصلاً).
+
+الاختبارات: `FullLogOnPhoneTest` (الرابط والعناوين، خدمة النص UTF-8، رمز خاطئ، الرمز المكتوب، الإيقاف، الإيقاف عند الخمول، الهروب في HTML/JS، التنظيف). لقطات المعرض: `diagnostics_full-log-qr*` و`diagnostics_idle-ar`.
+
+**CI:** `test.yml` صار يتجاهل فشل `SettingsTranslationsTest` لأي لغة (values-de/fr/hu/ms/pt ناقصها مفاتيح)، ويفشل لو موديول ما طلّع نتائج اختبار (يعني ما ترجم).
+
