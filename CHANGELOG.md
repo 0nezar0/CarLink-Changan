@@ -6,9 +6,13 @@ is what the in-app update popup shows.
 
 ## [Unreleased]
 
-- Android Auto: after a drop, the car now rebuilds its own wireless listener (port 5288) if that listener has died, and reopens Bluetooth listeners that the car’s stack dropped, with the same cooldown DiAuto already uses. A start that found the engine already armed used to skip that repair. If the phone’s head unit server is the one that is stuck, the message is unchanged (only the phone can fix it), and the car waits longer before probing it again instead of retrying every 2 seconds.
+## [CS75 Plus 2023 v1.7.14] - 2026-11-28 (test)
+
+Test build from branch `trial/1.7.14` (started from `fix/aa-server-recovery`, `d77e8a75`, on top of v1.7.13), versionCode 10067. It installs over v1.7.13 (10066) and every earlier build, and keeps your settings. Everything from v1.7.13 stays (the stuck head unit server fails at once on every wireless path, QR for the full log, and the mid-session drop wording).
+
 - Android Auto, a stuck or stopped head unit server: the “Open Android Auto settings” button is shown only when this head unit has Google’s Android Auto (installed and able to run a car session). On a screen without it, such as the CS75 Plus, the button is hidden — it only opened the car’s Android Auto app, which is not there. The steps now say to Stop and Start the head unit server on the phone, and Try again stays.
 - The same rule already applied to “Run Android Auto on this screen” on Home and to the matching switch in Settings; those were left unchanged.
+- Android Auto: after a drop, the car now rebuilds its own wireless listener (port 5288) if that listener has died, and reopens Bluetooth listeners that the car’s stack dropped, with the same cooldown DiAuto already uses. A start that found the engine already armed used to skip that repair. If the phone’s head unit server is the one that is stuck, the message is unchanged (only the phone can fix it), and the car waits longer before probing it again instead of retrying every 2 seconds.
 
 ## [CS75 Plus 2023 v1.7.13] - 2026-11-28 (test)
 
